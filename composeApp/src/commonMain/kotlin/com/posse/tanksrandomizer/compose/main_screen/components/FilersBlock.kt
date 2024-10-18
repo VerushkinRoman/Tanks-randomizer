@@ -165,7 +165,7 @@ private fun <T> SingleChoiceItem(
     onItemClick: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
-    val elementHeight = (ElementSize.current - 4.dp) / 3
+    val elementHeight = (ElementSize.current - 4.dp) / 2
 
     AnimatedContent(
         targetState = item.selected,
@@ -175,7 +175,7 @@ private fun <T> SingleChoiceItem(
         if (selected) {
             Column(
                 horizontalAlignment = Alignment.CenterHorizontally,
-                verticalArrangement = Arrangement.spacedBy(2.dp),
+                verticalArrangement = Arrangement.spacedBy(3.dp, Alignment.CenterVertically),
                 modifier = Modifier.size(ElementSize.current)
             ) {
                 Box(
@@ -200,21 +200,11 @@ private fun <T> SingleChoiceItem(
                         .clip(CircleShape)
                         .background(Color.Gray)
                 )
-
-                Box(
-                    modifier = Modifier
-                        .size(elementHeight)
-                        .border(
-                            width = 1.dp,
-                            color = Color.Gray,
-                            shape = CircleShape
-                        )
-                )
             }
         } else {
             Column(
                 horizontalAlignment = Alignment.CenterHorizontally,
-                verticalArrangement = Arrangement.spacedBy(2.dp),
+                verticalArrangement = Arrangement.spacedBy(3.dp, Alignment.CenterVertically),
                 modifier = Modifier.size(ElementSize.current)
             ) {
                 val width = with(LocalDensity.current) { 2.dp.toPx() }
@@ -241,15 +231,6 @@ private fun <T> SingleChoiceItem(
                                 strokeWidth = width,
                             )
                         }
-                )
-
-                Box(
-                    modifier = Modifier
-                        .size(elementHeight)
-                        .border(
-                            width = 1.dp,
-                            color = Color.Gray,
-                        )
                 )
 
                 Box(
