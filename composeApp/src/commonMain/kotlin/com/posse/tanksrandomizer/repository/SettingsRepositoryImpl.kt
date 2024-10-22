@@ -1,43 +1,43 @@
 package com.posse.tanksrandomizer.repository
 
 import com.posse.tanksrandomizer.data_source.DataSource
-import com.posse.tanksrandomizer.repository.model.Experience
-import com.posse.tanksrandomizer.repository.model.Level
-import com.posse.tanksrandomizer.repository.model.Nation
-import com.posse.tanksrandomizer.repository.model.Pinned
-import com.posse.tanksrandomizer.repository.model.Status
-import com.posse.tanksrandomizer.repository.model.TankType
-import com.posse.tanksrandomizer.repository.model.Type
+import com.posse.tanksrandomizer.repository.model.FilterObjects.Experience
+import com.posse.tanksrandomizer.repository.model.FilterObjects.Level
+import com.posse.tanksrandomizer.repository.model.FilterObjects.Nation
+import com.posse.tanksrandomizer.repository.model.FilterObjects.Pinned
+import com.posse.tanksrandomizer.repository.model.FilterObjects.Status
+import com.posse.tanksrandomizer.repository.model.FilterObjects.TankType
+import com.posse.tanksrandomizer.repository.model.FilterObjects.Type
 
 class SettingsRepositoryImpl(
     private val dataSource: DataSource
 ) : SettingsRepository {
     override var levels: List<Level>
-        get() = dataSource.getProperties(Level.allValues)
+        get() = dataSource.getProperties(Level.defaultValues)
         set(value) = dataSource.setProperties(value)
 
     override var experiences: List<Experience>
-        get() = dataSource.getProperties(Experience.allValues)
+        get() = dataSource.getProperties(Experience.defaultValues)
         set(value) = dataSource.setProperties(value)
 
     override var nations: List<Nation>
-        get() = dataSource.getProperties(Nation.allValues)
+        get() = dataSource.getProperties(Nation.defaultValues)
         set(value) = dataSource.setProperties(value)
 
-    override var pinned: Pinned
-        get() = dataSource.getProperty(Pinned.Status())
-        set(value) = dataSource.setProperty(value)
+    override var pinned: List<Pinned>
+        get() = dataSource.getProperties(Pinned.defaultValues)
+        set(value) = dataSource.setProperties(value)
 
     override var statuses: List<Status>
-        get() = dataSource.getProperties(Status.allValues)
+        get() = dataSource.getProperties(Status.defaultValues)
         set(value) = dataSource.setProperties(value)
 
     override var tankTypes: List<TankType>
-        get() = dataSource.getProperties(TankType.allValues)
+        get() = dataSource.getProperties(TankType.defaultValues)
         set(value) = dataSource.setProperties(value)
 
     override var types: List<Type>
-        get() = dataSource.getProperties(Type.allValues)
+        get() = dataSource.getProperties(Type.defaultValues)
         set(value) = dataSource.setProperties(value)
 
     override var quantity: Int

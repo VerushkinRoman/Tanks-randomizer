@@ -1,0 +1,43 @@
+<resources>
+    <string name="level1">Уровень 1</string>
+    <string name="level2">Уровень 2</string>
+    <string name="level3">Уровень 3</string>
+    <string name="level4">Уровень 4</string>
+    <string name="level5">Уровень 5</string>
+    <string name="level6">Уровень 6</string>
+    <string name="level7">Уровень 7</string>
+    <string name="level8">Уровень 8</string>
+    <string name="level9">Уровень 9</string>
+    <string name="level10">Уровень 10</string>
+
+    <string name="exp_x2">Двойной опыт</string>
+    <string name="exp_bday">День рождения танка</string>
+    <string name="exp_x5">Экстра опыт</string>
+
+    <string name="nation_china">Китай</string>
+    <string name="nation_europe">Европа</string>
+    <string name="nation_france">Франция</string>
+    <string name="nation_germany">Германия</string>
+    <string name="nation_great_britain">Великобританя</string>
+    <string name="nation_japan">Япония</string>
+    <string name="nation_unknown">Сборная</string>
+    <string name="nation_usa">США</string>
+    <string name="nation_ussr">СССР</string>
+
+    <string name="pinned">Закрепленный</string>
+
+    <string name="status_elite">Элитный статус</string>
+    <string name="status_not_elite">Не элитный статус</string>
+
+    <string name="tank_type_collection">Коллекционный танк</string>
+    <string name="tank_type_common">Обычный танк</string>
+    <string name="tank_type_premium">Премиумный танк</string>
+
+    <string name="type_heavy">Тяжелый танк</string>
+    <string name="type_light">Легкий танк</string>
+    <string name="type_medium">Средний танк</string>
+    <string name="type_td">ПТ САУ</string>
+
+    <string name="trash">Корзина</string>
+    <string name="dice">Кубики</string>
+</resources>

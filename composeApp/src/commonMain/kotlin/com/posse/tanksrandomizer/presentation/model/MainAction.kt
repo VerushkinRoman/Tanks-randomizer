@@ -1,5 +1,3 @@
 package com.posse.tanksrandomizer.presentation.model
 
-sealed interface MainAction {
-
-}
+sealed interface MainAction

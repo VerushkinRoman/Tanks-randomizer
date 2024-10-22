@@ -1,3 +1,43 @@
 <resources>
+    <string name="level1">Level 1</string>
+    <string name="level2">Level 2</string>
+    <string name="level3">Level 3</string>
+    <string name="level4">Level 4</string>
+    <string name="level5">Level 5</string>
+    <string name="level6">Level 6</string>
+    <string name="level7">Level 7</string>
+    <string name="level8">Level 8</string>
+    <string name="level9">Level 9</string>
+    <string name="level10">Level 10</string>
 
+    <string name="exp_x2">Double experience</string>
+    <string name="exp_bday">Tank birthday</string>
+    <string name="exp_x5">Extra experience</string>
+
+    <string name="nation_china">China</string>
+    <string name="nation_europe">Europe</string>
+    <string name="nation_france">France</string>
+    <string name="nation_germany">Germany</string>
+    <string name="nation_great_britain">Great Britain</string>
+    <string name="nation_japan">Japan</string>
+    <string name="nation_unknown">Unknown</string>
+    <string name="nation_usa">USA</string>
+    <string name="nation_ussr">USSR</string>
+
+    <string name="pinned">Pinned</string>
+
+    <string name="status_elite">Elite status</string>
+    <string name="status_not_elite">Not elite status</string>
+
+    <string name="tank_type_collection">Collection tank</string>
+    <string name="tank_type_common">Common type</string>
+    <string name="tank_type_premium">Premium tank</string>
+
+    <string name="type_heavy">Heavy tank</string>
+    <string name="type_light">Light tank</string>
+    <string name="type_medium">Medium tank</string>
+    <string name="type_td">Tank destroyer</string>
+
+    <string name="trash">Trash</string>
+    <string name="dice">Dice</string>
 </resources>

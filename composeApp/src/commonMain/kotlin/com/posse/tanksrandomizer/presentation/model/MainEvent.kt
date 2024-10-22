@@ -1,17 +1,18 @@
 package com.posse.tanksrandomizer.presentation.model
 
-import com.posse.tanksrandomizer.repository.model.Experience
-import com.posse.tanksrandomizer.repository.model.Level
-import com.posse.tanksrandomizer.repository.model.Nation
-import com.posse.tanksrandomizer.repository.model.Status
-import com.posse.tanksrandomizer.repository.model.TankType
-import com.posse.tanksrandomizer.repository.model.Type
+import com.posse.tanksrandomizer.repository.model.FilterObjects.Experience
+import com.posse.tanksrandomizer.repository.model.FilterObjects.Level
+import com.posse.tanksrandomizer.repository.model.FilterObjects.Nation
+import com.posse.tanksrandomizer.repository.model.FilterObjects.Pinned
+import com.posse.tanksrandomizer.repository.model.FilterObjects.Status
+import com.posse.tanksrandomizer.repository.model.FilterObjects.TankType
+import com.posse.tanksrandomizer.repository.model.FilterObjects.Type
 
 sealed interface MainEvent {
     class LevelPressed(val level: Level) : MainEvent
     class ExperiencePressed(val experience: Experience) : MainEvent
     class NationPressed(val nation: Nation) : MainEvent
-    data object PinnedPressed : MainEvent
+    class PinnedPressed(val pinned: Pinned) : MainEvent
     class StatusPressed(val status: Status) : MainEvent
     class TankTypePressed(val tankType: TankType) : MainEvent
     class TypePressed(val type: Type) : MainEvent

@@ -1,13 +1,10 @@
 package com.posse.tanksrandomizer.data_source
 
-import com.posse.tanksrandomizer.repository.model.ItemInfo
+import com.posse.tanksrandomizer.repository.model.FilterObjects.ItemStatus
 
 interface DataSource {
-    fun <T : ItemInfo<T>> setProperties(properties: List<T>)
-    fun <T : ItemInfo<T>> getProperties(defaultItems: List<T>): List<T>
-
-    fun <T : ItemInfo<T>> setProperty(property: T)
-    fun <T : ItemInfo<T>> getProperty(defaultItem: T): T
+    fun <T : ItemStatus<T>> setProperties(properties: List<T>)
+    fun <T : ItemStatus<T>> getProperties(defaultItems: List<T>): List<T>
 
     fun setQuantity(quantity: Int)
     fun getQuantity(): Int

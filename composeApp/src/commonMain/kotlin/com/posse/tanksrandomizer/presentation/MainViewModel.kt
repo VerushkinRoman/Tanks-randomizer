@@ -6,15 +6,10 @@ import com.posse.tanksrandomizer.presentation.model.MainState
 import com.posse.tanksrandomizer.presentation.model.isDefault
 import com.posse.tanksrandomizer.presentation.model.reverseSelected
 import com.posse.tanksrandomizer.presentation.use_cases.GenerateFilter
+import com.posse.tanksrandomizer.presentation.use_cases.GetState
 import com.posse.tanksrandomizer.presentation.use_cases.SaveState
 import com.posse.tanksrandomizer.repository.SettingsRepository
-import com.posse.tanksrandomizer.repository.model.Experience
-import com.posse.tanksrandomizer.repository.model.Level
-import com.posse.tanksrandomizer.repository.model.Nation
-import com.posse.tanksrandomizer.repository.model.Pinned
-import com.posse.tanksrandomizer.repository.model.Status
-import com.posse.tanksrandomizer.repository.model.TankType
-import com.posse.tanksrandomizer.repository.model.Type
+import com.posse.tanksrandomizer.repository.model.FilterObjects.ItemStatus
 import com.posse.tanksrandomizer.utils.BoxedInt
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -30,31 +25,21 @@ class MainViewModel(
 
     private val generateFilterUseCase = GenerateFilter()
     private val saveState = SaveState(repository = repository)
+    private val getState = GetState(repository = repository)
 
     init {
-        _state.update {
-            MainState(
-                levels = repository.levels,
-                experiences = repository.experiences,
-                nations = repository.nations,
-                pinned = repository.pinned,
-                statuses = repository.statuses,
-                tankTypes = repository.tankTypes,
-                types = repository.types,
-                quantity = repository.quantity
-            )
-        }
+        _state.update { getState(state.value) }
     }
 
     fun obtainEvent(event: MainEvent) {
         when (event) {
-            is MainEvent.ExperiencePressed -> changeExperiences(event.experience)
-            is MainEvent.LevelPressed -> changeLevels(event.level)
-            is MainEvent.NationPressed -> changeNations(event.nation)
-            MainEvent.PinnedPressed -> changePinned()
-            is MainEvent.StatusPressed -> changeStatuses(event.status)
-            is MainEvent.TankTypePressed -> changeTankTypes(event.tankType)
-            is MainEvent.TypePressed -> changeTypes(event.type)
+            is MainEvent.ExperiencePressed -> _state.changeItem(event.experience)
+            is MainEvent.LevelPressed -> _state.changeItem(event.level)
+            is MainEvent.NationPressed -> _state.changeItem(event.nation)
+            is MainEvent.PinnedPressed -> _state.changeItem(event.pinned)
+            is MainEvent.StatusPressed -> _state.changeItem(event.status)
+            is MainEvent.TankTypePressed -> _state.changeItem(event.tankType)
+            is MainEvent.TypePressed -> _state.changeItem(event.type)
             MainEvent.GenerateFilterPressed -> generateFilter()
             MainEvent.GenerateNumberPressed -> generateNumber()
             MainEvent.MinusHundredPressed -> changeQuantity(-100)
@@ -68,109 +53,17 @@ class MainViewModel(
         }
     }
 
-    private fun changePinned() {
-        _state.update {
-            it.copy(pinned = Pinned.Status(selected = !state.value.pinned.selected))
-        }
-
-        saveState(state.value)
-    }
-
-    private fun changeStatuses(oldStatus: Status) {
-        _state.update { state ->
-            state.copy(
-                statuses = state.statuses.map { status ->
-                    if (status == oldStatus) {
-                        status.copy(selected = !status.selected, random = false)
-                    } else status
-                }
-            )
-        }
-
-        saveState(state.value)
-    }
-
-    private fun changeTankTypes(oldTankType: TankType) {
-        _state.update { state ->
-            state.copy(
-                tankTypes = state.tankTypes.map { tankType ->
-                    if (tankType == oldTankType) {
-                        tankType.copy(selected = !tankType.selected, random = false)
-                    } else tankType
-                }
-            )
-        }
-
-        saveState(state.value)
-    }
-
-    private fun changeTypes(oldType: Type) {
-        _state.update { state ->
-            state.copy(
-                types = state.types.map { type ->
-                    if (type == oldType) {
-                        type.copy(selected = !type.selected, random = false)
-                    } else type
-                }
-            )
-        }
-
-        saveState(state.value)
-    }
-
-    private fun changeNations(oldNation: Nation) {
-        _state.update { state ->
-            state.copy(
-                nations = state.nations.map { nation ->
-                    if (nation == oldNation) {
-                        nation.copy(selected = !nation.selected, random = false)
-                    } else nation
-                }
-            )
-        }
-
-        saveState(state.value)
-    }
-
-    private fun changeLevels(oldLevel: Level) {
-        _state.update { state ->
-            state.copy(
-                levels = state.levels.map { level ->
-                    if (level == oldLevel) {
-                        level.copy(selected = !level.selected, random = false)
-                    } else level
-                }
-            )
-        }
-
-        saveState(state.value)
-    }
-
-    private fun changeExperiences(oldExperience: Experience) {
-        _state.update { state ->
-            state.copy(
-                experiences = state.experiences.map { experience ->
-                    if (experience == oldExperience) {
-                        experience.copy(selected = !experience.selected, random = false)
-                    } else experience
-                }
-            )
-        }
-
-        saveState(state.value)
-    }
-
     private fun generateFilter() {
-        val newState = generateFilterUseCase(state.value) ?: return
-
-        _state.update { newState }
+        _state.update { generateFilterUseCase(state.value) }
 
         saveState(state.value)
     }
 
     private fun generateNumber() {
         _state.update {
-            it.copy(generatedQuantity = BoxedInt(Random.nextInt(1, state.value.quantity + 1)))
+            it.copy(
+                generatedQuantity = BoxedInt(Random.nextInt(1, state.value.quantity + 1))
+            )
         }
     }
 
@@ -203,5 +96,31 @@ class MainViewModel(
         _state.update { it.copy(quantity = 1, generatedQuantity = BoxedInt(1)) }
 
         saveState(state.value)
+    }
+
+    private fun <T : ItemStatus<T>> MutableStateFlow<MainState>.changeItem(item: T) {
+        update { state ->
+            state.copy(
+                levels = state.levels.changeSelected(item),
+                experiences = state.experiences.changeSelected(item),
+                nations = state.nations.changeSelected(item),
+                pinned = state.pinned.changeSelected(item),
+                statuses = state.statuses.changeSelected(item),
+                tankTypes = state.tankTypes.changeSelected(item),
+                types = state.types.changeSelected(item),
+            )
+        }
+
+        saveState(state.value)
+    }
+
+    private fun <T : ItemStatus<T>> List<T>.changeSelected(
+        oldItem: Any
+    ): List<T> {
+        return map { item ->
+            if (item == oldItem) {
+                item.copy(selected = !item.selected, random = false)
+            } else item
+        }
     }
 }

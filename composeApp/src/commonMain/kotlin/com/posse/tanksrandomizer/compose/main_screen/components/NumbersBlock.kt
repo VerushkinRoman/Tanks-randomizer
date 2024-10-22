@@ -13,6 +13,7 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.material3.ButtonDefaults
@@ -22,11 +23,14 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ColorFilter
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.unit.dp
+import com.posse.tanksrandomizer.compose.util.invisibleModifier
 import com.posse.tanksrandomizer.presentation.model.MainEvent
 import com.posse.tanksrandomizer.presentation.model.MainState
 import com.posse.tanksrandomizer.utils.BoxedInt
 import org.jetbrains.compose.resources.painterResource
+import org.jetbrains.compose.resources.stringResource
 import tanks_randomizer.composeapp.generated.resources.Res
 import tanks_randomizer.composeapp.generated.resources.dice
 import tanks_randomizer.composeapp.generated.resources.trash
@@ -91,9 +95,10 @@ fun NumbersBlock(
         ) {
             Image(
                 painter = painterResource(Res.drawable.trash),
-                contentDescription = null,
+                contentDescription = stringResource(Res.string.trash),
+                contentScale = ContentScale.FillBounds,
                 modifier = Modifier
-                    .height(ButtonDefaults.MinHeight)
+                    .size(ButtonDefaults.MinHeight)
                     .clickable { onEvent(MainEvent.TrashNumberPressed) }
             )
 
@@ -106,10 +111,10 @@ fun NumbersBlock(
 
             Image(
                 painter = painterResource(Res.drawable.dice),
-                contentDescription = null,
+                contentDescription = stringResource(Res.string.dice),
                 colorFilter = ColorFilter.tint(Color.Gray),
                 modifier = Modifier
-                    .height(ButtonDefaults.MinHeight)
+                    .size(ButtonDefaults.MinHeight)
                     .background(Color.DarkGray.copy(alpha = 0.5f))
                     .clickable { onEvent(MainEvent.GenerateNumberPressed) }
                     .padding(4.dp)
@@ -162,7 +167,7 @@ private fun NumberItem(
     ) {
         Text(
             text = "999",
-            color = Color.Transparent,
+            modifier = invisibleModifier,
         )
 
         AnimatedContent(
@@ -191,6 +196,11 @@ private fun NumberButton(
             .clickable(onClick = onClick)
             .padding(horizontal = 4.dp),
     ) {
+        Text(
+            text = "+999",
+            modifier = invisibleModifier,
+        )
+
         Text(
             text = number,
             color = Color.Gray,

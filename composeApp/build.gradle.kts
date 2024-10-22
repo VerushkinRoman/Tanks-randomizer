@@ -73,8 +73,8 @@ android {
         targetSdk = 35
 
         applicationId = "com.posse.tanksrandomizer"
-        versionCode = 3
-        versionName = "1.0.2"
+        versionCode = 4
+        versionName = "1.1.0"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }

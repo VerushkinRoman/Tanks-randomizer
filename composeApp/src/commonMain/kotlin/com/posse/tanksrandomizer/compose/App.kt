@@ -20,7 +20,7 @@ import com.posse.tanksrandomizer.compose.theme.AppTheme
 internal fun App() = AppTheme {
     BoxWithConstraints {
         val elementSize: Dp = remember(maxWidth) {
-            val elementWidthByScreen = (maxWidth - (15 * 6).dp) / 14
+            val elementWidthByScreen = (maxWidth - (20 * 6).dp) / 12
             minOf(elementWidthByScreen, ButtonDefaults.MinHeight)
         }
 
