@@ -22,7 +22,7 @@ class GetState(
 
     private fun <T : ItemStatus<T>> List<T>.changeItems(newItems: List<T>): List<T> {
         return map { item ->
-            val newItem = newItems.find { it.sort == item.sort } ?: return@map item
+            val newItem = newItems.find { it::class == item::class } ?: return@map item
             item.copy(selected = newItem.selected, random = newItem.random)
         }
     }

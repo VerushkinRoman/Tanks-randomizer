@@ -9,7 +9,15 @@ import com.posse.tanksrandomizer.presentation.use_cases.GenerateFilter
 import com.posse.tanksrandomizer.presentation.use_cases.GetState
 import com.posse.tanksrandomizer.presentation.use_cases.SaveState
 import com.posse.tanksrandomizer.repository.SettingsRepository
+import com.posse.tanksrandomizer.repository.model.FilterObjects.Experience
 import com.posse.tanksrandomizer.repository.model.FilterObjects.ItemStatus
+import com.posse.tanksrandomizer.repository.model.FilterObjects.Level
+import com.posse.tanksrandomizer.repository.model.FilterObjects.Nation
+import com.posse.tanksrandomizer.repository.model.FilterObjects.Pinned
+import com.posse.tanksrandomizer.repository.model.FilterObjects.Status
+import com.posse.tanksrandomizer.repository.model.FilterObjects.SwitchItem
+import com.posse.tanksrandomizer.repository.model.FilterObjects.TankType
+import com.posse.tanksrandomizer.repository.model.FilterObjects.Type
 import com.posse.tanksrandomizer.utils.BoxedInt
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -83,8 +91,8 @@ class MainViewModel(
         } else {
             _state.update {
                 MainState(
-                    quantity = state.value.quantity,
-                    generatedQuantity = state.value.generatedQuantity
+                    quantity = it.quantity,
+                    generatedQuantity = it.generatedQuantity
                 )
             }
         }
@@ -101,13 +109,13 @@ class MainViewModel(
     private fun <T : ItemStatus<T>> MutableStateFlow<MainState>.changeItem(item: T) {
         update { state ->
             state.copy(
-                levels = state.levels.changeSelected(item),
-                experiences = state.experiences.changeSelected(item),
-                nations = state.nations.changeSelected(item),
-                pinned = state.pinned.changeSelected(item),
-                statuses = state.statuses.changeSelected(item),
-                tankTypes = state.tankTypes.changeSelected(item),
-                types = state.types.changeSelected(item),
+                levels = if (item is Level) state.levels.changeSelected(item) else state.levels,
+                experiences = if (item is Experience) state.experiences.changeSelected(item) else state.experiences,
+                nations = if (item is Nation) state.nations.changeSelected(item) else state.nations,
+                pinned = if (item is Pinned) state.pinned.changeSelected(item) else state.pinned,
+                statuses = if (item is Status) state.statuses.changeSelected(item) else state.statuses,
+                tankTypes = if (item is TankType) state.tankTypes.changeSelected(item) else state.tankTypes,
+                types = if (item is Type) state.types.changeSelected(item) else state.types,
             )
         }
 
@@ -117,10 +125,25 @@ class MainViewModel(
     private fun <T : ItemStatus<T>> List<T>.changeSelected(
         oldItem: Any
     ): List<T> {
-        return map { item ->
-            if (item == oldItem) {
-                item.copy(selected = !item.selected, random = false)
-            } else item
+        val changedItems = if (oldItem is SwitchItem) {
+            val allSelected = all { it.selected }
+            val anyRandom = any { it.random }
+            if (allSelected && !anyRandom) {
+                map { item -> item.copy(selected = false) }
+            } else {
+                map { item -> item.copy(selected = true) }
+            }
+        } else {
+            map { item ->
+                if (item == oldItem) item.copy(selected = !item.selected) else item
+            }
+        }
+
+        val switchItemSelected = changedItems.any { it.selected }
+
+        return changedItems.map { item ->
+            if (item is SwitchItem) item.copy(selected = switchItemSelected)
+            else item
         }
     }
 }

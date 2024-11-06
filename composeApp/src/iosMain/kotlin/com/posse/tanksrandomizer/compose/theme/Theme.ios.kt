@@ -1,5 +1,6 @@
 package com.posse.tanksrandomizer.compose.theme
 
+import androidx.compose.material3.ColorScheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import platform.UIKit.UIApplication
@@ -15,3 +16,9 @@ internal actual fun SystemAppearance(isDark: Boolean) {
         )
     }
 }
+
+@Composable
+internal actual fun dynamicColorScheme(
+    darkTheme: Boolean,
+    dynamicColor: Boolean
+): ColorScheme? = null

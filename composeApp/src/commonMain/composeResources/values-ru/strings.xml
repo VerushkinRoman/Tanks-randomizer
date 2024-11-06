@@ -40,4 +40,5 @@
 
     <string name="trash">Корзина</string>
     <string name="dice">Кубики</string>
+    <string name="check">Выделить</string>
 </resources>

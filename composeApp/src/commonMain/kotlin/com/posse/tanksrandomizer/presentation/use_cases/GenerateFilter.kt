@@ -1,6 +1,7 @@
 package com.posse.tanksrandomizer.presentation.use_cases
 
 import com.posse.tanksrandomizer.presentation.model.MainState
+import com.posse.tanksrandomizer.repository.model.FilterObjects.SwitchItem
 import com.posse.tanksrandomizer.repository.model.FilterObjects.ItemStatus
 
 class GenerateFilter {
@@ -18,7 +19,7 @@ class GenerateFilter {
 
     private fun <T : ItemStatus<T>> getItems(items: List<T>): List<T> {
         val randomItem = items
-            .filter { it.selected }
+            .filter { it.selected && it !is SwitchItem }
             .randomOrNull()
 
         return items.map { item ->
@@ -30,7 +31,6 @@ class GenerateFilter {
             } else {
                 item.copy(
                     selected = item.selected,
-                    random = false
                 )
             }
         }

@@ -16,7 +16,10 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.rememberScrollState
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.outlined.DeleteForever
 import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -44,8 +47,8 @@ fun NumbersBlock(
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
         modifier = modifier
-            .border(1.dp, color = Color.DarkGray)
-            .padding(6.dp),
+            .border(1.dp, color = MaterialTheme.colorScheme.surfaceContainerHigh)
+            .padding(6.dp)
     ) {
         Row(
             horizontalArrangement = Arrangement.spacedBy(6.dp, Alignment.CenterHorizontally),
@@ -94,12 +97,15 @@ fun NumbersBlock(
             verticalAlignment = Alignment.CenterVertically,
         ) {
             Image(
-                painter = painterResource(Res.drawable.trash),
+                imageVector = Icons.Outlined.DeleteForever,
                 contentDescription = stringResource(Res.string.trash),
+                colorFilter = ColorFilter.tint(MaterialTheme.colorScheme.onSurface),
                 contentScale = ContentScale.FillBounds,
                 modifier = Modifier
                     .size(ButtonDefaults.MinHeight)
+                    .background(MaterialTheme.colorScheme.surfaceContainerLow)
                     .clickable { onEvent(MainEvent.TrashNumberPressed) }
+                    .padding(4.dp)
             )
 
             NumberItem(
@@ -112,12 +118,12 @@ fun NumbersBlock(
             Image(
                 painter = painterResource(Res.drawable.dice),
                 contentDescription = stringResource(Res.string.dice),
-                colorFilter = ColorFilter.tint(Color.Gray),
+                colorFilter = ColorFilter.tint(MaterialTheme.colorScheme.onSurface),
                 modifier = Modifier
                     .size(ButtonDefaults.MinHeight)
-                    .background(Color.DarkGray.copy(alpha = 0.5f))
+                    .background(MaterialTheme.colorScheme.surfaceContainerLow)
                     .clickable { onEvent(MainEvent.GenerateNumberPressed) }
-                    .padding(4.dp)
+                    .padding(6.dp)
             )
         }
     }
@@ -133,8 +139,8 @@ private fun NumberItem(
         modifier = modifier
             .height(ButtonDefaults.MinHeight)
             .widthIn(min = ButtonDefaults.MinHeight)
-            .background(Color.DarkGray.copy(alpha = 0.5f))
-            .padding(horizontal = 4.dp),
+            .background(MaterialTheme.colorScheme.surfaceContainerLow)
+            .padding(horizontal = 4.dp)
     ) {
         Text(
             text = "999",
@@ -146,7 +152,7 @@ private fun NumberItem(
         ) {
             Text(
                 text = it.int.toString(),
-                color = Color.LightGray,
+                color = MaterialTheme.colorScheme.onSurface,
             )
         }
     }
@@ -162,12 +168,12 @@ private fun NumberItem(
         modifier = modifier
             .height(ButtonDefaults.MinHeight)
             .widthIn(min = ButtonDefaults.MinHeight)
-            .background(Color.DarkGray.copy(alpha = 0.5f))
-            .padding(horizontal = 4.dp),
+            .background(MaterialTheme.colorScheme.surfaceContainerLow)
+            .padding(horizontal = 4.dp)
     ) {
         Text(
             text = "999",
-            modifier = invisibleModifier,
+            modifier = invisibleModifier
         )
 
         AnimatedContent(
@@ -175,7 +181,7 @@ private fun NumberItem(
         ) {
             Text(
                 text = it.toString(),
-                color = Color.LightGray,
+                color = MaterialTheme.colorScheme.onSurface,
             )
         }
     }
@@ -192,18 +198,18 @@ private fun NumberButton(
         modifier = modifier
             .height(ButtonDefaults.MinHeight)
             .widthIn(min = ButtonDefaults.MinHeight)
-            .background(Color.DarkGray.copy(alpha = 0.5f))
+            .background(MaterialTheme.colorScheme.surfaceContainerLow)
             .clickable(onClick = onClick)
-            .padding(horizontal = 4.dp),
+            .padding(horizontal = 4.dp)
     ) {
         Text(
             text = "+999",
-            modifier = invisibleModifier,
+            modifier = invisibleModifier
         )
 
         Text(
             text = number,
-            color = Color.Gray,
+            color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.5f),
         )
     }
 }

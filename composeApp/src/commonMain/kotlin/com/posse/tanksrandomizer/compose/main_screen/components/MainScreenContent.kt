@@ -27,7 +27,7 @@ fun MainScreenContent(
         verticalArrangement = Arrangement.Center,
         modifier = modifier
             .verticalScroll(rememberScrollState())
-            .windowInsetsPadding(WindowInsets.safeDrawing),
+            .windowInsetsPadding(WindowInsets.safeDrawing)
     ) {
         FiltersBlock(
             viewState = viewState,
