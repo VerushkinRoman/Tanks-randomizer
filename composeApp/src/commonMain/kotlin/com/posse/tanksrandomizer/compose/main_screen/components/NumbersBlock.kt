@@ -30,7 +30,7 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.unit.dp
 import com.posse.tanksrandomizer.compose.util.invisibleModifier
 import com.posse.tanksrandomizer.presentation.model.MainEvent
-import com.posse.tanksrandomizer.presentation.model.MainState
+import com.posse.tanksrandomizer.presentation.model.Numbers
 import com.posse.tanksrandomizer.utils.BoxedInt
 import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.resources.stringResource
@@ -40,14 +40,14 @@ import tanks_randomizer.composeapp.generated.resources.trash
 
 @Composable
 fun NumbersBlock(
-    viewState: MainState,
+    numbers: Numbers,
     onEvent: (MainEvent) -> Unit,
-    modifier: Modifier = Modifier,
+    modifier: Modifier = Modifier
 ) {
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
         modifier = modifier
-            .border(1.dp, color = MaterialTheme.colorScheme.surfaceContainerHigh)
+            .border(1.dp, color = MaterialTheme.colorScheme.surfaceContainerLow)
             .padding(6.dp)
     ) {
         Row(
@@ -70,7 +70,7 @@ fun NumbersBlock(
             )
 
             NumberItem(
-                number = viewState.quantity,
+                number = numbers.quantity,
                 modifier = Modifier.padding(horizontal = 6.dp)
             )
 
@@ -109,7 +109,7 @@ fun NumbersBlock(
             )
 
             NumberItem(
-                boxedInt = viewState.generatedQuantity,
+                boxedInt = numbers.generatedQuantity,
                 modifier = Modifier
                     .padding(horizontal = 6.dp)
                     .border(1.dp, color = Color.Green)

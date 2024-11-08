@@ -6,19 +6,18 @@ import androidx.compose.ui.Modifier
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.posse.tanksrandomizer.compose.main_screen.components.MainScreenContent
-import com.posse.tanksrandomizer.data_source.DataSourceMultiplatformSettings
 import com.posse.tanksrandomizer.presentation.MainViewModel
-import com.posse.tanksrandomizer.repository.SettingsRepositoryImpl
+import com.posse.tanksrandomizer.presentation.model.Rotation
 
 @Composable
 fun MainScreen(
     modifier: Modifier = Modifier
 ) {
-    val viewModel = viewModel {
-        MainViewModel(SettingsRepositoryImpl(DataSourceMultiplatformSettings()))
-    }
+    val viewModel = viewModel { MainViewModel() }
 
     val state by viewModel.state.collectAsStateWithLifecycle()
+
+    RotateDevice(state.rotation)
 
     MainScreenContent(
         viewState = state,
@@ -26,3 +25,6 @@ fun MainScreen(
         modifier = modifier
     )
 }
+
+@Composable
+expect fun RotateDevice(rotation: Rotation)

@@ -135,7 +135,7 @@ object FilterObjects {
                 Level9(),
                 Level10(),
                 LevelSwitch(),
-            ).sortedBy { it.selected }
+            ).sortedBy { it.sort }
         }
     }
 
@@ -186,7 +186,7 @@ object FilterObjects {
                 BDay(),
                 X5(),
                 ExperienceSwitch(),
-            ).sortedBy { it.selected }
+            ).sortedBy { it.sort }
         }
     }
 
@@ -303,7 +303,7 @@ object FilterObjects {
                 Europe(),
                 Unknown(),
                 NationSwitch(),
-            ).sortedBy { it.selected }
+            ).sortedBy { it.sort }
         }
     }
 
@@ -318,10 +318,21 @@ object FilterObjects {
                 copy(selected = selected, random = random, sort = sort)
         }
 
+        data class PinnedSwitch(
+            override val name: String = "PinnedSwitch",
+            override val sort: Int = Int.MAX_VALUE,
+            override val selected: Boolean = true,
+            override val random: Boolean = false,
+        ) : Pinned, SwitchItem {
+            override fun copy(selected: Boolean, random: Boolean) =
+                copy(selected = selected, random = random, sort = sort)
+        }
+
         companion object {
             val defaultValues = listOf(
                 Status(),
-            ).sortedBy { it.selected }
+                PinnedSwitch(),
+            ).sortedBy { it.sort }
         }
     }
 
@@ -361,7 +372,7 @@ object FilterObjects {
                 NotElite(),
                 Elite(),
                 StatusSwitch(),
-            ).sortedBy { it.selected }
+            ).sortedBy { it.sort }
         }
     }
 
@@ -412,7 +423,7 @@ object FilterObjects {
                 Premium(),
                 Collection(),
                 TankTypeSwitch(),
-            ).sortedBy { it.selected }
+            ).sortedBy { it.sort }
         }
     }
 
@@ -474,7 +485,7 @@ object FilterObjects {
                 Heavy(),
                 TankDestroyer(),
                 TypeSwitch(),
-            ).sortedBy { it.selected }
+            ).sortedBy { it.sort }
         }
     }
 }

@@ -41,4 +41,9 @@
     <string name="trash">Trash</string>
     <string name="dice">Dice</string>
     <string name="check">Check</string>
+
+    <string name="auto_rotate">Auto rotate</string>
+    <string name="lock_rotation">Lock rotation</string>
+    <string name="rotate_landscape">Rotate to landscape</string>
+    <string name="rotate_portrait">Rotate portrait</string>
 </resources>

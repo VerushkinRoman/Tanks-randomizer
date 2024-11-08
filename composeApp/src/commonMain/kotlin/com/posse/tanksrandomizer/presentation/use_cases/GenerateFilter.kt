@@ -1,19 +1,23 @@
 package com.posse.tanksrandomizer.presentation.use_cases
 
-import com.posse.tanksrandomizer.presentation.model.MainState
-import com.posse.tanksrandomizer.repository.model.FilterObjects.SwitchItem
+import com.posse.tanksrandomizer.presentation.model.Filters
 import com.posse.tanksrandomizer.repository.model.FilterObjects.ItemStatus
+import com.posse.tanksrandomizer.repository.model.FilterObjects.SwitchItem
+import com.posse.tanksrandomizer.utils.Dispatchers
+import kotlinx.coroutines.withContext
 
-class GenerateFilter {
-    operator fun invoke(state: MainState): MainState {
-        return state.copy(
-            levels = getItems(state.levels),
-            experiences = getItems(state.experiences),
-            nations = getItems(state.nations),
-            pinned = getItems(state.pinned),
-            statuses = getItems(state.statuses),
-            tankTypes = getItems(state.tankTypes),
-            types = getItems(state.types),
+class GenerateFilter(
+    private val dispatchers: Dispatchers,
+) {
+    suspend operator fun invoke(filters: Filters): Filters = withContext(dispatchers.io) {
+        filters.copy(
+            levels = getItems(filters.levels),
+            experiences = getItems(filters.experiences),
+            nations = getItems(filters.nations),
+            pinned = getItems(filters.pinned),
+            statuses = getItems(filters.statuses),
+            tankTypes = getItems(filters.tankTypes),
+            types = getItems(filters.types),
         )
     }
 

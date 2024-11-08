@@ -15,6 +15,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.posse.tanksrandomizer.presentation.model.MainEvent
 import com.posse.tanksrandomizer.presentation.model.MainState
+import com.posse.tanksrandomizer.utils.DeviceClass
+import com.posse.tanksrandomizer.utils.deviceClass
 
 @Composable
 fun MainScreenContent(
@@ -30,15 +32,24 @@ fun MainScreenContent(
             .windowInsetsPadding(WindowInsets.safeDrawing)
     ) {
         FiltersBlock(
-            viewState = viewState,
+            filters = viewState.filters,
             onEvent = onEvent,
         )
 
         Spacer(Modifier.height(12.dp))
 
         NumbersBlock(
-            viewState = viewState,
+            numbers = viewState.numbers,
             onEvent = onEvent,
         )
+
+        if (deviceClass == DeviceClass.Phone) {
+            Spacer(Modifier.height(12.dp))
+
+            RotationBlock(
+                rotation = viewState.rotation,
+                onEvent = onEvent
+            )
+        }
     }
 }

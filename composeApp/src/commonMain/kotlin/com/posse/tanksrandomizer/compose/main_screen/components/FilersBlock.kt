@@ -20,7 +20,9 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.DeleteForever
 import androidx.compose.material.icons.rounded.DoneAll
@@ -34,15 +36,17 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.unit.coerceAtLeast
 import androidx.compose.ui.unit.dp
-import com.posse.tanksrandomizer.compose.ElementSize
+import com.posse.tanksrandomizer.compose.util.ElementSize
 import com.posse.tanksrandomizer.compose.util.getFilterImage
 import com.posse.tanksrandomizer.compose.util.getFilterName
+import com.posse.tanksrandomizer.presentation.model.Filters
 import com.posse.tanksrandomizer.presentation.model.MainEvent
-import com.posse.tanksrandomizer.presentation.model.MainState
 import com.posse.tanksrandomizer.repository.model.FilterObjects.Experience
 import com.posse.tanksrandomizer.repository.model.FilterObjects.ItemStatus
 import com.posse.tanksrandomizer.repository.model.FilterObjects.Level
@@ -60,37 +64,32 @@ import tanks_randomizer.composeapp.generated.resources.trash
 
 @Composable
 fun FiltersBlock(
-    viewState: MainState,
+    filters: Filters,
     onEvent: (MainEvent) -> Unit,
     modifier: Modifier = Modifier
 ) {
     val diceClicked = remember { mutableStateOf(false) }
 
-    val allDisabled by remember(viewState) {
+    val allDisabled by remember(filters) {
         mutableStateOf(
-            viewState.levels.all { !it.selected }
-                    && viewState.types.all { !it.selected }
-                    && viewState.pinned.all { !it.selected }
-                    && viewState.nations.all { !it.selected }
-                    && viewState.statuses.all { !it.selected }
-                    && viewState.experiences.all { !it.selected }
-                    && viewState.tankTypes.all { !it.selected }
+            filters.levels.all { !it.selected }
+                    && filters.types.all { !it.selected }
+                    && filters.pinned.all { !it.selected }
+                    && filters.nations.all { !it.selected }
+                    && filters.statuses.all { !it.selected }
+                    && filters.experiences.all { !it.selected }
+                    && filters.tankTypes.all { !it.selected }
         )
     }
-
-    val borderColor by animateColorAsState(
-        targetValue = if (allDisabled) MaterialTheme.colorScheme.surfaceContainerLowest
-        else MaterialTheme.colorScheme.surfaceContainerHigh
-    )
 
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
         modifier = modifier
-            .border(1.dp, color = borderColor)
+            .border(1.dp, color = MaterialTheme.colorScheme.surfaceContainerLow)
             .padding(6.dp)
     ) {
         Filters(
-            viewState = viewState,
+            filters = filters,
             onEvent = onEvent,
             diceClicked = diceClicked,
         )
@@ -108,7 +107,7 @@ fun FiltersBlock(
 @OptIn(ExperimentalLayoutApi::class)
 @Composable
 private fun Filters(
-    viewState: MainState,
+    filters: Filters,
     onEvent: (MainEvent) -> Unit,
     diceClicked: MutableState<Boolean>,
     modifier: Modifier = Modifier
@@ -119,43 +118,43 @@ private fun Filters(
         modifier = modifier
     ) {
         FilterItemsRow(
-            items = viewState.levels,
+            items = filters.levels,
             onItemClick = { onEvent(MainEvent.LevelPressed(it as Level)) },
             diceClicked = diceClicked,
         )
 
         FilterItemsRow(
-            items = viewState.types,
+            items = filters.types,
             onItemClick = { onEvent(MainEvent.TypePressed(it as Type)) },
             diceClicked = diceClicked,
         )
 
         FilterItemsRow(
-            items = viewState.experiences,
+            items = filters.experiences,
             onItemClick = { onEvent(MainEvent.ExperiencePressed(it as Experience)) },
             diceClicked = diceClicked,
         )
 
         FilterItemsRow(
-            items = viewState.pinned,
+            items = filters.pinned,
             onItemClick = { onEvent(MainEvent.PinnedPressed(it as Pinned)) },
             diceClicked = diceClicked,
         )
 
         FilterItemsRow(
-            items = viewState.statuses,
+            items = filters.statuses,
             onItemClick = { onEvent(MainEvent.StatusPressed(it as Status)) },
             diceClicked = diceClicked,
         )
 
         FilterItemsRow(
-            items = viewState.tankTypes,
+            items = filters.tankTypes,
             onItemClick = { onEvent(MainEvent.TankTypePressed(it as TankType)) },
             diceClicked = diceClicked,
         )
 
         FilterItemsRow(
-            items = viewState.nations,
+            items = filters.nations,
             onItemClick = { onEvent(MainEvent.NationPressed(it as Nation)) },
             diceClicked = diceClicked,
         )
@@ -241,23 +240,16 @@ private fun <T : ItemStatus<T>> FilterItemsRow(
     modifier: Modifier = Modifier
 ) {
     val switchItem = remember(items) { items.find { it is SwitchItem } }
-    val mainItems = remember(items) { items.filter { it !is SwitchItem } }
 
-    val allDisabled by remember(mainItems) { mutableStateOf(mainItems.all { !it.selected }) }
-
-    val borderColor by animateColorAsState(
-        targetValue = if (allDisabled) MaterialTheme.colorScheme.surfaceContainerLowest
-        else MaterialTheme.colorScheme.surfaceContainerHigh
-    )
-
-    Row(
-        modifier.height(IntrinsicSize.Min)
+    Column(
+        horizontalAlignment = Alignment.CenterHorizontally,
+        modifier = modifier.width(IntrinsicSize.Min)
     ) {
         Row(
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.spacedBy(6.dp, Alignment.CenterHorizontally),
-            modifier = modifier
-                .border(1.dp, color = borderColor)
+            modifier = Modifier
+                .border(1.dp, color = MaterialTheme.colorScheme.surfaceContainerLow)
                 .padding(6.dp)
                 .horizontalScroll(rememberScrollState())
         ) {
@@ -278,8 +270,8 @@ private fun <T : ItemStatus<T>> FilterItemsRow(
             (itemStatus as? ItemStatus<SwitchItem>)?.let { item ->
                 SwitchButton(
                     item = item,
-                    allDisabled = allDisabled,
                     onItemClick = { onItemClick(itemStatus) },
+                    modifier = Modifier.width(ElementSize.current + 14.dp)
                 )
             }
         }
@@ -337,26 +329,17 @@ private fun <T> FilterButton(
 @Composable
 private fun SwitchButton(
     item: ItemStatus<SwitchItem>,
-    allDisabled: Boolean,
     onItemClick: () -> Unit,
     modifier: Modifier = Modifier
 ) {
-    val backgroundColor by animateColorAsState(
-        targetValue = if (allDisabled) MaterialTheme.colorScheme.surfaceContainerLowest
-        else MaterialTheme.colorScheme.surfaceContainerHigh
-    )
-
-    val alpha by animateFloatAsState(
-        targetValue = if (allDisabled) 0.3f else 1f,
-    )
-
     Box(
         contentAlignment = Alignment.Center,
         modifier = modifier
-            .size(ElementSize.current + 14.dp)
-            .background(backgroundColor)
+            .height((ElementSize.current / 3).coerceAtLeast(ButtonDefaults.MinHeight / 3))
+            .clip(RoundedCornerShape(0, 0, 50, 50))
+            .background(MaterialTheme.colorScheme.surfaceContainerLow)
             .clickable(onClick = onItemClick)
-            .alpha(alpha)
+            .alpha(0.3f)
     ) {
         AnimatedContent(
             targetState = item
@@ -366,8 +349,7 @@ private fun SwitchButton(
                 contentDescription = getFilterName(it),
                 colorFilter = ColorFilter.tint(MaterialTheme.colorScheme.onSurface),
                 modifier = modifier
-                    .size(ButtonDefaults.MinHeight)
-                    .padding(4.dp)
+                    .padding(2.dp)
             )
         }
     }

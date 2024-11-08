@@ -55,13 +55,14 @@ kotlin {
         androidMain.dependencies {
             implementation(libs.androidx.activityCompose)
             implementation(libs.kotlinx.coroutines.android)
+            implementation(libs.androidx.splashscreen)
+            implementation(libs.android.material.theme)
         }
 
         jvmMain.dependencies {
             implementation(compose.desktop.currentOs)
             implementation(libs.kotlinx.coroutines.swing)
         }
-
     }
 }
 
@@ -74,8 +75,8 @@ android {
         targetSdk = 35
 
         applicationId = "com.posse.tanksrandomizer"
-        versionCode = 5
-        versionName = "1.2.0"
+        versionCode = 6
+        versionName = "1.3.0"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
@@ -178,7 +179,7 @@ compose.desktop {
         nativeDistributions {
             targetFormats(TargetFormat.Dmg, TargetFormat.Msi, TargetFormat.Deb)
             packageName = "Random Tank Generator"
-            packageVersion = "1.2.0"
+            packageVersion = "1.3.0"
 
             linux {
                 iconFile.set(project.file("desktopAppIcons/LinuxIcon.png"))

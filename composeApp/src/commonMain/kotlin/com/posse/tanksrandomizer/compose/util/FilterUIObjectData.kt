@@ -1,8 +1,8 @@
 package com.posse.tanksrandomizer.compose.util
 
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.outlined.DeleteForever
 import androidx.compose.material.icons.rounded.Check
+import androidx.compose.material.icons.rounded.Close
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.graphics.vector.ImageVector
@@ -213,7 +213,7 @@ enum class FilterUIObjectSwitchData(
     val disabledStringResource: StringResource,
 ) {
     Switch(
-        enabledDrawableResource = Icons.Outlined.DeleteForever,
+        enabledDrawableResource = Icons.Rounded.Close,
         disabledDrawableResource = Icons.Rounded.Check,
         enabledStringResource = Res.string.trash,
         disabledStringResource = Res.string.check,
@@ -275,6 +275,10 @@ fun <T> getFilterImage(item: ItemStatus<T>): Painter {
         is Pinned -> {
             when (item) {
                 is Pinned.Status -> painterResource(FilterUIObjectData.Pinned.drawableResource)
+                is Pinned.PinnedSwitch -> rememberVectorPainter(
+                    if (item.selected) FilterUIObjectSwitchData.Switch.enabledDrawableResource
+                    else FilterUIObjectSwitchData.Switch.disabledDrawableResource
+                )
             }
         }
 
@@ -374,6 +378,10 @@ fun <T> getFilterName(item: ItemStatus<T>): String {
         is Pinned -> {
             when (item) {
                 is Pinned.Status -> stringResource(FilterUIObjectData.Pinned.stringResource)
+                is Pinned.PinnedSwitch -> stringResource(
+                    if (item.selected) FilterUIObjectSwitchData.Switch.enabledStringResource
+                    else FilterUIObjectSwitchData.Switch.disabledStringResource
+                )
             }
         }
 

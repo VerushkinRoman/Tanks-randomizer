@@ -13,13 +13,13 @@ import java.awt.Dimension
 fun main() = application {
     Window(
         title = "Random Tank Generator",
-        state = rememberWindowState(width = 730.dp, height = 500.dp),
+        state = rememberWindowState(width = 600.dp, height = 550.dp),
         onCloseRequest = ::exitApplication,
         icon = painterResource(Res.drawable.app_icon)
     ) {
         window.minimumSize = Dimension(
-            with(LocalDensity.current) { (ButtonDefaults.MinHeight * 15).toPx().toInt() },
-            500
+            with(LocalDensity.current) { (ButtonDefaults.MinHeight * 16).toPx().toInt() },
+            550
         )
         App()
     }

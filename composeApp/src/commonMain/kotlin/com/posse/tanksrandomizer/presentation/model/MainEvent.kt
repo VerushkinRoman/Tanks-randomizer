@@ -26,4 +26,8 @@ sealed interface MainEvent {
     data object GenerateFilterPressed : MainEvent
     data object GenerateNumberPressed : MainEvent
     data object TrashNumberPressed : MainEvent
+    data object AutoRotatePressed : MainEvent
+    data object LockRotatePressed : MainEvent
+    data object LandscapeRotatePressed : MainEvent
+    data object PortraitRotatePressed : MainEvent
 }

@@ -1,6 +1,7 @@
 package com.posse.tanksrandomizer.repository
 
 import com.posse.tanksrandomizer.data_source.DataSource
+import com.posse.tanksrandomizer.data_source.DataSourceMultiplatformSettings
 import com.posse.tanksrandomizer.repository.model.FilterObjects.Experience
 import com.posse.tanksrandomizer.repository.model.FilterObjects.Level
 import com.posse.tanksrandomizer.repository.model.FilterObjects.Nation
@@ -8,39 +9,53 @@ import com.posse.tanksrandomizer.repository.model.FilterObjects.Pinned
 import com.posse.tanksrandomizer.repository.model.FilterObjects.Status
 import com.posse.tanksrandomizer.repository.model.FilterObjects.TankType
 import com.posse.tanksrandomizer.repository.model.FilterObjects.Type
+import com.posse.tanksrandomizer.utils.RotateDirection
+import kotlinx.coroutines.InternalCoroutinesApi
+import kotlinx.coroutines.internal.SynchronizedObject
+import kotlinx.coroutines.internal.synchronized
+import kotlin.concurrent.Volatile
 
-class SettingsRepositoryImpl(
-    private val dataSource: DataSource
+class SettingsRepositoryImpl private constructor(
+    private val dataSource: DataSource = DataSourceMultiplatformSettings.getInstance()
 ) : SettingsRepository {
-    override var levels: List<Level>
-        get() = dataSource.getProperties(Level.defaultValues)
-        set(value) = dataSource.setProperties(value)
+    override suspend fun getLevels(): List<Level> = dataSource.getProperties(Level.defaultValues)
+    override suspend fun setLevels(levels: List<Level>) = dataSource.setProperties(levels)
 
-    override var experiences: List<Experience>
-        get() = dataSource.getProperties(Experience.defaultValues)
-        set(value) = dataSource.setProperties(value)
+    override suspend fun getExperiences(): List<Experience> = dataSource.getProperties(Experience.defaultValues)
+    override suspend fun setExperiences(experiences: List<Experience>) = dataSource.setProperties(experiences)
 
-    override var nations: List<Nation>
-        get() = dataSource.getProperties(Nation.defaultValues)
-        set(value) = dataSource.setProperties(value)
+    override suspend fun getNations(): List<Nation> = dataSource.getProperties(Nation.defaultValues)
+    override suspend fun setNations(nations: List<Nation>) = dataSource.setProperties(nations)
 
-    override var pinned: List<Pinned>
-        get() = dataSource.getProperties(Pinned.defaultValues)
-        set(value) = dataSource.setProperties(value)
+    override suspend fun getPinned(): List<Pinned> = dataSource.getProperties(Pinned.defaultValues)
+    override suspend fun setPinned(pinned: List<Pinned>) = dataSource.setProperties(pinned)
 
-    override var statuses: List<Status>
-        get() = dataSource.getProperties(Status.defaultValues)
-        set(value) = dataSource.setProperties(value)
+    override suspend fun getStatuses(): List<Status> = dataSource.getProperties(Status.defaultValues)
+    override suspend fun setStatuses(statuses: List<Status>) = dataSource.setProperties(statuses)
 
-    override var tankTypes: List<TankType>
-        get() = dataSource.getProperties(TankType.defaultValues)
-        set(value) = dataSource.setProperties(value)
+    override suspend fun getTankTypes(): List<TankType> = dataSource.getProperties(TankType.defaultValues)
+    override suspend fun setTankTypes(tankTypes: List<TankType>) = dataSource.setProperties(tankTypes)
 
-    override var types: List<Type>
-        get() = dataSource.getProperties(Type.defaultValues)
-        set(value) = dataSource.setProperties(value)
+    override suspend fun getTypes(): List<Type> = dataSource.getProperties(Type.defaultValues)
+    override suspend fun setTypes(types: List<Type>) = dataSource.setProperties(types)
 
-    override var quantity: Int
-        get() = dataSource.getQuantity()
-        set(value) = dataSource.setQuantity(value)
+    override suspend fun getQuantity(): Int = dataSource.getQuantity()
+    override suspend fun setQuantity(quantity: Int) = dataSource.setQuantity(quantity)
+
+    override suspend fun getAutorotate(): Boolean = dataSource.getAutorotate()
+    override suspend fun setAutorotate(autoRotate: Boolean) = dataSource.setAutorotate(autoRotate)
+
+    override suspend fun getRotation(): RotateDirection {
+        return RotateDirection.entries.find { it.value == dataSource.getRotation() } ?: RotateDirection.default
+    }
+    override suspend fun setRotation(rotateDirection: RotateDirection) = dataSource.setRotation(rotateDirection.value)
+
+    @OptIn(InternalCoroutinesApi::class)
+    companion object : SynchronizedObject() {
+        @Volatile
+        private var instance: SettingsRepository? = null
+        fun getInstance() = instance ?: synchronized(this) {
+            instance ?: SettingsRepositoryImpl().also { instance = it }
+        }
+    }
 }
