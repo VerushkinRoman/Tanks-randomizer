@@ -4,7 +4,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Window
 import androidx.compose.ui.window.application
 import androidx.compose.ui.window.rememberWindowState
-import com.posse.tanksrandomizer.compose.App
+import com.posse.tanksrandomizer.ComposeApp
 import org.jetbrains.compose.resources.painterResource
 import tanks_randomizer.composeapp.generated.resources.Res
 import tanks_randomizer.composeapp.generated.resources.app_icon
@@ -21,6 +21,6 @@ fun main() = application {
             with(LocalDensity.current) { (ButtonDefaults.MinHeight * 16).toPx().toInt() },
             550
         )
-        App()
+        ComposeApp()
     }
 }

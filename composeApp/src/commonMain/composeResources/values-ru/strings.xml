@@ -46,4 +46,12 @@
     <string name="lock_rotation">Блокировка поворота</string>
     <string name="rotate_landscape">Повернуть в ландшафтный режим</string>
     <string name="rotate_portrait">Повернуть в портретный режим</string>
+
+    <string name="settings">Настройки</string>
+
+    <string name="press_back_again_to_exit">Нажмите "НАЗАД" еще раз для выхода!</string>
+
+    <string name="overlay_settings">Настройки режима поверх окон</string>
+    <string name="overlay_mode">Режим поверх окон</string>
+    <string name="fullscreen_mode">Полноэкранный режим</string>
 </resources>

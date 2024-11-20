@@ -1,16 +1,17 @@
 [versions]
 
-kotlin = "2.1.0-Beta2"
+kotlin = "2.1.0-RC2"
 compose = "1.7.0"
-agp = "8.6.1"
+agp = "8.7.2"
 androidx-activityCompose = "1.9.3"
 androidx-splashscreen = "1.0.1"
 android-material = "1.12.0"
 kotlinx-coroutines = "1.9.0"
-androidx-lifecycle = "2.8.3"
+androidx-lifecycle = "2.8.4"
 androidx-navigation = "2.8.0-alpha10"
 kotlinx-serialization = "1.7.3"
 multiplatformSettings = "1.2.0"
+kodein = "7.22.0"
 
 [libraries]
 
@@ -25,6 +26,7 @@ androidx-lifecycle-runtime-compose = { module = "org.jetbrains.androidx.lifecycl
 androidx-navigation-composee = { module = "org.jetbrains.androidx.navigation:navigation-compose", version.ref = "androidx-navigation" }
 kotlinx-serialization-json = { module = "org.jetbrains.kotlinx:kotlinx-serialization-json", version.ref = "kotlinx-serialization" }
 multiplatformSettings = { module = "com.russhwolf:multiplatform-settings-no-arg", version.ref = "multiplatformSettings" }
+kodein = { module = "org.kodein.di:kodein-di", version.ref = "kodein" }
 
 [plugins]
 

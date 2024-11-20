@@ -1,5 +1,5 @@
 import androidx.compose.ui.window.ComposeUIViewController
-import com.posse.tanksrandomizer.compose.App
+import com.posse.tanksrandomizer.ComposeApp
 import platform.UIKit.UIViewController
 
-fun MainViewController(): UIViewController = ComposeUIViewController { App() }
+fun MainViewController(): UIViewController = ComposeUIViewController { ComposeApp() }

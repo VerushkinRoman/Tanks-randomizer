@@ -32,7 +32,8 @@ kotlin {
             listOf(
                 "-Xno-call-assertions",
                 "-Xno-receiver-assertions",
-                "-Xno-param-assertions"
+                "-Xno-param-assertions",
+                "-Xexpect-actual-classes",
             )
         )
     }
@@ -50,6 +51,7 @@ kotlin {
             implementation(libs.androidx.navigation.composee)
             implementation(libs.kotlinx.serialization.json)
             implementation(libs.multiplatformSettings)
+            implementation(libs.kodein)
         }
 
         androidMain.dependencies {
@@ -71,7 +73,7 @@ android {
     compileSdk = 35
 
     defaultConfig {
-        minSdk = 21
+        minSdk = 23
         targetSdk = 35
 
         applicationId = "com.posse.tanksrandomizer"
