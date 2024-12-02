@@ -12,4 +12,4 @@ val invisibleModifier = Modifier.layout { measurable, constraints ->
     }
 }
 
-val ElementSize = staticCompositionLocalOf<Dp> { error("no default implementation") }
+val LocalElementSize = staticCompositionLocalOf<Dp> { error("no default implementation") }

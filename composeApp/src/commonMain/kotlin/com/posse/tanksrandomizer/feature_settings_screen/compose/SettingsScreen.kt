@@ -16,7 +16,6 @@ import com.posse.tanksrandomizer.feature_settings_screen.presentation.model.Sett
 
 @Composable
 fun SettingsScreen(
-    navigateBack: () -> Unit,
     modifier: Modifier = Modifier
 ) {
     val viewModel = viewModel { SettingsViewModel() }
@@ -26,7 +25,6 @@ fun SettingsScreen(
 
     LaunchedEffect(action) {
         when (action) {
-            SettingsAction.NavigateBack -> navigateBack()
             SettingsAction.GoToAppSettings -> getOverlayPermission(Inject.instance())
             else -> Unit
         }

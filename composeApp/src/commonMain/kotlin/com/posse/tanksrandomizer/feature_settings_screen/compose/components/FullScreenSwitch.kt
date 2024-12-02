@@ -5,12 +5,11 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.IntrinsicSize
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.width
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.CloseFullscreen
-import androidx.compose.material.icons.rounded.Fullscreen
+import androidx.compose.material.icons.rounded.OpenInFull
 import androidx.compose.material.icons.rounded.Tune
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
@@ -66,7 +65,6 @@ fun FullScreenSwitch(
                     imageVector = Icons.Rounded.CloseFullscreen,
                     contentDescription = stringResource(Res.string.overlay_mode),
                     colorFilter = ColorFilter.tint(MaterialTheme.colorScheme.onSurface),
-                    modifier = Modifier.fillMaxHeight()
                 )
 
                 Spacer(modifier = Modifier.width(12.dp))
@@ -80,11 +78,9 @@ fun FullScreenSwitch(
                 Spacer(modifier = Modifier.width(6.dp))
 
                 Image(
-                    imageVector = Icons.Rounded.Fullscreen,
+                    imageVector = Icons.Rounded.OpenInFull,
                     contentDescription = stringResource(Res.string.fullscreen_mode),
                     colorFilter = ColorFilter.tint(MaterialTheme.colorScheme.onSurface),
-                    contentScale = ContentScale.FillHeight,
-                    modifier = Modifier.fillMaxHeight()
                 )
             }
 

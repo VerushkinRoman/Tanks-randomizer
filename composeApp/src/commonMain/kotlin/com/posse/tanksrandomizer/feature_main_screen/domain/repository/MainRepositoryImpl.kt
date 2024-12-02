@@ -1,6 +1,5 @@
 package com.posse.tanksrandomizer.feature_main_screen.domain.repository
 
-import com.posse.tanksrandomizer.common.core.di.Inject
 import com.posse.tanksrandomizer.common.data.DataSource
 import com.posse.tanksrandomizer.common.domain.model.FilterObjects.Experience
 import com.posse.tanksrandomizer.common.domain.model.FilterObjects.Level
@@ -11,7 +10,7 @@ import com.posse.tanksrandomizer.common.domain.model.FilterObjects.TankType
 import com.posse.tanksrandomizer.common.domain.model.FilterObjects.Type
 
 class MainRepositoryImpl(
-    private val dataSource: DataSource = Inject.instance()
+    private val dataSource: DataSource
 ) : MainRepository {
     override fun getLevels(): List<Level> = dataSource.getProperties(Level.defaultValues)
     override fun setLevels(levels: List<Level>) = dataSource.setProperties(levels)

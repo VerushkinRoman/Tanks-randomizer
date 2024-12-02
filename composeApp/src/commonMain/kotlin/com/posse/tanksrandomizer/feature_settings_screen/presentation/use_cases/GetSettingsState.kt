@@ -5,7 +5,7 @@ import com.posse.tanksrandomizer.common.presentation.model.Rotation
 import com.posse.tanksrandomizer.feature_settings_screen.presentation.model.SettingsState
 
 class GetSettingsState(
-    private val repository: SettingsRepository
+    private val repository: SettingsRepository,
 ) {
     operator fun invoke(): SettingsState {
         return SettingsState(

@@ -1,11 +1,10 @@
 package com.posse.tanksrandomizer.common.domain.repository
 
 import com.posse.tanksrandomizer.common.compose.utils.RotateDirection
-import com.posse.tanksrandomizer.common.core.di.Inject
 import com.posse.tanksrandomizer.common.data.DataSource
 
 class SettingsRepositoryImpl(
-    private val dataSource: DataSource = Inject.instance()
+    private val dataSource: DataSource
 ) : SettingsRepository {
     override fun getAutorotate(): Boolean = dataSource.getAutorotate()
     override fun setAutorotate(autoRotate: Boolean) = dataSource.setAutorotate(autoRotate)

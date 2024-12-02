@@ -53,7 +53,7 @@ import com.posse.tanksrandomizer.common.domain.model.FilterObjects.Status
 import com.posse.tanksrandomizer.common.domain.model.FilterObjects.SwitchItem
 import com.posse.tanksrandomizer.common.domain.model.FilterObjects.TankType
 import com.posse.tanksrandomizer.common.domain.model.FilterObjects.Type
-import com.posse.tanksrandomizer.common.compose.utils.ElementSize
+import com.posse.tanksrandomizer.common.compose.utils.LocalElementSize
 import com.posse.tanksrandomizer.feature_main_screen.compose.util.getFilterImage
 import com.posse.tanksrandomizer.feature_main_screen.compose.util.getFilterName
 import com.posse.tanksrandomizer.feature_main_screen.presentation.model.Filters
@@ -242,7 +242,7 @@ private fun <T : ItemStatus<T>> FilterItemsRow(
     modifier: Modifier = Modifier
 ) {
     val switchItem = remember(items) { items.find { it is SwitchItem } }
-    val elementSize = ElementSize.current
+    val elementSize = LocalElementSize.current
     val density = LocalDensity.current
     var switchItemWidth by remember(elementSize, density) { mutableStateOf(elementSize) }
 
@@ -326,7 +326,7 @@ private fun <T> FilterButton(
         contentDescription = getFilterName(item),
         colorFilter = if (useColorFilter) ColorFilter.tint(MaterialTheme.colorScheme.onSurface) else null,
         modifier = modifier
-            .height(ElementSize.current + 2.dp)
+            .height(LocalElementSize.current + 2.dp)
             .background(background)
             .clickable(onClick = onItemClick)
             .border(1.dp, color = border)
@@ -344,7 +344,7 @@ private fun SwitchButton(
     Box(
         contentAlignment = Alignment.Center,
         modifier = modifier
-            .height((ElementSize.current / 3).coerceAtLeast(ButtonDefaults.MinHeight / 3))
+            .height((LocalElementSize.current / 3).coerceAtLeast(ButtonDefaults.MinHeight / 3))
             .clip(RoundedCornerShape(0, 0, 50, 50))
             .background(MaterialTheme.colorScheme.surfaceContainerLow)
             .clickable(onClick = onItemClick)

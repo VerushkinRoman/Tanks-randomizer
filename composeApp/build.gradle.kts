@@ -50,7 +50,7 @@ kotlin {
             implementation(libs.androidx.lifecycle.runtime.compose)
             implementation(libs.androidx.navigation.composee)
             implementation(libs.kotlinx.serialization.json)
-            implementation(libs.multiplatformSettings)
+            implementation(libs.multiplatformSettings.noArgs)
             implementation(libs.kodein)
         }
 
@@ -59,6 +59,9 @@ kotlin {
             implementation(libs.kotlinx.coroutines.android)
             implementation(libs.androidx.splashscreen)
             implementation(libs.android.material.theme)
+            implementation(libs.multiplatformSettings)
+            implementation(libs.multiplatformSettings.serialization)
+            implementation(libs.multiplatformSettings.coroutines)
         }
 
         jvmMain.dependencies {

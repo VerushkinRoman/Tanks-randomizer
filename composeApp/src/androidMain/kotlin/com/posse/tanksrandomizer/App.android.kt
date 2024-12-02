@@ -1,20 +1,24 @@
 package com.posse.tanksrandomizer
 
 import android.app.Application
-import android.content.pm.ActivityInfo
+import android.app.NotificationChannel
+import android.app.NotificationManager
+import android.os.Build
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
+import androidx.core.content.getSystemService
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.lifecycle.lifecycleScope
+import com.posse.tanksrandomizer.common.compose.components.StartWindowMode
 import com.posse.tanksrandomizer.common.compose.utils.DeviceType
-import com.posse.tanksrandomizer.common.compose.utils.RotateDirection.Landscape
-import com.posse.tanksrandomizer.common.compose.utils.RotateDirection.Portrait
+import com.posse.tanksrandomizer.common.compose.utils.rotateDevice
 import com.posse.tanksrandomizer.common.core.di.Inject
 import com.posse.tanksrandomizer.common.core.platform.PlatformConfiguration
 import com.posse.tanksrandomizer.common.core.platform.PlatformSDK
 import com.posse.tanksrandomizer.common.domain.repository.SettingsRepository
+import com.posse.tanksrandomizer.navigation.compose.AndroidApp
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
@@ -22,17 +26,22 @@ class App : Application() {
     override fun onCreate() {
         super.onCreate()
         initPlatformSDK()
+        createNotificationChannel()
     }
 }
 
 class AppActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        rotateDevice()
         enableEdgeToEdge()
         addSplashScreen()
 
-        setContent { ComposeApp() }
+        if (Inject.instance<SettingsRepository>().getFullScreenMode()) {
+            rotateDevice()
+            setContent { AndroidApp() }
+        } else {
+            setContent { StartWindowMode() }
+        }
     }
 }
 
@@ -46,23 +55,25 @@ private fun AppActivity.addSplashScreen() {
     }
 }
 
-private fun AppActivity.rotateDevice() {
-    val repository: SettingsRepository = Inject.instance()
-    val rotation = repository.getRotation()
-    val autorotate = repository.getAutorotate()
-    requestedOrientation = if (autorotate) {
-        ActivityInfo.SCREEN_ORIENTATION_SENSOR
-    } else {
-        when (rotation) {
-            Portrait -> ActivityInfo.SCREEN_ORIENTATION_SENSOR_PORTRAIT
-            Landscape -> ActivityInfo.SCREEN_ORIENTATION_SENSOR_LANDSCAPE
-        }
-    }
-}
-
 fun App.initPlatformSDK() = PlatformSDK.init(
     configuration = PlatformConfiguration(androidContext = applicationContext)
 )
 
-internal actual val deviceType: DeviceType
-    get() = DeviceType.Android
+private fun App.createNotificationChannel() {
+    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+        val notificationChannel = NotificationChannel(
+            /* id = */ CHANNEL_ID,
+            /* name = */ getString(R.string.notification_channel_name),
+            /* importance = */ NotificationManager.IMPORTANCE_DEFAULT
+        ).apply {
+            description = getString(R.string.notification_channel_discription)
+        }
+
+        val notificationManager = getSystemService<NotificationManager>()
+        notificationManager?.createNotificationChannel(notificationChannel)
+    }
+}
+
+const val CHANNEL_ID = "Default"
+
+internal actual val deviceType: DeviceType = DeviceType.Android

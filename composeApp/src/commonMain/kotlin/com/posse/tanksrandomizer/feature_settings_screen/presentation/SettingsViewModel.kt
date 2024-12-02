@@ -5,6 +5,7 @@ import com.posse.tanksrandomizer.common.compose.utils.RotateDirection
 import com.posse.tanksrandomizer.common.core.di.Inject
 import com.posse.tanksrandomizer.common.domain.repository.SettingsRepository
 import com.posse.tanksrandomizer.common.domain.utils.Dispatchers
+import com.posse.tanksrandomizer.common.presentation.interactor.FullScreenModeInteractor
 import com.posse.tanksrandomizer.common.presentation.utils.BaseSharedViewModel
 import com.posse.tanksrandomizer.feature_settings_screen.presentation.model.SettingsAction
 import com.posse.tanksrandomizer.feature_settings_screen.presentation.model.SettingsEvent
@@ -14,12 +15,14 @@ import com.posse.tanksrandomizer.feature_settings_screen.presentation.use_cases.
 import kotlinx.coroutines.launch
 
 class SettingsViewModel(
+    fullScreenModeInteractor: FullScreenModeInteractor = Inject.instance(),
     repository: SettingsRepository = Inject.instance(),
     dispatchers: Dispatchers = Inject.instance(),
 ) : BaseSharedViewModel<SettingsState, SettingsAction, SettingsEvent>(
     initialState = GetSettingsState(repository).invoke()
 ) {
     private val saveSettingsState = SaveSettingsState(
+        fullScreenModeInteractor = fullScreenModeInteractor,
         repository = repository,
         dispatchers = dispatchers,
     )
@@ -27,7 +30,6 @@ class SettingsViewModel(
     override fun obtainEvent(viewEvent: SettingsEvent) {
         when (viewEvent) {
             SettingsEvent.ClearAction -> viewAction = null
-            SettingsEvent.BackPressed -> viewAction = SettingsAction.NavigateBack
             SettingsEvent.FullScreenModePressed -> changeFullScreen()
             SettingsEvent.LandscapeRotatePressed -> changeRotationToLandscape()
             SettingsEvent.PortraitRotatePressed -> changeRotationPortrait()

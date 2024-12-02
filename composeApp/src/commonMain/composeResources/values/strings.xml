@@ -54,4 +54,9 @@
     <string name="overlay_settings">Overlay settings</string>
     <string name="overlay_mode">Overlay mode</string>
     <string name="fullscreen_mode">Fullscreen mode</string>
+
+    <string name="expand_app">Expand to full screen</string>
+    <string name="collapse_app">Collapse to button</string>
+
+    <string name="close_app">Close app</string>
 </resources>

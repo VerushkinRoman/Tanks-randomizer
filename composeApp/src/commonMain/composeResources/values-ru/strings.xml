@@ -54,4 +54,9 @@
     <string name="overlay_settings">Настройки режима поверх окон</string>
     <string name="overlay_mode">Режим поверх окон</string>
     <string name="fullscreen_mode">Полноэкранный режим</string>
+
+    <string name="expand_app">Расширить на полный экран</string>
+    <string name="collapse_app">Сжать до кнопки</string>
+
+    <string name="close_app">Закрыть приложение</string>
 </resources>

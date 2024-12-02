@@ -2,32 +2,29 @@ package com.posse.tanksrandomizer
 
 import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.foundation.layout.WindowInsets
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.safeDrawing
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
-import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.platform.LocalLayoutDirection
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.posse.tanksrandomizer.common.compose.theme.AppTheme
 import com.posse.tanksrandomizer.common.compose.utils.DeviceType
-import com.posse.tanksrandomizer.common.compose.utils.ElementSize
+import com.posse.tanksrandomizer.common.compose.utils.LocalElementSize
 import com.posse.tanksrandomizer.common.compose.utils.LocaleDeviceType
-import com.posse.tanksrandomizer.navigation.compose.Navigation
 
 @Composable
-internal fun ComposeApp() = AppTheme {
+internal fun CommonPlatformApp(
+    content: @Composable () -> Unit
+) = AppTheme {
     BoxWithConstraints {
         CompositionLocalProvider(
-            ElementSize provides getElementSize(maxBoxWidth = maxWidth),
+            LocalElementSize provides getElementSize(maxBoxWidth = maxWidth),
             LocaleDeviceType provides deviceType,
         ) {
-            Navigation(
-                modifier = Modifier.fillMaxSize()
-            )
+            content()
         }
     }
 }

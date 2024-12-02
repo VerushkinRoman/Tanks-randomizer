@@ -23,12 +23,14 @@ fun SettingsScreenContent(
         verticalArrangement = Arrangement.Center,
         modifier = modifier.padding(6.dp)
     ) {
-        RotationBlock(
-            rotation = viewState.rotation,
-            onEvent = onEvent,
-        )
+        if (viewState.fullScreenMode) {
+            RotationBlock(
+                rotation = viewState.rotation,
+                onEvent = onEvent,
+            )
 
-        Spacer(modifier = Modifier.height(12.dp))
+            Spacer(modifier = Modifier.height(12.dp))
+        }
 
         FullScreenSwitch(
             autoRotation = viewState.fullScreenMode,
