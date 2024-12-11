@@ -14,7 +14,7 @@ import com.posse.tanksrandomizer.feature_main_screen.presentation.model.MainEven
 
 @Composable
 fun MainScreen(
-    openSettings: () -> Unit,
+    toggleSettings: () -> Unit,
     modifier: Modifier = Modifier
 ) {
     val viewModel = viewModel { MainViewModel() }
@@ -24,7 +24,7 @@ fun MainScreen(
 
     LaunchedEffect(action) {
         when (action) {
-            MainAction.OpenSettings -> openSettings()
+            MainAction.ToggleSettings -> toggleSettings()
             else -> Unit
         }
         viewModel.obtainEvent(MainEvent.ClearAction)

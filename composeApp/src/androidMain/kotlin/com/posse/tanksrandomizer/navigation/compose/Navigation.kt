@@ -15,6 +15,7 @@ import com.posse.tanksrandomizer.navigation.presentation.model.NavigationEvent
 
 @Composable
 fun Navigation(
+    startedFromService: Boolean,
     exitApp: () -> Unit,
     modifier: Modifier = Modifier
 ) {
@@ -40,6 +41,7 @@ fun Navigation(
 
     NavigationContent(
         state = state,
+        startedFromService = startedFromService,
         onEvent = viewModel::obtainEvent,
         modifier = modifier
     )

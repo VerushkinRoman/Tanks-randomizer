@@ -5,7 +5,11 @@ import kotlinx.coroutines.flow.StateFlow
 
 interface ScreenSettingsInteractor {
     val windowInFullScreen: StateFlow<Boolean>
-    val buttonOffset: StateFlow<ButtonOffset?>
     fun setWindowInFullScreen(fullScreen: Boolean)
-    fun setButtonOffset(offset: ButtonOffset)
+
+    val buttonLandscapeOffset: StateFlow<ButtonOffset?>
+    fun setButtonLandscapeOffset(offset: ButtonOffset)
+
+    val buttonPortraitOffset: StateFlow<ButtonOffset?>
+    fun setButtonPortraitOffset(offset: ButtonOffset)
 }

@@ -38,7 +38,7 @@ class AppActivity : ComponentActivity() {
 
         if (Inject.instance<SettingsRepository>().getFullScreenMode()) {
             rotateDevice()
-            setContent { AndroidApp() }
+            setContent { AndroidApp(startedFromService = false) }
         } else {
             setContent { StartWindowMode() }
         }

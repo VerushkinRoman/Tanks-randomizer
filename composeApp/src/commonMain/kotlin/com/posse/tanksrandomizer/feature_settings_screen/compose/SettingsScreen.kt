@@ -16,6 +16,7 @@ import com.posse.tanksrandomizer.feature_settings_screen.presentation.model.Sett
 
 @Composable
 fun SettingsScreen(
+    showRotation: Boolean,
     modifier: Modifier = Modifier
 ) {
     val viewModel = viewModel { SettingsViewModel() }
@@ -33,6 +34,7 @@ fun SettingsScreen(
 
     SettingsScreenContent(
         viewState = state,
+        showRotation = showRotation,
         onEvent = viewModel::obtainEvent,
         modifier = modifier
     )

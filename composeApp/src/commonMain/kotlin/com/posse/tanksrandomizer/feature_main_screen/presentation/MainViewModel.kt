@@ -54,7 +54,7 @@ class MainViewModel(
             MainEvent.PlusPressed -> changeQuantity(1)
             MainEvent.TrashFilterPressed -> resetFilter()
             MainEvent.TrashNumberPressed -> resetQuantity()
-            MainEvent.SettingsPressed -> openSettings()
+            MainEvent.SettingsPressed -> toggleSettings()
         }
     }
 
@@ -115,8 +115,8 @@ class MainViewModel(
         }
     }
 
-    private fun openSettings() {
-        viewAction = MainAction.OpenSettings
+    private fun toggleSettings() {
+        viewAction = MainAction.ToggleSettings
     }
 
     private fun makeActionWithViewModelScopeAndSaveState(

@@ -12,16 +12,24 @@ class ScreenSettingsInteractorImpl(
     private val _windowInFullScreen: MutableStateFlow<Boolean> = MutableStateFlow(repository.getWindowInFullScreen())
     override val windowInFullScreen: StateFlow<Boolean> = _windowInFullScreen.asStateFlow()
 
-    private val _buttonOffset: MutableStateFlow<ButtonOffset?> = MutableStateFlow(repository.getButtonOffset())
-    override val buttonOffset: StateFlow<ButtonOffset?> = _buttonOffset.asStateFlow()
+    private val _buttonLandscapeOffset: MutableStateFlow<ButtonOffset?> = MutableStateFlow(repository.getButtonLandscapeOffset())
+    override val buttonLandscapeOffset: StateFlow<ButtonOffset?> = _buttonLandscapeOffset.asStateFlow()
+
+    private val _buttonPortraitOffset: MutableStateFlow<ButtonOffset?> = MutableStateFlow(repository.getButtonPortraitOffset())
+    override val buttonPortraitOffset: StateFlow<ButtonOffset?> = _buttonPortraitOffset.asStateFlow()
 
     override fun setWindowInFullScreen(fullScreen: Boolean) {
         _windowInFullScreen.value = fullScreen
         repository.setWindowInFullScreen(fullScreen)
     }
 
-    override fun setButtonOffset(offset: ButtonOffset) {
-        _buttonOffset.value = offset
-        repository.setButtonOffset(offset)
+    override fun setButtonLandscapeOffset(offset: ButtonOffset) {
+        _buttonLandscapeOffset.value = offset
+        repository.setButtonLandscapeOffset(offset)
+    }
+
+    override fun setButtonPortraitOffset(offset: ButtonOffset) {
+        _buttonPortraitOffset.value = offset
+        repository.setButtonPortraitOffset(offset)
     }
 }

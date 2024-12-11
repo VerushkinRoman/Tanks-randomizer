@@ -15,6 +15,7 @@ import com.posse.tanksrandomizer.feature_settings_screen.presentation.model.Sett
 @Composable
 fun SettingsScreenContent(
     viewState: SettingsState,
+    showRotation: Boolean,
     onEvent: (SettingsEvent) -> Unit,
     modifier: Modifier = Modifier
 ) {
@@ -23,7 +24,7 @@ fun SettingsScreenContent(
         verticalArrangement = Arrangement.Center,
         modifier = modifier.padding(6.dp)
     ) {
-        if (viewState.fullScreenMode) {
+        if (showRotation) {
             RotationBlock(
                 rotation = viewState.rotation,
                 onEvent = onEvent,

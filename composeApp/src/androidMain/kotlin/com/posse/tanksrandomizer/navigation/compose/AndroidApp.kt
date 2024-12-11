@@ -11,6 +11,7 @@ import com.posse.tanksrandomizer.common.compose.utils.LocalMaxWidth
 
 @Composable
 internal fun AndroidApp(
+    startedFromService: Boolean,
     exitApp: () -> Unit = {},
     @SuppressLint("ModifierParameter") modifier: Modifier = Modifier
 ) {
@@ -21,6 +22,7 @@ internal fun AndroidApp(
                 LocalMaxHeight provides maxHeight,
             ) {
                 Navigation(
+                    startedFromService = startedFromService,
                     exitApp = exitApp,
                     modifier = modifier
                 )

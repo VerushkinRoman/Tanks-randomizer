@@ -1,107 +1,123 @@
 package com.posse.tanksrandomizer.feature_service.utils
 
-import android.graphics.PixelFormat
+import android.annotation.SuppressLint
+import android.content.Context
+import android.content.res.Configuration.ORIENTATION_PORTRAIT
 import android.graphics.Point
 import android.os.Build
 import android.util.DisplayMetrics
 import android.view.WindowInsets
 import android.view.WindowManager
+import androidx.core.content.getSystemService
 
 internal object WindowUtils {
-    internal fun getNavigationBarHeight(windowManager: WindowManager?): Int {
-        return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
-            windowManager
-                ?.currentWindowMetrics
-                ?.windowInsets
-                ?.getInsets(WindowInsets.Type.navigationBars())
-                ?.bottom
-                ?: 0
-        } else {
-            @Suppress("DEPRECATION")
-            val currentDisplay = windowManager?.defaultDisplay
-            val appUsableSize = Point()
-            val realScreenSize = Point()
-            @Suppress("DEPRECATION")
-            currentDisplay?.apply {
-                getSize(appUsableSize)
-                getRealSize(realScreenSize)
+    internal val Context.appWidth: Int
+        get() {
+            val windowManager = getSystemService<WindowManager>()
+
+            return when {
+                Build.VERSION.SDK_INT >= Build.VERSION_CODES.R -> {
+                    val displayCutout = windowManager
+                        ?.currentWindowMetrics
+                        ?.windowInsets
+                        ?.getInsets(WindowInsets.Type.displayCutout())
+                        ?.let { it.left + it.right }
+                        ?: 0
+
+                    val systemBars = windowManager
+                        ?.currentWindowMetrics
+                        ?.windowInsets
+                        ?.getInsets(WindowInsets.Type.systemBars())
+                        ?.let { it.right + it.left }
+                        ?: 0
+
+                    screenWidth - displayCutout - systemBars
+                }
+
+                else -> {
+                    @Suppress("DEPRECATION")
+                    val currentDisplay = windowManager?.defaultDisplay
+                    val appUsableSize = Point()
+                    @Suppress("DEPRECATION")
+                    currentDisplay?.apply {
+                        getSize(appUsableSize)
+                    }
+
+                    appUsableSize.x
+                }
             }
+        }
 
-            // navigation bar on the side
-            if (appUsableSize.x < realScreenSize.x) {
-                return realScreenSize.x - appUsableSize.x
+    internal val Context.appHeight: Int
+        get() {
+            val windowManager = getSystemService<WindowManager>()
+
+            return when {
+                Build.VERSION.SDK_INT >= Build.VERSION_CODES.R -> {
+                    val systemBars = windowManager
+                        ?.currentWindowMetrics
+                        ?.windowInsets
+                        ?.getInsets(WindowInsets.Type.systemBars())
+                        ?.let { it.bottom + it.top }
+                        ?: 0
+
+                    screenHeight - systemBars
+                }
+
+                else -> {
+                    @Suppress("DEPRECATION")
+                    val currentDisplay = windowManager?.defaultDisplay
+                    val appUsableSize = Point()
+                    @Suppress("DEPRECATION")
+                    currentDisplay?.apply {
+                        getSize(appUsableSize)
+                    }
+
+                    appUsableSize.y - statusBarHeight
+                }
             }
-
-            // navigation bar at the bottom
-            return if (appUsableSize.y < realScreenSize.y) {
-                realScreenSize.y - appUsableSize.y
-            } else 0
         }
-    }
 
-    internal fun getDisplayCutoutSize(windowManager: WindowManager?): Int {
-        return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
-            windowManager
-                ?.currentWindowMetrics
-                ?.windowInsets
-                ?.getInsets(WindowInsets.Type.displayCutout())
-                ?.let { it.left + it.right }
-                ?: 0
-        } else {
-            @Suppress("DEPRECATION")
-            val currentDisplay = windowManager?.defaultDisplay
-            val appUsableSize = Point()
-            val realScreenSize = Point()
-            @Suppress("DEPRECATION")
-            currentDisplay?.apply {
-                getSize(appUsableSize)
-                getRealSize(realScreenSize)
+    private val Context.screenHeight: Int
+        get() {
+            val windowManager = getSystemService<WindowManager>()
+            return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+                windowManager?.currentWindowMetrics?.bounds?.height() ?: 0
+            } else {
+                val displayMetrics = DisplayMetrics()
+                @Suppress("DEPRECATION")
+                windowManager?.defaultDisplay?.getRealMetrics(displayMetrics)
+                displayMetrics.heightPixels
             }
+        }
 
-            // navigation bar on the side TODO
-            if (appUsableSize.x < realScreenSize.x) {
-                return realScreenSize.x - appUsableSize.x
+    private val Context.screenWidth: Int
+        get() {
+            val windowManager = getSystemService<WindowManager>()
+            return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+                windowManager?.currentWindowMetrics?.bounds?.width() ?: 0
+            } else {
+                val displayMetrics = DisplayMetrics()
+                @Suppress("DEPRECATION")
+                windowManager?.defaultDisplay?.getRealMetrics(displayMetrics)
+                displayMetrics.widthPixels
             }
-
-            // navigation bar at the bottom TODO
-            return if (appUsableSize.y < realScreenSize.y) {
-                realScreenSize.y - appUsableSize.y
-            } else 0
         }
-    }
 
-    internal fun getScreenHeight(windowManager: WindowManager?): Int {
-        return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
-            windowManager?.currentWindowMetrics?.bounds?.height() ?: 0
-        } else {
-            val displayMetrics = DisplayMetrics()
-            @Suppress("DEPRECATION")
-            windowManager?.defaultDisplay?.getRealMetrics(displayMetrics)
-            displayMetrics.heightPixels
+    internal val Context.portrait: Boolean
+        get() = when (resources.configuration.orientation) {
+            ORIENTATION_PORTRAIT -> true
+            else -> false
         }
-    }
 
-    internal fun getScreenWidth(windowManager: WindowManager?): Int {
-        return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
-            windowManager?.currentWindowMetrics?.bounds?.width() ?: 0
-        } else {
-            val displayMetrics = DisplayMetrics()
-            @Suppress("DEPRECATION")
-            windowManager?.defaultDisplay?.getRealMetrics(displayMetrics)
-            displayMetrics.widthPixels
+    private val Context.statusBarHeight: Int
+        @SuppressLint("DiscouragedApi", "InternalInsetResource")
+        get() {
+            var result = 0
+            val resourceId: Int = resources.getIdentifier("status_bar_height", "dimen", "android")
+            if (resourceId > 0) {
+                result = resources.getDimensionPixelSize(resourceId)
+            }
+            return result
         }
-    }
-
-    internal val defaultLayoutParams = WindowManager.LayoutParams(
-        /* w = */ WindowManager.LayoutParams.MATCH_PARENT,
-        /* h = */ WindowManager.LayoutParams.MATCH_PARENT,
-        /* _type = */ if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            WindowManager.LayoutParams.TYPE_APPLICATION_OVERLAY
-        } else {
-            @Suppress("DEPRECATION")
-            WindowManager.LayoutParams.TYPE_PHONE
-        },
-        /* _flags = */ WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS or WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE,
-        /* _format = */ PixelFormat.TRANSLUCENT,
-    )
 }

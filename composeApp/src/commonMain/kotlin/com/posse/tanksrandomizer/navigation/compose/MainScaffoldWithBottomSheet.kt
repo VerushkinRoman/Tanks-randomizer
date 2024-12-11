@@ -12,7 +12,9 @@ import androidx.compose.foundation.layout.safeDrawing
 import androidx.compose.material3.BottomSheetScaffold
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.SheetValue
 import androidx.compose.material3.rememberBottomSheetScaffoldState
+import androidx.compose.material3.rememberStandardBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
@@ -25,6 +27,7 @@ import kotlinx.coroutines.launch
 @Composable
 internal fun MainScaffoldWithBottomSheet(
     windowInFullScreen: Boolean = true,
+    showRotation: Boolean = true,
     modifier: Modifier = Modifier
         .fillMaxSize()
         .padding(
@@ -33,7 +36,7 @@ internal fun MainScaffoldWithBottomSheet(
                 .asPaddingValues()
         )
 ) {
-    val bottomSheetScaffoldState = rememberBottomSheetScaffoldState()
+    val bottomSheetState = rememberStandardBottomSheetState(skipHiddenState = false)
     val scope = rememberCoroutineScope()
 
     AnimatedContent(
@@ -44,6 +47,7 @@ internal fun MainScaffoldWithBottomSheet(
             BottomSheetScaffold(
                 sheetContent = {
                     SettingsScreen(
+                        showRotation = showRotation,
                         modifier = Modifier
                             .fillMaxWidth()
                             .padding(
@@ -53,16 +57,20 @@ internal fun MainScaffoldWithBottomSheet(
                             )
                     )
                 },
-                scaffoldState = bottomSheetScaffoldState,
+                scaffoldState = rememberBottomSheetScaffoldState(bottomSheetState),
                 sheetPeekHeight = 0.dp,
                 contentColor = MaterialTheme.colorScheme.onSurface,
                 containerColor = MaterialTheme.colorScheme.scrim,
                 modifier = Modifier.fillMaxSize()
             ) {
                 MainScreen(
-                    openSettings = {
+                    toggleSettings = {
                         scope.launch {
-                            bottomSheetScaffoldState.bottomSheetState.expand()
+                            if (bottomSheetState.currentValue == SheetValue.Expanded) {
+                                bottomSheetState.hide()
+                            } else {
+                                bottomSheetState.expand()
+                            }
                         }
                     },
                     modifier = Modifier.fillMaxSize()

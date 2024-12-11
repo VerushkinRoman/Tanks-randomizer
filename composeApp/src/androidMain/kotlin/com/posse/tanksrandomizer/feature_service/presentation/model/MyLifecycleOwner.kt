@@ -1,4 +1,4 @@
-package com.posse.tanksrandomizer.feature_service
+package com.posse.tanksrandomizer.feature_service.presentation.model
 
 import android.os.Bundle
 import androidx.lifecycle.Lifecycle

@@ -17,6 +17,9 @@ class ScreenSettingsDataSourceImpl(
     override fun getWindowInFullScreen(): Boolean = settings.getBoolean("WindowInFullScreen", true)
     override fun setWindowInFullScreen(enabled: Boolean) = settings.putBoolean("WindowInFullScreen", enabled)
 
-    override fun getButtonOffset(): ButtonOffset? = settings.decodeValueOrNull<ButtonOffset>("ButtonOffset")
-    override fun setButtonOffset(buttonOffset: ButtonOffset) = settings.encodeValue("ButtonOffset", buttonOffset)
+    override fun getButtonLandscapeOffset(): ButtonOffset? = settings.decodeValueOrNull<ButtonOffset>("ButtonLandscapeOffset")
+    override fun setButtonLandscapeOffset(buttonOffset: ButtonOffset) = settings.encodeValue("ButtonLandscapeOffset", buttonOffset)
+
+    override fun getButtonPortraitOffset(): ButtonOffset? = settings.decodeValueOrNull<ButtonOffset>("ButtonPortraitOffset")
+    override fun setButtonPortraitOffset(buttonOffset: ButtonOffset) = settings.encodeValue("ButtonPortraitOffset", buttonOffset)
 }

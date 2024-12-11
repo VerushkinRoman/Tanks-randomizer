@@ -19,6 +19,7 @@ import com.posse.tanksrandomizer.navigation.presentation.model.NavigationState
 @Composable
 fun NavigationContent(
     state: NavigationState,
+    startedFromService: Boolean,
     onEvent: (NavigationEvent) -> Unit,
     modifier: Modifier = Modifier
 ) {
@@ -33,12 +34,13 @@ fun NavigationContent(
     ) {
         MainScaffoldWithBottomSheet(
             windowInFullScreen = state.windowInFullScreen,
+            showRotation = !startedFromService,
             modifier = Modifier
         )
 
         CloseButton(
-            fullScreenModeEnabled = state.fullScreenModeEnabled,
             windowInFullScreen = state.windowInFullScreen,
+            startedFromService = startedFromService,
             onClick = { onEvent(NavigationEvent.OnClosePress) },
             modifier = Modifier.align(Alignment.TopStart)
         )

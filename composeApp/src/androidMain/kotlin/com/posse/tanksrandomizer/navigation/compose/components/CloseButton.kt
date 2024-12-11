@@ -27,15 +27,15 @@ import tanks_randomizer.composeapp.generated.resources.close_app
 
 @Composable
 internal fun CloseButton(
-    fullScreenModeEnabled: Boolean,
     windowInFullScreen: Boolean,
+    startedFromService: Boolean,
     onClick: () -> Unit,
     modifier: Modifier = Modifier
 ) {
     val safeDrawing = WindowInsets.safeDrawing.asPaddingValues()
 
     AnimatedContent(
-        targetState = !fullScreenModeEnabled && windowInFullScreen,
+        targetState = startedFromService && windowInFullScreen,
         modifier = modifier
     ) { show ->
         if (show) {

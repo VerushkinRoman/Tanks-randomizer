@@ -6,6 +6,9 @@ interface ScreenSettingsRepository {
     fun getWindowInFullScreen(): Boolean
     fun setWindowInFullScreen(enabled: Boolean)
 
-    fun getButtonOffset(): ButtonOffset?
-    fun setButtonOffset(buttonOffset: ButtonOffset)
+    fun getButtonLandscapeOffset(): ButtonOffset?
+    fun setButtonLandscapeOffset(buttonOffset: ButtonOffset)
+
+    fun getButtonPortraitOffset(): ButtonOffset?
+    fun setButtonPortraitOffset(buttonOffset: ButtonOffset)
 }
