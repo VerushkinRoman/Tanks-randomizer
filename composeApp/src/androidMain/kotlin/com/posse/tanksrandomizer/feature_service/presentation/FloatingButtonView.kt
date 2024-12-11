@@ -37,16 +37,14 @@ class FloatingButtonView @JvmOverloads constructor(
     defStyleAttr: Int = 0
 ) : AbstractComposeView(context, attrs, defStyleAttr) {
     private val screenSettingsInteractor: ScreenSettingsInteractor by lazy { Inject.instance() }
-    private lateinit var layoutParams: WindowManager.LayoutParams
+    private val layoutParams = WindowManager.LayoutParams()
     private lateinit var scope: CoroutineScope
     private var windowManager: WindowManager? = null
 
     constructor(
         context: Context,
-        layoutParams: WindowManager.LayoutParams,
         scope: CoroutineScope,
     ) : this(context) {
-        this.layoutParams = layoutParams
         this.scope = scope
         windowManager = context.getSystemService<WindowManager>()
 
@@ -113,7 +111,7 @@ class FloatingButtonView @JvmOverloads constructor(
             format = PixelFormat.TRANSLUCENT
             x = screenSettingsInteractor.buttonLandscapeOffset.value?.x ?: 0
             y = screenSettingsInteractor.buttonLandscapeOffset.value?.y ?: 0
-            flags = WindowManager.LayoutParams.FLAG_NOT_TOUCH_MODAL
+            flags = WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE
         }
     }
 

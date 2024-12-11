@@ -6,7 +6,6 @@ import android.content.Intent
 import android.content.pm.ServiceInfo
 import android.os.Build
 import android.os.IBinder
-import android.view.WindowManager
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.platform.AndroidUiDispatcher
 import androidx.core.app.NotificationCompat
@@ -28,20 +27,16 @@ class OverlayService : Service() {
     private val screenSettingsInteractor: ScreenSettingsInteractor by lazy { Inject.instance() }
     private val scope = CoroutineScope(AndroidUiDispatcher.CurrentThread + SupervisorJob())
 
-    private val floatingButtonLayoutParams = WindowManager.LayoutParams()
     private val floatingButtonView by lazy {
         FloatingButtonView(
             context = this,
-            layoutParams = floatingButtonLayoutParams,
             scope = scope,
         )
     }
 
-    private val mainScreenLayoutParams = WindowManager.LayoutParams()
     private val mainScreenView by lazy {
         MainScreenView(
             context = this,
-            layoutParams = mainScreenLayoutParams,
             scope = scope,
             onLayoutChange = {
                 floatingButtonView.updateLayoutParams()

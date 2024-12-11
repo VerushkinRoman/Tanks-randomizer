@@ -37,17 +37,15 @@ class MainScreenView @JvmOverloads constructor(
         }
     }
     private lateinit var onLayoutChange: () -> Unit
-    private lateinit var layoutParams: WindowManager.LayoutParams
+    private val layoutParams = WindowManager.LayoutParams()
     private lateinit var scope: CoroutineScope
     private var windowManager: WindowManager? = null
 
     constructor(
         context: Context,
-        layoutParams: WindowManager.LayoutParams,
         scope: CoroutineScope,
         onLayoutChange: () -> Unit,
     ) : this(context) {
-        this.layoutParams = layoutParams
         this.scope = scope
         this.onLayoutChange = onLayoutChange
         windowManager = context.getSystemService<WindowManager>()
@@ -76,9 +74,10 @@ class MainScreenView @JvmOverloads constructor(
             screenSettingsInteractor.windowInFullScreen.collect { fullScreen ->
                 layoutParams.apply {
                     flags = if (fullScreen) {
-                        WindowManager.LayoutParams.FLAG_NOT_TOUCH_MODAL
+                        WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE
                     } else {
-                        WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE
+                        WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE or
+                                WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE
                     }
                 }
                 update()
@@ -111,6 +110,7 @@ class MainScreenView @JvmOverloads constructor(
                 WindowManager.LayoutParams.TYPE_PHONE
             }
             format = PixelFormat.TRANSLUCENT
+            flags = WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE
         }
     }
 

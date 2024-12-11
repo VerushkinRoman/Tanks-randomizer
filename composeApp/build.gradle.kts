@@ -80,8 +80,8 @@ android {
         targetSdk = 35
 
         applicationId = "com.posse.tanksrandomizer"
-        versionCode = 6
-        versionName = "1.3.0"
+        versionCode = 7
+        versionName = "1.4.0"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
@@ -184,7 +184,7 @@ compose.desktop {
         nativeDistributions {
             targetFormats(TargetFormat.Dmg, TargetFormat.Msi, TargetFormat.Deb)
             packageName = "Random Tank Generator"
-            packageVersion = "1.3.0"
+            packageVersion = "1.4.0"
 
             linux {
                 iconFile.set(project.file("desktopAppIcons/LinuxIcon.png"))
