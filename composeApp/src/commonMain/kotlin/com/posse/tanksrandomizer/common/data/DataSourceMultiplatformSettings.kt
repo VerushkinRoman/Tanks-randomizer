@@ -17,22 +17,12 @@ class DataSourceMultiplatformSettings(
         return defaultItems.map { getProperty(it) }
     }
 
+    override fun getQuantity(): Int = settings.getInt("quantity", 1)
+    override fun setQuantity(quantity: Int) = settings.putInt("quantity", quantity)
+
     private fun <T : ItemStatus<T>> getProperty(defaultItem: T): T {
         val random = settings.getBoolean("${defaultItem.name}_random", defaultItem.random)
         val selected = settings.getBoolean("${defaultItem.name}_selected", defaultItem.selected)
         return defaultItem.copy(selected = selected, random = random)
     }
-
-    override fun getQuantity(): Int = settings.getInt("quantity", 1)
-    override fun setQuantity(quantity: Int) = settings.putInt("quantity", quantity)
-
-
-    override fun getAutorotate(): Boolean = settings.getBoolean("Autorotate", true)
-    override fun setAutorotate(autoRotate: Boolean) = settings.putBoolean("Autorotate", autoRotate)
-
-    override fun getRotation(): String? = settings.getStringOrNull("Rotation")
-    override fun setRotation(rotation: String) = settings.putString("Rotation", rotation)
-
-    override fun getFullScreen(): Boolean = settings.getBoolean("FullScreen", true)
-    override fun setFullScreen(enabled: Boolean) = settings.putBoolean("FullScreen", enabled)
 }

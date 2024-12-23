@@ -1,9 +1,19 @@
-package com.posse.tanksrandomizer.common.data
+package com.posse.tanksrandomizer.common.domain.repository
 
+import com.posse.tanksrandomizer.common.compose.utils.RotateDirection
 import com.posse.tanksrandomizer.common.domain.model.ButtonOffset
 import com.posse.tanksrandomizer.common.domain.model.ButtonSize
 
-interface ScreenSettingsDataSource {
+interface SettingsRepository {
+    fun getAutorotate(): Boolean
+    fun setAutorotate(autoRotate: Boolean)
+
+    fun getRotation(): RotateDirection
+    fun setRotation(rotateDirection: RotateDirection)
+
+    fun getFullScreenMode(): Boolean
+    fun setFullScreenMode(fullScreen: Boolean)
+
     fun getWindowInFullScreen(): Boolean
     fun setWindowInFullScreen(enabled: Boolean)
 
@@ -12,15 +22,6 @@ interface ScreenSettingsDataSource {
 
     fun getButtonPortraitOffset(): ButtonOffset?
     fun setButtonPortraitOffset(buttonOffset: ButtonOffset)
-
-    fun getAutorotate(): Boolean
-    fun setAutorotate(autoRotate: Boolean)
-
-    fun getRotation(): String?
-    fun setRotation(rotation: String)
-
-    fun getFullScreenMode(): Boolean
-    fun setFullScreenMode(enabled: Boolean)
 
     fun getFloatingButtonOpacity(): Float
     fun setFloatingButtonOpacity(opacity: Float)

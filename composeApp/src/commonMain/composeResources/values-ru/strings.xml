@@ -59,4 +59,10 @@
     <string name="collapse_app">Сжать до кнопки</string>
 
     <string name="close_app">Закрыть приложение</string>
+
+    <string name="less_opacity">Больше прозрачности</string>
+    <string name="more_opacity">Меньше прозрачности</string>
+
+    <string name="less_size">Меньше размер</string>
+    <string name="more_size">Больше размер</string>
 </resources>

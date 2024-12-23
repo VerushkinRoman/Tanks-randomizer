@@ -8,13 +8,4 @@ interface DataSource {
 
     fun setQuantity(quantity: Int)
     fun getQuantity(): Int
-
-    fun getAutorotate(): Boolean
-    fun setAutorotate(autoRotate: Boolean)
-
-    fun getRotation(): String?
-    fun setRotation(rotation: String)
-
-    fun getFullScreen(): Boolean
-    fun setFullScreen(enabled: Boolean)
 }

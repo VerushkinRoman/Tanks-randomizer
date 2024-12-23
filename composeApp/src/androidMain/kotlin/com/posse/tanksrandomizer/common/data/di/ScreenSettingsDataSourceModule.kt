@@ -10,7 +10,7 @@ import org.kodein.di.bind
 import org.kodein.di.instance
 import org.kodein.di.singleton
 
-val screenSettingsDataSourceModule = DI.Module("ScreenSettingsDataSourceModule") {
+val settingsDataSourceModule = DI.Module("SettingsDataSourceModule") {
     bind<ScreenSettingsDataSource>() with singleton {
         val preferences: SharedPreferences = instance<PlatformConfiguration>()
             .androidContext

@@ -59,4 +59,10 @@
     <string name="collapse_app">Collapse to button</string>
 
     <string name="close_app">Close app</string>
+
+    <string name="less_opacity">Less opacity</string>
+    <string name="more_opacity">More opacity</string>
+
+    <string name="less_size">Less size</string>
+    <string name="more_size">More size</string>
 </resources>

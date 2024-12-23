@@ -1,6 +1,7 @@
 package com.posse.tanksrandomizer.common.compose.utils
 
 import android.app.Activity
+import android.content.Context
 import android.content.pm.ActivityInfo
 import com.posse.tanksrandomizer.common.compose.utils.RotateDirection.Landscape
 import com.posse.tanksrandomizer.common.compose.utils.RotateDirection.Portrait
@@ -19,4 +20,8 @@ fun Activity.rotateDevice() {
             Landscape -> ActivityInfo.SCREEN_ORIENTATION_SENSOR_LANDSCAPE
         }
     }
+}
+
+fun Context.rotateDevice() {
+    findActivity()?.rotateDevice()
 }

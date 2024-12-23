@@ -2,6 +2,7 @@ package com.posse.tanksrandomizer.feature_service.presentation
 
 import android.annotation.SuppressLint
 import android.content.Context
+import android.content.res.Configuration
 import android.graphics.PixelFormat
 import android.os.Build
 import android.util.AttributeSet
@@ -12,6 +13,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.Recomposer
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.ui.platform.AbstractComposeView
+import androidx.compose.ui.platform.AndroidUiDispatcher
 import androidx.compose.ui.platform.compositionContext
 import androidx.core.content.getSystemService
 import androidx.lifecycle.Lifecycle
@@ -22,32 +24,39 @@ import androidx.lifecycle.setViewTreeViewModelStoreOwner
 import androidx.savedstate.setViewTreeSavedStateRegistryOwner
 import com.posse.tanksrandomizer.common.core.di.Inject
 import com.posse.tanksrandomizer.common.domain.model.ButtonOffset
-import com.posse.tanksrandomizer.common.presentation.interactor.ScreenSettingsInteractor
+import com.posse.tanksrandomizer.common.presentation.interactor.SettingsInteractor
 import com.posse.tanksrandomizer.feature_service.presentation.model.MyLifecycleOwner
 import com.posse.tanksrandomizer.feature_service.utils.WindowUtils.appHeight
 import com.posse.tanksrandomizer.feature_service.utils.WindowUtils.appWidth
 import com.posse.tanksrandomizer.feature_service.utils.WindowUtils.portrait
 import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.SupervisorJob
+import kotlinx.coroutines.cancel
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import kotlin.math.abs
 
-class FloatingButtonView @JvmOverloads constructor(
+class FloatingButtonView(
     context: Context,
     attrs: AttributeSet? = null,
-    defStyleAttr: Int = 0
+    defStyleAttr: Int = 0,
 ) : AbstractComposeView(context, attrs, defStyleAttr) {
-    private val screenSettingsInteractor: ScreenSettingsInteractor by lazy { Inject.instance() }
+    private val settingsInteractor: SettingsInteractor by lazy { Inject.instance() }
+    private val scope = CoroutineScope(AndroidUiDispatcher.CurrentThread + SupervisorJob())
+
     private val layoutParams = WindowManager.LayoutParams()
-    private lateinit var scope: CoroutineScope
     private var windowManager: WindowManager? = null
+    private var touchedTime: Long = 0
+    private var orientation: Int? = resources.configuration.orientation
 
     constructor(
         context: Context,
-        scope: CoroutineScope,
-    ) : this(context) {
-        this.scope = scope
-        windowManager = context.getSystemService<WindowManager>()
-
+    ) : this(
+        context = context,
+        attrs = null,
+        defStyleAttr = 0,
+    ) {
+        this.windowManager = context.getSystemService<WindowManager>()
         init()
     }
 
@@ -77,9 +86,18 @@ class FloatingButtonView @JvmOverloads constructor(
         windowManager?.addView(this, layoutParams)
 
         scope.launch {
-            screenSettingsInteractor.windowInFullScreen.collect { fullScreen ->
+            settingsInteractor.windowInFullScreen.collect { fullScreen ->
                 windowInFullScreen = fullScreen
-                updateLayoutParams(fullScreen)
+
+                if (touchedTime == 0L && fullScreen && context.portrait) {
+                    settingsInteractor.setWindowInFullScreen(false)
+                }
+
+                if (fullScreen) {
+                    skipButtonGlitch()
+                } else {
+                    updateLayoutParams()
+                }
             }
         }
     }
@@ -108,9 +126,7 @@ class FloatingButtonView @JvmOverloads constructor(
                 @Suppress("DEPRECATION")
                 WindowManager.LayoutParams.TYPE_PHONE
             }
-            format = PixelFormat.TRANSLUCENT
-            x = screenSettingsInteractor.buttonLandscapeOffset.value?.x ?: 0
-            y = screenSettingsInteractor.buttonLandscapeOffset.value?.y ?: 0
+            format = PixelFormat.TRANSPARENT
             flags = WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE
         }
     }
@@ -145,6 +161,7 @@ class FloatingButtonView @JvmOverloads constructor(
 
             when (event.actionMasked) {
                 MotionEvent.ACTION_DOWN -> {
+                    touchedTime = System.currentTimeMillis()
                     lastX = event.rawX.toInt()
                     lastY = event.rawY.toInt()
                     firstX = lastX
@@ -153,8 +170,11 @@ class FloatingButtonView @JvmOverloads constructor(
 
                 MotionEvent.ACTION_UP -> {
                     view.performClick()
-                    if (firstX == lastX && firstY == lastY && event.rawX.toInt() == lastX && event.rawY.toInt() == lastY) {
-                        screenSettingsInteractor.setWindowInFullScreen(!windowInFullScreen)
+                    if (
+                        (firstX == lastX && firstY == lastY && event.rawX.toInt() == lastX && event.rawY.toInt() == lastY)
+                        || System.currentTimeMillis() - touchedTime < 200
+                    ) {
+                        settingsInteractor.setWindowInFullScreen(!windowInFullScreen)
                     } else if (!windowInFullScreen) {
                         val finalX = layoutParams.x.coerceIn(
                             minimumValue = 0,
@@ -167,14 +187,14 @@ class FloatingButtonView @JvmOverloads constructor(
                         layoutParams.x = finalX
                         layoutParams.y = finalY
                         if (context.portrait) {
-                            screenSettingsInteractor.setButtonPortraitOffset(
+                            settingsInteractor.setButtonPortraitOffset(
                                 ButtonOffset(
                                     x = finalX,
                                     y = finalY,
                                 )
                             )
                         } else {
-                            screenSettingsInteractor.setButtonLandscapeOffset(
+                            settingsInteractor.setButtonLandscapeOffset(
                                 ButtonOffset(
                                     x = finalX,
                                     y = finalY,
@@ -221,25 +241,27 @@ class FloatingButtonView @JvmOverloads constructor(
         }
     }
 
-    fun updateLayoutParams(fullScreen: Boolean = screenSettingsInteractor.windowInFullScreen.value) {
+    private fun updateLayoutParams(fullScreen: Boolean = windowInFullScreen) {
         if (fullScreen) {
             layoutParams.apply {
-                x = context.appWidth - width
+                x = context.appWidth - measuredWidth
                 y = 0
             }
         } else {
             layoutParams.apply {
                 x = if (context.portrait) {
-                    screenSettingsInteractor.buttonPortraitOffset.value?.x
-                        ?: (context.appWidth - width)
+                    settingsInteractor.buttonPortraitOffset.value?.x
+                        ?: (context.appWidth / 2 - measuredWidth / 2)
                 } else {
-                    screenSettingsInteractor.buttonLandscapeOffset.value?.x
-                        ?: (context.appWidth - width)
+                    settingsInteractor.buttonLandscapeOffset.value?.x
+                        ?: (context.appWidth - measuredWidth)
                 }
                 y = if (context.portrait) {
-                    screenSettingsInteractor.buttonPortraitOffset.value?.y ?: 0
+                    settingsInteractor.buttonPortraitOffset.value?.y
+                        ?: (context.appHeight - measuredHeight)
                 } else {
-                    screenSettingsInteractor.buttonLandscapeOffset.value?.y ?: 0
+                    settingsInteractor.buttonLandscapeOffset.value?.y
+                        ?: 0
                 }
             }
         }
@@ -247,7 +269,68 @@ class FloatingButtonView @JvmOverloads constructor(
         update()
     }
 
-    fun update() {
+    override fun onConfigurationChanged(newConfig: Configuration?) {
+        super.onConfigurationChanged(newConfig)
+        if (orientation != newConfig?.orientation) {
+            orientation = newConfig?.orientation
+            skipButtonGlitch()
+        }
+    }
+
+    private fun skipButtonGlitch() {
+        scope.launch {
+            val prevHeight = layoutParams.height
+            val prevWidth = layoutParams.width
+            layoutParams.apply {
+                width = 0
+                height = 0
+            }
+            updateLayoutParams()
+            delay(100)
+            layoutParams.apply {
+                width = prevWidth
+                height = prevHeight
+            }
+            updateLayoutParams()
+        }
+    }
+
+    override fun onSizeChanged(w: Int, h: Int, oldw: Int, oldh: Int) {
+        super.onSizeChanged(w, h, oldw, oldh)
+        if (oldw == 0 && oldh == 0 && touchedTime == 0L) {
+            changeFistTimeAppMinimize(w, h)
+        }
+    }
+
+    private fun changeFistTimeAppMinimize(w: Int, h: Int) {
+        val portraitX = settingsInteractor.buttonPortraitOffset.value?.x
+        val portraitY = settingsInteractor.buttonPortraitOffset.value?.y
+        val landscapeX = settingsInteractor.buttonLandscapeOffset.value?.x
+        val landscapeY = settingsInteractor.buttonLandscapeOffset.value?.y
+        if (context.portrait) {
+            val notFirstLaunch =
+                portraitX != null || portraitY != null || landscapeX != null || landscapeY != null
+            settingsInteractor.setButtonPortraitOffset(
+                ButtonOffset(
+                    x = if (notFirstLaunch) portraitX ?: (context.appWidth - w)
+                    else context.appWidth / 2 - w / 2,
+                    y = if (notFirstLaunch) portraitY ?: 0
+                    else context.appHeight - h,
+                )
+            )
+            updateLayoutParams(false)
+        } else {
+            settingsInteractor.setButtonLandscapeOffset(
+                ButtonOffset(
+                    x = landscapeX ?: (context.appWidth - w),
+                    y = landscapeY ?: 0,
+                )
+            )
+            updateLayoutParams()
+        }
+    }
+
+    private fun update() {
         windowManager?.apply {
             updateViewLayout(this@FloatingButtonView, layoutParams)
         }
@@ -259,6 +342,7 @@ class FloatingButtonView @JvmOverloads constructor(
     }
 
     fun destroy() {
+        scope.cancel()
         windowManager?.removeView(this)
         windowManager = null
         lifecycleOwner.handleLifecycleEvent(Lifecycle.Event.ON_DESTROY)

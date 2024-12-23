@@ -12,6 +12,7 @@
         android:theme="@style/Theme.App.Start">
         <activity
             android:name=".AppActivity"
+            android:autoRemoveFromRecents="true"
             android:configChanges="orientation|screenSize|screenLayout|keyboardHidden"
             android:exported="true"
             android:launchMode="singleInstance"

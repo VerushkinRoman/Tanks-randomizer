@@ -9,6 +9,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.Recomposer
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.ui.platform.AbstractComposeView
+import androidx.compose.ui.platform.AndroidUiDispatcher
 import androidx.compose.ui.platform.compositionContext
 import androidx.core.content.getSystemService
 import androidx.lifecycle.Lifecycle
@@ -18,38 +19,32 @@ import androidx.lifecycle.setViewTreeLifecycleOwner
 import androidx.lifecycle.setViewTreeViewModelStoreOwner
 import androidx.savedstate.setViewTreeSavedStateRegistryOwner
 import com.posse.tanksrandomizer.common.core.di.Inject
-import com.posse.tanksrandomizer.common.presentation.interactor.ScreenSettingsInteractor
+import com.posse.tanksrandomizer.common.presentation.interactor.SettingsInteractor
 import com.posse.tanksrandomizer.feature_service.presentation.model.MyLifecycleOwner
-import com.posse.tanksrandomizer.feature_service.presentation.model.TanksLayoutChangeListener
 import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.SupervisorJob
+import kotlinx.coroutines.cancel
 import kotlinx.coroutines.launch
 
-class MainScreenView @JvmOverloads constructor(
+class MainScreenView(
     context: Context,
     attrs: AttributeSet? = null,
-    defStyleAttr: Int = 0
+    defStyleAttr: Int = 0,
 ) : AbstractComposeView(context, attrs, defStyleAttr) {
-    private val screenSettingsInteractor: ScreenSettingsInteractor by lazy { Inject.instance() }
-    private val layoutChangeListener: TanksLayoutChangeListener by lazy {
-        TanksLayoutChangeListener {
-            onLayoutChange()
-            update()
-        }
-    }
-    private lateinit var onLayoutChange: () -> Unit
+    private val settingsInteractor: SettingsInteractor by lazy { Inject.instance() }
+    private val scope = CoroutineScope(AndroidUiDispatcher.CurrentThread + SupervisorJob())
+
     private val layoutParams = WindowManager.LayoutParams()
-    private lateinit var scope: CoroutineScope
     private var windowManager: WindowManager? = null
 
     constructor(
         context: Context,
-        scope: CoroutineScope,
-        onLayoutChange: () -> Unit,
-    ) : this(context) {
-        this.scope = scope
-        this.onLayoutChange = onLayoutChange
-        windowManager = context.getSystemService<WindowManager>()
-
+    ) : this(
+        context = context,
+        attrs = null,
+        defStyleAttr = 0,
+    ) {
+        this.windowManager = context.getSystemService<WindowManager>()
         init()
     }
 
@@ -65,13 +60,12 @@ class MainScreenView @JvmOverloads constructor(
     }
 
     private fun init() {
-        addOnLayoutChangeListener(layoutChangeListener)
         addComposeLifecycle()
         setLayoutParams()
         windowManager?.addView(this, layoutParams)
 
         scope.launch {
-            screenSettingsInteractor.windowInFullScreen.collect { fullScreen ->
+            settingsInteractor.windowInFullScreen.collect { fullScreen ->
                 layoutParams.apply {
                     flags = if (fullScreen) {
                         WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE
@@ -84,7 +78,6 @@ class MainScreenView @JvmOverloads constructor(
             }
         }
     }
-
 
     @Composable
     override fun Content() {
@@ -137,7 +130,7 @@ class MainScreenView @JvmOverloads constructor(
         }
     }
 
-    fun update() {
+    private fun update() {
         windowManager?.apply {
             updateViewLayout(this@MainScreenView, layoutParams)
         }
@@ -149,10 +142,10 @@ class MainScreenView @JvmOverloads constructor(
     }
 
     fun destroy() {
+        scope.cancel()
         windowManager?.removeView(this)
         windowManager = null
         lifecycleOwner.handleLifecycleEvent(Lifecycle.Event.ON_DESTROY)
-        removeOnLayoutChangeListener(layoutChangeListener)
         setViewTreeLifecycleOwner(null)
         setViewTreeViewModelStoreOwner(null)
         setViewTreeSavedStateRegistryOwner(null)

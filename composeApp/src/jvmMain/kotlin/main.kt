@@ -7,7 +7,7 @@ import androidx.compose.ui.window.rememberWindowState
 import com.posse.tanksrandomizer.CommonPlatformApp
 import com.posse.tanksrandomizer.common.core.platform.PlatformConfiguration
 import com.posse.tanksrandomizer.common.core.platform.PlatformSDK
-import com.posse.tanksrandomizer.navigation.compose.MainScaffoldWithBottomSheet
+import com.posse.tanksrandomizer.navigation.compose.MainNavigation
 import org.jetbrains.compose.resources.painterResource
 import tanks_randomizer.composeapp.generated.resources.Res
 import tanks_randomizer.composeapp.generated.resources.app_icon
@@ -28,7 +28,7 @@ fun main() = application {
         )
 
         CommonPlatformApp {
-            MainScaffoldWithBottomSheet()
+            MainNavigation()
         }
     }
 }

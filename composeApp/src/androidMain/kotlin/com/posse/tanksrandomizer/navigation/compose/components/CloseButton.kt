@@ -1,6 +1,5 @@
 package com.posse.tanksrandomizer.navigation.compose.components
 
-import androidx.compose.animation.AnimatedContent
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -27,33 +26,24 @@ import tanks_randomizer.composeapp.generated.resources.close_app
 
 @Composable
 internal fun CloseButton(
-    windowInFullScreen: Boolean,
-    startedFromService: Boolean,
     onClick: () -> Unit,
     modifier: Modifier = Modifier
 ) {
     val safeDrawing = WindowInsets.safeDrawing.asPaddingValues()
 
-    AnimatedContent(
-        targetState = startedFromService && windowInFullScreen,
+    Image(
+        imageVector = Icons.Rounded.Close,
+        contentDescription = stringResource(Res.string.close_app),
+        colorFilter = ColorFilter.tint(MaterialTheme.colorScheme.onSurface),
         modifier = modifier
-    ) { show ->
-        if (show) {
-            Image(
-                imageVector = Icons.Rounded.Close,
-                contentDescription = stringResource(Res.string.close_app),
-                colorFilter = ColorFilter.tint(MaterialTheme.colorScheme.onSurface),
-                modifier = Modifier
-                    .padding(
-                        top = safeDrawing.calculateTopPadding(),
-                        start = safeDrawing.calculateStartPadding(LocalLayoutDirection.current),
-                    )
-                    .size(ButtonDefaults.MinHeight)
-                    .clip(CircleShape)
-                    .background(MaterialTheme.colorScheme.errorContainer)
-                    .padding(6.dp)
-                    .clickable(onClick = onClick)
+            .padding(
+                top = safeDrawing.calculateTopPadding(),
+                start = safeDrawing.calculateStartPadding(LocalLayoutDirection.current),
             )
-        }
-    }
+            .size(ButtonDefaults.MinHeight)
+            .clip(CircleShape)
+            .background(MaterialTheme.colorScheme.errorContainer)
+            .padding(6.dp)
+            .clickable(onClick = onClick)
+    )
 }
