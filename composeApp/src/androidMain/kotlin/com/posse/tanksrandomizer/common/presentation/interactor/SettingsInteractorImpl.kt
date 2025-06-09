@@ -1,8 +1,8 @@
 package com.posse.tanksrandomizer.common.presentation.interactor
 
 import com.posse.tanksrandomizer.common.compose.utils.RotateDirection
-import com.posse.tanksrandomizer.common.domain.model.ButtonOffset
-import com.posse.tanksrandomizer.common.domain.model.ButtonSize
+import com.posse.tanksrandomizer.common.domain.models.ButtonOffset
+import com.posse.tanksrandomizer.common.domain.models.ButtonSize
 import com.posse.tanksrandomizer.common.domain.repository.SettingsRepository
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow

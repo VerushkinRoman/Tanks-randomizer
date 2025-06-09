@@ -24,6 +24,8 @@ kotlin {
         it.binaries.framework {
             baseName = "ComposeApp"
             isStatic = true
+
+            export(libs.deeplink)
         }
     }
 
@@ -50,8 +52,11 @@ kotlin {
             implementation(libs.androidx.lifecycle.runtime.compose)
             implementation(libs.androidx.navigation.composee)
             implementation(libs.kotlinx.serialization.json)
+            implementation(libs.kotlinx.datetime)
             implementation(libs.multiplatformSettings.noArgs)
             implementation(libs.kodein)
+            api(libs.deeplink)
+            implementation(libs.deeplink.compose)
         }
 
         androidMain.dependencies {

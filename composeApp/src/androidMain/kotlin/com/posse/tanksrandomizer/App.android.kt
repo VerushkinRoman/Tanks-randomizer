@@ -18,7 +18,8 @@ import com.posse.tanksrandomizer.common.core.di.Inject
 import com.posse.tanksrandomizer.common.core.platform.PlatformConfiguration
 import com.posse.tanksrandomizer.common.core.platform.PlatformSDK
 import com.posse.tanksrandomizer.common.domain.repository.SettingsRepository
-import com.posse.tanksrandomizer.navigation.compose.AndroidApp
+import com.posse.tanksrandomizer.android_mode.compose.AndroidApp
+import dev.theolm.rinku.compose.ext.Rinku
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
@@ -38,7 +39,11 @@ class AppActivity : ComponentActivity() {
 
         if (Inject.instance<SettingsRepository>().getFullScreenMode()) {
             rotateDevice()
-            setContent { AndroidApp(startedFromService = false) }
+            setContent {
+                Rinku {
+                    AndroidApp(startedFromService = false)
+                }
+            }
         } else {
             setContent { StartWindowMode() }
         }

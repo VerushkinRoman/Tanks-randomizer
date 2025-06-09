@@ -1,7 +1,7 @@
 package com.posse.tanksrandomizer.common.data
 
-import com.posse.tanksrandomizer.common.domain.model.ButtonOffset
-import com.posse.tanksrandomizer.common.domain.model.ButtonSize
+import com.posse.tanksrandomizer.common.domain.models.ButtonOffset
+import com.posse.tanksrandomizer.common.domain.models.ButtonSize
 
 interface ScreenSettingsDataSource {
     fun getWindowInFullScreen(): Boolean

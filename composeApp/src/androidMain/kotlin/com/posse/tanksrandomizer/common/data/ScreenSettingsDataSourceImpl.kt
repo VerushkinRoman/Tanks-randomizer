@@ -1,8 +1,8 @@
 package com.posse.tanksrandomizer.common.data
 
 import android.content.SharedPreferences
-import com.posse.tanksrandomizer.common.domain.model.ButtonOffset
-import com.posse.tanksrandomizer.common.domain.model.ButtonSize
+import com.posse.tanksrandomizer.common.domain.models.ButtonOffset
+import com.posse.tanksrandomizer.common.domain.models.ButtonSize
 import com.russhwolf.settings.ExperimentalSettingsApi
 import com.russhwolf.settings.SharedPreferencesSettings
 import com.russhwolf.settings.serialization.decodeValue

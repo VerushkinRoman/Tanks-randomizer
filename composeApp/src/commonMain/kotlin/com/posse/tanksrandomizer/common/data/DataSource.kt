@@ -1,6 +1,6 @@
 package com.posse.tanksrandomizer.common.data
 
-import com.posse.tanksrandomizer.common.domain.model.FilterObjects.ItemStatus
+import com.posse.tanksrandomizer.common.domain.models.FilterObjects.ItemStatus
 
 interface DataSource {
     fun <T : ItemStatus<T>> setProperties(properties: List<T>)

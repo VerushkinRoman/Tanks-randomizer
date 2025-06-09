@@ -1,6 +1,6 @@
 package com.posse.tanksrandomizer.common.data
 
-import com.posse.tanksrandomizer.common.domain.model.FilterObjects.ItemStatus
+import com.posse.tanksrandomizer.common.domain.models.FilterObjects.ItemStatus
 import com.russhwolf.settings.Settings
 
 class DataSourceMultiplatformSettings(

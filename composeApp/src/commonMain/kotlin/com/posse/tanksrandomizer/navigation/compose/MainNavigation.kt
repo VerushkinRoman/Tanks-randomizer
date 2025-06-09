@@ -11,25 +11,24 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import com.posse.tanksrandomizer.feature_main_screen.compose.MainScreen
+import com.posse.tanksrandomizer.feature_offline_pane.compose.OfflineScreen
 
 @Composable
 fun MainNavigation(
     toggleSettings: () -> Unit = {},
     modifier: Modifier = Modifier
-        .fillMaxSize()
-        .padding(
-            WindowInsets.safeDrawing
-                .only(WindowInsetsSides.Horizontal)
-                .asPaddingValues()
-        )
 ) {
     Scaffold(
         contentColor = MaterialTheme.colorScheme.onSurface,
         containerColor = MaterialTheme.colorScheme.scrim,
-        modifier = modifier
+        modifier = modifier.fillMaxSize()
+            .padding(
+                WindowInsets.safeDrawing
+                    .only(WindowInsetsSides.Horizontal)
+                    .asPaddingValues()
+            )
     ) {
-        MainScreen(
+        OfflineScreen(
             toggleSettings = toggleSettings,
             modifier = Modifier.fillMaxSize()
         )

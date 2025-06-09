@@ -2,8 +2,10 @@ package com.posse.tanksrandomizer.common.core.platform
 
 import com.posse.tanksrandomizer.common.core.di.Inject
 import com.posse.tanksrandomizer.common.data.di.dataSourceModule
+import com.posse.tanksrandomizer.common.domain.repository.di.filterRepositoryModule
 import com.posse.tanksrandomizer.common.domain.utils.di.dispatchersModule
-import com.posse.tanksrandomizer.feature_main_screen.domain.repository.di.mainRepositoryModule
+import com.posse.tanksrandomizer.feature_offline_pane.domain.repository.di.offlineRepositoryModule
+import com.posse.tanksrandomizer.network.domain.repository.di.networkModule
 import org.kodein.di.DI
 import org.kodein.di.bind
 import org.kodein.di.direct
@@ -20,9 +22,11 @@ object PlatformSDK {
                 importAll(
                     umbrellaModule,
                     dataSourceModule,
-                    mainRepositoryModule,
+                    filterRepositoryModule,
+                    offlineRepositoryModule,
                     dispatchersModule,
                     platformModule,
+                    networkModule,
                 )
             }.direct
         )
