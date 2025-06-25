@@ -18,7 +18,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import com.posse.tanksrandomizer.feature_offline_pane.compose.OfflineScreen
+import com.posse.tanksrandomizer.feature_offline_pane.compose.OfflinePane
 import com.posse.tanksrandomizer.feature_settings_pane.compose.SettingsPane
 import kotlinx.coroutines.launch
 
@@ -52,7 +52,7 @@ internal fun MainScaffoldWithBottomSheet(
         containerColor = MaterialTheme.colorScheme.scrim,
         modifier = modifier
     ) {
-        OfflineScreen(
+        OfflinePane(
             toggleSettings = {
                 scope.launch {
                     if (bottomSheetState.currentValue == SheetValue.Expanded) {

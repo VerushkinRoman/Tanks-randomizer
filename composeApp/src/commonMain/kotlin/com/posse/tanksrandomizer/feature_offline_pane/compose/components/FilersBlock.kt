@@ -44,20 +44,20 @@ import androidx.compose.ui.layout.onSizeChanged
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.unit.coerceAtLeast
 import androidx.compose.ui.unit.dp
-import com.posse.tanksrandomizer.common.domain.models.FilterObjects.Experience
-import com.posse.tanksrandomizer.common.domain.models.FilterObjects.ItemStatus
-import com.posse.tanksrandomizer.common.domain.models.FilterObjects.Level
-import com.posse.tanksrandomizer.common.domain.models.FilterObjects.Nation
-import com.posse.tanksrandomizer.common.domain.models.FilterObjects.Pinned
-import com.posse.tanksrandomizer.common.domain.models.FilterObjects.Status
-import com.posse.tanksrandomizer.common.domain.models.FilterObjects.SwitchItem
-import com.posse.tanksrandomizer.common.domain.models.FilterObjects.TankType
-import com.posse.tanksrandomizer.common.domain.models.FilterObjects.Type
 import com.posse.tanksrandomizer.common.compose.utils.LocalElementSize
+import com.posse.tanksrandomizer.common.domain.models.CommonFilterObjects.ItemStatus
+import com.posse.tanksrandomizer.common.domain.models.CommonFilterObjects.Level
+import com.posse.tanksrandomizer.common.domain.models.CommonFilterObjects.Nation
+import com.posse.tanksrandomizer.common.domain.models.CommonFilterObjects.SwitchItem
+import com.posse.tanksrandomizer.common.domain.models.CommonFilterObjects.TankType
+import com.posse.tanksrandomizer.common.domain.models.CommonFilterObjects.Type
 import com.posse.tanksrandomizer.feature_offline_pane.compose.util.getFilterImage
 import com.posse.tanksrandomizer.feature_offline_pane.compose.util.getFilterName
-import com.posse.tanksrandomizer.feature_offline_pane.presentation.models.Filters
-import com.posse.tanksrandomizer.feature_offline_pane.presentation.models.OfflineScreenEvent
+import com.posse.tanksrandomizer.feature_offline_pane.domain.models.OfflineFilterObjects.Experience
+import com.posse.tanksrandomizer.feature_offline_pane.domain.models.OfflineFilterObjects.Pinned
+import com.posse.tanksrandomizer.feature_offline_pane.domain.models.OfflineFilterObjects.Status
+import com.posse.tanksrandomizer.feature_offline_pane.presentation.models.OfflineFilters
+import com.posse.tanksrandomizer.feature_offline_pane.presentation.models.OfflinePaneEvent
 import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.resources.stringResource
 import tanks_randomizer.composeapp.generated.resources.Res
@@ -65,22 +65,22 @@ import tanks_randomizer.composeapp.generated.resources.dice
 import tanks_randomizer.composeapp.generated.resources.trash
 
 @Composable
-fun FiltersBlock(
-    filters: Filters,
-    onEvent: (OfflineScreenEvent) -> Unit,
+internal fun FiltersBlock(
+    offlineFilters: OfflineFilters,
+    onEvent: (OfflinePaneEvent) -> Unit,
     modifier: Modifier = Modifier
 ) {
     val diceClicked = remember { mutableStateOf(false) }
 
-    val allDisabled by remember(filters) {
+    val allDisabled by remember(offlineFilters) {
         mutableStateOf(
-            filters.levels.all { !it.selected }
-                    && filters.types.all { !it.selected }
-                    && filters.pinned.all { !it.selected }
-                    && filters.nations.all { !it.selected }
-                    && filters.statuses.all { !it.selected }
-                    && filters.experiences.all { !it.selected }
-                    && filters.tankTypes.all { !it.selected }
+            offlineFilters.levels.all { !it.selected }
+                    && offlineFilters.types.all { !it.selected }
+                    && offlineFilters.pinned.all { !it.selected }
+                    && offlineFilters.nations.all { !it.selected }
+                    && offlineFilters.statuses.all { !it.selected }
+                    && offlineFilters.experiences.all { !it.selected }
+                    && offlineFilters.tankTypes.all { !it.selected }
         )
     }
 
@@ -91,7 +91,7 @@ fun FiltersBlock(
             .padding(6.dp)
     ) {
         Filters(
-            filters = filters,
+            offlineFilters = offlineFilters,
             onEvent = onEvent,
             diceClicked = diceClicked,
         )
@@ -109,8 +109,8 @@ fun FiltersBlock(
 @OptIn(ExperimentalLayoutApi::class)
 @Composable
 private fun Filters(
-    filters: Filters,
-    onEvent: (OfflineScreenEvent) -> Unit,
+    offlineFilters: OfflineFilters,
+    onEvent: (OfflinePaneEvent) -> Unit,
     diceClicked: MutableState<Boolean>,
     modifier: Modifier = Modifier
 ) {
@@ -120,44 +120,44 @@ private fun Filters(
         modifier = modifier
     ) {
         FilterItemsRow(
-            items = filters.levels,
-            onItemClick = { onEvent(OfflineScreenEvent.LevelPressed(it as Level)) },
+            items = offlineFilters.levels,
+            onItemClick = { onEvent(OfflinePaneEvent.LevelPressed(it as Level)) },
             diceClicked = diceClicked,
         )
 
         FilterItemsRow(
-            items = filters.types,
-            onItemClick = { onEvent(OfflineScreenEvent.TypePressed(it as Type)) },
+            items = offlineFilters.types,
+            onItemClick = { onEvent(OfflinePaneEvent.TypePressed(it as Type)) },
             diceClicked = diceClicked,
         )
 
         FilterItemsRow(
-            items = filters.experiences,
-            onItemClick = { onEvent(OfflineScreenEvent.ExperiencePressed(it as Experience)) },
+            items = offlineFilters.experiences,
+            onItemClick = { onEvent(OfflinePaneEvent.ExperiencePressed(it as Experience)) },
             diceClicked = diceClicked,
         )
 
         FilterItemsRow(
-            items = filters.pinned,
-            onItemClick = { onEvent(OfflineScreenEvent.PinnedPressed(it as Pinned)) },
+            items = offlineFilters.pinned,
+            onItemClick = { onEvent(OfflinePaneEvent.PinnedPressed(it as Pinned)) },
             diceClicked = diceClicked,
         )
 
         FilterItemsRow(
-            items = filters.statuses,
-            onItemClick = { onEvent(OfflineScreenEvent.StatusPressed(it as Status)) },
+            items = offlineFilters.statuses,
+            onItemClick = { onEvent(OfflinePaneEvent.StatusPressed(it as Status)) },
             diceClicked = diceClicked,
         )
 
         FilterItemsRow(
-            items = filters.tankTypes,
-            onItemClick = { onEvent(OfflineScreenEvent.TankTypePressed(it as TankType)) },
+            items = offlineFilters.tankTypes,
+            onItemClick = { onEvent(OfflinePaneEvent.TankTypePressed(it as TankType)) },
             diceClicked = diceClicked,
         )
 
         FilterItemsRow(
-            items = filters.nations,
-            onItemClick = { onEvent(OfflineScreenEvent.NationPressed(it as Nation)) },
+            items = offlineFilters.nations,
+            onItemClick = { onEvent(OfflinePaneEvent.NationPressed(it as Nation)) },
             diceClicked = diceClicked,
         )
     }
@@ -165,7 +165,7 @@ private fun Filters(
 
 @Composable
 private fun Buttons(
-    onEvent: (OfflineScreenEvent) -> Unit,
+    onEvent: (OfflinePaneEvent) -> Unit,
     diceClicked: MutableState<Boolean>,
     allDisabled: Boolean,
     modifier: Modifier = Modifier
@@ -188,7 +188,7 @@ private fun Buttons(
             modifier = Modifier
                 .size(ButtonDefaults.MinHeight)
                 .background(MaterialTheme.colorScheme.surfaceContainerLow)
-                .clickable { onEvent(OfflineScreenEvent.TrashFilterPressed) }
+                .clickable { onEvent(OfflinePaneEvent.TrashFilterPressed) }
                 .padding(4.dp)
         ) {
             AnimatedContent(
@@ -225,7 +225,7 @@ private fun Buttons(
                     enabled = !allDisabled,
                     onClick = {
                         diceClicked.value = true
-                        onEvent(OfflineScreenEvent.GenerateFilterPressed)
+                        onEvent(OfflinePaneEvent.GenerateFilterPressed)
                     }
                 )
                 .alpha(diceAlpha)

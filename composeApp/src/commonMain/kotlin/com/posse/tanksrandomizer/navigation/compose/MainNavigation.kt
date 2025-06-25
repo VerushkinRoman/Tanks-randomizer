@@ -11,7 +11,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import com.posse.tanksrandomizer.feature_offline_pane.compose.OfflineScreen
+import com.posse.tanksrandomizer.feature_offline_pane.compose.OfflinePane
 
 @Composable
 fun MainNavigation(
@@ -28,7 +28,7 @@ fun MainNavigation(
                     .asPaddingValues()
             )
     ) {
-        OfflineScreen(
+        OfflinePane(
             toggleSettings = toggleSettings,
             modifier = Modifier.fillMaxSize()
         )

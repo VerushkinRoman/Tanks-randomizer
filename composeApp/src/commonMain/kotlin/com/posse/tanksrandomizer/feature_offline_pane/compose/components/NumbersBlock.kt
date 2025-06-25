@@ -30,7 +30,7 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.unit.dp
 import com.posse.tanksrandomizer.common.domain.utils.BoxedInt
 import com.posse.tanksrandomizer.common.compose.utils.invisibleModifier
-import com.posse.tanksrandomizer.feature_offline_pane.presentation.models.OfflineScreenEvent
+import com.posse.tanksrandomizer.feature_offline_pane.presentation.models.OfflinePaneEvent
 import com.posse.tanksrandomizer.feature_offline_pane.presentation.models.Numbers
 import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.resources.stringResource
@@ -39,9 +39,9 @@ import tanks_randomizer.composeapp.generated.resources.dice
 import tanks_randomizer.composeapp.generated.resources.trash
 
 @Composable
-fun NumbersBlock(
+internal fun NumbersBlock(
     numbers: Numbers,
-    onEvent: (OfflineScreenEvent) -> Unit,
+    onEvent: (OfflinePaneEvent) -> Unit,
     modifier: Modifier = Modifier
 ) {
     Column(
@@ -56,17 +56,17 @@ fun NumbersBlock(
         ) {
             NumberButton(
                 number = "-1",
-                onClick = { onEvent(OfflineScreenEvent.MinusPressed) }
+                onClick = { onEvent(OfflinePaneEvent.MinusPressed) }
             )
 
             NumberButton(
                 number = "-10",
-                onClick = { onEvent(OfflineScreenEvent.MinusTenPressed) }
+                onClick = { onEvent(OfflinePaneEvent.MinusTenPressed) }
             )
 
             NumberButton(
                 number = "-100",
-                onClick = { onEvent(OfflineScreenEvent.MinusHundredPressed) }
+                onClick = { onEvent(OfflinePaneEvent.MinusHundredPressed) }
             )
 
             NumberItem(
@@ -76,17 +76,17 @@ fun NumbersBlock(
 
             NumberButton(
                 number = "+100",
-                onClick = { onEvent(OfflineScreenEvent.PlusHundredPressed) }
+                onClick = { onEvent(OfflinePaneEvent.PlusHundredPressed) }
             )
 
             NumberButton(
                 number = "+10",
-                onClick = { onEvent(OfflineScreenEvent.PlusTenPressed) }
+                onClick = { onEvent(OfflinePaneEvent.PlusTenPressed) }
             )
 
             NumberButton(
                 number = "+1",
-                onClick = { onEvent(OfflineScreenEvent.PlusPressed) }
+                onClick = { onEvent(OfflinePaneEvent.PlusPressed) }
             )
         }
 
@@ -104,7 +104,7 @@ fun NumbersBlock(
                 modifier = Modifier
                     .size(ButtonDefaults.MinHeight)
                     .background(MaterialTheme.colorScheme.surfaceContainerLow)
-                    .clickable { onEvent(OfflineScreenEvent.TrashNumberPressed) }
+                    .clickable { onEvent(OfflinePaneEvent.TrashNumberPressed) }
                     .padding(4.dp)
             )
 
@@ -122,7 +122,7 @@ fun NumbersBlock(
                 modifier = Modifier
                     .size(ButtonDefaults.MinHeight)
                     .background(MaterialTheme.colorScheme.surfaceContainerLow)
-                    .clickable { onEvent(OfflineScreenEvent.GenerateNumberPressed) }
+                    .clickable { onEvent(OfflinePaneEvent.GenerateNumberPressed) }
                     .padding(6.dp)
             )
         }

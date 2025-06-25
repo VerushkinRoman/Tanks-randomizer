@@ -1,10 +1,10 @@
 package com.posse.tanksrandomizer.common.domain.utils
 
-enum class NetworkError: Error {
-    REQUEST_TIMEOUT,
-    TOO_MANY_REQUESTS,
+enum class NetworkError : Error {
+    API_ERROR,
     NO_INTERNET,
     SERVER_ERROR,
     SERIALIZATION,
+    SOURCE_NOT_AVAILABLE,
     UNKNOWN,
 }

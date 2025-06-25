@@ -14,7 +14,7 @@ object Inject {
         _di = tree
     }
 
-    inline fun <reified T> instance(): T {
-        return di.instance()
+    inline fun <reified T> instance(tag: Any? = null): T {
+        return di.instance(tag)
     }
 }

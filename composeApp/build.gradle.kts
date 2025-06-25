@@ -54,9 +54,17 @@ kotlin {
             implementation(libs.kotlinx.serialization.json)
             implementation(libs.kotlinx.datetime)
             implementation(libs.multiplatformSettings.noArgs)
+            implementation(libs.multiplatformSettings)
+            implementation(libs.multiplatformSettings.serialization)
+            implementation(libs.multiplatformSettings.coroutines)
             implementation(libs.kodein)
             api(libs.deeplink)
             implementation(libs.deeplink.compose)
+            implementation(libs.ktor.core)
+            implementation(libs.ktor.client.cio)
+            implementation(libs.ktor.client.content.negotiation)
+            implementation(libs.ktor.serialization.kotlinx.json)
+            implementation(libs.ktor.client.logging)
         }
 
         androidMain.dependencies {
@@ -64,9 +72,6 @@ kotlin {
             implementation(libs.kotlinx.coroutines.android)
             implementation(libs.androidx.splashscreen)
             implementation(libs.android.material.theme)
-            implementation(libs.multiplatformSettings)
-            implementation(libs.multiplatformSettings.serialization)
-            implementation(libs.multiplatformSettings.coroutines)
         }
 
         jvmMain.dependencies {
@@ -78,7 +83,7 @@ kotlin {
 
 android {
     namespace = "com.posse.tanksrandomizer"
-    compileSdk = 35
+    compileSdk = 36
 
     defaultConfig {
         minSdk = 23

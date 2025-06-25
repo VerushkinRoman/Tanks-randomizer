@@ -18,13 +18,13 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.posse.tanksrandomizer.common.compose.utils.DeviceType.Android
 import com.posse.tanksrandomizer.common.compose.utils.LocaleDeviceType
-import com.posse.tanksrandomizer.feature_offline_pane.presentation.models.OfflineScreenEvent
-import com.posse.tanksrandomizer.feature_offline_pane.presentation.models.OfflineScreenState
+import com.posse.tanksrandomizer.feature_offline_pane.presentation.models.OfflinePaneEvent
+import com.posse.tanksrandomizer.feature_offline_pane.presentation.models.OfflinePaneState
 
 @Composable
-fun OfflineScreenContent(
-    viewState: OfflineScreenState,
-    onEvent: (OfflineScreenEvent) -> Unit,
+internal fun OfflinePaneContent(
+    viewState: OfflinePaneState,
+    onEvent: (OfflinePaneEvent) -> Unit,
     modifier: Modifier = Modifier
 ) {
     Column(
@@ -36,7 +36,7 @@ fun OfflineScreenContent(
             .windowInsetsPadding(WindowInsets.safeDrawing.only(WindowInsetsSides.Vertical))
     ) {
         FiltersBlock(
-            filters = viewState.filters,
+            offlineFilters = viewState.offlineFilters,
             onEvent = onEvent,
         )
 

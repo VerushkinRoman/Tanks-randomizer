@@ -7,30 +7,30 @@ import androidx.compose.ui.Modifier
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.posse.tanksrandomizer.common.presentation.utils.collectAsStateWithLifecycle
-import com.posse.tanksrandomizer.feature_offline_pane.compose.components.OfflineScreenContent
-import com.posse.tanksrandomizer.feature_offline_pane.presentation.OfflineScreenViewModel
-import com.posse.tanksrandomizer.feature_offline_pane.presentation.models.OfflineScreenAction
-import com.posse.tanksrandomizer.feature_offline_pane.presentation.models.OfflineScreenEvent
+import com.posse.tanksrandomizer.feature_offline_pane.compose.components.OfflinePaneContent
+import com.posse.tanksrandomizer.feature_offline_pane.presentation.OfflinePaneViewModel
+import com.posse.tanksrandomizer.feature_offline_pane.presentation.models.OfflinePaneAction
+import com.posse.tanksrandomizer.feature_offline_pane.presentation.models.OfflinePaneEvent
 
 @Composable
-fun OfflineScreen(
+fun OfflinePane(
     toggleSettings: () -> Unit,
     modifier: Modifier = Modifier
 ) {
-    val viewModel = viewModel { OfflineScreenViewModel() }
+    val viewModel = viewModel { OfflinePaneViewModel() }
 
     val state by viewModel.viewStates().collectAsStateWithLifecycle()
     val action by viewModel.viewActions().collectAsStateWithLifecycle()
 
     LaunchedEffect(action) {
         when (action) {
-            OfflineScreenAction.ToggleSettings -> toggleSettings()
+            OfflinePaneAction.ToggleSettings -> toggleSettings()
             else -> Unit
         }
-        viewModel.obtainEvent(OfflineScreenEvent.ClearAction)
+        viewModel.obtainEvent(OfflinePaneEvent.ClearAction)
     }
 
-    OfflineScreenContent(
+    OfflinePaneContent(
         viewState = state,
         onEvent = viewModel::obtainEvent,
         modifier = modifier
