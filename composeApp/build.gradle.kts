@@ -87,7 +87,7 @@ android {
 
     defaultConfig {
         minSdk = 23
-        targetSdk = 35
+        targetSdk = 36
 
         applicationId = "com.posse.tanksrandomizer"
         versionCode = 8

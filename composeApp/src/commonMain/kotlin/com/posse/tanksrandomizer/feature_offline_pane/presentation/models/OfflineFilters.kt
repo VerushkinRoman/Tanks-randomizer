@@ -4,11 +4,11 @@ import com.posse.tanksrandomizer.common.domain.models.CommonFilterObjects.ItemSt
 import com.posse.tanksrandomizer.common.domain.models.CommonFilterObjects.Level
 import com.posse.tanksrandomizer.common.domain.models.CommonFilterObjects.Nation
 import com.posse.tanksrandomizer.common.domain.models.CommonFilterObjects.SwitchItem
-import com.posse.tanksrandomizer.common.domain.models.CommonFilterObjects.TankType
 import com.posse.tanksrandomizer.common.domain.models.CommonFilterObjects.Type
 import com.posse.tanksrandomizer.feature_offline_pane.domain.models.OfflineFilterObjects.Experience
 import com.posse.tanksrandomizer.feature_offline_pane.domain.models.OfflineFilterObjects.Pinned
 import com.posse.tanksrandomizer.feature_offline_pane.domain.models.OfflineFilterObjects.Status
+import com.posse.tanksrandomizer.feature_offline_pane.domain.models.OfflineFilterObjects.TankType
 
 data class OfflineFilters(
     val levels: List<Level> = Level.defaultValues,

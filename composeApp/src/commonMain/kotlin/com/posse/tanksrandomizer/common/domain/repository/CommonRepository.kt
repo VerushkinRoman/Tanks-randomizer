@@ -2,7 +2,6 @@ package com.posse.tanksrandomizer.common.domain.repository
 
 import com.posse.tanksrandomizer.common.domain.models.CommonFilterObjects.Level
 import com.posse.tanksrandomizer.common.domain.models.CommonFilterObjects.Nation
-import com.posse.tanksrandomizer.common.domain.models.CommonFilterObjects.TankType
 import com.posse.tanksrandomizer.common.domain.models.CommonFilterObjects.Type
 
 interface CommonRepository {
@@ -11,9 +10,6 @@ interface CommonRepository {
 
     fun getNations(): List<Nation>
     fun setNations(nations: List<Nation>)
-
-    fun getTankTypes(): List<TankType>
-    fun setTankTypes(tankTypes: List<TankType>)
 
     fun getTypes(): List<Type>
     fun setTypes(types: List<Type>)

@@ -55,6 +55,57 @@ object OfflineFilterObjects {
         }
     }
 
+    sealed interface TankType : ItemStatus<TankType> {
+        data class Common(
+            override val name: String = "Common",
+            override val sort: Int = 1,
+            override val selected: Boolean = true,
+            override val random: Boolean = false,
+        ) : TankType {
+            override fun copy(selected: Boolean, random: Boolean) =
+                copy(selected = selected, random = random, sort = sort)
+        }
+
+        data class Premium(
+            override val name: String = "Premium",
+            override val sort: Int = 2,
+            override val selected: Boolean = true,
+            override val random: Boolean = false,
+        ) : TankType {
+            override fun copy(selected: Boolean, random: Boolean) =
+                copy(selected = selected, random = random, sort = sort)
+        }
+
+        data class Collection(
+            override val name: String = "Collection",
+            override val sort: Int = 3,
+            override val selected: Boolean = true,
+            override val random: Boolean = false,
+        ) : TankType {
+            override fun copy(selected: Boolean, random: Boolean) =
+                copy(selected = selected, random = random, sort = sort)
+        }
+
+        data class TankTypeSwitch(
+            override val name: String = "TankTypeSwitch",
+            override val sort: Int = Int.MAX_VALUE,
+            override val selected: Boolean = true,
+            override val random: Boolean = false,
+        ) : TankType, SwitchItem {
+            override fun copy(selected: Boolean, random: Boolean) =
+                copy(selected = selected, random = random, sort = sort)
+        }
+
+        companion object {
+            val defaultValues = listOf(
+                Common(),
+                Premium(),
+                Collection(),
+                TankTypeSwitch(),
+            ).sortedBy { it.sort }
+        }
+    }
+
     sealed interface Pinned : ItemStatus<Pinned> {
         data class Status(
             override val name: String = "Status",

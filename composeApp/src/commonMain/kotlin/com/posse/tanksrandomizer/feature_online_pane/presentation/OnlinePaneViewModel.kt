@@ -39,7 +39,7 @@ class OnlinePaneViewModel(
             is OnlinePaneEvent.LevelPressed -> viewState.changeItem(viewEvent.level)
             is OnlinePaneEvent.MasteryPressed -> viewState.changeItem(viewEvent.mastery)
             is OnlinePaneEvent.NationPressed -> viewState.changeItem(viewEvent.nation)
-            is OnlinePaneEvent.TankTypePressed -> viewState.changeItem(viewEvent.tankType)
+            is OnlinePaneEvent.PremiumPressed -> viewState.changeItem(viewEvent.premium)
             is OnlinePaneEvent.TypePressed -> viewState.changeItem(viewEvent.type)
             OnlinePaneEvent.GenerateTankPressed -> TODO("generateTank()")
             OnlinePaneEvent.LestaLoginPressed -> TODO("login()")

@@ -5,6 +5,7 @@ import com.posse.tanksrandomizer.feature_offline_pane.data.OfflineDataSource
 import com.posse.tanksrandomizer.feature_offline_pane.domain.models.OfflineFilterObjects.Experience
 import com.posse.tanksrandomizer.feature_offline_pane.domain.models.OfflineFilterObjects.Pinned
 import com.posse.tanksrandomizer.feature_offline_pane.domain.models.OfflineFilterObjects.Status
+import com.posse.tanksrandomizer.feature_offline_pane.domain.models.OfflineFilterObjects.TankType
 
 class OfflineRepositoryImpl(
     private val dataSource: DataSource,
@@ -15,6 +16,9 @@ class OfflineRepositoryImpl(
 
     override fun getExperiences(): List<Experience> = dataSource.getProperties(Experience.defaultValues)
     override fun setExperiences(experiences: List<Experience>) = dataSource.setProperties(experiences)
+
+    override fun getTankTypes(): List<TankType> = dataSource.getProperties(TankType.defaultValues)
+    override fun setTankTypes(tankTypes: List<TankType>) = dataSource.setProperties(tankTypes)
 
     override fun getPinned(): List<Pinned> = dataSource.getProperties(Pinned.defaultValues)
     override fun setPinned(pinned: List<Pinned>) = dataSource.setProperties(pinned)

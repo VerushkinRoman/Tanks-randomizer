@@ -147,7 +147,7 @@ object CommonFilterObjects {
 
     sealed interface Nation : ItemStatus<Nation> {
         data class USSR(
-            override val name: String = "USSR",
+            override val name: String = "ussr",
             override val sort: Int = 1,
             override val selected: Boolean = true,
             override val random: Boolean = false,
@@ -157,7 +157,7 @@ object CommonFilterObjects {
         }
 
         data class USA(
-            override val name: String = "USA",
+            override val name: String = "usa",
             override val sort: Int = 2,
             override val selected: Boolean = true,
             override val random: Boolean = false,
@@ -167,7 +167,7 @@ object CommonFilterObjects {
         }
 
         data class Germany(
-            override val name: String = "Germany",
+            override val name: String = "germany",
             override val sort: Int = 3,
             override val selected: Boolean = true,
             override val random: Boolean = false,
@@ -177,7 +177,7 @@ object CommonFilterObjects {
         }
 
         data class GreatBritain(
-            override val name: String = "GreatBritain",
+            override val name: String = "uk",
             override val sort: Int = 4,
             override val selected: Boolean = true,
             override val random: Boolean = false,
@@ -187,7 +187,7 @@ object CommonFilterObjects {
         }
 
         data class Japan(
-            override val name: String = "Japan",
+            override val name: String = "japan",
             override val sort: Int = 5,
             override val selected: Boolean = true,
             override val random: Boolean = false,
@@ -197,7 +197,7 @@ object CommonFilterObjects {
         }
 
         data class China(
-            override val name: String = "China",
+            override val name: String = "china",
             override val sort: Int = 6,
             override val selected: Boolean = true,
             override val random: Boolean = false,
@@ -207,7 +207,7 @@ object CommonFilterObjects {
         }
 
         data class France(
-            override val name: String = "France",
+            override val name: String = "france",
             override val sort: Int = 7,
             override val selected: Boolean = true,
             override val random: Boolean = false,
@@ -217,7 +217,7 @@ object CommonFilterObjects {
         }
 
         data class Europe(
-            override val name: String = "Europe",
+            override val name: String = "european",
             override val sort: Int = 8,
             override val selected: Boolean = true,
             override val random: Boolean = false,
@@ -227,7 +227,7 @@ object CommonFilterObjects {
         }
 
         data class Unknown(
-            override val name: String = "Unknown",
+            override val name: String = "other",
             override val sort: Int = 9,
             override val selected: Boolean = true,
             override val random: Boolean = false,
@@ -262,60 +262,9 @@ object CommonFilterObjects {
         }
     }
 
-    sealed interface TankType : ItemStatus<TankType> {
-        data class Common(
-            override val name: String = "Common",
-            override val sort: Int = 1,
-            override val selected: Boolean = true,
-            override val random: Boolean = false,
-        ) : TankType {
-            override fun copy(selected: Boolean, random: Boolean) =
-                copy(selected = selected, random = random, sort = sort)
-        }
-
-        data class Premium(
-            override val name: String = "Premium",
-            override val sort: Int = 2,
-            override val selected: Boolean = true,
-            override val random: Boolean = false,
-        ) : TankType {
-            override fun copy(selected: Boolean, random: Boolean) =
-                copy(selected = selected, random = random, sort = sort)
-        }
-
-        data class Collection(
-            override val name: String = "Collection",
-            override val sort: Int = 3,
-            override val selected: Boolean = true,
-            override val random: Boolean = false,
-        ) : TankType {
-            override fun copy(selected: Boolean, random: Boolean) =
-                copy(selected = selected, random = random, sort = sort)
-        }
-
-        data class TankTypeSwitch(
-            override val name: String = "TankTypeSwitch",
-            override val sort: Int = Int.MAX_VALUE,
-            override val selected: Boolean = true,
-            override val random: Boolean = false,
-        ) : TankType, SwitchItem {
-            override fun copy(selected: Boolean, random: Boolean) =
-                copy(selected = selected, random = random, sort = sort)
-        }
-
-        companion object {
-            val defaultValues = listOf(
-                Common(),
-                Premium(),
-                Collection(),
-                TankTypeSwitch(),
-            ).sortedBy { it.sort }
-        }
-    }
-
     sealed interface Type : ItemStatus<Type> {
         data class Light(
-            override val name: String = "Light",
+            override val name: String = "lightTank",
             override val sort: Int = 1,
             override val selected: Boolean = true,
             override val random: Boolean = false,
@@ -325,7 +274,7 @@ object CommonFilterObjects {
         }
 
         data class Medium(
-            override val name: String = "Medium",
+            override val name: String = "mediumTank",
             override val sort: Int = 2,
             override val selected: Boolean = true,
             override val random: Boolean = false,
@@ -335,7 +284,7 @@ object CommonFilterObjects {
         }
 
         data class Heavy(
-            override val name: String = "Heavy",
+            override val name: String = "heavyTank",
             override val sort: Int = 3,
             override val selected: Boolean = true,
             override val random: Boolean = false,
@@ -345,7 +294,7 @@ object CommonFilterObjects {
         }
 
         data class TankDestroyer(
-            override val name: String = "TankDestroyer",
+            override val name: String = "AT-SPG",
             override val sort: Int = 4,
             override val selected: Boolean = true,
             override val random: Boolean = false,

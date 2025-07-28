@@ -49,13 +49,13 @@ import com.posse.tanksrandomizer.common.domain.models.CommonFilterObjects.ItemSt
 import com.posse.tanksrandomizer.common.domain.models.CommonFilterObjects.Level
 import com.posse.tanksrandomizer.common.domain.models.CommonFilterObjects.Nation
 import com.posse.tanksrandomizer.common.domain.models.CommonFilterObjects.SwitchItem
-import com.posse.tanksrandomizer.common.domain.models.CommonFilterObjects.TankType
 import com.posse.tanksrandomizer.common.domain.models.CommonFilterObjects.Type
 import com.posse.tanksrandomizer.feature_offline_pane.compose.util.getFilterImage
 import com.posse.tanksrandomizer.feature_offline_pane.compose.util.getFilterName
 import com.posse.tanksrandomizer.feature_offline_pane.domain.models.OfflineFilterObjects.Experience
 import com.posse.tanksrandomizer.feature_offline_pane.domain.models.OfflineFilterObjects.Pinned
 import com.posse.tanksrandomizer.feature_offline_pane.domain.models.OfflineFilterObjects.Status
+import com.posse.tanksrandomizer.feature_offline_pane.domain.models.OfflineFilterObjects.TankType
 import com.posse.tanksrandomizer.feature_offline_pane.presentation.models.OfflineFilters
 import com.posse.tanksrandomizer.feature_offline_pane.presentation.models.OfflinePaneEvent
 import org.jetbrains.compose.resources.painterResource

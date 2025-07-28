@@ -6,15 +6,18 @@ import com.posse.tanksrandomizer.common.domain.utils.NetworkError
 import com.posse.tanksrandomizer.common.domain.utils.Result
 import com.posse.tanksrandomizer.feature_online_pane.data.NetworkDataSource
 import com.posse.tanksrandomizer.feature_online_pane.data.OnlineDataSource
+import com.posse.tanksrandomizer.feature_online_pane.domain.models.OnlineFilterObjects.Premium
 import com.posse.tanksrandomizer.feature_online_pane.domain.models.OnlineFilterObjects.Mastery
 import com.posse.tanksrandomizer.feature_online_pane.domain.models.Tank
 import com.posse.tanksrandomizer.feature_online_pane.domain.models.Token
-import kotlinx.datetime.Instant
 import kotlinx.datetime.LocalDateTime
 import kotlinx.datetime.TimeZone
 import kotlinx.datetime.toInstant
 import kotlinx.datetime.toLocalDateTime
+import kotlin.time.ExperimentalTime
+import kotlin.time.Instant
 
+@OptIn(ExperimentalTime::class)
 class OnlineRepositoryImpl(
     private val dataSource: DataSource,
     private val onlineDataSource: OnlineDataSource,
@@ -43,6 +46,9 @@ class OnlineRepositoryImpl(
 
     override fun getSelectedTank(): Tank? = onlineDataSource.getSelectedTank()
     override fun setSelectedTank(tank: Tank) = onlineDataSource.setSelectedTank(tank)
+
+    override fun getPremium(): List<Premium> = dataSource.getProperties(Premium.defaultValues)
+    override fun setPremium(premium: List<Premium>) = dataSource.setProperties(premium)
 
     override suspend fun logIn(): EmptyResult<NetworkError> = networkDataSource.logIn()
     override suspend fun logOut(accessToken: String): EmptyResult<NetworkError> = networkDataSource.logOut(accessToken)

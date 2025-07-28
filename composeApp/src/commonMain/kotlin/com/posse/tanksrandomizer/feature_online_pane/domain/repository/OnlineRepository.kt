@@ -3,6 +3,7 @@ package com.posse.tanksrandomizer.feature_online_pane.domain.repository
 import com.posse.tanksrandomizer.common.domain.utils.EmptyResult
 import com.posse.tanksrandomizer.common.domain.utils.NetworkError
 import com.posse.tanksrandomizer.common.domain.utils.Result
+import com.posse.tanksrandomizer.feature_online_pane.domain.models.OnlineFilterObjects.Premium
 import com.posse.tanksrandomizer.feature_online_pane.domain.models.OnlineFilterObjects.Mastery
 import com.posse.tanksrandomizer.feature_online_pane.domain.models.Tank
 import com.posse.tanksrandomizer.feature_online_pane.domain.models.Token
@@ -23,6 +24,9 @@ interface OnlineRepository {
 
     fun getSelectedTank(): Tank?
     fun setSelectedTank(tank: Tank)
+
+    fun getPremium(): List<Premium>
+    fun setPremium(premium: List<Premium>)
 
     suspend fun logIn(): EmptyResult<NetworkError>
     suspend fun logOut(accessToken: String): EmptyResult<NetworkError>
