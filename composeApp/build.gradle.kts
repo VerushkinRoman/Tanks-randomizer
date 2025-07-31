@@ -1,6 +1,7 @@
 import org.gradle.internal.extensions.stdlib.capitalized
 import org.jetbrains.compose.desktop.application.dsl.TargetFormat
 import java.util.Properties
+import com.codingfeline.buildkonfig.compiler.FieldSpec.Type.STRING
 
 plugins {
     alias(libs.plugins.multiplatform)
@@ -8,6 +9,7 @@ plugins {
     alias(libs.plugins.compose)
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlinx.serialization)
+    alias(libs.plugins.buildkonfig)
 }
 
 kotlin {
@@ -214,5 +216,19 @@ compose.desktop {
             obfuscate.set(true)
             configurationFiles.from(project.file("proguard-rules.pro"))
         }
+    }
+}
+
+buildkonfig {
+    packageName = "com.posse.tanksrandomizer.common.data.di"
+//     objectName = "ServerConstants"
+    exposeObjectWithName = "ServerConstants"
+
+    val properties = Properties().apply {
+        load(File(projectDir, "serverConstants.properties").reader())
+    }
+
+    defaultConfigs {
+        buildConfigField(STRING, "APPLICATION_ID", properties.getProperty("appication_id"))
     }
 }

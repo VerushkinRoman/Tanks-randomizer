@@ -24,6 +24,7 @@ xcuserdata
 /app/primakov
 /app/dsr
 signingKey.properties
+serverConstants.properties
 *.apk
 *.aab
 *.jks

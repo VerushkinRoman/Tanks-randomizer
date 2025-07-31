@@ -39,5 +39,3 @@ val ktorModule = DI.Module("KtorModule") {
         }
     }
 }
-
-const val APPLICATION_ID = "test"

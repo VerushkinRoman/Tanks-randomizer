@@ -1,6 +1,6 @@
 package com.posse.tanksrandomizer.feature_online_pane.data
 
-import com.posse.tanksrandomizer.common.data.di.APPLICATION_ID
+import com.posse.tanksrandomizer.common.data.di.ServerConstants.APPLICATION_ID
 import com.posse.tanksrandomizer.common.data.networking.safeCall
 import com.posse.tanksrandomizer.common.domain.utils.EmptyResult
 import com.posse.tanksrandomizer.common.domain.utils.NetworkError
