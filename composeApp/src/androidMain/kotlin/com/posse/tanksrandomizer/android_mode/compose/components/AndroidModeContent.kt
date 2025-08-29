@@ -19,7 +19,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.platform.LocalConfiguration
-import com.posse.tanksrandomizer.feature_offline_pane.compose.components.BackButtonExitApp
+import com.posse.tanksrandomizer.feature_offline_screen.compose.components.BackButtonExitApp
 import com.posse.tanksrandomizer.android_mode.presentation.model.AndroidModeEvent
 import com.posse.tanksrandomizer.android_mode.presentation.model.AndroidModeState
 

@@ -11,6 +11,7 @@ import androidx.activity.enableEdgeToEdge
 import androidx.core.content.getSystemService
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.lifecycle.lifecycleScope
+import com.posse.tanksrandomizer.android_mode.compose.AndroidApp
 import com.posse.tanksrandomizer.common.compose.components.StartWindowMode
 import com.posse.tanksrandomizer.common.compose.utils.DeviceType
 import com.posse.tanksrandomizer.common.compose.utils.rotateDevice
@@ -18,8 +19,7 @@ import com.posse.tanksrandomizer.common.core.di.Inject
 import com.posse.tanksrandomizer.common.core.platform.PlatformConfiguration
 import com.posse.tanksrandomizer.common.core.platform.PlatformSDK
 import com.posse.tanksrandomizer.common.domain.repository.SettingsRepository
-import com.posse.tanksrandomizer.android_mode.compose.AndroidApp
-import dev.theolm.rinku.compose.ext.Rinku
+import com.posse.tanksrandomizer.navigation.presentation.util.ExternalUriHandler
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
@@ -37,12 +37,14 @@ class AppActivity : ComponentActivity() {
         enableEdgeToEdge()
         addSplashScreen()
 
+        intent?.data?.let {
+            ExternalUriHandler.onNewUri(it.toString())
+        }
+
         if (Inject.instance<SettingsRepository>().getFullScreenMode()) {
             rotateDevice()
             setContent {
-                Rinku {
-                    AndroidApp(startedFromService = false)
-                }
+                AndroidApp(startedFromService = false)
             }
         } else {
             setContent { StartWindowMode() }

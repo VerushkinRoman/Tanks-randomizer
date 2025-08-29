@@ -1,4 +1,14 @@
+import androidx.compose.foundation.layout.WindowInsets
+import androidx.compose.foundation.layout.WindowInsetsSides
+import androidx.compose.foundation.layout.asPaddingValues
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.only
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.safeDrawing
 import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Scaffold
+import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Window
@@ -8,27 +18,51 @@ import com.posse.tanksrandomizer.CommonPlatformApp
 import com.posse.tanksrandomizer.common.core.platform.PlatformConfiguration
 import com.posse.tanksrandomizer.common.core.platform.PlatformSDK
 import com.posse.tanksrandomizer.navigation.compose.MainNavigation
+import com.posse.tanksrandomizer.navigation.presentation.util.ExternalUriHandler
 import org.jetbrains.compose.resources.painterResource
 import tanks_randomizer.composeapp.generated.resources.Res
 import tanks_randomizer.composeapp.generated.resources.app_icon
+import java.awt.Desktop
 import java.awt.Dimension
 
-fun main() = application {
-    PlatformSDK.init(PlatformConfiguration())
+fun main() {
+    if (System.getProperty("os.name").indexOf("Mac") > -1) {
+        Desktop.getDesktop().setOpenURIHandler { uri ->
+            ExternalUriHandler.onNewUri(uri.uri.toString())
+        }
+    } else {
+//        ExternalUriHandler.onNewUri(args.getOrNull(0).toString()) TODO
+    }
 
-    Window(
-        title = "Random Tank Generator",
-        state = rememberWindowState(width = 600.dp, height = 550.dp),
-        onCloseRequest = ::exitApplication,
-        icon = painterResource(Res.drawable.app_icon)
-    ) {
-        window.minimumSize = Dimension(
-            with(LocalDensity.current) { (ButtonDefaults.MinHeight * 16).toPx().toInt() },
-            550
-        )
+    application {
+        PlatformSDK.init(PlatformConfiguration())
 
-        CommonPlatformApp {
-            MainNavigation()
+        Window(
+            title = "Random Tank Generator",
+            state = rememberWindowState(width = 600.dp, height = 550.dp),
+            onCloseRequest = ::exitApplication,
+            icon = painterResource(Res.drawable.app_icon)
+        ) {
+            window.minimumSize = Dimension(
+                with(LocalDensity.current) { (ButtonDefaults.MinHeight * 16).toPx().toInt() },
+                550
+            )
+
+            CommonPlatformApp {
+                Scaffold(
+                    contentColor = MaterialTheme.colorScheme.onSurface,
+                    containerColor = MaterialTheme.colorScheme.scrim,
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .padding(
+                            WindowInsets.safeDrawing
+                                .only(WindowInsetsSides.Horizontal)
+                                .asPaddingValues()
+                        )
+                ) {
+                    MainNavigation()
+                }
+            }
         }
     }
 }

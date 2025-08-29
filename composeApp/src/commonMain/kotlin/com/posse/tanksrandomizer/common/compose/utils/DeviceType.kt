@@ -8,4 +8,4 @@ enum class DeviceType {
     Desktop
 }
 
-val LocaleDeviceType = staticCompositionLocalOf<DeviceType> { error("no default implementation") }
+val LocalDeviceType = staticCompositionLocalOf<DeviceType> { error("no default implementation") }

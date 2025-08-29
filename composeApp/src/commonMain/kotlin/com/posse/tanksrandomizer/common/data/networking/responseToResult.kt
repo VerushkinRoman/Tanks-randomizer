@@ -35,7 +35,6 @@ suspend inline fun <reified T> responseToResult(
     } catch (_: NoTransformationFoundException) {
         Result.Error(NetworkError.Serialization)
     } catch (_: Exception) {
-        // Fallback to HTTP status code handling
         handleHttpStatus(response.status.value)
     }
 }

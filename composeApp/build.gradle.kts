@@ -26,8 +26,6 @@ kotlin {
         it.binaries.framework {
             baseName = "ComposeApp"
             isStatic = true
-
-            export(libs.deeplink)
         }
     }
 
@@ -60,8 +58,6 @@ kotlin {
             implementation(libs.multiplatformSettings.serialization)
             implementation(libs.multiplatformSettings.coroutines)
             implementation(libs.kodein)
-            api(libs.deeplink)
-            implementation(libs.deeplink.compose)
             implementation(libs.ktor.core)
             implementation(libs.ktor.client.cio)
             implementation(libs.ktor.client.content.negotiation)
@@ -100,6 +96,17 @@ android {
 
     buildFeatures {
         buildConfig = true
+    }
+
+    bundle {
+        // Отключить динамическую доставку ресурсов по локалям
+        language.enableSplit = false
+        density.enableSplit = true
+        abi.enableSplit = true
+    }
+
+    androidResources {
+        localeFilters += listOf("en", "ru")
     }
 
     packaging {

@@ -9,138 +9,132 @@ object CommonFilterObjects {
         val selected: Boolean
         val random: Boolean
         fun copy(selected: Boolean, random: Boolean = false): T
-        fun unselect(): T {
-            return copy(
-                selected = false,
-                random = random,
-            )
-        }
     }
 
-    sealed interface Level : ItemStatus<Level> {
-        data class Level1(
-            override val name: String = "Level1",
+    sealed interface Tier : ItemStatus<Tier> {
+        data class Tier1(
+            override val name: String = "Tier1",
             override val sort: Int = 1,
             override val selected: Boolean = true,
             override val random: Boolean = false,
-        ) : Level {
+        ) : Tier {
             override fun copy(selected: Boolean, random: Boolean) =
                 copy(selected = selected, random = random, sort = sort)
         }
 
-        data class Level2(
-            override val name: String = "Level2",
+        data class Tier2(
+            override val name: String = "Tier2",
             override val sort: Int = 2,
             override val selected: Boolean = true,
             override val random: Boolean = false,
-        ) : Level {
+        ) : Tier {
             override fun copy(selected: Boolean, random: Boolean) =
                 copy(selected = selected, random = random, sort = sort)
         }
 
-        data class Level3(
-            override val name: String = "Level3",
+        data class Tier3(
+            override val name: String = "Tier3",
             override val sort: Int = 3,
             override val selected: Boolean = true,
             override val random: Boolean = false,
-        ) : Level {
+        ) : Tier {
             override fun copy(selected: Boolean, random: Boolean) =
                 copy(selected = selected, random = random, sort = sort)
         }
 
-        data class Level4(
-            override val name: String = "Level4",
+        data class Tier4(
+            override val name: String = "Tier4",
             override val sort: Int = 4,
             override val selected: Boolean = true,
             override val random: Boolean = false,
-        ) : Level {
+        ) : Tier {
             override fun copy(selected: Boolean, random: Boolean) =
                 copy(selected = selected, random = random, sort = sort)
         }
 
-        data class Level5(
-            override val name: String = "Level5",
+        data class Tier5(
+            override val name: String = "Tier5",
             override val sort: Int = 5,
             override val selected: Boolean = true,
             override val random: Boolean = false,
-        ) : Level {
+        ) : Tier {
             override fun copy(selected: Boolean, random: Boolean) =
                 copy(selected = selected, random = random, sort = sort)
         }
 
-        data class Level6(
-            override val name: String = "Level6",
+        data class Tier6(
+            override val name: String = "Tier6",
             override val sort: Int = 6,
             override val selected: Boolean = true,
             override val random: Boolean = false,
-        ) : Level {
+        ) : Tier {
             override fun copy(selected: Boolean, random: Boolean) =
                 copy(selected = selected, random = random, sort = sort)
         }
 
-        data class Level7(
-            override val name: String = "Level7",
+        data class Tier7(
+            override val name: String = "Tier7",
             override val sort: Int = 7,
             override val selected: Boolean = true,
             override val random: Boolean = false,
-        ) : Level {
+        ) : Tier {
             override fun copy(selected: Boolean, random: Boolean) =
                 copy(selected = selected, random = random, sort = sort)
         }
 
-        data class Level8(
-            override val name: String = "Level8",
+        data class Tier8(
+            override val name: String = "Tier8",
             override val sort: Int = 8,
             override val selected: Boolean = true,
             override val random: Boolean = false,
-        ) : Level {
+        ) : Tier {
             override fun copy(selected: Boolean, random: Boolean) =
                 copy(selected = selected, random = random, sort = sort)
         }
 
-        data class Level9(
-            override val name: String = "Level9",
+        data class Tier9(
+            override val name: String = "Tier9",
             override val sort: Int = 9,
             override val selected: Boolean = true,
             override val random: Boolean = false,
-        ) : Level {
+        ) : Tier {
             override fun copy(selected: Boolean, random: Boolean) =
                 copy(selected = selected, random = random, sort = sort)
         }
 
-        data class Level10(
-            override val name: String = "Level10",
+        data class Tier10(
+            override val name: String = "Tier10",
             override val sort: Int = 10,
             override val selected: Boolean = true,
             override val random: Boolean = false,
-        ) : Level {
+        ) : Tier {
             override fun copy(selected: Boolean, random: Boolean) =
                 copy(selected = selected, random = random, sort = sort)
         }
 
-        data class LevelSwitch(
-            override val name: String = "LevelSwitch",
+        data class TierSwitch(
+            override val name: String = "TierSwitch",
             override val sort: Int = Int.MAX_VALUE,
             override val selected: Boolean = true,
             override val random: Boolean = false,
-        ) : Level, SwitchItem {
+        ) : Tier, SwitchItem {
             override fun copy(selected: Boolean, random: Boolean) =
                 copy(selected = selected, random = random, sort = sort)
         }
 
         companion object {
             val defaultValues = listOf(
-                Level1(),
-                Level2(),
-                Level3(),
-                Level4(),
-                Level5(),
-                Level6(),
-                Level7(),
-                Level8(),
-                Level9(),
-                Level10(),
-                LevelSwitch(),
+                Tier1(),
+                Tier2(),
+                Tier3(),
+                Tier4(),
+                Tier5(),
+                Tier6(),
+                Tier7(),
+                Tier8(),
+                Tier9(),
+                Tier10(),
+                TierSwitch(),
             ).sortedBy { it.sort }
         }
     }
@@ -176,7 +170,7 @@ object CommonFilterObjects {
                 copy(selected = selected, random = random, sort = sort)
         }
 
-        data class GreatBritain(
+        data class UK(
             override val name: String = "uk",
             override val sort: Int = 4,
             override val selected: Boolean = true,
@@ -216,7 +210,7 @@ object CommonFilterObjects {
                 copy(selected = selected, random = random, sort = sort)
         }
 
-        data class Europe(
+        data class European(
             override val name: String = "european",
             override val sort: Int = 8,
             override val selected: Boolean = true,
@@ -226,7 +220,7 @@ object CommonFilterObjects {
                 copy(selected = selected, random = random, sort = sort)
         }
 
-        data class Unknown(
+        data class Other(
             override val name: String = "other",
             override val sort: Int = 9,
             override val selected: Boolean = true,
@@ -251,12 +245,12 @@ object CommonFilterObjects {
                 USA(),
                 Germany(),
                 USSR(),
-                GreatBritain(),
+                UK(),
                 Japan(),
                 China(),
                 France(),
-                Europe(),
-                Unknown(),
+                European(),
+                Other(),
                 NationSwitch(),
             ).sortedBy { it.sort }
         }

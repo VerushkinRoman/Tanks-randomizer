@@ -16,9 +16,7 @@ class GenerateRandomItems {
                     random = true
                 )
             } else {
-                item.copy(
-                    selected = item.selected,
-                )
+                item
             }
         }
     }

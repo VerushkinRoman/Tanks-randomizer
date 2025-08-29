@@ -1,35 +1,43 @@
 package com.posse.tanksrandomizer.navigation.compose
 
-import androidx.compose.foundation.layout.WindowInsets
-import androidx.compose.foundation.layout.WindowInsetsSides
-import androidx.compose.foundation.layout.asPaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.only
-import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.safeDrawing
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.SnackbarHost
+import androidx.compose.material3.SnackbarHostState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
-import com.posse.tanksrandomizer.feature_offline_pane.compose.OfflinePane
+import com.posse.tanksrandomizer.common.domain.models.ResponseStatus
+import com.posse.tanksrandomizer.navigation.compose.components.NavigationHost
+import kotlinx.coroutines.launch
+import org.jetbrains.compose.resources.getString
+import tanks_randomizer.composeapp.generated.resources.Res
+import tanks_randomizer.composeapp.generated.resources.something_went_wrong
 
+@OptIn(ExperimentalComposeUiApi::class)
 @Composable
 fun MainNavigation(
-    toggleSettings: () -> Unit = {},
     modifier: Modifier = Modifier
 ) {
+    val snackbarHostState = remember { SnackbarHostState() }
+    val scope = rememberCoroutineScope()
+
     Scaffold(
-        contentColor = MaterialTheme.colorScheme.onSurface,
-        containerColor = MaterialTheme.colorScheme.scrim,
-        modifier = modifier.fillMaxSize()
-            .padding(
-                WindowInsets.safeDrawing
-                    .only(WindowInsetsSides.Horizontal)
-                    .asPaddingValues()
-            )
+        snackbarHost = { SnackbarHost(hostState = snackbarHostState) },
+        modifier = modifier
     ) {
-        OfflinePane(
-            toggleSettings = toggleSettings,
+        NavigationHost(
+            onDeepLinkError = { error ->
+                if (error.status == ResponseStatus.ERROR.value) {
+                    scope.launch {
+                        snackbarHostState.showSnackbar(
+                            message = error.message ?: getString(Res.string.something_went_wrong)
+                        )
+                    }
+                }
+            },
             modifier = Modifier.fillMaxSize()
         )
     }
