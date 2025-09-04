@@ -1,15 +1,13 @@
 package com.posse.tanksrandomizer.common.core.platform
 
 import com.posse.tanksrandomizer.common.core.di.Inject
-import com.posse.tanksrandomizer.common.data.di.dataSourceModule
-import com.posse.tanksrandomizer.common.data.di.ktorModule
+import com.posse.tanksrandomizer.common.data.di.commonDataSourceModule
 import com.posse.tanksrandomizer.common.domain.di.dispatchersModule
-import com.posse.tanksrandomizer.common.domain.di.navigationModule
-import com.posse.tanksrandomizer.feature_offline_screen.data.di.offlineOfflineDataSourceModule
-import com.posse.tanksrandomizer.feature_offline_screen.domain.repository.di.offlineRepositoryModule
-import com.posse.tanksrandomizer.feature_online_screen.data.di.onlineOfflineCommonDataSourceModule
-import com.posse.tanksrandomizer.feature_online_screen.domain.repository.di.onlineRepositoryModule
-import com.posse.tanksrandomizer.network.domain.repository.di.networkModule
+import com.posse.tanksrandomizer.feature_offline_screen.data.di.offlineScreenDataSourceModule
+import com.posse.tanksrandomizer.feature_offline_screen.domain.repository.di.offlineScreenRepositoryModule
+import com.posse.tanksrandomizer.feature_online_screen.data.di.onlineScreenDataSourceModule
+import com.posse.tanksrandomizer.feature_online_screen.domain.di.onlineScreenRepositoryModule
+import com.posse.tanksrandomizer.navigation.domain.di.navigationRepositoryModule
 import org.kodein.di.DI
 import org.kodein.di.bind
 import org.kodein.di.direct
@@ -25,16 +23,14 @@ object PlatformSDK {
             DI {
                 importAll(
                     umbrellaModule,
-                    ktorModule,
-                    dataSourceModule,
+                    commonDataSourceModule,
                     dispatchersModule,
                     platformModule,
-                    networkModule,
-                    offlineRepositoryModule,
-                    offlineOfflineDataSourceModule,
-                    onlineRepositoryModule,
-                    onlineOfflineCommonDataSourceModule,
-                    navigationModule,
+                    offlineScreenRepositoryModule,
+                    offlineScreenDataSourceModule,
+                    onlineScreenRepositoryModule,
+                    onlineScreenDataSourceModule,
+                    navigationRepositoryModule,
                 )
             }.direct
         )

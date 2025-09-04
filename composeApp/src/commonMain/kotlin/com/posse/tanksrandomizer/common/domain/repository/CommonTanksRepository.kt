@@ -5,8 +5,8 @@ import com.posse.tanksrandomizer.common.domain.models.CommonFilterObjects.Tier
 import com.posse.tanksrandomizer.common.domain.models.CommonFilterObjects.Type
 
 interface CommonTanksRepository {
-    fun getLevels(): List<Tier>
-    fun setLevels(tiers: List<Tier>)
+    fun getTiers(): List<Tier>
+    fun setTiers(tiers: List<Tier>)
 
     fun getNations(): List<Nation>
     fun setNations(nations: List<Nation>)

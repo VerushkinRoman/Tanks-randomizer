@@ -1,14 +1,14 @@
 <resources>
-    <string name="level1">Уровень 1</string>
-    <string name="level2">Уровень 2</string>
-    <string name="level3">Уровень 3</string>
-    <string name="level4">Уровень 4</string>
-    <string name="level5">Уровень 5</string>
-    <string name="level6">Уровень 6</string>
-    <string name="level7">Уровень 7</string>
-    <string name="level8">Уровень 8</string>
-    <string name="level9">Уровень 9</string>
-    <string name="level10">Уровень 10</string>
+    <string name="tier1">Уровень 1</string>
+    <string name="tier2">Уровень 2</string>
+    <string name="tier3">Уровень 3</string>
+    <string name="tier4">Уровень 4</string>
+    <string name="tier5">Уровень 5</string>
+    <string name="tier6">Уровень 6</string>
+    <string name="tier7">Уровень 7</string>
+    <string name="tier8">Уровень 8</string>
+    <string name="tier9">Уровень 9</string>
+    <string name="tier10">Уровень 10</string>
 
     <string name="exp_x2">Двойной опыт</string>
     <string name="exp_bday">День рождения танка</string>
@@ -66,5 +66,34 @@
     <string name="less_size">Меньше размер</string>
     <string name="more_size">Больше размер</string>
 
+<!--    Main Screen-->
+    <string name="login_online">Войти</string>
+    <string name="login_offline">Продолжить оффлайн</string>
+
+<!--    Errors-->
+    <string name="network_api_error">Ошибка API</string>
+    <string name="network_app_blocked">Приложение заблокировано</string>
+    <string name="network_field_limit_exceeded">Превышен лимит полей для: %1$s</string>
+    <string name="network_field_not_found">Поле не найдено: %1$s</string>
+    <string name="network_field_not_specified">Поле не указано: %1$s</string>
+    <string name="network_invalid_app_id">Неверный ID приложения</string>
+    <string name="network_invalid_field">Неверное поле: %1$s</string>
+    <string name="network_invalid_ip">Неверный IP адрес</string>
+    <string name="network_method_disabled">Метод отключен</string>
+    <string name="network_method_not_found">Метод не найден</string>
+    <string name="network_no_internet">Нет подключения к интернету</string>
+    <string name="network_request_limit">Превышен лимит запросов</string>
+    <string name="network_serialization">Ошибка сериализации</string>
+    <string name="network_server_error">Ошибка сервера</string>
+    <string name="network_source_unavailable">Источник недоступен</string>
+    <string name="network_unknown">Неизвестная сетевая ошибка</string>
+
+    <string name="domain_mapper_error">Ошибка преобразования данных</string>
+    <string name="domain_token_error">Ошибка токена</string>
+
     <string name="something_went_wrong">Что-то пошло не так...</string>
+
+    <string name="auth_cancel">Авторизация отменена</string>
+    <string name="auth_expired">Превышено время ожидания авторизации</string>
+    <string name="auth_error">Ошибка аутентификации</string>
 </resources>

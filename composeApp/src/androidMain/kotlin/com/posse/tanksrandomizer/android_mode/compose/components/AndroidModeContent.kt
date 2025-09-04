@@ -22,6 +22,7 @@ import androidx.compose.ui.platform.LocalConfiguration
 import com.posse.tanksrandomizer.feature_offline_screen.compose.components.BackButtonExitApp
 import com.posse.tanksrandomizer.android_mode.presentation.model.AndroidModeEvent
 import com.posse.tanksrandomizer.android_mode.presentation.model.AndroidModeState
+import com.posse.tanksrandomizer.navigation.compose.MainNavigation
 
 @Composable
 fun AndroidModeContent(
@@ -58,7 +59,7 @@ fun AndroidModeContent(
                     .asPaddingValues()
             )
     ) {
-        MainScaffoldWithBottomSheet(
+        MainNavigation(
             showRotation = !startedFromService,
             showFloatingButtonSettings = startedFromService,
             modifier = Modifier

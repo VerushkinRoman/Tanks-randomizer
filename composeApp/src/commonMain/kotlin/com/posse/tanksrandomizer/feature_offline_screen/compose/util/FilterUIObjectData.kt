@@ -25,26 +25,26 @@ import tanks_randomizer.composeapp.generated.resources.exp_bday
 import tanks_randomizer.composeapp.generated.resources.exp_birthday
 import tanks_randomizer.composeapp.generated.resources.exp_x2
 import tanks_randomizer.composeapp.generated.resources.exp_x5
-import tanks_randomizer.composeapp.generated.resources.level1
-import tanks_randomizer.composeapp.generated.resources.level10
-import tanks_randomizer.composeapp.generated.resources.level2
-import tanks_randomizer.composeapp.generated.resources.level3
-import tanks_randomizer.composeapp.generated.resources.level4
-import tanks_randomizer.composeapp.generated.resources.level5
-import tanks_randomizer.composeapp.generated.resources.level6
-import tanks_randomizer.composeapp.generated.resources.level7
-import tanks_randomizer.composeapp.generated.resources.level8
-import tanks_randomizer.composeapp.generated.resources.level9
-import tanks_randomizer.composeapp.generated.resources.level_1
-import tanks_randomizer.composeapp.generated.resources.level_10
-import tanks_randomizer.composeapp.generated.resources.level_2
-import tanks_randomizer.composeapp.generated.resources.level_3
-import tanks_randomizer.composeapp.generated.resources.level_4
-import tanks_randomizer.composeapp.generated.resources.level_5
-import tanks_randomizer.composeapp.generated.resources.level_6
-import tanks_randomizer.composeapp.generated.resources.level_7
-import tanks_randomizer.composeapp.generated.resources.level_8
-import tanks_randomizer.composeapp.generated.resources.level_9
+import tanks_randomizer.composeapp.generated.resources.tier1
+import tanks_randomizer.composeapp.generated.resources.tier10
+import tanks_randomizer.composeapp.generated.resources.tier2
+import tanks_randomizer.composeapp.generated.resources.tier3
+import tanks_randomizer.composeapp.generated.resources.tier4
+import tanks_randomizer.composeapp.generated.resources.tier5
+import tanks_randomizer.composeapp.generated.resources.tier6
+import tanks_randomizer.composeapp.generated.resources.tier7
+import tanks_randomizer.composeapp.generated.resources.tier8
+import tanks_randomizer.composeapp.generated.resources.tier9
+import tanks_randomizer.composeapp.generated.resources.tier_1
+import tanks_randomizer.composeapp.generated.resources.tier_10
+import tanks_randomizer.composeapp.generated.resources.tier_2
+import tanks_randomizer.composeapp.generated.resources.tier_3
+import tanks_randomizer.composeapp.generated.resources.tier_4
+import tanks_randomizer.composeapp.generated.resources.tier_5
+import tanks_randomizer.composeapp.generated.resources.tier_6
+import tanks_randomizer.composeapp.generated.resources.tier_7
+import tanks_randomizer.composeapp.generated.resources.tier_8
+import tanks_randomizer.composeapp.generated.resources.tier_9
 import tanks_randomizer.composeapp.generated.resources.nation_china
 import tanks_randomizer.composeapp.generated.resources.nation_europe
 import tanks_randomizer.composeapp.generated.resources.nation_france
@@ -70,45 +70,45 @@ enum class FilterUIObjectData(
     val drawableResource: DrawableResource,
     val stringResource: StringResource,
 ) {
-    Level1(
-        drawableResource = Res.drawable.level_1,
-        stringResource = Res.string.level1,
+    Tier1(
+        drawableResource = Res.drawable.tier_1,
+        stringResource = Res.string.tier1,
     ),
-    Level2(
-        drawableResource = Res.drawable.level_2,
-        stringResource = Res.string.level2,
+    Tier2(
+        drawableResource = Res.drawable.tier_2,
+        stringResource = Res.string.tier2,
     ),
-    Level3(
-        drawableResource = Res.drawable.level_3,
-        stringResource = Res.string.level3,
+    Tier3(
+        drawableResource = Res.drawable.tier_3,
+        stringResource = Res.string.tier3,
     ),
-    Level4(
-        drawableResource = Res.drawable.level_4,
-        stringResource = Res.string.level4,
+    Tier4(
+        drawableResource = Res.drawable.tier_4,
+        stringResource = Res.string.tier4,
     ),
-    Level5(
-        drawableResource = Res.drawable.level_5,
-        stringResource = Res.string.level5,
+    Tier5(
+        drawableResource = Res.drawable.tier_5,
+        stringResource = Res.string.tier5,
     ),
-    Level6(
-        drawableResource = Res.drawable.level_6,
-        stringResource = Res.string.level6,
+    Tier6(
+        drawableResource = Res.drawable.tier_6,
+        stringResource = Res.string.tier6,
     ),
-    Level7(
-        drawableResource = Res.drawable.level_7,
-        stringResource = Res.string.level7,
+    Tier7(
+        drawableResource = Res.drawable.tier_7,
+        stringResource = Res.string.tier7,
     ),
-    Level8(
-        drawableResource = Res.drawable.level_8,
-        stringResource = Res.string.level8,
+    Tier8(
+        drawableResource = Res.drawable.tier_8,
+        stringResource = Res.string.tier8,
     ),
-    Level9(
-        drawableResource = Res.drawable.level_9,
-        stringResource = Res.string.level9,
+    Tier9(
+        drawableResource = Res.drawable.tier_9,
+        stringResource = Res.string.tier9,
     ),
-    Level10(
-        drawableResource = Res.drawable.level_10,
-        stringResource = Res.string.level10,
+    Tier10(
+        drawableResource = Res.drawable.tier_10,
+        stringResource = Res.string.tier10,
     ),
 
     X2(
@@ -225,16 +225,16 @@ fun <T> getFilterImage(item: ItemStatus<T>): Painter {
     return when (item) {
         is Tier -> {
             when (item) {
-                is Tier.Tier1 -> painterResource(FilterUIObjectData.Level1.drawableResource)
-                is Tier.Tier2 -> painterResource(FilterUIObjectData.Level2.drawableResource)
-                is Tier.Tier3 -> painterResource(FilterUIObjectData.Level3.drawableResource)
-                is Tier.Tier4 -> painterResource(FilterUIObjectData.Level4.drawableResource)
-                is Tier.Tier5 -> painterResource(FilterUIObjectData.Level5.drawableResource)
-                is Tier.Tier6 -> painterResource(FilterUIObjectData.Level6.drawableResource)
-                is Tier.Tier7 -> painterResource(FilterUIObjectData.Level7.drawableResource)
-                is Tier.Tier8 -> painterResource(FilterUIObjectData.Level8.drawableResource)
-                is Tier.Tier9 -> painterResource(FilterUIObjectData.Level9.drawableResource)
-                is Tier.Tier10 -> painterResource(FilterUIObjectData.Level10.drawableResource)
+                is Tier.Tier1 -> painterResource(FilterUIObjectData.Tier1.drawableResource)
+                is Tier.Tier2 -> painterResource(FilterUIObjectData.Tier2.drawableResource)
+                is Tier.Tier3 -> painterResource(FilterUIObjectData.Tier3.drawableResource)
+                is Tier.Tier4 -> painterResource(FilterUIObjectData.Tier4.drawableResource)
+                is Tier.Tier5 -> painterResource(FilterUIObjectData.Tier5.drawableResource)
+                is Tier.Tier6 -> painterResource(FilterUIObjectData.Tier6.drawableResource)
+                is Tier.Tier7 -> painterResource(FilterUIObjectData.Tier7.drawableResource)
+                is Tier.Tier8 -> painterResource(FilterUIObjectData.Tier8.drawableResource)
+                is Tier.Tier9 -> painterResource(FilterUIObjectData.Tier9.drawableResource)
+                is Tier.Tier10 -> painterResource(FilterUIObjectData.Tier10.drawableResource)
                 is Tier.TierSwitch -> rememberVectorPainter(
                     if (item.selected) FilterUIObjectSwitchData.Switch.enabledDrawableResource
                     else FilterUIObjectSwitchData.Switch.disabledDrawableResource
@@ -328,16 +328,16 @@ fun <T> getFilterName(item: ItemStatus<T>): String {
     return when (item) {
         is Tier -> {
             when (item) {
-                is Tier.Tier1 -> stringResource(FilterUIObjectData.Level1.stringResource)
-                is Tier.Tier2 -> stringResource(FilterUIObjectData.Level2.stringResource)
-                is Tier.Tier3 -> stringResource(FilterUIObjectData.Level3.stringResource)
-                is Tier.Tier4 -> stringResource(FilterUIObjectData.Level4.stringResource)
-                is Tier.Tier5 -> stringResource(FilterUIObjectData.Level5.stringResource)
-                is Tier.Tier6 -> stringResource(FilterUIObjectData.Level6.stringResource)
-                is Tier.Tier7 -> stringResource(FilterUIObjectData.Level7.stringResource)
-                is Tier.Tier8 -> stringResource(FilterUIObjectData.Level8.stringResource)
-                is Tier.Tier9 -> stringResource(FilterUIObjectData.Level9.stringResource)
-                is Tier.Tier10 -> stringResource(FilterUIObjectData.Level10.stringResource)
+                is Tier.Tier1 -> stringResource(FilterUIObjectData.Tier1.stringResource)
+                is Tier.Tier2 -> stringResource(FilterUIObjectData.Tier2.stringResource)
+                is Tier.Tier3 -> stringResource(FilterUIObjectData.Tier3.stringResource)
+                is Tier.Tier4 -> stringResource(FilterUIObjectData.Tier4.stringResource)
+                is Tier.Tier5 -> stringResource(FilterUIObjectData.Tier5.stringResource)
+                is Tier.Tier6 -> stringResource(FilterUIObjectData.Tier6.stringResource)
+                is Tier.Tier7 -> stringResource(FilterUIObjectData.Tier7.stringResource)
+                is Tier.Tier8 -> stringResource(FilterUIObjectData.Tier8.stringResource)
+                is Tier.Tier9 -> stringResource(FilterUIObjectData.Tier9.stringResource)
+                is Tier.Tier10 -> stringResource(FilterUIObjectData.Tier10.stringResource)
                 is Tier.TierSwitch -> stringResource(
                     if (item.selected) FilterUIObjectSwitchData.Switch.enabledStringResource
                     else FilterUIObjectSwitchData.Switch.disabledStringResource

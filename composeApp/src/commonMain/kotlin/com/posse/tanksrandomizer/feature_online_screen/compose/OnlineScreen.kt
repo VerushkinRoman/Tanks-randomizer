@@ -5,7 +5,8 @@ import androidx.compose.ui.Modifier
 
 @Composable
 fun OnlineScreen(
+    toMainScreen: () -> Unit,
     modifier: Modifier
-){
-    
+) {
+
 }

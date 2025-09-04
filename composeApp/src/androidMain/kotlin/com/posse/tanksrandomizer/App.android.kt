@@ -19,7 +19,6 @@ import com.posse.tanksrandomizer.common.core.di.Inject
 import com.posse.tanksrandomizer.common.core.platform.PlatformConfiguration
 import com.posse.tanksrandomizer.common.core.platform.PlatformSDK
 import com.posse.tanksrandomizer.common.domain.repository.SettingsRepository
-import com.posse.tanksrandomizer.navigation.presentation.util.ExternalUriHandler
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
@@ -36,10 +35,6 @@ class AppActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         addSplashScreen()
-
-        intent?.data?.let {
-            ExternalUriHandler.onNewUri(it.toString())
-        }
 
         if (Inject.instance<SettingsRepository>().getFullScreenMode()) {
             rotateDevice()

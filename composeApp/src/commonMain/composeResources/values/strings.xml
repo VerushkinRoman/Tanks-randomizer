@@ -1,14 +1,14 @@
 <resources>
-    <string name="level1">Level 1</string>
-    <string name="level2">Level 2</string>
-    <string name="level3">Level 3</string>
-    <string name="level4">Level 4</string>
-    <string name="level5">Level 5</string>
-    <string name="level6">Level 6</string>
-    <string name="level7">Level 7</string>
-    <string name="level8">Level 8</string>
-    <string name="level9">Level 9</string>
-    <string name="level10">Level 10</string>
+    <string name="tier1">Tier 1</string>
+    <string name="tier2">Tier 2</string>
+    <string name="tier3">Tier 3</string>
+    <string name="tier4">Tier 4</string>
+    <string name="tier5">Tier 5</string>
+    <string name="tier6">Tier 6</string>
+    <string name="tier7">Tier 7</string>
+    <string name="tier8">Tier 8</string>
+    <string name="tier9">Tier 9</string>
+    <string name="tier10">Tier 10</string>
 
     <string name="exp_x2">Double experience</string>
     <string name="exp_bday">Tank birthday</string>
@@ -66,5 +66,34 @@
     <string name="less_size">Less size</string>
     <string name="more_size">More size</string>
 
+<!--    Main Screen-->
+    <string name="login_online">Log In</string>
+    <string name="login_offline">Continue offline</string>
+
+<!--    Errors-->
+    <string name="network_api_error">API error occurred</string>
+    <string name="network_app_blocked">Application is blocked</string>
+    <string name="network_field_limit_exceeded">Field list limit exceeded for: %1$s</string>
+    <string name="network_field_not_found">Field not found: %1$s</string>
+    <string name="network_field_not_specified">Field not specified: %1$s</string>
+    <string name="network_invalid_app_id">Invalid application ID</string>
+    <string name="network_invalid_field">Invalid field: %1$s</string>
+    <string name="network_invalid_ip">Invalid IP address</string>
+    <string name="network_method_disabled">Method disabled</string>
+    <string name="network_method_not_found">Method not found</string>
+    <string name="network_no_internet">No internet connection</string>
+    <string name="network_request_limit">Request limit exceeded</string>
+    <string name="network_serialization">Serialization error</string>
+    <string name="network_server_error">Server error</string>
+    <string name="network_source_unavailable">Source not available</string>
+    <string name="network_unknown">Unknown network error</string>
+
+    <string name="domain_mapper_error">Data mapping error</string>
+    <string name="domain_token_error">Token error</string>
+
     <string name="something_went_wrong">Something went wrong...</string>
+
+    <string name="auth_cancel">Auth cancelled</string>
+    <string name="auth_expired">Auth timeout expired</string>
+    <string name="auth_error">Auth error</string>
 </resources>

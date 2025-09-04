@@ -8,7 +8,7 @@ import com.posse.tanksrandomizer.common.domain.utils.Result
 interface AccountRepository {
     fun getToken(): Token?
     fun setToken(token: Token?)
-    suspend fun logIn(): EmptyResult<Error>
+    suspend fun logIn(): Result<String ,Error>
     suspend fun logOut(): EmptyResult<Error>
     suspend fun getNewToken(): Result<Token, Error>
 }

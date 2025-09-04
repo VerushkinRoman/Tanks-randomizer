@@ -9,6 +9,7 @@ sealed interface OfflineScreenEvent {
     data object GenerateNumberPressed : OfflineScreenEvent
     data object TrashNumberPressed : OfflineScreenEvent
     data object SettingsPressed : OfflineScreenEvent
+    data object GoBack : OfflineScreenEvent
     data class FilterItemChanged<T : ItemStatus<T>>(val item: T) : OfflineScreenEvent
     data class QuantityChanged(val amount: Int) : OfflineScreenEvent
 }

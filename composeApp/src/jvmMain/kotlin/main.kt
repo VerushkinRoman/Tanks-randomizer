@@ -18,50 +18,38 @@ import com.posse.tanksrandomizer.CommonPlatformApp
 import com.posse.tanksrandomizer.common.core.platform.PlatformConfiguration
 import com.posse.tanksrandomizer.common.core.platform.PlatformSDK
 import com.posse.tanksrandomizer.navigation.compose.MainNavigation
-import com.posse.tanksrandomizer.navigation.presentation.util.ExternalUriHandler
 import org.jetbrains.compose.resources.painterResource
 import tanks_randomizer.composeapp.generated.resources.Res
 import tanks_randomizer.composeapp.generated.resources.app_icon
-import java.awt.Desktop
 import java.awt.Dimension
 
-fun main() {
-    if (System.getProperty("os.name").indexOf("Mac") > -1) {
-        Desktop.getDesktop().setOpenURIHandler { uri ->
-            ExternalUriHandler.onNewUri(uri.uri.toString())
-        }
-    } else {
-//        ExternalUriHandler.onNewUri(args.getOrNull(0).toString()) TODO
-    }
+fun main() = application {
+    PlatformSDK.init(PlatformConfiguration())
 
-    application {
-        PlatformSDK.init(PlatformConfiguration())
+    Window(
+        title = "Random Tank Generator",
+        state = rememberWindowState(width = 600.dp, height = 550.dp),
+        onCloseRequest = ::exitApplication,
+        icon = painterResource(Res.drawable.app_icon)
+    ) {
+        window.minimumSize = Dimension(
+            with(LocalDensity.current) { (ButtonDefaults.MinHeight * 16).toPx().toInt() },
+            550
+        )
 
-        Window(
-            title = "Random Tank Generator",
-            state = rememberWindowState(width = 600.dp, height = 550.dp),
-            onCloseRequest = ::exitApplication,
-            icon = painterResource(Res.drawable.app_icon)
-        ) {
-            window.minimumSize = Dimension(
-                with(LocalDensity.current) { (ButtonDefaults.MinHeight * 16).toPx().toInt() },
-                550
-            )
-
-            CommonPlatformApp {
-                Scaffold(
-                    contentColor = MaterialTheme.colorScheme.onSurface,
-                    containerColor = MaterialTheme.colorScheme.scrim,
-                    modifier = Modifier
-                        .fillMaxSize()
-                        .padding(
-                            WindowInsets.safeDrawing
-                                .only(WindowInsetsSides.Horizontal)
-                                .asPaddingValues()
-                        )
-                ) {
-                    MainNavigation()
-                }
+        CommonPlatformApp {
+            Scaffold(
+                contentColor = MaterialTheme.colorScheme.onSurface,
+                containerColor = MaterialTheme.colorScheme.scrim,
+                modifier = Modifier
+                    .fillMaxSize()
+                    .padding(
+                        WindowInsets.safeDrawing
+                            .only(WindowInsetsSides.Horizontal)
+                            .asPaddingValues()
+                    )
+            ) {
+                MainNavigation()
             }
         }
     }

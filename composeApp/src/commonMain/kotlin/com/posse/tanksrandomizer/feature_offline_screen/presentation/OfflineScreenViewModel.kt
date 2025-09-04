@@ -3,11 +3,11 @@ package com.posse.tanksrandomizer.feature_offline_screen.presentation
 import androidx.lifecycle.viewModelScope
 import com.posse.tanksrandomizer.common.core.di.Inject
 import com.posse.tanksrandomizer.common.domain.models.CommonFilterObjects.ItemStatus
-import com.posse.tanksrandomizer.common.domain.models.RepositoryType
+import com.posse.tanksrandomizer.common.domain.models.RepositoryFor
 import com.posse.tanksrandomizer.common.domain.repository.CommonTanksRepository
 import com.posse.tanksrandomizer.common.domain.utils.Dispatchers
 import com.posse.tanksrandomizer.common.presentation.utils.BaseSharedViewModel
-import com.posse.tanksrandomizer.feature_offline_screen.domain.repository.OfflineRepository
+import com.posse.tanksrandomizer.feature_offline_screen.domain.repository.OfflineScreenRepository
 import com.posse.tanksrandomizer.feature_offline_screen.presentation.models.Numbers
 import com.posse.tanksrandomizer.feature_offline_screen.presentation.models.OfflineFilters
 import com.posse.tanksrandomizer.feature_offline_screen.presentation.models.OfflineScreenAction
@@ -19,19 +19,19 @@ import com.posse.tanksrandomizer.feature_offline_screen.presentation.use_cases.S
 import kotlinx.coroutines.launch
 
 class OfflineScreenViewModel(
-    filterRepository: CommonTanksRepository = Inject.instance(tag = RepositoryType.Offline),
-    offlineRepository: OfflineRepository = Inject.instance(),
+    filterRepository: CommonTanksRepository = Inject.instance(tag = RepositoryFor.OfflineScreen),
+    offlineScreenRepository: OfflineScreenRepository = Inject.instance(),
     dispatchers: Dispatchers = Inject.instance(),
 ) : BaseSharedViewModel<OfflineScreenState, OfflineScreenAction, OfflineScreenEvent>(
     initialState = GetOfflineScreenStartState(
         commonTanksRepository = filterRepository,
-        offlineRepository = offlineRepository
+        offlineScreenRepository = offlineScreenRepository
     ).invoke()
 ) {
     private val generateOfflineFilter = GenerateOfflineFilter(dispatchers = dispatchers)
     private val saveOfflineScreenState = SaveOfflineScreenState(
         filterRepository = filterRepository,
-        offlineRepository = offlineRepository,
+        offlineScreenRepository = offlineScreenRepository,
         dispatchers = dispatchers,
     )
 
@@ -43,6 +43,7 @@ class OfflineScreenViewModel(
             OfflineScreenEvent.TrashFilterPressed -> resetFilter()
             OfflineScreenEvent.TrashNumberPressed -> resetQuantity()
             OfflineScreenEvent.SettingsPressed -> toggleSettings()
+            OfflineScreenEvent.GoBack -> goBack()
             is OfflineScreenEvent.FilterItemChanged<*> -> handleFilterItemChanged(viewEvent.item)
             is OfflineScreenEvent.QuantityChanged -> changeQuantity(viewEvent.amount)
         }
@@ -87,6 +88,10 @@ class OfflineScreenViewModel(
 
     private fun toggleSettings() {
         viewAction = OfflineScreenAction.ToggleSettings
+    }
+
+    private fun goBack() {
+        viewAction = OfflineScreenAction.ToMainScreen
     }
 
     private fun makeActionWithViewModelScopeAndSaveState(

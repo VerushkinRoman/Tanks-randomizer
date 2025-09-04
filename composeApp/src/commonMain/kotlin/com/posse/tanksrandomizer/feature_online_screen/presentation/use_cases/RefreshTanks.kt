@@ -7,16 +7,16 @@ import com.posse.tanksrandomizer.common.domain.utils.onError
 import com.posse.tanksrandomizer.common.domain.models.AccountTank
 import com.posse.tanksrandomizer.common.domain.models.EncyclopediaTank
 import com.posse.tanksrandomizer.feature_online_screen.domain.models.Tank
-import com.posse.tanksrandomizer.feature_online_screen.domain.repository.OnlineRepository
+import com.posse.tanksrandomizer.feature_online_screen.domain.repository.OnlineScreenRepository
 import kotlinx.coroutines.withContext
 
 class RefreshTanks(
-    private val onlineRepository: OnlineRepository,
+    private val onlineScreenRepository: OnlineScreenRepository,
     private val dispatchers: Dispatchers,
 ) {
     suspend operator fun invoke(tanks: List<Tank>): Result<List<Tank>, Error> {
         return withContext(dispatchers.io) {
-            val accountTanks: List<AccountTank> = onlineRepository.getAccountTanks()
+            val accountTanks: List<AccountTank> = onlineScreenRepository.getAccountTanks()
                 .onError { error -> return@withContext Result.Error(error) }
                 .let { (it as Result.Success).data }
 
@@ -25,7 +25,7 @@ class RefreshTanks(
             val diffIds = accountTanksToAdd.map { it.id }
 
             val encyclopediaTanks: List<EncyclopediaTank> =
-                onlineRepository.getEncyclopediaTanks(diffIds)
+                onlineScreenRepository.getEncyclopediaTanks(diffIds)
                     .onError { error -> return@withContext Result.Error(error) }
                     .let { (it as Result.Success).data }
 

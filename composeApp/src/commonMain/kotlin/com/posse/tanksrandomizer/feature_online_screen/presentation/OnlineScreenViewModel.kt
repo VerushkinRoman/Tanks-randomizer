@@ -3,7 +3,7 @@ package com.posse.tanksrandomizer.feature_online_screen.presentation
 import androidx.lifecycle.viewModelScope
 import com.posse.tanksrandomizer.common.core.di.Inject
 import com.posse.tanksrandomizer.common.domain.models.CommonFilterObjects.ItemStatus
-import com.posse.tanksrandomizer.common.domain.models.RepositoryType
+import com.posse.tanksrandomizer.common.domain.models.RepositoryFor
 import com.posse.tanksrandomizer.common.domain.repository.AccountRepository
 import com.posse.tanksrandomizer.common.domain.repository.CommonTanksRepository
 import com.posse.tanksrandomizer.common.domain.utils.Dispatchers
@@ -13,7 +13,7 @@ import com.posse.tanksrandomizer.common.domain.utils.onError
 import com.posse.tanksrandomizer.common.domain.utils.onSuccess
 import com.posse.tanksrandomizer.common.presentation.utils.BaseSharedViewModel
 import com.posse.tanksrandomizer.feature_online_screen.domain.models.Tank
-import com.posse.tanksrandomizer.feature_online_screen.domain.repository.OnlineRepository
+import com.posse.tanksrandomizer.feature_online_screen.domain.repository.OnlineScreenRepository
 import com.posse.tanksrandomizer.feature_online_screen.presentation.models.OnlineFilters
 import com.posse.tanksrandomizer.feature_online_screen.presentation.models.OnlineScreenAction
 import com.posse.tanksrandomizer.feature_online_screen.presentation.models.OnlineScreenEvent
@@ -28,27 +28,27 @@ import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
 
 class OnlineScreenViewModel(
-    filterRepository: CommonTanksRepository = Inject.instance(tag = RepositoryType.Online),
-    onlineRepository: OnlineRepository = Inject.instance(),
+    filterRepository: CommonTanksRepository = Inject.instance(tag = RepositoryFor.OnlineScreen),
+    onlineScreenRepository: OnlineScreenRepository = Inject.instance(),
     accountRepository: AccountRepository = Inject.instance(),
     dispatchers: Dispatchers = Inject.instance(),
     private val filterTanks: FilterTanks = FilterTanks(dispatchers = dispatchers),
 ) : BaseSharedViewModel<OnlineScreenState, OnlineScreenAction, OnlineScreenEvent>(
     initialState = GetOnlineScreenStartState(
         commonTanksRepository = filterRepository,
-        onlineRepository = onlineRepository,
+        onlineScreenRepository = onlineScreenRepository,
         accountRepository = accountRepository,
         filterTanks = filterTanks,
     ).invoke()
 ) {
     private val saveOnlineScreenState = SaveOnlineScreenState(
         filterRepository = filterRepository,
-        onlineRepository = onlineRepository,
+        onlineScreenRepository = onlineScreenRepository,
         dispatchers = dispatchers,
     )
 
     private val refreshTanks = RefreshTanks(
-        onlineRepository = onlineRepository,
+        onlineScreenRepository = onlineScreenRepository,
         dispatchers = dispatchers,
     )
 

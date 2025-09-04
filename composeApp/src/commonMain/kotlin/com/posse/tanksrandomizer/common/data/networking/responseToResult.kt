@@ -1,5 +1,6 @@
 package com.posse.tanksrandomizer.common.data.networking
 
+import com.posse.tanksrandomizer.common.data.networking.EndpointConstants.REDIRECT_URL_ENCODED
 import com.posse.tanksrandomizer.common.domain.utils.NetworkError
 import com.posse.tanksrandomizer.common.domain.utils.Result
 import io.ktor.client.call.NoTransformationFoundException
@@ -15,6 +16,16 @@ suspend inline fun <reified T> responseToResult(
     response: HttpResponse
 ): Result<T, NetworkError> {
     return try {
+        try {
+            response.headers["Location"]
+        } catch (_: Exception) {
+            null
+        }?.let { redirectUrl ->
+            if (redirectUrl.contains(REDIRECT_URL_ENCODED)) {
+                return Result.Success(redirectUrl as T)
+            }
+        }
+
         val json = response.body<String>()
         val parsed = Json.decodeFromString<JsonObject>(json)
 
@@ -59,11 +70,13 @@ fun parseApiError(error: ApiErrorResponse): NetworkError {
             error.message == "INVALID_IP_ADDRESS" -> NetworkError.InvalidIpAddress
             error.message == "REQUEST_LIMIT_EXCEEDED" -> NetworkError.RequestLimitExceeded
             error.message.startsWith("INVALID_") -> NetworkError.InvalidField(
-                error.message.removePrefix("INVALID_").lowercase()
+                "${error.field} - ${error.value}"
             )
+
             error.message.endsWith("_LIST_LIMIT_EXCEEDED") -> NetworkError.FieldListLimitExceeded(
-                error.message.removeSuffix("_LIST_LIMIT_EXCEEDED").lowercase()
+                "${error.field} - ${error.value}"
             )
+
             else -> NetworkError.ApiError
         }
 

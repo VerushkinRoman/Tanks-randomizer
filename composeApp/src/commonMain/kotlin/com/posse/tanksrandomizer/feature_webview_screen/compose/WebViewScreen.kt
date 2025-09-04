@@ -1,0 +1,95 @@
+package com.posse.tanksrandomizer.feature_webview_screen.compose
+
+import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.WindowInsets
+import androidx.compose.foundation.layout.WindowInsetsSides
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.only
+import androidx.compose.foundation.layout.safeContent
+import androidx.compose.foundation.layout.safeDrawingPadding
+import androidx.compose.foundation.layout.windowInsetsPadding
+import androidx.compose.material3.LinearProgressIndicator
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.ProgressIndicatorDefaults
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.derivedStateOf
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
+import com.multiplatform.webview.web.LoadingState
+import com.multiplatform.webview.web.WebView
+import com.multiplatform.webview.web.rememberWebViewNavigator
+import com.multiplatform.webview.web.rememberWebViewState
+import com.posse.tanksrandomizer.common.data.networking.EndpointConstants.REDIRECT_URL
+import com.posse.tanksrandomizer.feature_webview_screen.compose.components.ActionButtonsRow
+import com.posse.tanksrandomizer.feature_webview_screen.compose.model.NavigationAction.GoBack
+import com.posse.tanksrandomizer.feature_webview_screen.compose.model.NavigationAction.GoForward
+import com.posse.tanksrandomizer.feature_webview_screen.compose.model.NavigationAction.Reload
+import com.posse.tanksrandomizer.feature_webview_screen.compose.model.NavigationAction.StopLoading
+
+@Composable
+fun WebViewScreen(
+    url: String,
+    onResult: (url: String) -> Unit,
+    modifier: Modifier,
+) {
+    val state = rememberWebViewState(url)
+    val navigator = rememberWebViewNavigator()
+
+    val loadingProgress by remember {
+        derivedStateOf { (state.loadingState as? LoadingState.Loading)?.progress ?: 0f }
+    }
+
+    LaunchedEffect(state.lastLoadedUrl) {
+        state.lastLoadedUrl?.let { url ->
+            if (url.startsWith(REDIRECT_URL)) {
+                navigator.stopLoading()
+                onResult(url)
+            }
+        }
+    }
+
+    Column(
+        horizontalAlignment = Alignment.CenterHorizontally,
+        modifier = modifier
+            .background(color = MaterialTheme.colorScheme.background)
+            .safeDrawingPadding()
+    ) {
+        LinearProgressIndicator(
+            progress = { loadingProgress },
+            color = ProgressIndicatorDefaults.linearColor,
+            trackColor = ProgressIndicatorDefaults.linearTrackColor,
+            strokeCap = ProgressIndicatorDefaults.LinearStrokeCap,
+            modifier = Modifier.fillMaxWidth(),
+        )
+
+        ActionButtonsRow(
+            onAction = { navigationAction ->
+                when (navigationAction) {
+                    Reload -> navigator.reload()
+                    StopLoading -> navigator.stopLoading()
+                    GoBack -> navigator.navigateBack()
+                    GoForward -> navigator.navigateForward()
+                }
+            },
+            forwardEnabled = navigator.canGoForward,
+            backEnabled = navigator.canGoBack,
+            reloadEnabled = !state.isLoading,
+            modifier = Modifier
+                .fillMaxWidth()
+                .windowInsetsPadding(
+                    WindowInsets.safeContent.only(WindowInsetsSides.Horizontal)
+                )
+        )
+
+        WebView(
+            state = state,
+            navigator = navigator,
+            modifier = Modifier.fillMaxSize()
+        )
+    }
+}

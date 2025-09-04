@@ -63,6 +63,7 @@ kotlin {
             implementation(libs.ktor.client.content.negotiation)
             implementation(libs.ktor.serialization.kotlinx.json)
             implementation(libs.ktor.client.logging)
+            api(libs.compose.webview.multiplatform) // use api since the desktop app need to access the Cef to initialize it.
         }
 
         androidMain.dependencies {

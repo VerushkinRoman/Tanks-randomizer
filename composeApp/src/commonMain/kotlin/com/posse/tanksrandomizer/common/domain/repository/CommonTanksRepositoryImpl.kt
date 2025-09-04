@@ -1,19 +1,19 @@
 package com.posse.tanksrandomizer.common.domain.repository
 
-import com.posse.tanksrandomizer.common.data.OfflineCommonDataSource
+import com.posse.tanksrandomizer.common.data.datasource.OfflineDataSource
 import com.posse.tanksrandomizer.common.domain.models.CommonFilterObjects.Nation
 import com.posse.tanksrandomizer.common.domain.models.CommonFilterObjects.Tier
 import com.posse.tanksrandomizer.common.domain.models.CommonFilterObjects.Type
 
 class CommonTanksRepositoryImpl(
-    private val offlineCommonDataSource: OfflineCommonDataSource,
+    private val offlineDataSource: OfflineDataSource,
 ) : CommonTanksRepository {
-    override fun getLevels(): List<Tier> = offlineCommonDataSource.getProperties(Tier.defaultValues)
-    override fun setLevels(tiers: List<Tier>) = offlineCommonDataSource.setProperties(tiers)
+    override fun getTiers(): List<Tier> = offlineDataSource.getProperties(Tier.defaultValues)
+    override fun setTiers(tiers: List<Tier>) = offlineDataSource.setProperties(tiers)
 
-    override fun getNations(): List<Nation> = offlineCommonDataSource.getProperties(Nation.defaultValues)
-    override fun setNations(nations: List<Nation>) = offlineCommonDataSource.setProperties(nations)
+    override fun getNations(): List<Nation> = offlineDataSource.getProperties(Nation.defaultValues)
+    override fun setNations(nations: List<Nation>) = offlineDataSource.setProperties(nations)
 
-    override fun getTypes(): List<Type> = offlineCommonDataSource.getProperties(Type.defaultValues)
-    override fun setTypes(types: List<Type>) = offlineCommonDataSource.setProperties(types)
+    override fun getTypes(): List<Type> = offlineDataSource.getProperties(Type.defaultValues)
+    override fun setTypes(types: List<Type>) = offlineDataSource.setProperties(types)
 }
