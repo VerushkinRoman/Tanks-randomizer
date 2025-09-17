@@ -286,7 +286,7 @@ fun <T> getFilterImage(item: ItemStatus<T>): Painter {
             when (item) {
                 is Status.Elite -> painterResource(FilterUIObjectData.Elite.drawableResource)
                 is Status.NotElite -> painterResource(FilterUIObjectData.NotElite.drawableResource)
-                is Status.StatusSwitch -> rememberVectorPainter(
+                is Status.EliteSwitch -> rememberVectorPainter(
                     if (item.selected) FilterUIObjectSwitchData.Switch.enabledDrawableResource
                     else FilterUIObjectSwitchData.Switch.disabledDrawableResource
                 )
@@ -389,7 +389,7 @@ fun <T> getFilterName(item: ItemStatus<T>): String {
             when (item) {
                 is Status.Elite -> stringResource(FilterUIObjectData.Elite.stringResource)
                 is Status.NotElite -> stringResource(FilterUIObjectData.NotElite.stringResource)
-                is Status.StatusSwitch -> stringResource(
+                is Status.EliteSwitch -> stringResource(
                     if (item.selected) FilterUIObjectSwitchData.Switch.enabledStringResource
                     else FilterUIObjectSwitchData.Switch.disabledStringResource
                 )

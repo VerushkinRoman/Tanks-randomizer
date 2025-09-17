@@ -107,6 +107,7 @@ android {
     }
 
     androidResources {
+        @Suppress("UnstableApiUsage")
         localeFilters += listOf("en", "ru")
     }
 
@@ -229,7 +230,6 @@ compose.desktop {
 
 buildkonfig {
     packageName = "com.posse.tanksrandomizer.common.data.di"
-//     objectName = "ServerConstants"
     exposeObjectWithName = "ServerConstants"
 
     val properties = Properties().apply {

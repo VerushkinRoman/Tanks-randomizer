@@ -32,7 +32,7 @@ data class OnlineFilters(
             nations = markRandomForItem(nations, tank.nation),
             types = markRandomForItem(types, tank.type),
             premium = markRandomForPremium(premium, tank.isPremium),
-            mastery = markRandomForMastery(mastery, tank.isMaster)
+            mastery = markRandomForItem(mastery, tank.mastery)
         )
     }
 
@@ -61,20 +61,6 @@ data class OnlineFilters(
                 !isPremium && filterPremium is Premium.Common ->
                     filterPremium.copy(random = true, selected = filterPremium.selected)
                 else -> filterPremium.copy(random = false, selected = filterPremium.selected)
-            }
-        }
-    }
-
-    private fun markRandomForMastery(
-        currentMastery: List<Mastery>,
-        isMaster: Boolean
-    ): List<Mastery> {
-        return currentMastery.map { filterMastery ->
-            when {
-                filterMastery is Mastery.MasterySwitch -> filterMastery
-                isMaster && filterMastery is Mastery.Master ->
-                    filterMastery.copy(random = true, selected = filterMastery.selected)
-                else -> filterMastery.copy(random = false, selected = filterMastery.selected)
             }
         }
     }

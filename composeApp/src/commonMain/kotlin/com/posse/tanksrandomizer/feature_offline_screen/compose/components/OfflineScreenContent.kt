@@ -16,8 +16,8 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import com.posse.tanksrandomizer.common.compose.utils.DeviceType.Android
-import com.posse.tanksrandomizer.common.compose.utils.LocalDeviceType
+import com.posse.tanksrandomizer.common.compose.components.AdditionalBottomComponents
+import com.posse.tanksrandomizer.common.compose.models.AdditionalBottomComponentsEvent
 import com.posse.tanksrandomizer.feature_offline_screen.presentation.models.OfflineScreenEvent
 import com.posse.tanksrandomizer.feature_offline_screen.presentation.models.OfflineScreenState
 
@@ -47,14 +47,14 @@ internal fun OfflineScreenContent(
             onEvent = onEvent,
         )
 
-        when (LocalDeviceType.current) {
-            Android -> {
-                Spacer(Modifier.height(12.dp))
-
-                SettingsButton(onEvent = onEvent)
-            }
-
-            else -> Unit
-        }
+        AdditionalBottomComponents(
+            loading = viewState.loading,
+            onAdditionalBottomComponentsEvent = { event ->
+                when (event) {
+                    AdditionalBottomComponentsEvent.LogInPressed -> onEvent(OfflineScreenEvent.LogInPressed)
+                    AdditionalBottomComponentsEvent.SettingsPressed -> onEvent(OfflineScreenEvent.SettingsPressed)
+                }
+            },
+        )
     }
 }

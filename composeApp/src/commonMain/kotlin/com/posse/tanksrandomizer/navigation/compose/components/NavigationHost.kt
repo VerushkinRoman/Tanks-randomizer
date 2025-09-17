@@ -73,10 +73,8 @@ fun NavigationHost(
 
         composable<OfflineScreenRoute> {
             OfflineScreen(
-                toMainScreen = {
-                    navController.navigate(MainScreenRoute) {
-                        popUpTo<OfflineScreenRoute> { inclusive = true }
-                    }
+                logIn = { url ->
+                    navController.navigate(WebViewScreenRoute(url = url))
                 },
                 showRotation = showRotation,
                 showFloatingButtonSettings = showFloatingButtonSettings,

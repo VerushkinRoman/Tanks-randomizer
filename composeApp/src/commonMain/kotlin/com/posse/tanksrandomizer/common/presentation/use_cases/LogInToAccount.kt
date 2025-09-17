@@ -1,4 +1,4 @@
-package com.posse.tanksrandomizer.feature_main_screen.presentation.use_cases
+package com.posse.tanksrandomizer.common.presentation.use_cases
 
 import com.posse.tanksrandomizer.common.domain.repository.AccountRepository
 import com.posse.tanksrandomizer.common.domain.utils.Dispatchers

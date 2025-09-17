@@ -4,4 +4,5 @@ sealed interface MainScreenEvent {
     data object ClearAction : MainScreenEvent
     data object LogIn : MainScreenEvent
     data object ToOfflineScreen : MainScreenEvent
+    data object OnScreenLaunch : MainScreenEvent
 }

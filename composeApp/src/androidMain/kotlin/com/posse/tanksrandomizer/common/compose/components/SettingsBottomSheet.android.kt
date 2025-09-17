@@ -12,9 +12,12 @@ import androidx.compose.material3.BottomSheetScaffold
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.SheetState
+import androidx.compose.material3.SnackbarHost
+import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.rememberBottomSheetScaffoldState
 import androidx.compose.material3.rememberStandardBottomSheetState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.posse.tanksrandomizer.feature_settings_pane.compose.SettingsPane
@@ -25,9 +28,10 @@ actual fun SettingsBottomSheet(
     showRotation: Boolean,
     showFloatingButtonSettings: Boolean,
     modifier: Modifier,
-    content: @Composable ((PaddingValues, SheetState) -> Unit)
+    content: @Composable ((paddingValues: PaddingValues, bottomSheetState: SheetState, snackbarHostState: SnackbarHostState) -> Unit)
 ) {
     val bottomSheetState = rememberStandardBottomSheetState(skipHiddenState = false)
+    val snackbarHostState = remember { SnackbarHostState() }
 
     BottomSheetScaffold(
         sheetContent = {
@@ -45,10 +49,11 @@ actual fun SettingsBottomSheet(
         },
         scaffoldState = rememberBottomSheetScaffoldState(bottomSheetState),
         sheetPeekHeight = 0.dp,
+        snackbarHost = { SnackbarHost(hostState = snackbarHostState) },
         contentColor = MaterialTheme.colorScheme.onSurface,
         containerColor = MaterialTheme.colorScheme.scrim,
         modifier = modifier
     ) { paddingValues ->
-        content(paddingValues, bottomSheetState)
+        content(paddingValues, bottomSheetState, snackbarHostState)
     }
 }

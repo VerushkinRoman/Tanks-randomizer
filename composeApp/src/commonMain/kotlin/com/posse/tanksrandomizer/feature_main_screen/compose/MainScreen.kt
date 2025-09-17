@@ -12,15 +12,12 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
-import com.posse.tanksrandomizer.common.compose.utils.ErrorHandler
-import com.posse.tanksrandomizer.common.domain.utils.Error
+import com.posse.tanksrandomizer.common.compose.utils.showError
 import com.posse.tanksrandomizer.common.presentation.utils.collectAsStateWithLifecycle
 import com.posse.tanksrandomizer.feature_main_screen.compose.components.MainScreenContent
 import com.posse.tanksrandomizer.feature_main_screen.presentation.MainScreenViewModel
 import com.posse.tanksrandomizer.feature_main_screen.presentation.models.MainScreenAction
 import com.posse.tanksrandomizer.feature_main_screen.presentation.models.MainScreenEvent
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.launch
 
 @Composable
 fun MainScreen(
@@ -36,11 +33,15 @@ fun MainScreen(
     val snackbarHostState = remember { SnackbarHostState() }
     val scope = rememberCoroutineScope()
 
+    LaunchedEffect(Unit) {
+        viewModel.obtainEvent(MainScreenEvent.OnScreenLaunch)
+    }
+
     LaunchedEffect(action) {
         action?.let { action ->
             when (action) {
                 is MainScreenAction.ToOfflineScreen -> toOfflineScreen()
-                is MainScreenAction.OpenUri -> toWebViewScreen(action.uri)
+                is MainScreenAction.OpenUrl -> toWebViewScreen(action.url)
                 is MainScreenAction.ShowError -> showError(
                     scope = scope,
                     snackbarHostState = snackbarHostState,
@@ -60,18 +61,6 @@ fun MainScreen(
             viewState = state,
             onEvent = viewModel::obtainEvent,
             modifier = Modifier.fillMaxSize(),
-        )
-    }
-}
-
-private fun showError(
-    scope: CoroutineScope,
-    snackbarHostState: SnackbarHostState,
-    error: Error
-) {
-    scope.launch {
-        snackbarHostState.showSnackbar(
-            message = ErrorHandler.getErrorMessage(error)
         )
     }
 }

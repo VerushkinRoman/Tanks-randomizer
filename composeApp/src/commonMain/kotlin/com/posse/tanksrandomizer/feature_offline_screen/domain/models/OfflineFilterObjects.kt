@@ -156,8 +156,8 @@ object OfflineFilterObjects {
                 copy(selected = selected, random = random, sort = sort)
         }
 
-        data class StatusSwitch(
-            override val name: String = "StatusSwitch",
+        data class EliteSwitch(
+            override val name: String = "EliteSwitch",
             override val sort: Int = Int.MAX_VALUE,
             override val selected: Boolean = true,
             override val random: Boolean = false,
@@ -170,7 +170,69 @@ object OfflineFilterObjects {
             val defaultValues = listOf(
                 NotElite(),
                 Elite(),
-                StatusSwitch(),
+                EliteSwitch(),
+            ).sortedBy { it.sort }
+        }
+    }
+
+    sealed interface MarkCount : ItemStatus<MarkCount> {
+        data class NoMarks(
+            override val name: String = "NoMarks",
+            override val sort: Int = 1,
+            override val selected: Boolean = true,
+            override val random: Boolean = false,
+        ) : MarkCount {
+            override fun copy(selected: Boolean, random: Boolean) =
+                copy(selected = selected, random = random, sort = sort)
+        }
+
+        data class Mark1(
+            override val name: String = "Mark1",
+            override val sort: Int = 2,
+            override val selected: Boolean = true,
+            override val random: Boolean = false,
+        ) : MarkCount {
+            override fun copy(selected: Boolean, random: Boolean) =
+                copy(selected = selected, random = random, sort = sort)
+        }
+
+        data class Mark2(
+            override val name: String = "Mark2",
+            override val sort: Int = 3,
+            override val selected: Boolean = true,
+            override val random: Boolean = false,
+        ) : MarkCount {
+            override fun copy(selected: Boolean, random: Boolean) =
+                copy(selected = selected, random = random, sort = sort)
+        }
+
+        data class Mark3(
+            override val name: String = "Mark3",
+            override val sort: Int = 4,
+            override val selected: Boolean = true,
+            override val random: Boolean = false,
+        ) : MarkCount {
+            override fun copy(selected: Boolean, random: Boolean) =
+                copy(selected = selected, random = random, sort = sort)
+        }
+
+        data class MarkSwitch(
+            override val name: String = "MarkSwitch",
+            override val sort: Int = Int.MAX_VALUE,
+            override val selected: Boolean = true,
+            override val random: Boolean = false,
+        ) : MarkCount, SwitchItem {
+            override fun copy(selected: Boolean, random: Boolean) =
+                copy(selected = selected, random = random, sort = sort)
+        }
+
+        companion object {
+            val defaultValues = listOf(
+                NoMarks(),
+                Mark1(),
+                Mark2(),
+                Mark3(),
+                MarkSwitch(),
             ).sortedBy { it.sort }
         }
     }

@@ -9,6 +9,7 @@ import com.posse.tanksrandomizer.common.domain.models.CommonFilterObjects.Tier
 import com.posse.tanksrandomizer.common.domain.models.CommonFilterObjects.Type
 import com.posse.tanksrandomizer.common.domain.models.EncyclopediaTank
 import com.posse.tanksrandomizer.common.domain.models.Token
+import com.posse.tanksrandomizer.feature_online_screen.domain.models.OnlineFilterObjects.Mastery
 
 fun EncyclopediaTankData.toEncyclopediaTank(): EncyclopediaTank? {
     val encyclopediaNation = Nation.defaultValues.find { it.name == nation } ?: return null
@@ -26,10 +27,11 @@ fun EncyclopediaTankData.toEncyclopediaTank(): EncyclopediaTank? {
     )
 }
 
-fun AccountTankData.toAccountTank(): AccountTank {
+fun AccountTankData.toAccountTank(): AccountTank? {
     return AccountTank(
         id = tankId,
-        isMaster = markOfMastery == 4,
+        mastery = Mastery.defaultValues.find { it.sort - 1 == markOfMastery }
+            ?: return null
     )
 }
 

@@ -64,6 +64,19 @@ class FilterTanks(
                         }
                     } || filters.tiers.none { it.selected && it !is SwitchItem }
 
+                val masteryMatch = filters.mastery
+                    .filter { it.selected && it !is SwitchItem }
+                    .any { filterMastery ->
+                        when (filterMastery) {
+                            is Mastery.None -> tank.mastery is Mastery.None
+                            is Mastery.Class3 -> tank.mastery is Mastery.Class3
+                            is Mastery.Class2 -> tank.mastery is Mastery.Class2
+                            is Mastery.Class1 -> tank.mastery is Mastery.Class1
+                            is Mastery.Master -> tank.mastery is Mastery.Master
+                            else -> false
+                        }
+                    } || filters.mastery.none { it.selected && it !is SwitchItem }
+
                 val premiumMatch = filters.premium
                     .filter { it.selected && it !is SwitchItem }
                     .any { filterPremium ->
@@ -73,15 +86,6 @@ class FilterTanks(
                             else -> false
                         }
                     } || filters.premium.none { it.selected && it !is SwitchItem }
-
-                val masteryMatch = filters.mastery
-                    .filter { it.selected && it !is SwitchItem }
-                    .any { filterMastery ->
-                        when (filterMastery) {
-                            is Mastery.Master -> tank.isMaster
-                            else -> false
-                        }
-                    } || filters.mastery.none { it.selected && it !is SwitchItem }
 
                 typeMatch && nationMatch && tierMatch && premiumMatch && masteryMatch
             }

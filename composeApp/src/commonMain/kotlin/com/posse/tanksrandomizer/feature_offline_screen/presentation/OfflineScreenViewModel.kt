@@ -6,6 +6,10 @@ import com.posse.tanksrandomizer.common.domain.models.CommonFilterObjects.ItemSt
 import com.posse.tanksrandomizer.common.domain.models.RepositoryFor
 import com.posse.tanksrandomizer.common.domain.repository.CommonTanksRepository
 import com.posse.tanksrandomizer.common.domain.utils.Dispatchers
+import com.posse.tanksrandomizer.common.domain.utils.Error
+import com.posse.tanksrandomizer.common.domain.utils.onError
+import com.posse.tanksrandomizer.common.domain.utils.onSuccess
+import com.posse.tanksrandomizer.common.presentation.use_cases.LogInToAccount
 import com.posse.tanksrandomizer.common.presentation.utils.BaseSharedViewModel
 import com.posse.tanksrandomizer.feature_offline_screen.domain.repository.OfflineScreenRepository
 import com.posse.tanksrandomizer.feature_offline_screen.presentation.models.Numbers
@@ -29,9 +33,15 @@ class OfflineScreenViewModel(
     ).invoke()
 ) {
     private val generateOfflineFilter = GenerateOfflineFilter(dispatchers = dispatchers)
+
     private val saveOfflineScreenState = SaveOfflineScreenState(
         filterRepository = filterRepository,
         offlineScreenRepository = offlineScreenRepository,
+        dispatchers = dispatchers,
+    )
+
+    private val logInToAccount = LogInToAccount(
+        accountRepository = Inject.instance(),
         dispatchers = dispatchers,
     )
 
@@ -43,7 +53,8 @@ class OfflineScreenViewModel(
             OfflineScreenEvent.TrashFilterPressed -> resetFilter()
             OfflineScreenEvent.TrashNumberPressed -> resetQuantity()
             OfflineScreenEvent.SettingsPressed -> toggleSettings()
-            OfflineScreenEvent.GoBack -> goBack()
+            OfflineScreenEvent.LogInPressed -> logIn()
+            OfflineScreenEvent.OnScreenLaunch -> stopLoading()
             is OfflineScreenEvent.FilterItemChanged<*> -> handleFilterItemChanged(viewEvent.item)
             is OfflineScreenEvent.QuantityChanged -> changeQuantity(viewEvent.amount)
         }
@@ -90,8 +101,20 @@ class OfflineScreenViewModel(
         viewAction = OfflineScreenAction.ToggleSettings
     }
 
-    private fun goBack() {
-        viewAction = OfflineScreenAction.ToMainScreen
+    private fun logIn() {
+        if (viewState.loading) return
+
+        viewState = viewState.copy(loading = true)
+
+        withViewModelScope {
+            logInToAccount()
+                .onError { error -> showError(error) }
+                .onSuccess { url -> viewAction = OfflineScreenAction.LogIn(url) }
+        }
+    }
+
+    private fun stopLoading() {
+        viewState = viewState.copy(loading = false)
     }
 
     private fun makeActionWithViewModelScopeAndSaveState(
@@ -101,5 +124,10 @@ class OfflineScreenViewModel(
             action()
             saveOfflineScreenState(viewState)
         }
+    }
+
+    private fun showError(error: Error) {
+        viewAction = OfflineScreenAction.ShowError(error)
+        stopLoading()
     }
 }

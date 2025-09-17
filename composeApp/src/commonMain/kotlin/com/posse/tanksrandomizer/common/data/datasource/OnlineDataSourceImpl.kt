@@ -34,33 +34,11 @@ class OnlineDataSourceImpl(
         val loginURL = LOGIN +
                 "?application_id=${APPLICATION_ID}" +
                 "&redirect_uri=${REDIRECT_URL}"
-//                "&redirect_uri=http%3A%2F%2Ftanks.randomizer%2F"
-//                "&redirect_uri=tanks%3A%2F%2Frandomizer.ru%2F"
-        "&nofollow=1"
-//                "&redirect_uri=tanks_randomizer%3A%2F%2Fmain"
 
         return safeCall<String> {
-//            httpClient.get(urlString = loginURL)
             httpClient.post(urlString = loginURL)
         }
-//        return safeCall<LoginSuccessResponse> {
-//            httpClient.get(urlString = loginURL)
-//        }.map { response ->
-//            response.data.location
-//        }
     }
-
-//    override suspend fun logIn(): EmptyResult<Error> {
-//        val loginURL = LOGIN +
-//                "?application_id=${APPLICATION_ID}" +
-//                "&redirect_uri=http%3A%2F%2Ftanks.randomizer%2F"
-//        "&nofollow=1"
-////                "&redirect_uri=tanks_randomizer%3A%2F%2Fmain"
-//
-//        return safeCall<Unit> {
-//            httpClient.post(urlString = loginURL)
-//        }
-//    }
 
     override suspend fun logOut(currentToken: Token): EmptyResult<Error> {
         val logoutURL = LOGOUT +
@@ -96,6 +74,7 @@ class OnlineDataSourceImpl(
         }.map { response ->
             response.data.values.toList().flatten().map { accountTankData ->
                 accountTankData.toAccountTank()
+                    ?: return Result.Error(DomainErrorType.MapperError)
             }
         }
     }

@@ -6,6 +6,7 @@ import com.posse.tanksrandomizer.common.domain.utils.Result
 import com.posse.tanksrandomizer.common.domain.utils.onError
 import com.posse.tanksrandomizer.common.domain.models.AccountTank
 import com.posse.tanksrandomizer.common.domain.models.EncyclopediaTank
+import com.posse.tanksrandomizer.feature_online_screen.domain.models.OnlineFilterObjects.Mastery
 import com.posse.tanksrandomizer.feature_online_screen.domain.models.Tank
 import com.posse.tanksrandomizer.feature_online_screen.domain.repository.OnlineScreenRepository
 import kotlinx.coroutines.withContext
@@ -35,7 +36,7 @@ class RefreshTanks(
             val tanksToAdd = buildList {
                 encyclopediaTanks.forEach { encyclopediaTank ->
                     accountTanksToAdd.find { it.id == encyclopediaTank.id }?.let { accountTank ->
-                        add(encyclopediaTank.toTank(isMaster = accountTank.isMaster))
+                        add(encyclopediaTank.toTank(mastery = accountTank.mastery))
                     }
                 }
             }
@@ -46,7 +47,7 @@ class RefreshTanks(
         }
     }
 
-    private fun EncyclopediaTank.toTank(isMaster: Boolean): Tank {
+    private fun EncyclopediaTank.toTank(mastery: Mastery): Tank {
         return Tank(
             id = id,
             name = name,
@@ -55,7 +56,7 @@ class RefreshTanks(
             nation = nation,
             isPremium = isPremium,
             type = type,
-            isMaster = isMaster
+            mastery = mastery
         )
     }
 }

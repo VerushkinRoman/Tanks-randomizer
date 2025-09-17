@@ -4,6 +4,6 @@ import com.posse.tanksrandomizer.common.domain.utils.Error
 
 sealed interface MainScreenAction {
     data object ToOfflineScreen : MainScreenAction
-    data class OpenUri(val uri: String) : MainScreenAction
+    data class OpenUrl(val url: String) : MainScreenAction
     data class ShowError(val error: Error) : MainScreenAction
 }

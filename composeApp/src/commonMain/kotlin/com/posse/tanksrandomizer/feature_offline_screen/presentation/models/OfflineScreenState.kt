@@ -6,6 +6,7 @@ import kotlin.random.Random
 data class OfflineScreenState(
     val offlineFilters: OfflineFilters,
     val numbers: Numbers,
+    val loading: Boolean = false,
 ) {
     fun updateFilters(newFilters: OfflineFilters): OfflineScreenState {
         return copy(offlineFilters = newFilters)
