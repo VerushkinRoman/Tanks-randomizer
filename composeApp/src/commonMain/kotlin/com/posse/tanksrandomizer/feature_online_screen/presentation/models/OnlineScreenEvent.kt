@@ -8,5 +8,6 @@ sealed interface OnlineScreenEvent {
     data object GenerateTankPressed : OnlineScreenEvent
     data object SettingsPressed : OnlineScreenEvent
     data object RefreshAccountPressed : OnlineScreenEvent
+    data object LogOutPressed : OnlineScreenEvent
     class FilterItemChanged<T : ItemStatus<T>>(val item: T) : OnlineScreenEvent
 }

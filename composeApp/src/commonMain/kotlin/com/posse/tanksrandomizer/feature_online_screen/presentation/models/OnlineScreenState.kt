@@ -16,6 +16,7 @@ data class OnlineScreenState(
     val numberOfFilteredTanks: Int,
     val token: Token?,
     val lastAccountUpdated: LocalDateTime?,
+    val loading: Boolean = false,
 ) {
     @OptIn(ExperimentalTime::class)
     fun updateTanks(

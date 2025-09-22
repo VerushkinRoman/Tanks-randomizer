@@ -14,5 +14,13 @@ sealed interface ScreenRoute {
     object OnlineScreenRoute : ScreenRoute
 
     @Serializable
-    data class WebViewScreenRoute(val url: String) : ScreenRoute
+    data class WebViewScreenRoute(val url: String)
+
+
+}
+
+fun ScreenRoute.toRoute(): String {
+    return toString()
+        .substringAfter('$')
+        .takeWhile { it != '@' }
 }

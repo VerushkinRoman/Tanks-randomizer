@@ -10,10 +10,6 @@
     <string name="tier9">Уровень 9</string>
     <string name="tier10">Уровень 10</string>
 
-    <string name="exp_x2">Двойной опыт</string>
-    <string name="exp_bday">День рождения танка</string>
-    <string name="exp_x5">Экстра опыт</string>
-
     <string name="nation_china">Китай</string>
     <string name="nation_europe">Европа</string>
     <string name="nation_france">Франция</string>
@@ -23,11 +19,6 @@
     <string name="nation_unknown">Сборная</string>
     <string name="nation_usa">США</string>
     <string name="nation_ussr">СССР</string>
-
-    <string name="pinned">Закрепленный</string>
-
-    <string name="status_elite">Элитный статус</string>
-    <string name="status_not_elite">Не элитный статус</string>
 
     <string name="tank_type_collection">Коллекционный танк</string>
     <string name="tank_type_common">Обычный танк</string>
@@ -66,9 +57,26 @@
     <string name="less_size">Меньше размер</string>
     <string name="more_size">Больше размер</string>
 
+
 <!--    Main Screen-->
     <string name="login_online">Войти</string>
     <string name="login_offline">Продолжить оффлайн</string>
+
+
+<!--    Offline Screen-->
+    <string name="exp_x2">Двойной опыт</string>
+    <string name="exp_bday">День рождения танка</string>
+    <string name="exp_x5">Экстра опыт</string>
+
+    <string name="pinned">Закрепленный</string>
+
+    <string name="status_elite">Элитный статус</string>
+    <string name="status_not_elite">Не элитный статус</string>
+
+
+<!--    Online Screen-->
+    <string name="logout">Выйти</string>
+
 
 <!--    Errors-->
     <string name="network_api_error">Ошибка API</string>

@@ -28,6 +28,7 @@ import com.posse.tanksrandomizer.navigation.presentation.screens.ScreenRoute.Mai
 import com.posse.tanksrandomizer.navigation.presentation.screens.ScreenRoute.OfflineScreenRoute
 import com.posse.tanksrandomizer.navigation.presentation.screens.ScreenRoute.OnlineScreenRoute
 import com.posse.tanksrandomizer.navigation.presentation.screens.ScreenRoute.WebViewScreenRoute
+import com.posse.tanksrandomizer.navigation.presentation.screens.toRoute
 import com.posse.tanksrandomizer.navigation.presentation.util.RedirectParser
 import kotlin.time.Clock
 import kotlin.time.Duration.Companion.days
@@ -67,7 +68,7 @@ fun NavigationHost(
             )
 
             LaunchedEffect(true) {
-                navigationRepository.setCurrentScreenRoute(MainScreenRoute.toString())
+                navigationRepository.setCurrentScreenRoute(MainScreenRoute.toRoute())
             }
         }
 
@@ -82,24 +83,26 @@ fun NavigationHost(
             )
 
             LaunchedEffect(true) {
-                navigationRepository.setCurrentScreenRoute(OfflineScreenRoute.toString())
+                navigationRepository.setCurrentScreenRoute(OfflineScreenRoute.toRoute())
             }
         }
 
         composable<OnlineScreenRoute> {
             OnlineScreen(
-                toMainScreen = {
+                logOut = {
                     if (!navController.popBackStack(route = MainScreenRoute, inclusive = false)) {
                         navController.navigate(MainScreenRoute) {
                             popUpTo<OnlineScreenRoute> { inclusive = true }
                         }
                     }
                 },
+                showRotation = showRotation,
+                showFloatingButtonSettings = showFloatingButtonSettings,
                 modifier = Modifier.fillMaxSize()
             )
 
             LaunchedEffect(true) {
-                navigationRepository.setCurrentScreenRoute(OnlineScreenRoute.toString())
+                navigationRepository.setCurrentScreenRoute(OnlineScreenRoute.toRoute())
             }
         }
 
@@ -132,14 +135,14 @@ private fun getStartDestination(
     accountRepository: AccountRepository,
     navigationRepository: NavigationRepository,
 ): ScreenRoute {
-    val token: Token = accountRepository.getToken() ?: return MainScreenRoute
     val screenRoute: ScreenRoute = when (navigationRepository.getScreenRoute()) {
-        MainScreenRoute.toString() -> MainScreenRoute
-        OnlineScreenRoute.toString() -> OnlineScreenRoute
-        OfflineScreenRoute.toString() -> OfflineScreenRoute
+        MainScreenRoute.toRoute() -> MainScreenRoute
+        OnlineScreenRoute.toRoute() -> OnlineScreenRoute
+        OfflineScreenRoute.toRoute() -> OfflineScreenRoute
         else -> MainScreenRoute
     }
 
+    val token: Token = accountRepository.getToken() ?: return screenRoute
     val tokenExpired = token.expiresAt - 1.days.inWholeSeconds <= Clock.System.now().epochSeconds
 
     return if (tokenExpired) {

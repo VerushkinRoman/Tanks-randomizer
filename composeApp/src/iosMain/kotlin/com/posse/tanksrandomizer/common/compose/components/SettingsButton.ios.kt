@@ -4,7 +4,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 
 @Composable
-expect fun SettingsButton(
+actual fun SettingsButton(
     settingsPressed: () -> Unit,
-    modifier: Modifier = Modifier
-)
+    modifier: Modifier
+) = Unit

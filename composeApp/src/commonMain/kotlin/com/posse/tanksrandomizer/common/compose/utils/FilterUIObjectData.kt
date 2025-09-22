@@ -1,4 +1,4 @@
-package com.posse.tanksrandomizer.feature_offline_screen.compose.util
+package com.posse.tanksrandomizer.common.compose.utils
 
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.Check
@@ -128,7 +128,7 @@ enum class FilterUIObjectData(
         drawableResource = Res.drawable.nation_china,
         stringResource = Res.string.nation_china,
     ),
-    Europe(
+    European(
         drawableResource = Res.drawable.nation_europe,
         stringResource = Res.string.nation_europe,
     ),
@@ -140,7 +140,7 @@ enum class FilterUIObjectData(
         drawableResource = Res.drawable.nation_germany,
         stringResource = Res.string.nation_germany,
     ),
-    GreatBritain(
+    UK(
         drawableResource = Res.drawable.nation_great_britain,
         stringResource = Res.string.nation_great_britain,
     ),
@@ -148,7 +148,7 @@ enum class FilterUIObjectData(
         drawableResource = Res.drawable.nation_japan,
         stringResource = Res.string.nation_japan,
     ),
-    Unknown(
+    Other(
         drawableResource = Res.drawable.nation_unknown,
         stringResource = Res.string.nation_unknown,
     ),
@@ -257,14 +257,14 @@ fun <T> getFilterImage(item: ItemStatus<T>): Painter {
         is Nation -> {
             when (item) {
                 is Nation.China -> painterResource(FilterUIObjectData.China.drawableResource)
-                is Nation.European -> painterResource(FilterUIObjectData.Europe.drawableResource)
+                is Nation.European -> painterResource(FilterUIObjectData.European.drawableResource)
                 is Nation.France -> painterResource(FilterUIObjectData.France.drawableResource)
                 is Nation.Germany -> painterResource(FilterUIObjectData.Germany.drawableResource)
-                is Nation.UK -> painterResource(FilterUIObjectData.GreatBritain.drawableResource)
+                is Nation.UK -> painterResource(FilterUIObjectData.UK.drawableResource)
                 is Nation.Japan -> painterResource(FilterUIObjectData.Japan.drawableResource)
                 is Nation.USA -> painterResource(FilterUIObjectData.USA.drawableResource)
                 is Nation.USSR -> painterResource(FilterUIObjectData.USSR.drawableResource)
-                is Nation.Other -> painterResource(FilterUIObjectData.Unknown.drawableResource)
+                is Nation.Other -> painterResource(FilterUIObjectData.Other.drawableResource)
                 is Nation.NationSwitch -> rememberVectorPainter(
                     if (item.selected) FilterUIObjectSwitchData.Switch.enabledDrawableResource
                     else FilterUIObjectSwitchData.Switch.disabledDrawableResource
@@ -322,7 +322,6 @@ fun <T> getFilterImage(item: ItemStatus<T>): Painter {
     }
 }
 
-
 @Composable
 fun <T> getFilterName(item: ItemStatus<T>): String {
     return when (item) {
@@ -360,14 +359,14 @@ fun <T> getFilterName(item: ItemStatus<T>): String {
         is Nation -> {
             when (item) {
                 is Nation.China -> stringResource(FilterUIObjectData.China.stringResource)
-                is Nation.European -> stringResource(FilterUIObjectData.Europe.stringResource)
+                is Nation.European -> stringResource(FilterUIObjectData.European.stringResource)
                 is Nation.France -> stringResource(FilterUIObjectData.France.stringResource)
                 is Nation.Germany -> stringResource(FilterUIObjectData.Germany.stringResource)
-                is Nation.UK -> stringResource(FilterUIObjectData.GreatBritain.stringResource)
+                is Nation.UK -> stringResource(FilterUIObjectData.UK.stringResource)
                 is Nation.Japan -> stringResource(FilterUIObjectData.Japan.stringResource)
                 is Nation.USA -> stringResource(FilterUIObjectData.USA.stringResource)
                 is Nation.USSR -> stringResource(FilterUIObjectData.USSR.stringResource)
-                is Nation.Other -> stringResource(FilterUIObjectData.Unknown.stringResource)
+                is Nation.Other -> stringResource(FilterUIObjectData.Other.stringResource)
                 is Nation.NationSwitch -> stringResource(
                     if (item.selected) FilterUIObjectSwitchData.Switch.enabledStringResource
                     else FilterUIObjectSwitchData.Switch.disabledStringResource
@@ -422,5 +421,19 @@ fun <T> getFilterName(item: ItemStatus<T>): String {
         }
 
         else -> throw RuntimeException("wrong item: $item")
+    }
+}
+
+@Composable
+fun <T> ItemStatus<T>.useColorFilter(): Boolean {
+    return when (this) {
+        is Tier -> true
+        is Experience -> false
+        is Nation -> false
+        is Pinned -> true
+        is Status -> true
+        is TankType -> false
+        is Type -> true
+        else -> throw RuntimeException("wrong item: $this")
     }
 }
