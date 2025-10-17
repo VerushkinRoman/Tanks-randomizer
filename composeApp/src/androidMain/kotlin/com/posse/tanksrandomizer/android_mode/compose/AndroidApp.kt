@@ -9,12 +9,14 @@ import com.posse.tanksrandomizer.CommonPlatformApp
 @Composable
 internal fun AndroidApp(
     startedFromService: Boolean,
+    startedAsService: Boolean,
     exitApp: () -> Unit = {},
     @SuppressLint("ModifierParameter") modifier: Modifier = Modifier.fillMaxSize()
 ) {
     CommonPlatformApp {
         AndroidMode(
             startedFromService = startedFromService,
+            startedAsService = startedAsService,
             exitApp = exitApp,
             modifier = modifier
         )

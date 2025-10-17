@@ -5,6 +5,7 @@ import android.app.NotificationChannel
 import android.app.NotificationManager
 import android.os.Build
 import android.os.Bundle
+import android.provider.Settings
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
@@ -12,8 +13,7 @@ import androidx.core.content.getSystemService
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.lifecycle.lifecycleScope
 import com.posse.tanksrandomizer.android_mode.compose.AndroidApp
-import com.posse.tanksrandomizer.common.compose.components.StartWindowMode
-import com.posse.tanksrandomizer.common.compose.utils.DeviceType
+import com.posse.tanksrandomizer.common.compose.components.startWindowMode
 import com.posse.tanksrandomizer.common.compose.utils.rotateDevice
 import com.posse.tanksrandomizer.common.core.di.Inject
 import com.posse.tanksrandomizer.common.core.platform.PlatformConfiguration
@@ -36,13 +36,23 @@ class AppActivity : ComponentActivity() {
         enableEdgeToEdge()
         addSplashScreen()
 
-        if (Inject.instance<SettingsRepository>().getFullScreenMode()) {
+        val repository:SettingsRepository = Inject.instance()
+        val windowMode = !repository.getFullScreenMode()
+        val canDrawOverlays = Settings.canDrawOverlays(this)
+
+        if (windowMode && canDrawOverlays) {
+            startWindowMode(
+                context = this,
+                startedAsService = true,
+            )
+        } else {
             rotateDevice()
             setContent {
-                AndroidApp(startedFromService = false)
+                AndroidApp(
+                    startedFromService = false,
+                    startedAsService = false,
+                )
             }
-        } else {
-            setContent { StartWindowMode() }
         }
     }
 }
@@ -77,5 +87,3 @@ private fun App.createNotificationChannel() {
 }
 
 const val CHANNEL_ID = "Default"
-
-internal actual val deviceType: DeviceType = DeviceType.Android

@@ -1,14 +1,18 @@
 package com.posse.tanksrandomizer.common.domain.models
 
 object CommonFilterObjects {
-    interface SwitchItem
-
     interface ItemStatus<T> {
         val name: String
         val sort: Int
         val selected: Boolean
         val random: Boolean
         fun copy(selected: Boolean, random: Boolean = false): T
+    }
+
+    fun <T : ItemStatus<T>> List<T>.changeSelected(oldItem: Any): List<T> {
+        return map { item ->
+            if (item == oldItem) item.copy(selected = !item.selected) else item
+        }
     }
 
     sealed interface Tier : ItemStatus<Tier> {
@@ -112,16 +116,6 @@ object CommonFilterObjects {
                 copy(selected = selected, random = random, sort = sort)
         }
 
-        data class TierSwitch(
-            override val name: String = "TierSwitch",
-            override val sort: Int = Int.MAX_VALUE,
-            override val selected: Boolean = true,
-            override val random: Boolean = false,
-        ) : Tier, SwitchItem {
-            override fun copy(selected: Boolean, random: Boolean) =
-                copy(selected = selected, random = random, sort = sort)
-        }
-
         companion object {
             val defaultValues = listOf(
                 Tier1(),
@@ -134,7 +128,6 @@ object CommonFilterObjects {
                 Tier8(),
                 Tier9(),
                 Tier10(),
-                TierSwitch(),
             ).sortedBy { it.sort }
         }
     }
@@ -230,16 +223,6 @@ object CommonFilterObjects {
                 copy(selected = selected, random = random, sort = sort)
         }
 
-        data class NationSwitch(
-            override val name: String = "NationSwitch",
-            override val sort: Int = Int.MAX_VALUE,
-            override val selected: Boolean = true,
-            override val random: Boolean = false,
-        ) : Nation, SwitchItem {
-            override fun copy(selected: Boolean, random: Boolean) =
-                copy(selected = selected, random = random, sort = sort)
-        }
-
         companion object {
             val defaultValues = listOf(
                 USA(),
@@ -251,7 +234,6 @@ object CommonFilterObjects {
                 France(),
                 European(),
                 Other(),
-                NationSwitch(),
             ).sortedBy { it.sort }
         }
     }
@@ -297,23 +279,12 @@ object CommonFilterObjects {
                 copy(selected = selected, random = random, sort = sort)
         }
 
-        data class TypeSwitch(
-            override val name: String = "TypeSwitch",
-            override val sort: Int = Int.MAX_VALUE,
-            override val selected: Boolean = true,
-            override val random: Boolean = false,
-        ) : Type, SwitchItem {
-            override fun copy(selected: Boolean, random: Boolean) =
-                copy(selected = selected, random = random, sort = sort)
-        }
-
         companion object {
             val defaultValues = listOf(
                 Light(),
                 Medium(),
                 Heavy(),
                 TankDestroyer(),
-                TypeSwitch(),
             ).sortedBy { it.sort }
         }
     }

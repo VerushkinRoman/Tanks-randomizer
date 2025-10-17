@@ -13,7 +13,6 @@ import com.posse.tanksrandomizer.common.presentation.use_cases.LogInToAccount
 import com.posse.tanksrandomizer.common.presentation.utils.BaseSharedViewModel
 import com.posse.tanksrandomizer.feature_offline_screen.domain.repository.OfflineScreenRepository
 import com.posse.tanksrandomizer.feature_offline_screen.presentation.models.Numbers
-import com.posse.tanksrandomizer.feature_offline_screen.presentation.models.OfflineFilters
 import com.posse.tanksrandomizer.feature_offline_screen.presentation.models.OfflineScreenAction
 import com.posse.tanksrandomizer.feature_offline_screen.presentation.models.OfflineScreenEvent
 import com.posse.tanksrandomizer.feature_offline_screen.presentation.models.OfflineScreenState
@@ -50,17 +49,18 @@ class OfflineScreenViewModel(
             OfflineScreenEvent.ClearAction -> viewAction = null
             OfflineScreenEvent.GenerateFilterPressed -> generateFilter()
             OfflineScreenEvent.GenerateNumberPressed -> generateNumber()
+            OfflineScreenEvent.CheckAllPressed -> checkAllFilter()
             OfflineScreenEvent.TrashFilterPressed -> resetFilter()
             OfflineScreenEvent.TrashNumberPressed -> resetQuantity()
             OfflineScreenEvent.SettingsPressed -> toggleSettings()
             OfflineScreenEvent.LogInPressed -> logIn()
             OfflineScreenEvent.OnScreenLaunch -> stopLoading()
-            is OfflineScreenEvent.FilterItemChanged<*> -> handleFilterItemChanged(viewEvent.item)
+            is OfflineScreenEvent.FilterItemChanged -> handleFilterItemChanged(viewEvent.item)
             is OfflineScreenEvent.QuantityChanged -> changeQuantity(viewEvent.amount)
         }
     }
 
-    private fun <T : ItemStatus<T>> handleFilterItemChanged(item: T) {
+    private fun handleFilterItemChanged(item: ItemStatus<*>) {
         makeActionWithViewModelScopeAndSaveState {
             val newFilters = viewState.offlineFilters.changeItem(item)
             viewState = viewState.updateFilters(newFilters)
@@ -87,7 +87,15 @@ class OfflineScreenViewModel(
 
     private fun resetFilter() {
         makeActionWithViewModelScopeAndSaveState {
-            viewState = viewState.updateFilters(OfflineFilters())
+            val newFilters = viewState.offlineFilters.clear()
+            viewState = viewState.updateFilters(newFilters)
+        }
+    }
+
+    private fun checkAllFilter() {
+        makeActionWithViewModelScopeAndSaveState {
+            val newFilters = viewState.offlineFilters.selectAll()
+            viewState = viewState.updateFilters(newFilters)
         }
     }
 

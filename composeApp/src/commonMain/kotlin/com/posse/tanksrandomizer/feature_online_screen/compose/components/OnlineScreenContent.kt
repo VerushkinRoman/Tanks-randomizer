@@ -3,8 +3,14 @@ package com.posse.tanksrandomizer.feature_online_screen.compose.components
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.shape.AbsoluteCutCornerShape
+import androidx.compose.foundation.shape.CutCornerShape
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.ShapeDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.unit.dp
 import com.posse.tanksrandomizer.common.compose.base_components.CommonScreenColumn
 import com.posse.tanksrandomizer.common.compose.components.AdditionalBottomComponents
@@ -19,6 +25,7 @@ fun OnlineScreenContent(
     modifier: Modifier = Modifier
 ) {
     CommonScreenColumn(
+        runningAsOverlay = false,
         modifier = modifier
     ) {
 //        OnlineFiltersBlock(

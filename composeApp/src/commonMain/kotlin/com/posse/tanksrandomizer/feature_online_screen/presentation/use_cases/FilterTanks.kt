@@ -1,7 +1,6 @@
 package com.posse.tanksrandomizer.feature_online_screen.presentation.use_cases
 
 import com.posse.tanksrandomizer.common.domain.models.CommonFilterObjects.Nation
-import com.posse.tanksrandomizer.common.domain.models.CommonFilterObjects.SwitchItem
 import com.posse.tanksrandomizer.common.domain.models.CommonFilterObjects.Tier
 import com.posse.tanksrandomizer.common.domain.models.CommonFilterObjects.Type
 import com.posse.tanksrandomizer.common.domain.utils.Dispatchers
@@ -18,19 +17,18 @@ class FilterTanks(
         return withContext(dispatchers.io) {
             tanks.filter { tank ->
                 val typeMatch = filters.types
-                    .filter { it.selected && it !is SwitchItem }
+                    .filter { it.selected }
                     .any { filterType ->
                         when (filterType) {
                             is Type.Light -> tank.type is Type.Light
                             is Type.Medium -> tank.type is Type.Medium
                             is Type.Heavy -> tank.type is Type.Heavy
                             is Type.TankDestroyer -> tank.type is Type.TankDestroyer
-                            else -> false
                         }
-                    } || filters.types.none { it.selected && it !is SwitchItem }
+                    } || filters.types.none { it.selected }
 
                 val nationMatch = filters.nations
-                    .filter { it.selected && it !is SwitchItem }
+                    .filter { it.selected }
                     .any { filterNation ->
                         when (filterNation) {
                             is Nation.USSR -> tank.nation is Nation.USSR
@@ -42,12 +40,11 @@ class FilterTanks(
                             is Nation.France -> tank.nation is Nation.France
                             is Nation.European -> tank.nation is Nation.European
                             is Nation.Other -> tank.nation is Nation.Other
-                            else -> false
                         }
-                    } || filters.nations.none { it.selected && it !is SwitchItem }
+                    } || filters.nations.none { it.selected }
 
                 val tierMatch = filters.tiers
-                    .filter { it.selected && it !is SwitchItem }
+                    .filter { it.selected }
                     .any { filterTier ->
                         when (filterTier) {
                             is Tier.Tier1 -> tank.tier is Tier.Tier1
@@ -60,12 +57,11 @@ class FilterTanks(
                             is Tier.Tier8 -> tank.tier is Tier.Tier8
                             is Tier.Tier9 -> tank.tier is Tier.Tier9
                             is Tier.Tier10 -> tank.tier is Tier.Tier10
-                            else -> false
                         }
-                    } || filters.tiers.none { it.selected && it !is SwitchItem }
+                    } || filters.tiers.none { it.selected }
 
                 val masteryMatch = filters.mastery
-                    .filter { it.selected && it !is SwitchItem }
+                    .filter { it.selected }
                     .any { filterMastery ->
                         when (filterMastery) {
                             is Mastery.None -> tank.mastery is Mastery.None
@@ -73,19 +69,17 @@ class FilterTanks(
                             is Mastery.Class2 -> tank.mastery is Mastery.Class2
                             is Mastery.Class1 -> tank.mastery is Mastery.Class1
                             is Mastery.Master -> tank.mastery is Mastery.Master
-                            else -> false
                         }
-                    } || filters.mastery.none { it.selected && it !is SwitchItem }
+                    } || filters.mastery.none { it.selected }
 
                 val premiumMatch = filters.premium
-                    .filter { it.selected && it !is SwitchItem }
+                    .filter { it.selected }
                     .any { filterPremium ->
                         when (filterPremium) {
                             is Premium.Common -> !tank.isPremium
                             is Premium.IsPremium -> tank.isPremium
-                            else -> false
                         }
-                    } || filters.premium.none { it.selected && it !is SwitchItem }
+                    } || filters.premium.none { it.selected }
 
                 typeMatch && nationMatch && tierMatch && premiumMatch && masteryMatch
             }

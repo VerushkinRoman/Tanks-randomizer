@@ -11,11 +11,9 @@ import androidx.compose.ui.platform.LocalLayoutDirection
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.posse.tanksrandomizer.common.compose.theme.AppTheme
-import com.posse.tanksrandomizer.common.compose.utils.DeviceType
 import com.posse.tanksrandomizer.common.compose.utils.LocalElementSize
 import com.posse.tanksrandomizer.common.compose.utils.LocalMaxHeight
 import com.posse.tanksrandomizer.common.compose.utils.LocalMaxWidth
-import com.posse.tanksrandomizer.common.compose.utils.LocalDeviceType
 
 @Composable
 internal fun CommonPlatformApp(
@@ -24,7 +22,6 @@ internal fun CommonPlatformApp(
     BoxWithConstraints {
         CompositionLocalProvider(
             LocalElementSize provides getElementSize(maxBoxWidth = maxWidth),
-            LocalDeviceType provides deviceType,
             LocalMaxWidth provides maxWidth,
             LocalMaxHeight provides maxHeight,
         ) {
@@ -45,5 +42,3 @@ private fun getElementSize(maxBoxWidth: Dp): Dp {
     val elementSize = minOf(elementWidthByScreen, ButtonDefaults.MinHeight)
     return elementSize
 }
-
-internal expect val deviceType: DeviceType

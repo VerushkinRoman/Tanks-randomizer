@@ -11,7 +11,7 @@ import androidx.compose.ui.Modifier
 @Composable
 actual fun SettingsBottomSheet(
     showRotation: Boolean,
-    showFloatingButtonSettings: Boolean,
+    runningAsOverlay: Boolean,
     modifier: Modifier,
     content: @Composable ((PaddingValues, SheetState, SnackbarHostState) -> Unit)
 ) {

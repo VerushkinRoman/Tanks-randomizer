@@ -1,17 +1,20 @@
 package com.posse.tanksrandomizer.feature_settings_pane.compose.components
 
+import android.provider.Settings
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.WindowInsets
-import androidx.compose.foundation.layout.asPaddingValues
-import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.safeGestures
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.alpha
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.compose.LifecycleResumeEffect
 import com.posse.tanksrandomizer.feature_settings_pane.presentation.model.SettingsEvent
 import com.posse.tanksrandomizer.feature_settings_pane.presentation.model.SettingsState
 
@@ -19,36 +22,54 @@ import com.posse.tanksrandomizer.feature_settings_pane.presentation.model.Settin
 fun SettingsPaneContent(
     viewState: SettingsState,
     showRotation: Boolean,
-    showFloatingButtonSettings: Boolean,
+    runningAsOverlay: Boolean,
     onEvent: (SettingsEvent) -> Unit,
     modifier: Modifier = Modifier
 ) {
+    val context = LocalContext.current
+
+    var canDrawOverlay by remember { mutableStateOf(Settings.canDrawOverlays(context)) }
+
+    LifecycleResumeEffect(true) {
+        canDrawOverlay = Settings.canDrawOverlays(context)
+        onPauseOrDispose {}
+    }
+
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.Center,
-        modifier = modifier.padding(6.dp)
+        verticalArrangement = Arrangement.spacedBy(24.dp),
+        modifier = modifier,
     ) {
         if (showRotation) {
             RotationBlock(
-                rotation = viewState.rotation,
+                screenRotation = viewState.screenRotation,
                 onEvent = onEvent,
+                modifier = Modifier.fillMaxWidth(),
             )
-
-            Spacer(modifier = Modifier.height(12.dp))
         }
 
-        if (showFloatingButtonSettings) {
+        if (runningAsOverlay) {
             FloatingButtonConfig(
                 state = viewState,
                 onEvent = onEvent,
-                modifier = Modifier.padding(WindowInsets.safeGestures.asPaddingValues())
+                modifier = Modifier.fillMaxWidth(),
+            )
+        }
+
+        if (!canDrawOverlay) {
+            OverlayPermissionControl(
+                openOverlaySettings = { onEvent(SettingsEvent.OverlayButtonPressed) },
+                modifier = Modifier.fillMaxWidth()
             )
         }
 
         FullScreenSwitch(
-            autoRotation = viewState.fullScreenMode,
-            onClick = { onEvent(SettingsEvent.FullScreenModePressed) },
-            onAppSettingsClick = { onEvent(SettingsEvent.AppSettingsPressed) }
+            enabled = canDrawOverlay,
+            fullScreenModeEnabled = viewState.fullScreenMode,
+            onEvent = onEvent,
+            modifier = Modifier
+                .fillMaxWidth()
+                .alpha(if (canDrawOverlay) 1f else 0.3f),
         )
     }
 }

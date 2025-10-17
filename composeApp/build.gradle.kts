@@ -71,6 +71,8 @@ kotlin {
             implementation(libs.kotlinx.coroutines.android)
             implementation(libs.androidx.splashscreen)
             implementation(libs.android.material.theme)
+            implementation(libs.androidx.lifecycle.service)
+            implementation(libs.androidx.material3)
         }
 
         jvmMain.dependencies {

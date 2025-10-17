@@ -12,7 +12,7 @@ import androidx.compose.ui.platform.AbstractComposeView
 import androidx.compose.ui.platform.AndroidUiDispatcher
 import androidx.compose.ui.platform.compositionContext
 import androidx.core.content.getSystemService
-import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.ViewModelStore
 import androidx.lifecycle.ViewModelStoreOwner
 import androidx.lifecycle.setViewTreeLifecycleOwner
@@ -49,7 +49,11 @@ class MainScreenView(
     }
 
     private val content = mutableStateOf<(@Composable () -> Unit)?>(null)
-    private val lifecycleOwner = MyLifecycleOwner()
+    private val lifecycleOwner = MyLifecycleOwner(
+        (context as? LifecycleOwner)
+            ?: throw IllegalArgumentException("Context must implement LifecycleOwner")
+    )
+    private val viewModelStore = ViewModelStore()
 
     @Suppress("RedundantVisibilityModifier")
     protected override var shouldCreateCompositionOnAttachedToWindow: Boolean = false
@@ -111,18 +115,14 @@ class MainScreenView(
         // Trick The ComposeView into thinking we are tracking lifecycle
 
         lifecycleOwner.performRestore(null)
-        lifecycleOwner.handleLifecycleEvent(Lifecycle.Event.ON_CREATE)
-        lifecycleOwner.handleLifecycleEvent(Lifecycle.Event.ON_START)
-        lifecycleOwner.handleLifecycleEvent(Lifecycle.Event.ON_RESUME)
-
-        val viewModelStore = ViewModelStore()
-        val recomposer = Recomposer(scope.coroutineContext)
-
         setViewTreeLifecycleOwner(lifecycleOwner)
         setViewTreeSavedStateRegistryOwner(lifecycleOwner)
+
         setViewTreeViewModelStoreOwner(object : ViewModelStoreOwner {
-            override val viewModelStore: ViewModelStore = viewModelStore
+            override val viewModelStore: ViewModelStore = this@MainScreenView.viewModelStore
         })
+
+        val recomposer = Recomposer(scope.coroutineContext)
         compositionContext = recomposer
 
         scope.launch {
@@ -145,10 +145,10 @@ class MainScreenView(
         scope.cancel()
         windowManager?.removeView(this)
         windowManager = null
-        lifecycleOwner.handleLifecycleEvent(Lifecycle.Event.ON_DESTROY)
         setViewTreeLifecycleOwner(null)
         setViewTreeViewModelStoreOwner(null)
         setViewTreeSavedStateRegistryOwner(null)
+        viewModelStore.clear()
         disposeComposition()
     }
 }

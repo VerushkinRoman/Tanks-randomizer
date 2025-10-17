@@ -1,7 +1,6 @@
 package com.posse.tanksrandomizer.feature_offline_screen.domain.models
 
 import com.posse.tanksrandomizer.common.domain.models.CommonFilterObjects.ItemStatus
-import com.posse.tanksrandomizer.common.domain.models.CommonFilterObjects.SwitchItem
 
 object OfflineFilterObjects {
     sealed interface Experience : ItemStatus<Experience> {
@@ -35,22 +34,11 @@ object OfflineFilterObjects {
                 copy(selected = selected, random = random, sort = sort)
         }
 
-        data class ExperienceSwitch(
-            override val name: String = "ExperienceSwitch",
-            override val sort: Int = Int.MAX_VALUE,
-            override val selected: Boolean = true,
-            override val random: Boolean = false,
-        ) : Experience, SwitchItem {
-            override fun copy(selected: Boolean, random: Boolean) =
-                copy(selected = selected, random = random, sort = sort)
-        }
-
         companion object {
             val defaultValues = listOf(
                 X2(),
                 BDay(),
                 X5(),
-                ExperienceSwitch(),
             ).sortedBy { it.sort }
         }
     }
@@ -76,8 +64,8 @@ object OfflineFilterObjects {
                 copy(selected = selected, random = random, sort = sort)
         }
 
-        data class Collection(
-            override val name: String = "Collection",
+        data class Premiumized(
+            override val name: String = "Premiumized",
             override val sort: Int = 3,
             override val selected: Boolean = true,
             override val random: Boolean = false,
@@ -86,12 +74,12 @@ object OfflineFilterObjects {
                 copy(selected = selected, random = random, sort = sort)
         }
 
-        data class TankTypeSwitch(
-            override val name: String = "TankTypeSwitch",
-            override val sort: Int = Int.MAX_VALUE,
+        data class Collection(
+            override val name: String = "Collection",
+            override val sort: Int = 4,
             override val selected: Boolean = true,
             override val random: Boolean = false,
-        ) : TankType, SwitchItem {
+        ) : TankType {
             override fun copy(selected: Boolean, random: Boolean) =
                 copy(selected = selected, random = random, sort = sort)
         }
@@ -100,8 +88,8 @@ object OfflineFilterObjects {
             val defaultValues = listOf(
                 Common(),
                 Premium(),
+                Premiumized(),
                 Collection(),
-                TankTypeSwitch(),
             ).sortedBy { it.sort }
         }
     }
@@ -117,20 +105,9 @@ object OfflineFilterObjects {
                 copy(selected = selected, random = random, sort = sort)
         }
 
-        data class PinnedSwitch(
-            override val name: String = "PinnedSwitch",
-            override val sort: Int = Int.MAX_VALUE,
-            override val selected: Boolean = true,
-            override val random: Boolean = false,
-        ) : Pinned, SwitchItem {
-            override fun copy(selected: Boolean, random: Boolean) =
-                copy(selected = selected, random = random, sort = sort)
-        }
-
         companion object {
             val defaultValues = listOf(
                 Status(),
-                PinnedSwitch(),
             ).sortedBy { it.sort }
         }
     }
@@ -156,21 +133,10 @@ object OfflineFilterObjects {
                 copy(selected = selected, random = random, sort = sort)
         }
 
-        data class EliteSwitch(
-            override val name: String = "EliteSwitch",
-            override val sort: Int = Int.MAX_VALUE,
-            override val selected: Boolean = true,
-            override val random: Boolean = false,
-        ) : Status, SwitchItem {
-            override fun copy(selected: Boolean, random: Boolean) =
-                copy(selected = selected, random = random, sort = sort)
-        }
-
         companion object {
             val defaultValues = listOf(
                 NotElite(),
                 Elite(),
-                EliteSwitch(),
             ).sortedBy { it.sort }
         }
     }
@@ -216,23 +182,12 @@ object OfflineFilterObjects {
                 copy(selected = selected, random = random, sort = sort)
         }
 
-        data class MarkSwitch(
-            override val name: String = "MarkSwitch",
-            override val sort: Int = Int.MAX_VALUE,
-            override val selected: Boolean = true,
-            override val random: Boolean = false,
-        ) : MarkCount, SwitchItem {
-            override fun copy(selected: Boolean, random: Boolean) =
-                copy(selected = selected, random = random, sort = sort)
-        }
-
         companion object {
             val defaultValues = listOf(
                 NoMarks(),
                 Mark1(),
                 Mark2(),
                 Mark3(),
-                MarkSwitch(),
             ).sortedBy { it.sort }
         }
     }

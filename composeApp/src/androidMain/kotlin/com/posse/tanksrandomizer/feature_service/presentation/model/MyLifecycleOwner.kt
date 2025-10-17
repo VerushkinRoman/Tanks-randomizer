@@ -2,37 +2,24 @@ package com.posse.tanksrandomizer.feature_service.presentation.model
 
 import android.os.Bundle
 import androidx.lifecycle.Lifecycle
-import androidx.lifecycle.LifecycleRegistry
+import androidx.lifecycle.LifecycleOwner
 import androidx.savedstate.SavedStateRegistry
 import androidx.savedstate.SavedStateRegistryController
 import androidx.savedstate.SavedStateRegistryOwner
 
-internal class MyLifecycleOwner : SavedStateRegistryOwner {
-    private var lifecycleRegistry: LifecycleRegistry = LifecycleRegistry(this)
-    private var savedStateRegistryController: SavedStateRegistryController = SavedStateRegistryController.create(this)
+internal class MyLifecycleOwner(
+    private val lifecycleOwner: LifecycleOwner
+) : SavedStateRegistryOwner {
+    private var savedStateRegistryController: SavedStateRegistryController =
+        SavedStateRegistryController.create(this)
 
     override val lifecycle: Lifecycle
-        get() = lifecycleRegistry
+        get() = lifecycleOwner.lifecycle
 
     override val savedStateRegistry: SavedStateRegistry
         get() = savedStateRegistryController.savedStateRegistry
 
-    val isInitialized: Boolean
-        get() = true
-
-    fun setCurrentState(state: Lifecycle.State) {
-        lifecycleRegistry.currentState = state
-    }
-
-    fun handleLifecycleEvent(event: Lifecycle.Event) {
-        lifecycleRegistry.handleLifecycleEvent(event)
-    }
-
     fun performRestore(savedState: Bundle?) {
         savedStateRegistryController.performRestore(savedState)
-    }
-
-    fun performSave(outBundle: Bundle) {
-        savedStateRegistryController.performSave(outBundle)
     }
 }

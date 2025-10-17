@@ -20,7 +20,7 @@ import com.posse.tanksrandomizer.feature_settings_pane.presentation.model.Settin
 @Composable
 fun SettingsPane(
     showRotation: Boolean,
-    showFloatingButtonSettings: Boolean,
+    runningAsOverlay: Boolean,
     modifier: Modifier = Modifier
 ) {
     val context = LocalContext.current
@@ -31,17 +31,18 @@ fun SettingsPane(
     val action by viewModel.viewActions().collectAsStateWithLifecycle()
 
     LaunchedEffect(action) {
-        when (action) {
-            SettingsAction.GoToAppSettings -> context.openSettings()
-            else -> Unit
+        action?.let {
+            when (it) {
+                SettingsAction.GoToAppSettings -> context.openSettings()
+            }
+            viewModel.obtainEvent(SettingsEvent.ClearAction)
         }
-        viewModel.obtainEvent(SettingsEvent.ClearAction)
     }
 
     SettingsPaneContent(
         viewState = state,
         showRotation = showRotation,
-        showFloatingButtonSettings = showFloatingButtonSettings,
+        runningAsOverlay = runningAsOverlay,
         onEvent = viewModel::obtainEvent,
         modifier = modifier
     )

@@ -37,7 +37,7 @@ fun OnlineScreen(
 
     SettingsBottomSheet(
         showRotation = showRotation,
-        showFloatingButtonSettings = showFloatingButtonSettings,
+        runningAsOverlay = showFloatingButtonSettings,
         modifier = modifier
     ) { paddingValues, bottomSheetState, snackbarHostState ->
         LaunchedEffect(action) {

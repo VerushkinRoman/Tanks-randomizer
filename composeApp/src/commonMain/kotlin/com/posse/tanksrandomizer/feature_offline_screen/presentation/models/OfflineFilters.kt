@@ -2,10 +2,11 @@ package com.posse.tanksrandomizer.feature_offline_screen.presentation.models
 
 import com.posse.tanksrandomizer.common.domain.models.CommonFilterObjects.ItemStatus
 import com.posse.tanksrandomizer.common.domain.models.CommonFilterObjects.Nation
-import com.posse.tanksrandomizer.common.domain.models.CommonFilterObjects.SwitchItem
 import com.posse.tanksrandomizer.common.domain.models.CommonFilterObjects.Tier
 import com.posse.tanksrandomizer.common.domain.models.CommonFilterObjects.Type
+import com.posse.tanksrandomizer.common.domain.models.CommonFilterObjects.changeSelected
 import com.posse.tanksrandomizer.feature_offline_screen.domain.models.OfflineFilterObjects.Experience
+import com.posse.tanksrandomizer.feature_offline_screen.domain.models.OfflineFilterObjects.MarkCount
 import com.posse.tanksrandomizer.feature_offline_screen.domain.models.OfflineFilterObjects.Pinned
 import com.posse.tanksrandomizer.feature_offline_screen.domain.models.OfflineFilterObjects.Status
 import com.posse.tanksrandomizer.feature_offline_screen.domain.models.OfflineFilterObjects.TankType
@@ -16,43 +17,40 @@ data class OfflineFilters(
     val nations: List<Nation> = Nation.defaultValues,
     val pinned: List<Pinned> = Pinned.defaultValues,
     val statuses: List<Status> = Status.defaultValues,
+    val marks: List<MarkCount> = MarkCount.defaultValues,
     val tankTypes: List<TankType> = TankType.defaultValues,
     val types: List<Type> = Type.defaultValues,
 ) {
-    fun <T : ItemStatus<T>> changeItem(item: T): OfflineFilters {
+    fun changeItem(item: ItemStatus<*>): OfflineFilters {
         return copy(
             tiers = if (item is Tier) tiers.changeSelected(item) else tiers,
             experiences = if (item is Experience) experiences.changeSelected(item) else experiences,
             nations = if (item is Nation) nations.changeSelected(item) else nations,
             pinned = if (item is Pinned) pinned.changeSelected(item) else pinned,
             statuses = if (item is Status) statuses.changeSelected(item) else statuses,
+            marks = if (item is MarkCount) marks.changeSelected(item) else marks,
             tankTypes = if (item is TankType) tankTypes.changeSelected(item) else tankTypes,
             types = if (item is Type) types.changeSelected(item) else types,
         )
     }
 
-    private fun <T : ItemStatus<T>> List<T>.changeSelected(
-        oldItem: Any
-    ): List<T> {
-        val changedItems = if (oldItem is SwitchItem) {
-            val allSelected = all { it.selected }
-            val anyRandom = any { it.random }
-            if (allSelected && !anyRandom) {
-                map { item -> item.copy(selected = false) }
-            } else {
-                map { item -> item.copy(selected = true) }
-            }
-        } else {
-            map { item ->
-                if (item == oldItem) item.copy(selected = !item.selected) else item
-            }
-        }
+    val components: List<List<ItemStatus<*>>>
+        get() = listOf(tiers, types, marks, experiences, pinned, statuses, tankTypes, nations)
 
-        val switchItemSelected = changedItems.any { it.selected }
+    fun clear(): OfflineFilters = changeAll(select = false)
 
-        return changedItems.map { item ->
-            if (item is SwitchItem) item.copy(selected = switchItemSelected)
-            else item
-        }
+    fun selectAll(): OfflineFilters = changeAll(select = true)
+
+    private fun changeAll(select: Boolean): OfflineFilters {
+        return copy(
+            tiers = tiers.map { it.copy(selected = select) },
+            experiences = experiences.map { it.copy(selected = select) },
+            nations = nations.map { it.copy(selected = select) },
+            pinned = pinned.map { it.copy(selected = select) },
+            statuses = statuses.map { it.copy(selected = select) },
+            marks = marks.map { it.copy(selected = select) },
+            tankTypes = tankTypes.map { it.copy(selected = select) },
+            types = types.map { it.copy(selected = select) },
+        )
     }
 }

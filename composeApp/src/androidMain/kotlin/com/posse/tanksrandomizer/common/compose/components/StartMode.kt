@@ -1,37 +1,34 @@
 package com.posse.tanksrandomizer.common.compose.components
 
+import android.content.Context
 import android.content.Intent
 import android.os.Build
-import androidx.compose.runtime.Composable
-import androidx.compose.ui.platform.LocalContext
 import com.posse.tanksrandomizer.AppActivity
 import com.posse.tanksrandomizer.common.compose.utils.findActivity
 import com.posse.tanksrandomizer.feature_service.OverlayService
 
-@Composable
-internal fun StartWindowMode() {
-    val context = LocalContext.current
-
+internal fun startWindowMode(context: Context, startedAsService: Boolean) {
     context.findActivity()?.let { activity ->
         Intent(
             /* packageContext = */ context,
             /* cls = */ OverlayService::class.java,
-        ).also {
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                context.startForegroundService(it)
-            } else {
-                context.startService(it)
+        )
+            .apply {
+                putExtra(STARTED_AS_SERVICE, startedAsService)
             }
-        }
+            .also {
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                    context.startForegroundService(it)
+                } else {
+                    context.startService(it)
+                }
+            }
 
         activity.finish()
     }
 }
 
-@Composable
-internal fun StartFullScreenMode() {
-    val context = LocalContext.current
-
+internal fun startFullScreenMode(context: Context) {
     if (context is OverlayService) {
         Intent(
             /* packageContext = */ context,
@@ -43,3 +40,5 @@ internal fun StartFullScreenMode() {
         context.stopService()
     }
 }
+
+const val STARTED_AS_SERVICE = "StartedAsService"

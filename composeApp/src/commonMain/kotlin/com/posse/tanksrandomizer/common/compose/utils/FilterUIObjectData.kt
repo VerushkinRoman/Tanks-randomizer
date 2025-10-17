@@ -1,17 +1,18 @@
 package com.posse.tanksrandomizer.common.compose.utils
 
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.rounded.Check
-import androidx.compose.material.icons.rounded.Close
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.graphics.painter.Painter
-import androidx.compose.ui.graphics.vector.ImageVector
-import androidx.compose.ui.graphics.vector.rememberVectorPainter
+import androidx.compose.ui.unit.Dp
+import androidx.compose.ui.unit.dp
+import com.posse.tanksrandomizer.common.compose.theme.tankTypesColors
 import com.posse.tanksrandomizer.common.domain.models.CommonFilterObjects.ItemStatus
-import com.posse.tanksrandomizer.common.domain.models.CommonFilterObjects.Tier
 import com.posse.tanksrandomizer.common.domain.models.CommonFilterObjects.Nation
+import com.posse.tanksrandomizer.common.domain.models.CommonFilterObjects.Tier
 import com.posse.tanksrandomizer.common.domain.models.CommonFilterObjects.Type
 import com.posse.tanksrandomizer.feature_offline_screen.domain.models.OfflineFilterObjects.Experience
+import com.posse.tanksrandomizer.feature_offline_screen.domain.models.OfflineFilterObjects.MarkCount
 import com.posse.tanksrandomizer.feature_offline_screen.domain.models.OfflineFilterObjects.Pinned
 import com.posse.tanksrandomizer.feature_offline_screen.domain.models.OfflineFilterObjects.Status
 import com.posse.tanksrandomizer.feature_offline_screen.domain.models.OfflineFilterObjects.TankType
@@ -20,11 +21,31 @@ import org.jetbrains.compose.resources.StringResource
 import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.resources.stringResource
 import tanks_randomizer.composeapp.generated.resources.Res
-import tanks_randomizer.composeapp.generated.resources.check
 import tanks_randomizer.composeapp.generated.resources.exp_bday
 import tanks_randomizer.composeapp.generated.resources.exp_birthday
 import tanks_randomizer.composeapp.generated.resources.exp_x2
 import tanks_randomizer.composeapp.generated.resources.exp_x5
+import tanks_randomizer.composeapp.generated.resources.mark1
+import tanks_randomizer.composeapp.generated.resources.mark2
+import tanks_randomizer.composeapp.generated.resources.mark3
+import tanks_randomizer.composeapp.generated.resources.nation_china
+import tanks_randomizer.composeapp.generated.resources.nation_european
+import tanks_randomizer.composeapp.generated.resources.nation_france
+import tanks_randomizer.composeapp.generated.resources.nation_germany
+import tanks_randomizer.composeapp.generated.resources.nation_japan
+import tanks_randomizer.composeapp.generated.resources.nation_other
+import tanks_randomizer.composeapp.generated.resources.nation_uk
+import tanks_randomizer.composeapp.generated.resources.nation_usa
+import tanks_randomizer.composeapp.generated.resources.nation_ussr
+import tanks_randomizer.composeapp.generated.resources.no_marks
+import tanks_randomizer.composeapp.generated.resources.pinned
+import tanks_randomizer.composeapp.generated.resources.status_elite
+import tanks_randomizer.composeapp.generated.resources.status_not_elite
+import tanks_randomizer.composeapp.generated.resources.tank_type
+import tanks_randomizer.composeapp.generated.resources.tank_type_collection
+import tanks_randomizer.composeapp.generated.resources.tank_type_common
+import tanks_randomizer.composeapp.generated.resources.tank_type_premium
+import tanks_randomizer.composeapp.generated.resources.tank_type_premiumized
 import tanks_randomizer.composeapp.generated.resources.tier1
 import tanks_randomizer.composeapp.generated.resources.tier10
 import tanks_randomizer.composeapp.generated.resources.tier2
@@ -45,22 +66,6 @@ import tanks_randomizer.composeapp.generated.resources.tier_6
 import tanks_randomizer.composeapp.generated.resources.tier_7
 import tanks_randomizer.composeapp.generated.resources.tier_8
 import tanks_randomizer.composeapp.generated.resources.tier_9
-import tanks_randomizer.composeapp.generated.resources.nation_china
-import tanks_randomizer.composeapp.generated.resources.nation_europe
-import tanks_randomizer.composeapp.generated.resources.nation_france
-import tanks_randomizer.composeapp.generated.resources.nation_germany
-import tanks_randomizer.composeapp.generated.resources.nation_great_britain
-import tanks_randomizer.composeapp.generated.resources.nation_japan
-import tanks_randomizer.composeapp.generated.resources.nation_unknown
-import tanks_randomizer.composeapp.generated.resources.nation_usa
-import tanks_randomizer.composeapp.generated.resources.nation_ussr
-import tanks_randomizer.composeapp.generated.resources.pinned
-import tanks_randomizer.composeapp.generated.resources.status_elite
-import tanks_randomizer.composeapp.generated.resources.status_not_elite
-import tanks_randomizer.composeapp.generated.resources.tank_type_collection
-import tanks_randomizer.composeapp.generated.resources.tank_type_common
-import tanks_randomizer.composeapp.generated.resources.tank_type_premium
-import tanks_randomizer.composeapp.generated.resources.trash
 import tanks_randomizer.composeapp.generated.resources.type_heavy
 import tanks_randomizer.composeapp.generated.resources.type_light
 import tanks_randomizer.composeapp.generated.resources.type_medium
@@ -129,8 +134,8 @@ enum class FilterUIObjectData(
         stringResource = Res.string.nation_china,
     ),
     European(
-        drawableResource = Res.drawable.nation_europe,
-        stringResource = Res.string.nation_europe,
+        drawableResource = Res.drawable.nation_european,
+        stringResource = Res.string.nation_european,
     ),
     France(
         drawableResource = Res.drawable.nation_france,
@@ -141,16 +146,16 @@ enum class FilterUIObjectData(
         stringResource = Res.string.nation_germany,
     ),
     UK(
-        drawableResource = Res.drawable.nation_great_britain,
-        stringResource = Res.string.nation_great_britain,
+        drawableResource = Res.drawable.nation_uk,
+        stringResource = Res.string.nation_uk,
     ),
     Japan(
         drawableResource = Res.drawable.nation_japan,
         stringResource = Res.string.nation_japan,
     ),
     Other(
-        drawableResource = Res.drawable.nation_unknown,
-        stringResource = Res.string.nation_unknown,
+        drawableResource = Res.drawable.nation_other,
+        stringResource = Res.string.nation_other,
     ),
     USA(
         drawableResource = Res.drawable.nation_usa,
@@ -176,15 +181,19 @@ enum class FilterUIObjectData(
     ),
 
     Collection(
-        drawableResource = Res.drawable.tank_type_collection,
+        drawableResource = Res.drawable.tank_type,
         stringResource = Res.string.tank_type_collection,
     ),
     Common(
-        drawableResource = Res.drawable.tank_type_common,
+        drawableResource = Res.drawable.tank_type,
         stringResource = Res.string.tank_type_common,
     ),
+    Premiumized(
+        drawableResource = Res.drawable.tank_type,
+        stringResource = Res.string.tank_type_premiumized,
+    ),
     Premium(
-        drawableResource = Res.drawable.tank_type_premium,
+        drawableResource = Res.drawable.tank_type,
         stringResource = Res.string.tank_type_premium,
     ),
 
@@ -204,20 +213,23 @@ enum class FilterUIObjectData(
         drawableResource = Res.drawable.type_td,
         stringResource = Res.string.type_td,
     ),
-}
 
-enum class FilterUIObjectSwitchData(
-    val enabledDrawableResource: ImageVector,
-    val disabledDrawableResource: ImageVector,
-    val enabledStringResource: StringResource,
-    val disabledStringResource: StringResource,
-) {
-    Switch(
-        enabledDrawableResource = Icons.Rounded.Close,
-        disabledDrawableResource = Icons.Rounded.Check,
-        enabledStringResource = Res.string.trash,
-        disabledStringResource = Res.string.check,
-    )
+    NoMarks(
+        drawableResource = Res.drawable.no_marks,
+        stringResource = Res.string.no_marks,
+    ),
+    Mark1(
+        drawableResource = Res.drawable.mark1,
+        stringResource = Res.string.mark1,
+    ),
+    Mark2(
+        drawableResource = Res.drawable.mark2,
+        stringResource = Res.string.mark2,
+    ),
+    Mark3(
+        drawableResource = Res.drawable.mark3,
+        stringResource = Res.string.mark3,
+    ),
 }
 
 @Composable
@@ -235,10 +247,6 @@ fun <T> getFilterImage(item: ItemStatus<T>): Painter {
                 is Tier.Tier8 -> painterResource(FilterUIObjectData.Tier8.drawableResource)
                 is Tier.Tier9 -> painterResource(FilterUIObjectData.Tier9.drawableResource)
                 is Tier.Tier10 -> painterResource(FilterUIObjectData.Tier10.drawableResource)
-                is Tier.TierSwitch -> rememberVectorPainter(
-                    if (item.selected) FilterUIObjectSwitchData.Switch.enabledDrawableResource
-                    else FilterUIObjectSwitchData.Switch.disabledDrawableResource
-                )
             }
         }
 
@@ -247,10 +255,6 @@ fun <T> getFilterImage(item: ItemStatus<T>): Painter {
                 is Experience.BDay -> painterResource(FilterUIObjectData.BDay.drawableResource)
                 is Experience.X2 -> painterResource(FilterUIObjectData.X2.drawableResource)
                 is Experience.X5 -> painterResource(FilterUIObjectData.X5.drawableResource)
-                is Experience.ExperienceSwitch -> rememberVectorPainter(
-                    if (item.selected) FilterUIObjectSwitchData.Switch.enabledDrawableResource
-                    else FilterUIObjectSwitchData.Switch.disabledDrawableResource
-                )
             }
         }
 
@@ -265,20 +269,12 @@ fun <T> getFilterImage(item: ItemStatus<T>): Painter {
                 is Nation.USA -> painterResource(FilterUIObjectData.USA.drawableResource)
                 is Nation.USSR -> painterResource(FilterUIObjectData.USSR.drawableResource)
                 is Nation.Other -> painterResource(FilterUIObjectData.Other.drawableResource)
-                is Nation.NationSwitch -> rememberVectorPainter(
-                    if (item.selected) FilterUIObjectSwitchData.Switch.enabledDrawableResource
-                    else FilterUIObjectSwitchData.Switch.disabledDrawableResource
-                )
             }
         }
 
         is Pinned -> {
             when (item) {
                 is Pinned.Status -> painterResource(FilterUIObjectData.Pinned.drawableResource)
-                is Pinned.PinnedSwitch -> rememberVectorPainter(
-                    if (item.selected) FilterUIObjectSwitchData.Switch.enabledDrawableResource
-                    else FilterUIObjectSwitchData.Switch.disabledDrawableResource
-                )
             }
         }
 
@@ -286,10 +282,6 @@ fun <T> getFilterImage(item: ItemStatus<T>): Painter {
             when (item) {
                 is Status.Elite -> painterResource(FilterUIObjectData.Elite.drawableResource)
                 is Status.NotElite -> painterResource(FilterUIObjectData.NotElite.drawableResource)
-                is Status.EliteSwitch -> rememberVectorPainter(
-                    if (item.selected) FilterUIObjectSwitchData.Switch.enabledDrawableResource
-                    else FilterUIObjectSwitchData.Switch.disabledDrawableResource
-                )
             }
         }
 
@@ -297,11 +289,8 @@ fun <T> getFilterImage(item: ItemStatus<T>): Painter {
             when (item) {
                 is TankType.Collection -> painterResource(FilterUIObjectData.Collection.drawableResource)
                 is TankType.Common -> painterResource(FilterUIObjectData.Common.drawableResource)
+                is TankType.Premiumized -> painterResource(FilterUIObjectData.Premiumized.drawableResource)
                 is TankType.Premium -> painterResource(FilterUIObjectData.Premium.drawableResource)
-                is TankType.TankTypeSwitch -> rememberVectorPainter(
-                    if (item.selected) FilterUIObjectSwitchData.Switch.enabledDrawableResource
-                    else FilterUIObjectSwitchData.Switch.disabledDrawableResource
-                )
             }
         }
 
@@ -311,10 +300,15 @@ fun <T> getFilterImage(item: ItemStatus<T>): Painter {
                 is Type.Light -> painterResource(FilterUIObjectData.Light.drawableResource)
                 is Type.Medium -> painterResource(FilterUIObjectData.Medium.drawableResource)
                 is Type.TankDestroyer -> painterResource(FilterUIObjectData.TankDestroyer.drawableResource)
-                is Type.TypeSwitch -> rememberVectorPainter(
-                    if (item.selected) FilterUIObjectSwitchData.Switch.enabledDrawableResource
-                    else FilterUIObjectSwitchData.Switch.disabledDrawableResource
-                )
+            }
+        }
+
+        is MarkCount -> {
+            when (item) {
+                is MarkCount.NoMarks -> painterResource(FilterUIObjectData.NoMarks.drawableResource)
+                is MarkCount.Mark1 -> painterResource(FilterUIObjectData.Mark1.drawableResource)
+                is MarkCount.Mark2 -> painterResource(FilterUIObjectData.Mark2.drawableResource)
+                is MarkCount.Mark3 -> painterResource(FilterUIObjectData.Mark3.drawableResource)
             }
         }
 
@@ -337,10 +331,6 @@ fun <T> getFilterName(item: ItemStatus<T>): String {
                 is Tier.Tier8 -> stringResource(FilterUIObjectData.Tier8.stringResource)
                 is Tier.Tier9 -> stringResource(FilterUIObjectData.Tier9.stringResource)
                 is Tier.Tier10 -> stringResource(FilterUIObjectData.Tier10.stringResource)
-                is Tier.TierSwitch -> stringResource(
-                    if (item.selected) FilterUIObjectSwitchData.Switch.enabledStringResource
-                    else FilterUIObjectSwitchData.Switch.disabledStringResource
-                )
             }
         }
 
@@ -349,10 +339,6 @@ fun <T> getFilterName(item: ItemStatus<T>): String {
                 is Experience.BDay -> stringResource(FilterUIObjectData.BDay.stringResource)
                 is Experience.X2 -> stringResource(FilterUIObjectData.X2.stringResource)
                 is Experience.X5 -> stringResource(FilterUIObjectData.X5.stringResource)
-                is Experience.ExperienceSwitch -> stringResource(
-                    if (item.selected) FilterUIObjectSwitchData.Switch.enabledStringResource
-                    else FilterUIObjectSwitchData.Switch.disabledStringResource
-                )
             }
         }
 
@@ -367,20 +353,12 @@ fun <T> getFilterName(item: ItemStatus<T>): String {
                 is Nation.USA -> stringResource(FilterUIObjectData.USA.stringResource)
                 is Nation.USSR -> stringResource(FilterUIObjectData.USSR.stringResource)
                 is Nation.Other -> stringResource(FilterUIObjectData.Other.stringResource)
-                is Nation.NationSwitch -> stringResource(
-                    if (item.selected) FilterUIObjectSwitchData.Switch.enabledStringResource
-                    else FilterUIObjectSwitchData.Switch.disabledStringResource
-                )
             }
         }
 
         is Pinned -> {
             when (item) {
                 is Pinned.Status -> stringResource(FilterUIObjectData.Pinned.stringResource)
-                is Pinned.PinnedSwitch -> stringResource(
-                    if (item.selected) FilterUIObjectSwitchData.Switch.enabledStringResource
-                    else FilterUIObjectSwitchData.Switch.disabledStringResource
-                )
             }
         }
 
@@ -388,10 +366,6 @@ fun <T> getFilterName(item: ItemStatus<T>): String {
             when (item) {
                 is Status.Elite -> stringResource(FilterUIObjectData.Elite.stringResource)
                 is Status.NotElite -> stringResource(FilterUIObjectData.NotElite.stringResource)
-                is Status.EliteSwitch -> stringResource(
-                    if (item.selected) FilterUIObjectSwitchData.Switch.enabledStringResource
-                    else FilterUIObjectSwitchData.Switch.disabledStringResource
-                )
             }
         }
 
@@ -399,11 +373,8 @@ fun <T> getFilterName(item: ItemStatus<T>): String {
             when (item) {
                 is TankType.Collection -> stringResource(FilterUIObjectData.Collection.stringResource)
                 is TankType.Common -> stringResource(FilterUIObjectData.Common.stringResource)
+                is TankType.Premiumized -> stringResource(FilterUIObjectData.Premiumized.stringResource)
                 is TankType.Premium -> stringResource(FilterUIObjectData.Premium.stringResource)
-                is TankType.TankTypeSwitch -> stringResource(
-                    if (item.selected) FilterUIObjectSwitchData.Switch.enabledStringResource
-                    else FilterUIObjectSwitchData.Switch.disabledStringResource
-                )
             }
         }
 
@@ -413,10 +384,15 @@ fun <T> getFilterName(item: ItemStatus<T>): String {
                 is Type.Light -> stringResource(FilterUIObjectData.Light.stringResource)
                 is Type.Medium -> stringResource(FilterUIObjectData.Medium.stringResource)
                 is Type.TankDestroyer -> stringResource(FilterUIObjectData.TankDestroyer.stringResource)
-                is Type.TypeSwitch -> stringResource(
-                    if (item.selected) FilterUIObjectSwitchData.Switch.enabledStringResource
-                    else FilterUIObjectSwitchData.Switch.disabledStringResource
-                )
+            }
+        }
+
+        is MarkCount -> {
+            when (item) {
+                is MarkCount.NoMarks -> stringResource(FilterUIObjectData.NoMarks.stringResource)
+                is MarkCount.Mark1 -> stringResource(FilterUIObjectData.Mark1.stringResource)
+                is MarkCount.Mark2 -> stringResource(FilterUIObjectData.Mark2.stringResource)
+                is MarkCount.Mark3 -> stringResource(FilterUIObjectData.Mark3.stringResource)
             }
         }
 
@@ -425,15 +401,43 @@ fun <T> getFilterName(item: ItemStatus<T>): String {
 }
 
 @Composable
-fun <T> ItemStatus<T>.useColorFilter(): Boolean {
+fun ItemStatus<*>.useFullSize(): Boolean {
     return when (this) {
-        is Tier -> true
-        is Experience -> false
+        is Nation, is Experience -> true
+        else -> false
+    }
+}
+
+@Composable
+fun ItemStatus<*>.useSquare(): Boolean {
+    return when (this) {
         is Nation -> false
-        is Pinned -> true
-        is Status -> true
-        is TankType -> false
-        is Type -> true
-        else -> throw RuntimeException("wrong item: $this")
+        else -> true
+    }
+}
+
+@Composable
+fun ItemStatus<*>.additionalPadding(): Dp {
+    return when (this) {
+        is Nation -> 0.dp
+        else -> 3.dp
+    }
+}
+
+@Composable
+fun ItemStatus<*>.colorFilter(): ColorFilter? {
+    return when (this) {
+        is Nation, is Experience, is MarkCount -> null
+
+        is TankType -> ColorFilter.tint(
+            when (this) {
+                is TankType.Common -> MaterialTheme.colorScheme.tankTypesColors.common
+                is TankType.Premium -> MaterialTheme.colorScheme.tankTypesColors.premium
+                is TankType.Premiumized -> MaterialTheme.colorScheme.tankTypesColors.premiumized
+                is TankType.Collection -> MaterialTheme.colorScheme.tankTypesColors.collection
+            }
+        )
+
+        else -> ColorFilter.tint(MaterialTheme.colorScheme.onPrimary)
     }
 }

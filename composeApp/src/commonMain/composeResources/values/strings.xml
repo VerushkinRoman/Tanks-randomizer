@@ -12,17 +12,18 @@
     <string name="tier10">Tier 10</string>
 
     <string name="nation_china">China</string>
-    <string name="nation_europe">Europe</string>
+    <string name="nation_european">Europe</string>
     <string name="nation_france">France</string>
     <string name="nation_germany">Germany</string>
-    <string name="nation_great_britain">Great Britain</string>
+    <string name="nation_uk">Great Britain</string>
     <string name="nation_japan">Japan</string>
-    <string name="nation_unknown">Unknown</string>
+    <string name="nation_other">Unknown</string>
     <string name="nation_usa">USA</string>
     <string name="nation_ussr">USSR</string>
 
     <string name="tank_type_collection">Collection tank</string>
     <string name="tank_type_common">Common type</string>
+    <string name="tank_type_premiumized">Premiumized tank</string>
     <string name="tank_type_premium">Premium tank</string>
 
     <string name="type_heavy">Heavy tank</string>
@@ -31,32 +32,38 @@
     <string name="type_td">Tank destroyer</string>
 
     <string name="trash">Trash</string>
+    <string name="clear_filter">Clear filter</string>
+    <string name="check_all">Check all</string>
     <string name="dice">Dice</string>
-    <string name="check">Check</string>
-
-    <string name="auto_rotate">Auto rotate</string>
-    <string name="lock_rotation">Lock rotation</string>
-    <string name="rotate_landscape">Rotate to landscape</string>
-    <string name="rotate_portrait">Rotate portrait</string>
 
     <string name="settings">Settings</string>
 
     <string name="press_back_again_to_exit">Press "Back" again to exit!</string>
-
-    <string name="overlay_settings">Overlay settings</string>
-    <string name="overlay_mode">Overlay mode</string>
-    <string name="fullscreen_mode">Fullscreen mode</string>
 
     <string name="expand_app">Expand to full screen</string>
     <string name="collapse_app">Collapse to button</string>
 
     <string name="close_app">Close app</string>
 
-    <string name="less_opacity">Less opacity</string>
-    <string name="more_opacity">More opacity</string>
 
-    <string name="less_size">Less size</string>
-    <string name="more_size">More size</string>
+<!--    Settings Pane-->
+    <string name="settings_opacity_title">Button opacity</string>
+    <string name="settings_size_title">Button size</string>
+
+    <string name="settings_overlay_title">App overlay settings</string>
+    <string name="settings_overlay_desc">Grant app overlay settings to unlock app window mode</string>
+    <string name="settings_overlay_button">Button to open overlay settings</string>
+
+    <string name="settings_mode_title">Screen mode</string>
+    <string name="settings_mode_desc">Current application mode is</string>
+    <string name="settings_mode_fullscreen">fullscreen</string>
+    <string name="settings_mode_window">windowed</string>
+
+    <string name="settings_screen_rotation_title">Screen rotation</string>
+    <string name="settings_screen_rotation_desc">Current screen rotation is</string>
+    <string name="settings_screen_rotation_orientation_landscape">landscape</string>
+    <string name="settings_screen_rotation_orientation_portrait">portrait</string>
+    <string name="settings_screen_rotation_orientation_auto">auto</string>
 
 
 <!--    Main Screen-->
@@ -77,6 +84,20 @@
 
 <!--    Online Screen-->
     <string name="logout">Log Out</string>
+
+    <string name="no_marks">No marks</string>
+    <string name="mark1">One mark</string>
+    <string name="mark2">Two marks</string>
+    <string name="mark3">Three marks</string>
+
+
+<!--    WebView Screen-->
+    <string name="go_back">Back</string>
+    <string name="go_forward">Forward</string>
+    <string name="stop_loading">Stop</string>
+    <string name="refresh_page">Refresh</string>
+
+    <string name="exit">Exit</string>
 
 
 <!--    Errors-->

@@ -1,11 +1,10 @@
 package com.posse.tanksrandomizer.common.data
 
 import android.content.SharedPreferences
+import com.posse.tanksrandomizer.common.compose.utils.ScreenRotation
 import com.posse.tanksrandomizer.common.domain.models.ButtonOffset
-import com.posse.tanksrandomizer.common.domain.models.ButtonSize
 import com.russhwolf.settings.ExperimentalSettingsApi
 import com.russhwolf.settings.SharedPreferencesSettings
-import com.russhwolf.settings.serialization.decodeValue
 import com.russhwolf.settings.serialization.decodeValueOrNull
 import com.russhwolf.settings.serialization.encodeValue
 import kotlinx.serialization.ExperimentalSerializationApi
@@ -25,18 +24,15 @@ class ScreenSettingsDataSourceImpl(
     override fun getButtonPortraitOffset(): ButtonOffset? = settings.decodeValueOrNull<ButtonOffset>("ButtonPortraitOffset")
     override fun setButtonPortraitOffset(buttonOffset: ButtonOffset) = settings.encodeValue("ButtonPortraitOffset", buttonOffset)
 
-    override fun getAutorotate(): Boolean = settings.getBoolean("Autorotate", true)
-    override fun setAutorotate(autoRotate: Boolean) = settings.putBoolean("Autorotate", autoRotate)
-
-    override fun getRotation(): String? = settings.getStringOrNull("Rotation")
-    override fun setRotation(rotation: String) = settings.putString("Rotation", rotation)
+    override fun getRotation(): ScreenRotation? = settings.decodeValueOrNull<ScreenRotation>("ScreenRotation")
+    override fun setRotation(rotation: ScreenRotation) = settings.encodeValue("ScreenRotation", rotation)
 
     override fun getFullScreenMode(): Boolean = settings.getBoolean("FullScreen", true)
     override fun setFullScreenMode(enabled: Boolean) = settings.putBoolean("FullScreen", enabled)
 
     override fun getFloatingButtonOpacity(): Float = settings.getFloat("ButtonOpacity", 1F)
-    override fun setFloatingButtonOpacity(opacity: Float) =settings.putFloat("ButtonOpacity", opacity)
+    override fun setFloatingButtonOpacity(opacity: Float) = settings.putFloat("ButtonOpacity", opacity)
 
-    override fun getFloatingButtonSize(): ButtonSize = settings.decodeValue<ButtonSize>("ButtonSize", ButtonSize.Medium)
-    override fun setFloatingButtonSize(size: ButtonSize) = settings.encodeValue("ButtonSize", size)
+    override fun getFloatingButtonSize(): Float = settings.getFloat("FloatingButtonSize", 1F)
+    override fun setFloatingButtonSize(size: Float) = settings.putFloat("FloatingButtonSize", size)
 }

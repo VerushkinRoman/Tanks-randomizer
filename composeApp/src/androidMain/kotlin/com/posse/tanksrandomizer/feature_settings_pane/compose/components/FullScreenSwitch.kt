@@ -1,103 +1,115 @@
 package com.posse.tanksrandomizer.feature_settings_pane.compose.components
 
-import android.provider.Settings
-import androidx.compose.foundation.Image
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.IntrinsicSize
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.width
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.CloseFullscreen
 import androidx.compose.material.icons.rounded.OpenInFull
-import androidx.compose.material.icons.rounded.Tune
-import androidx.compose.material3.IconButton
-import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Icon
+import androidx.compose.material3.SegmentedButton
+import androidx.compose.material3.SegmentedButtonDefaults
+import androidx.compose.material3.SingleChoiceSegmentedButtonRow
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.alpha
-import androidx.compose.ui.graphics.ColorFilter
-import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.unit.dp
-import androidx.lifecycle.compose.LifecycleResumeEffect
-import com.posse.tanksrandomizer.common.compose.base_components.RandomizerSwitch
+import com.posse.tanksrandomizer.common.compose.theme.themedSegmentedButtonColors
+import com.posse.tanksrandomizer.feature_settings_pane.compose.components.common.CommonSettingsActionBlock
+import com.posse.tanksrandomizer.feature_settings_pane.compose.components.common.CommonSettingsActionTitle
+import com.posse.tanksrandomizer.feature_settings_pane.presentation.model.SettingsEvent
 import org.jetbrains.compose.resources.stringResource
 import tanks_randomizer.composeapp.generated.resources.Res
-import tanks_randomizer.composeapp.generated.resources.fullscreen_mode
-import tanks_randomizer.composeapp.generated.resources.overlay_mode
-import tanks_randomizer.composeapp.generated.resources.overlay_settings
+import tanks_randomizer.composeapp.generated.resources.settings_mode_desc
+import tanks_randomizer.composeapp.generated.resources.settings_mode_fullscreen
+import tanks_randomizer.composeapp.generated.resources.settings_mode_title
+import tanks_randomizer.composeapp.generated.resources.settings_mode_window
 
 @Composable
 fun FullScreenSwitch(
-    autoRotation: Boolean,
-    onClick: () -> Unit,
-    onAppSettingsClick: () -> Unit,
+    enabled: Boolean,
+    fullScreenModeEnabled: Boolean,
+    onEvent: (SettingsEvent) -> Unit,
     modifier: Modifier = Modifier
 ) {
-    val context = LocalContext.current
-
-    var canDrawOverlay by remember { mutableStateOf(Settings.canDrawOverlays(context)) }
-
-    LifecycleResumeEffect(true) {
-        canDrawOverlay = Settings.canDrawOverlays(context)
-        onPauseOrDispose {}
-    }
-
-    Row(
-        verticalAlignment = Alignment.CenterVertically,
-        horizontalArrangement = Arrangement.Center,
+    CommonSettingsActionBlock(
+        caption = { centered ->
+            ScreenSwitchDescription(
+                centered = centered,
+                fullScreenModeEnabled = fullScreenModeEnabled,
+            )
+        },
+        action = {
+            ScreenSwitchControlButtons(
+                fullScreenModeEnabled = fullScreenModeEnabled,
+                enabled = enabled,
+                onFullScreenClick = { onEvent(SettingsEvent.FullScreenModeChanged(fullScreen = true)) },
+                onWindowClick = { onEvent(SettingsEvent.FullScreenModeChanged(fullScreen = false)) },
+            )
+        },
         modifier = modifier
+    )
+}
+
+@Composable
+private fun ScreenSwitchDescription(
+    centered: Boolean,
+    fullScreenModeEnabled: Boolean,
+    modifier: Modifier = Modifier,
+) {
+    val descriptionText = stringResource(Res.string.settings_mode_desc) +
+            " " +
+            stringResource(
+                if (fullScreenModeEnabled) Res.string.settings_mode_fullscreen
+                else Res.string.settings_mode_window
+            )
+
+    CommonSettingsActionTitle(
+        centered = centered,
+        title = stringResource(Res.string.settings_mode_title),
+        subtitle = descriptionText,
+        modifier = modifier,
+    )
+}
+
+@Composable
+private fun ScreenSwitchControlButtons(
+    fullScreenModeEnabled: Boolean,
+    enabled: Boolean,
+    onFullScreenClick: () -> Unit,
+    onWindowClick: () -> Unit,
+    modifier: Modifier = Modifier,
+) {
+    SingleChoiceSegmentedButtonRow(
+        modifier = modifier,
     ) {
-        Row(
-            verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.Center,
-            modifier = Modifier
-                .height(IntrinsicSize.Max)
-                .alpha(if (canDrawOverlay) 1f else 0.3f)
-        ) {
-            Image(
-                imageVector = Icons.Rounded.CloseFullscreen,
-                contentDescription = stringResource(Res.string.overlay_mode),
-                colorFilter = ColorFilter.tint(MaterialTheme.colorScheme.onSurface),
-            )
-
-            Spacer(modifier = Modifier.width(12.dp))
-
-            RandomizerSwitch(
-                checked = autoRotation,
-                onClick = { onClick() },
-                enabled = canDrawOverlay,
-            )
-
-            Spacer(modifier = Modifier.width(6.dp))
-
-            Image(
-                imageVector = Icons.Rounded.OpenInFull,
-                contentDescription = stringResource(Res.string.fullscreen_mode),
-                colorFilter = ColorFilter.tint(MaterialTheme.colorScheme.onSurface),
-            )
-        }
-
-        Spacer(modifier = Modifier.width(12.dp))
-
-        if (!canDrawOverlay) {
-            IconButton(
-                onClick = onAppSettingsClick
-            ) {
-                Image(
-                    imageVector = Icons.Rounded.Tune,
-                    contentDescription = stringResource(Res.string.overlay_settings),
-                    colorFilter = ColorFilter.tint(MaterialTheme.colorScheme.onSurface),
-                    contentScale = ContentScale.FillHeight,
+        SegmentedButton(
+            shape = SegmentedButtonDefaults.itemShape(
+                index = 0,
+                count = 2,
+            ),
+            onClick = onFullScreenClick,
+            selected = fullScreenModeEnabled,
+            enabled = enabled,
+            colors = themedSegmentedButtonColors(),
+            label = {
+                Icon(
+                    imageVector = Icons.Rounded.OpenInFull,
+                    contentDescription = stringResource(Res.string.settings_mode_fullscreen),
                 )
-            }
-        }
+            },
+        )
+
+        SegmentedButton(
+            shape = SegmentedButtonDefaults.itemShape(
+                index = 1,
+                count = 2,
+            ),
+            onClick = onWindowClick,
+            selected = !fullScreenModeEnabled,
+            enabled = enabled,
+            colors = themedSegmentedButtonColors(),
+            label = {
+                Icon(
+                    imageVector = Icons.Rounded.CloseFullscreen,
+                    contentDescription = stringResource(Res.string.settings_mode_window),
+                )
+            },
+        )
     }
 }

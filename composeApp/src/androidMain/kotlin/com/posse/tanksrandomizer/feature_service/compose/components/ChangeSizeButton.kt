@@ -2,14 +2,10 @@ package com.posse.tanksrandomizer.feature_service.compose.components
 
 import androidx.compose.animation.AnimatedContent
 import androidx.compose.animation.core.animateFloatAsState
-import androidx.compose.foundation.Image
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.CloseFullscreen
 import androidx.compose.material.icons.rounded.OpenInFull
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableFloatStateOf
@@ -17,10 +13,10 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
-import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.ColorFilter
+import androidx.compose.ui.graphics.vector.rememberVectorPainter
 import androidx.compose.ui.layout.onSizeChanged
 import androidx.compose.ui.unit.dp
+import com.posse.tanksrandomizer.common.compose.base_components.BigButtonWithImage
 import com.posse.tanksrandomizer.common.compose.theme.AppTheme
 import org.jetbrains.compose.resources.stringResource
 import tanks_randomizer.composeapp.generated.resources.Res
@@ -42,8 +38,6 @@ internal fun ChangeSizeButton(
             targetState = windowInFullScreen,
             modifier = modifier
                 .alpha(opacity)
-                .clip(CircleShape)
-                .background(MaterialTheme.colorScheme.surfaceContainerLow)
                 .padding(6.dp)
                 .onSizeChanged {
                     if (alpha != 1f && it.height != 0 && it.width != 0) {
@@ -51,10 +45,9 @@ internal fun ChangeSizeButton(
                     }
                 }
         ) { fullScreen ->
-            Image(
-                imageVector = if (fullScreen) Icons.Rounded.CloseFullscreen else Icons.Rounded.OpenInFull,
+            BigButtonWithImage(
+                painter = rememberVectorPainter(if (fullScreen) Icons.Rounded.CloseFullscreen else Icons.Rounded.OpenInFull),
                 contentDescription = stringResource(if (fullScreen) Res.string.collapse_app else Res.string.expand_app),
-                colorFilter = ColorFilter.tint(MaterialTheme.colorScheme.onSurface),
             )
         }
     }

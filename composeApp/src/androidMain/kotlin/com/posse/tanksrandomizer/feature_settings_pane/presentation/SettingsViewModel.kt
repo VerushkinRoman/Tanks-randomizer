@@ -1,8 +1,7 @@
 package com.posse.tanksrandomizer.feature_settings_pane.presentation
 
-import com.posse.tanksrandomizer.common.compose.utils.RotateDirection
+import com.posse.tanksrandomizer.common.compose.utils.ScreenRotation
 import com.posse.tanksrandomizer.common.core.di.Inject
-import com.posse.tanksrandomizer.common.domain.models.ButtonSize
 import com.posse.tanksrandomizer.common.domain.repository.SettingsRepository
 import com.posse.tanksrandomizer.common.presentation.interactor.SettingsInteractor
 import com.posse.tanksrandomizer.common.presentation.utils.BaseSharedViewModel
@@ -20,13 +19,11 @@ class SettingsViewModel(
     override fun obtainEvent(viewEvent: SettingsEvent) {
         when (viewEvent) {
             SettingsEvent.ClearAction -> viewAction = null
-            SettingsEvent.FullScreenModePressed -> changeFullScreen()
-            SettingsEvent.LandscapeRotatePressed -> changeRotation()
-            SettingsEvent.PortraitRotatePressed -> changeRotation()
-            SettingsEvent.RotateSwitchChecked -> changeAutorotation()
-            SettingsEvent.AppSettingsPressed -> viewAction = SettingsAction.GoToAppSettings
+            SettingsEvent.OverlayButtonPressed -> viewAction = SettingsAction.GoToAppSettings
+            is SettingsEvent.RotationChanged -> changeRotation(viewEvent.screenRotation)
             is SettingsEvent.SetButtonOpacity -> saveButtonOpacity(viewEvent.opacity)
             is SettingsEvent.SetButtonSize -> saveButtonSize(viewEvent.size)
+            is SettingsEvent.FullScreenModeChanged -> changeFullScreen(viewEvent.fullScreen)
         }
     }
 
@@ -38,7 +35,7 @@ class SettingsViewModel(
         settingsInteractor.setFloatingButtonOpacity(opacity)
     }
 
-    private fun saveButtonSize(size: ButtonSize) {
+    private fun saveButtonSize(size: Float) {
         viewState = viewState.copy(
             buttonSize = size
         )
@@ -46,41 +43,19 @@ class SettingsViewModel(
         settingsInteractor.setFloatingButtonSize(size)
     }
 
-    private fun changeAutorotation() {
-        val autoRotateEnabled = !viewState.rotation.autoRotateEnabled
-
+    private fun changeRotation(screenRotation: ScreenRotation) {
         viewState = viewState.copy(
-            rotation = viewState.rotation.copy(
-                autoRotateEnabled = autoRotateEnabled
-            )
+            screenRotation = screenRotation
         )
 
-        settingsInteractor.setAutorotate(autoRotateEnabled)
+        settingsInteractor.setRotation(screenRotation)
     }
 
-    private fun changeRotation() {
-        val rotation = if (viewState.rotation.rotateDirection == RotateDirection.Portrait) {
-            RotateDirection.Landscape
-        } else {
-            RotateDirection.Portrait
-        }
-
+    private fun changeFullScreen(fullScreen: Boolean) {
         viewState = viewState.copy(
-            rotation = viewState.rotation.copy(
-                rotateDirection = rotation
-            )
+            fullScreenMode = fullScreen
         )
 
-        settingsInteractor.setRotation(rotation)
-    }
-
-    private fun changeFullScreen() {
-        val fullScreenMode = !viewState.fullScreenMode
-
-        viewState = viewState.copy(
-            fullScreenMode = fullScreenMode
-        )
-
-        settingsInteractor.setFullScreenMode(fullScreenMode)
+        settingsInteractor.setFullScreenMode(fullScreen)
     }
 }

@@ -10,7 +10,7 @@ import com.posse.tanksrandomizer.android_mode.presentation.use_cases.GetAndroidM
 import kotlinx.coroutines.launch
 
 class AndroidModeViewModel(
-    settingsInteractor: SettingsInteractor = Inject.instance(),
+    val settingsInteractor: SettingsInteractor = Inject.instance(),
 ) : BaseSharedViewModel<AndroidModeState, AndroidModeAction, AndroidModeEvent>(
     initialState = GetAndroidModeState(settingsInteractor = settingsInteractor).invoke()
 ) {
@@ -38,7 +38,12 @@ class AndroidModeViewModel(
         when (viewEvent) {
             AndroidModeEvent.ClearAction -> viewAction = null
             AndroidModeEvent.OnClosePress -> exitApp()
+            AndroidModeEvent.OnStartedAsService -> collapseWindow()
         }
+    }
+
+    private fun collapseWindow(){
+        settingsInteractor.setWindowInFullScreen(false)
     }
 
     private fun exitApp() {

@@ -11,17 +11,18 @@
     <string name="tier10">Уровень 10</string>
 
     <string name="nation_china">Китай</string>
-    <string name="nation_europe">Европа</string>
+    <string name="nation_european">Европа</string>
     <string name="nation_france">Франция</string>
     <string name="nation_germany">Германия</string>
-    <string name="nation_great_britain">Великобританя</string>
+    <string name="nation_uk">Великобританя</string>
     <string name="nation_japan">Япония</string>
-    <string name="nation_unknown">Сборная</string>
+    <string name="nation_other">Сборная</string>
     <string name="nation_usa">США</string>
     <string name="nation_ussr">СССР</string>
 
     <string name="tank_type_collection">Коллекционный танк</string>
     <string name="tank_type_common">Обычный танк</string>
+    <string name="tank_type_premiumized">Премиализированный танк</string>
     <string name="tank_type_premium">Премиумный танк</string>
 
     <string name="type_heavy">Тяжелый танк</string>
@@ -30,32 +31,38 @@
     <string name="type_td">ПТ САУ</string>
 
     <string name="trash">Корзина</string>
+    <string name="clear_filter">Очистить фильтр</string>
+    <string name="check_all">Выбрать всё</string>
     <string name="dice">Кубики</string>
-    <string name="check">Выделить</string>
-
-    <string name="auto_rotate">Автоповорот</string>
-    <string name="lock_rotation">Блокировка поворота</string>
-    <string name="rotate_landscape">Повернуть в ландшафтный режим</string>
-    <string name="rotate_portrait">Повернуть в портретный режим</string>
 
     <string name="settings">Настройки</string>
 
     <string name="press_back_again_to_exit">Нажмите "НАЗАД" еще раз для выхода!</string>
-
-    <string name="overlay_settings">Настройки режима поверх окон</string>
-    <string name="overlay_mode">Режим поверх окон</string>
-    <string name="fullscreen_mode">Полноэкранный режим</string>
 
     <string name="expand_app">Расширить на полный экран</string>
     <string name="collapse_app">Сжать до кнопки</string>
 
     <string name="close_app">Закрыть приложение</string>
 
-    <string name="less_opacity">Больше прозрачности</string>
-    <string name="more_opacity">Меньше прозрачности</string>
 
-    <string name="less_size">Меньше размер</string>
-    <string name="more_size">Больше размер</string>
+<!--    Settings Pane-->
+    <string name="settings_opacity_title">Прозрачность кнопки</string>
+    <string name="settings_size_title">Размер кнопки</string>
+
+    <string name="settings_overlay_title">Настройки наложения приложения</string>
+    <string name="settings_overlay_desc">Включите настройку поверх других приложений, чтобы разблокировать оконный режим</string>
+    <string name="settings_overlay_button">Кнопка открытия настроек наложения</string>
+
+    <string name="settings_mode_title">Режим экрана</string>
+    <string name="settings_mode_desc">Текущий режим приложения:</string>
+    <string name="settings_mode_fullscreen">полноэкранный</string>
+    <string name="settings_mode_window">оконный</string>
+
+    <string name="settings_screen_rotation_title">Поворот экрана</string>
+    <string name="settings_screen_rotation_desc">Текущая ориентация экрана:</string>
+    <string name="settings_screen_rotation_orientation_landscape">альбомная</string>
+    <string name="settings_screen_rotation_orientation_portrait">портретная</string>
+    <string name="settings_screen_rotation_orientation_auto">авто</string>
 
 
 <!--    Main Screen-->
@@ -76,6 +83,20 @@
 
 <!--    Online Screen-->
     <string name="logout">Выйти</string>
+
+    <string name="no_marks">Без отметок</string>
+    <string name="mark1">Одна отметка</string>
+    <string name="mark2">Две отметки</string>
+    <string name="mark3">Три отметки</string>
+
+
+<!--    WebView Screen-->
+    <string name="go_back">Назад</string>
+    <string name="go_forward">Вперед</string>
+    <string name="stop_loading">Стоп</string>
+    <string name="refresh_page">Обновить</string>
+
+    <string name="exit">Выйти</string>
 
 
 <!--    Errors-->

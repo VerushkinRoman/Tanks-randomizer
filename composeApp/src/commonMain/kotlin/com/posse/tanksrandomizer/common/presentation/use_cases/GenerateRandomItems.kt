@@ -1,12 +1,11 @@
 package com.posse.tanksrandomizer.common.presentation.use_cases
 
 import com.posse.tanksrandomizer.common.domain.models.CommonFilterObjects.ItemStatus
-import com.posse.tanksrandomizer.common.domain.models.CommonFilterObjects.SwitchItem
 
 class GenerateRandomItems {
     operator fun <T : ItemStatus<T>> invoke(items: List<T>): List<T> {
         val randomItem = items
-            .filter { it.selected && it !is SwitchItem }
+            .filter { it.selected }
             .randomOrNull()
 
         return items.map { item ->
@@ -16,7 +15,10 @@ class GenerateRandomItems {
                     random = true
                 )
             } else {
-                item
+                item.copy(
+                    selected = item.selected,
+                    random = false
+                )
             }
         }
     }

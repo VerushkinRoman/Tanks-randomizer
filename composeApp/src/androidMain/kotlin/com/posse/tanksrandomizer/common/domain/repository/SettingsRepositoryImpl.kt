@@ -1,22 +1,14 @@
 package com.posse.tanksrandomizer.common.domain.repository
 
-import com.posse.tanksrandomizer.common.compose.utils.RotateDirection
+import com.posse.tanksrandomizer.common.compose.utils.ScreenRotation
 import com.posse.tanksrandomizer.common.data.ScreenSettingsDataSource
 import com.posse.tanksrandomizer.common.domain.models.ButtonOffset
-import com.posse.tanksrandomizer.common.domain.models.ButtonSize
 
 class SettingsRepositoryImpl(
     private val dataSource: ScreenSettingsDataSource
 ) : SettingsRepository {
-    override fun getAutorotate(): Boolean = dataSource.getAutorotate()
-    override fun setAutorotate(autoRotate: Boolean) = dataSource.setAutorotate(autoRotate)
-
-    override fun getRotation(): RotateDirection {
-        return RotateDirection.entries.find { it.value == dataSource.getRotation() }
-            ?: RotateDirection.default
-    }
-
-    override fun setRotation(rotateDirection: RotateDirection) = dataSource.setRotation(rotateDirection.value)
+    override fun getRotation(): ScreenRotation = dataSource.getRotation() ?: ScreenRotation.Auto
+    override fun setRotation(screenRotation: ScreenRotation) = dataSource.setRotation(screenRotation)
 
     override fun getFullScreenMode(): Boolean = dataSource.getFullScreenMode()
     override fun setFullScreenMode(fullScreen: Boolean) = dataSource.setFullScreenMode(fullScreen)
@@ -33,6 +25,6 @@ class SettingsRepositoryImpl(
     override fun getFloatingButtonOpacity(): Float = dataSource.getFloatingButtonOpacity()
     override fun setFloatingButtonOpacity(opacity: Float) = dataSource.setFloatingButtonOpacity(opacity)
 
-    override fun getFloatingButtonSize(): ButtonSize = dataSource.getFloatingButtonSize()
-    override fun setFloatingButtonSize(size: ButtonSize) = dataSource.setFloatingButtonSize(size)
+    override fun getFloatingButtonSize(): Float = dataSource.getFloatingButtonSize()
+    override fun setFloatingButtonSize(size: Float) = dataSource.setFloatingButtonSize(size)
 }

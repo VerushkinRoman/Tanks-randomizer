@@ -1,8 +1,7 @@
 package com.posse.tanksrandomizer.common.presentation.interactor
 
-import com.posse.tanksrandomizer.common.compose.utils.RotateDirection
+import com.posse.tanksrandomizer.common.compose.utils.ScreenRotation
 import com.posse.tanksrandomizer.common.domain.models.ButtonOffset
-import com.posse.tanksrandomizer.common.domain.models.ButtonSize
 import kotlinx.coroutines.flow.StateFlow
 
 interface SettingsInteractor {
@@ -21,9 +20,8 @@ interface SettingsInteractor {
     val floatingButtonOpacity: StateFlow<Float>
     fun setFloatingButtonOpacity(opacity: Float)
 
-    val floatingButtonSize: StateFlow<ButtonSize>
-    fun setFloatingButtonSize(size: ButtonSize)
+    val floatingButtonSize: StateFlow<Float>
+    fun setFloatingButtonSize(size: Float)
 
-    fun setAutorotate(autoRotate: Boolean)
-    fun setRotation(rotateDirection: RotateDirection)
+    fun setRotation(screenRotation: ScreenRotation)
 }

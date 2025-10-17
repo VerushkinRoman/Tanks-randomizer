@@ -1,7 +1,6 @@
 package com.posse.tanksrandomizer.feature_online_screen.domain.models
 
 import com.posse.tanksrandomizer.common.domain.models.CommonFilterObjects.ItemStatus
-import com.posse.tanksrandomizer.common.domain.models.CommonFilterObjects.SwitchItem
 
 object OnlineFilterObjects {
     sealed interface Mastery : ItemStatus<Mastery> {
@@ -55,16 +54,6 @@ object OnlineFilterObjects {
                 copy(selected = selected, random = random, sort = sort)
         }
 
-        data class MasterySwitch(
-            override val name: String = "MasterySwitch",
-            override val sort: Int = Int.MAX_VALUE,
-            override val selected: Boolean = true,
-            override val random: Boolean = false,
-        ) : Mastery, SwitchItem {
-            override fun copy(selected: Boolean, random: Boolean) =
-                copy(selected = selected, random = random, sort = sort)
-        }
-
         companion object {
             val defaultValues = listOf(
                 None(),
@@ -72,7 +61,6 @@ object OnlineFilterObjects {
                 Class2(),
                 Class1(),
                 Master(),
-                MasterySwitch(),
             ).sortedBy { it.sort }
         }
     }
@@ -98,21 +86,10 @@ object OnlineFilterObjects {
                 copy(selected = selected, random = random, sort = sort)
         }
 
-        data class PremiumSwitch(
-            override val name: String = "PremiumSwitch",
-            override val sort: Int = Int.MAX_VALUE,
-            override val selected: Boolean = true,
-            override val random: Boolean = false,
-        ) : Premium, SwitchItem {
-            override fun copy(selected: Boolean, random: Boolean) =
-                copy(selected = selected, random = random, sort = sort)
-        }
-
         companion object {
             val defaultValues = listOf(
                 Common(),
                 IsPremium(),
-                PremiumSwitch(),
             ).sortedBy { it.sort }
         }
     }

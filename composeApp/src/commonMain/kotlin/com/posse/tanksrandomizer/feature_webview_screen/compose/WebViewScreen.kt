@@ -1,13 +1,15 @@
 package com.posse.tanksrandomizer.feature_webview_screen.compose
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.WindowInsetsSides
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.only
-import androidx.compose.foundation.layout.safeContent
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.safeDrawing
 import androidx.compose.foundation.layout.safeDrawingPadding
 import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.material3.LinearProgressIndicator
@@ -20,12 +22,14 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.unit.dp
 import com.multiplatform.webview.web.LoadingState
 import com.multiplatform.webview.web.WebView
 import com.multiplatform.webview.web.rememberWebViewNavigator
 import com.multiplatform.webview.web.rememberWebViewState
 import com.posse.tanksrandomizer.common.data.networking.EndpointConstants.REDIRECT_URL
 import com.posse.tanksrandomizer.feature_webview_screen.compose.components.ActionButtonsRow
+import com.posse.tanksrandomizer.feature_webview_screen.compose.model.NavigationAction.Exit
 import com.posse.tanksrandomizer.feature_webview_screen.compose.model.NavigationAction.GoBack
 import com.posse.tanksrandomizer.feature_webview_screen.compose.model.NavigationAction.GoForward
 import com.posse.tanksrandomizer.feature_webview_screen.compose.model.NavigationAction.Reload
@@ -34,7 +38,9 @@ import com.posse.tanksrandomizer.feature_webview_screen.compose.model.Navigation
 @Composable
 fun WebViewScreen(
     url: String,
+    runningAsOverlay: Boolean,
     onResult: (url: String) -> Unit,
+    goBack: () -> Unit,
     modifier: Modifier,
 ) {
     val state = rememberWebViewState(url)
@@ -54,26 +60,29 @@ fun WebViewScreen(
     }
 
     Column(
+        verticalArrangement = Arrangement.spacedBy(4.dp),
         horizontalAlignment = Alignment.CenterHorizontally,
         modifier = modifier
             .background(color = MaterialTheme.colorScheme.background)
-            .safeDrawingPadding()
+            .safeDrawingPadding(),
     ) {
         LinearProgressIndicator(
             progress = { loadingProgress },
-            color = ProgressIndicatorDefaults.linearColor,
-            trackColor = ProgressIndicatorDefaults.linearTrackColor,
+            color = MaterialTheme.colorScheme.onPrimary,
+            trackColor = MaterialTheme.colorScheme.primary,
             strokeCap = ProgressIndicatorDefaults.LinearStrokeCap,
             modifier = Modifier.fillMaxWidth(),
         )
 
         ActionButtonsRow(
+            additionalPadding = runningAsOverlay,
             onAction = { navigationAction ->
                 when (navigationAction) {
                     Reload -> navigator.reload()
                     StopLoading -> navigator.stopLoading()
                     GoBack -> navigator.navigateBack()
                     GoForward -> navigator.navigateForward()
+                    Exit -> goBack()
                 }
             },
             forwardEnabled = navigator.canGoForward,
@@ -82,8 +91,9 @@ fun WebViewScreen(
             modifier = Modifier
                 .fillMaxWidth()
                 .windowInsetsPadding(
-                    WindowInsets.safeContent.only(WindowInsetsSides.Horizontal)
+                    WindowInsets.safeDrawing.only(WindowInsetsSides.Horizontal)
                 )
+                .padding(horizontal = 8.dp)
         )
 
         WebView(

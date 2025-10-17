@@ -3,6 +3,8 @@ package com.posse.tanksrandomizer.common.compose.theme
 import android.app.Activity
 import android.os.Build
 import androidx.compose.material3.ColorScheme
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.SegmentedButtonDefaults
 import androidx.compose.material3.dynamicDarkColorScheme
 import androidx.compose.material3.dynamicLightColorScheme
 import androidx.compose.runtime.Composable
@@ -34,3 +36,19 @@ internal actual fun dynamicColorScheme(
         if (darkTheme) dynamicDarkColorScheme(context) else dynamicLightColorScheme(context)
     } else null
 }
+
+@Composable
+fun themedSegmentedButtonColors() = SegmentedButtonDefaults.colors(
+    activeContainerColor = MaterialTheme.colorScheme.primary,
+    activeContentColor = MaterialTheme.colorScheme.onSurface,
+    activeBorderColor = MaterialTheme.colorScheme.onSurface,
+    inactiveContainerColor = MaterialTheme.colorScheme.primary,
+    inactiveContentColor = MaterialTheme.colorScheme.onSurface,
+    inactiveBorderColor = MaterialTheme.colorScheme.onSurface,
+    disabledActiveContainerColor = MaterialTheme.colorScheme.primary,
+    disabledActiveContentColor = MaterialTheme.colorScheme.onSurface,
+    disabledActiveBorderColor = MaterialTheme.colorScheme.onSurface,
+    disabledInactiveContainerColor = MaterialTheme.colorScheme.primary,
+    disabledInactiveContentColor = MaterialTheme.colorScheme.onSurface,
+    disabledInactiveBorderColor = MaterialTheme.colorScheme.onSurface,
+)

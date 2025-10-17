@@ -39,7 +39,7 @@ import kotlin.time.ExperimentalTime
 fun NavigationHost(
     navController: NavHostController = rememberNavController(),
     showRotation: Boolean,
-    showFloatingButtonSettings: Boolean,
+    runningAsOverlay: Boolean,
     onRedirectError: (ErrorResponse) -> Unit,
     modifier: Modifier = Modifier
 ) {
@@ -78,7 +78,7 @@ fun NavigationHost(
                     navController.navigate(WebViewScreenRoute(url = url))
                 },
                 showRotation = showRotation,
-                showFloatingButtonSettings = showFloatingButtonSettings,
+                runningAsOverlay = runningAsOverlay,
                 modifier = Modifier.fillMaxSize()
             )
 
@@ -97,7 +97,7 @@ fun NavigationHost(
                     }
                 },
                 showRotation = showRotation,
-                showFloatingButtonSettings = showFloatingButtonSettings,
+                showFloatingButtonSettings = runningAsOverlay,
                 modifier = Modifier.fillMaxSize()
             )
 
@@ -111,6 +111,8 @@ fun NavigationHost(
 
             WebViewScreen(
                 url = url,
+                runningAsOverlay = runningAsOverlay,
+                goBack = { navController.navigateUp() },
                 onResult = { resultUrl ->
                     handleWebViewResult(
                         resultUrl = resultUrl,

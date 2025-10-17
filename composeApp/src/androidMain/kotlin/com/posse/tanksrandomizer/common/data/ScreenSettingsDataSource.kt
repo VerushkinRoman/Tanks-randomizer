@@ -1,7 +1,7 @@
 package com.posse.tanksrandomizer.common.data
 
+import com.posse.tanksrandomizer.common.compose.utils.ScreenRotation
 import com.posse.tanksrandomizer.common.domain.models.ButtonOffset
-import com.posse.tanksrandomizer.common.domain.models.ButtonSize
 
 interface ScreenSettingsDataSource {
     fun getWindowInFullScreen(): Boolean
@@ -13,11 +13,8 @@ interface ScreenSettingsDataSource {
     fun getButtonPortraitOffset(): ButtonOffset?
     fun setButtonPortraitOffset(buttonOffset: ButtonOffset)
 
-    fun getAutorotate(): Boolean
-    fun setAutorotate(autoRotate: Boolean)
-
-    fun getRotation(): String?
-    fun setRotation(rotation: String)
+    fun getRotation(): ScreenRotation?
+    fun setRotation(rotation: ScreenRotation)
 
     fun getFullScreenMode(): Boolean
     fun setFullScreenMode(enabled: Boolean)
@@ -25,6 +22,6 @@ interface ScreenSettingsDataSource {
     fun getFloatingButtonOpacity(): Float
     fun setFloatingButtonOpacity(opacity: Float)
 
-    fun getFloatingButtonSize(): ButtonSize
-    fun setFloatingButtonSize(size: ButtonSize)
+    fun getFloatingButtonSize(): Float
+    fun setFloatingButtonSize(size: Float)
 }

@@ -4,5 +4,6 @@ internal enum class NavigationAction {
     Reload,
     StopLoading,
     GoBack,
-    GoForward
+    GoForward,
+    Exit,
 }

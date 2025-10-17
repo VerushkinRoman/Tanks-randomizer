@@ -1,118 +1,172 @@
 package com.posse.tanksrandomizer.feature_webview_screen.compose.components
 
 import androidx.compose.animation.AnimatedContent
+import androidx.compose.foundation.BorderStroke
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.filled.ArrowBack
-import androidx.compose.material.icons.automirrored.filled.ArrowForward
-import androidx.compose.material.icons.filled.Close
-import androidx.compose.material.icons.filled.Refresh
+import androidx.compose.material.icons.automirrored.rounded.ArrowBack
+import androidx.compose.material.icons.automirrored.rounded.ArrowForward
+import androidx.compose.material.icons.rounded.Close
+import androidx.compose.material.icons.rounded.Refresh
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.OutlinedButton
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
-import androidx.compose.ui.layout.onGloballyPositioned
-import androidx.compose.ui.platform.LocalDensity
+import androidx.compose.ui.graphics.vector.rememberVectorPainter
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import com.posse.tanksrandomizer.common.compose.base_components.BigButtonWithImage
+import com.posse.tanksrandomizer.common.compose.base_components.BorderWidth
+import com.posse.tanksrandomizer.common.compose.base_components.ButtonsShapeLarge
 import com.posse.tanksrandomizer.feature_webview_screen.compose.model.NavigationAction
+import org.jetbrains.compose.resources.stringResource
+import tanks_randomizer.composeapp.generated.resources.Res
+import tanks_randomizer.composeapp.generated.resources.exit
+import tanks_randomizer.composeapp.generated.resources.go_back
+import tanks_randomizer.composeapp.generated.resources.go_forward
+import tanks_randomizer.composeapp.generated.resources.refresh_page
+import tanks_randomizer.composeapp.generated.resources.stop_loading
 
 @Composable
 internal fun ActionButtonsRow(
+    additionalPadding: Boolean,
     onAction: (NavigationAction) -> Unit,
     forwardEnabled: Boolean,
     backEnabled: Boolean,
     reloadEnabled: Boolean,
     modifier: Modifier,
 ) {
-    val density = LocalDensity.current
+    Row(
+        horizontalArrangement = Arrangement.spacedBy(8.dp),
+        verticalAlignment = Alignment.CenterVertically,
+        modifier = modifier.then(
+            if (additionalPadding) Modifier.padding(horizontal = ButtonDefaults.MinHeight + 16.dp)
+            else Modifier
+        )
+    ) {
+        GoBackButton(
+            onClick = { onAction(NavigationAction.Exit) },
+        )
 
-    var maxWidth by remember { mutableStateOf(0.dp) }
-    val buttonsSpace = remember { 8.dp }
-    val buttonsWidth = remember(maxWidth) {
-        minOf(
-            maxWidth / 3 - buttonsSpace * 2,
-            ButtonDefaults.MinHeight
+        Spacer(Modifier.weight(1f))
+
+        BackButton(
+            enabled = backEnabled,
+            onClick = { onAction(NavigationAction.GoBack) },
+        )
+
+        StopAndReloadButton(
+            reloadEnabled = reloadEnabled,
+            onReloadClick = { onAction(NavigationAction.Reload) },
+            onStopClick = { onAction(NavigationAction.StopLoading) },
+        )
+
+        ForwardButton(
+            enabled = forwardEnabled,
+            onClick = { onAction(NavigationAction.GoForward) },
         )
     }
-    val buttonsShape = Modifier
-        .size(buttonsWidth)
-        .clip(CircleShape)
+}
 
-    Row(
-        verticalAlignment = Alignment.CenterVertically,
+@Composable
+private fun GoBackButton(
+    onClick: () -> Unit,
+    modifier: Modifier = Modifier,
+) {
+    val contentPadding = ButtonDefaults.TextButtonWithIconContentPadding
+    val imageHeight = ButtonDefaults.MinHeight -
+            contentPadding.calculateTopPadding() -
+            contentPadding.calculateBottomPadding()
+
+    OutlinedButton(
+        onClick = onClick,
+        shape = ButtonsShapeLarge,
+        contentPadding = contentPadding,
+        border = BorderStroke(width = BorderWidth, color = MaterialTheme.colorScheme.onSurface),
         modifier = modifier
-            .fillMaxWidth()
-            .onGloballyPositioned {
-                maxWidth = with(density) { it.size.width.toDp() }
-            }
     ) {
-        IconButton(
-            onClick = { onAction(NavigationAction.GoBack) },
-            enabled = backEnabled,
-            modifier = buttonsShape
+        Row(
+            horizontalArrangement = Arrangement.spacedBy(6.dp),
+            verticalAlignment = Alignment.CenterVertically,
+            modifier = Modifier
         ) {
             Icon(
-                imageVector = Icons.AutoMirrored.Filled.ArrowBack,
-                contentDescription = null,
-                modifier = Modifier.fillMaxSize()
+                imageVector = Icons.AutoMirrored.Rounded.ArrowBack,
+                contentDescription = stringResource(Res.string.exit),
+                tint = MaterialTheme.colorScheme.onSurface,
+                modifier = Modifier.height(imageHeight),
+            )
+
+            Text(
+                text = stringResource(Res.string.exit).uppercase(),
+                color = MaterialTheme.colorScheme.onSurface,
+                style = MaterialTheme.typography.bodySmall,
+                fontWeight = FontWeight.Black,
             )
         }
+    }
+}
 
-        Spacer(Modifier.width(buttonsSpace))
+@Composable
+private fun BackButton(
+    enabled: Boolean,
+    onClick: () -> Unit,
+    modifier: Modifier = Modifier,
+) {
+    BigButtonWithImage(
+        painter = rememberVectorPainter(Icons.AutoMirrored.Rounded.ArrowBack),
+        contentDescription = stringResource(Res.string.go_back),
+        enabled = enabled,
+        onClick = onClick,
+        modifier = modifier,
+    )
+}
 
-        AnimatedContent(
-            targetState = reloadEnabled,
-        ) { enabled ->
-            if (enabled) {
-                IconButton(
-                    onClick = { onAction(NavigationAction.Reload) },
-                    modifier = buttonsShape
-                ) {
-                    Icon(
-                        imageVector = Icons.Default.Refresh,
-                        contentDescription = null,
-                        modifier = Modifier.fillMaxSize()
-                    )
-                }
-            } else {
-                IconButton(
-                    onClick = { onAction(NavigationAction.StopLoading) },
-                    modifier = buttonsShape
-                ) {
-                    Icon(
-                        imageVector = Icons.Default.Close,
-                        contentDescription = null,
-                        modifier = Modifier.fillMaxSize()
-                    )
-                }
-            }
+@Composable
+private fun ForwardButton(
+    enabled: Boolean,
+    onClick: () -> Unit,
+    modifier: Modifier = Modifier,
+) {
+    BigButtonWithImage(
+        painter = rememberVectorPainter(Icons.AutoMirrored.Rounded.ArrowForward),
+        contentDescription = stringResource(Res.string.go_forward),
+        enabled = enabled,
+        onClick = onClick,
+        modifier = modifier,
+    )
+}
 
-        }
-
-        Spacer(Modifier.width(buttonsSpace))
-
-        IconButton(
-            onClick = { onAction(NavigationAction.GoForward) },
-            enabled = forwardEnabled,
-            modifier = buttonsShape
-        ) {
-            Icon(
-                imageVector = Icons.AutoMirrored.Filled.ArrowForward,
-                contentDescription = null,
-                modifier = Modifier.fillMaxSize()
+@Composable
+private fun StopAndReloadButton(
+    reloadEnabled: Boolean,
+    onReloadClick: () -> Unit,
+    onStopClick: () -> Unit,
+    modifier: Modifier = Modifier,
+) {
+    AnimatedContent(
+        targetState = reloadEnabled,
+        modifier = modifier,
+    ) { enabled ->
+        if (enabled) {
+            BigButtonWithImage(
+                painter = rememberVectorPainter(Icons.Rounded.Refresh),
+                contentDescription = stringResource(Res.string.refresh_page),
+                onClick = onReloadClick,
+            )
+        } else {
+            BigButtonWithImage(
+                painter = rememberVectorPainter(Icons.Rounded.Close),
+                contentDescription = stringResource(Res.string.stop_loading),
+                onClick = onStopClick,
             )
         }
     }

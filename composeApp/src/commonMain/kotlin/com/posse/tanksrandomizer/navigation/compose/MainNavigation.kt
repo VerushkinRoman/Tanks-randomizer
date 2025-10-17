@@ -27,7 +27,7 @@ import tanks_randomizer.composeapp.generated.resources.something_went_wrong
 @Composable
 fun MainNavigation(
     showRotation: Boolean = false,
-    showFloatingButtonSettings: Boolean = false,
+    runningAsOverlay: Boolean = false,
     modifier: Modifier = Modifier
 ) {
     val snackbarHostState = remember { SnackbarHostState() }
@@ -39,7 +39,7 @@ fun MainNavigation(
     ) {
         NavigationHost(
             showRotation = showRotation,
-            showFloatingButtonSettings = showFloatingButtonSettings,
+            runningAsOverlay = runningAsOverlay,
             onRedirectError = { error ->
                 if (error.status == ResponseStatus.ERROR.value) {
                     scope.launch {
