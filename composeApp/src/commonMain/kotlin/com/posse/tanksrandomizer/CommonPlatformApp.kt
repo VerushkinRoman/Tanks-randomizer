@@ -2,30 +2,38 @@ package com.posse.tanksrandomizer
 
 import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.foundation.layout.WindowInsets
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.safeDrawing
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.platform.LocalLayoutDirection
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
+import com.posse.tanksrandomizer.common.compose.components.AppBackground
 import com.posse.tanksrandomizer.common.compose.theme.AppTheme
 import com.posse.tanksrandomizer.common.compose.utils.LocalElementSize
-import com.posse.tanksrandomizer.common.compose.utils.LocalMaxHeight
-import com.posse.tanksrandomizer.common.compose.utils.LocalMaxWidth
 
 @Composable
 internal fun CommonPlatformApp(
+    modifier: Modifier = Modifier,
     content: @Composable () -> Unit
 ) = AppTheme {
-    BoxWithConstraints {
-        CompositionLocalProvider(
-            LocalElementSize provides getElementSize(maxBoxWidth = maxWidth),
-            LocalMaxWidth provides maxWidth,
-            LocalMaxHeight provides maxHeight,
+    AppBackground(
+        modifier = modifier,
+    ) {
+        BoxWithConstraints(
+            contentAlignment = Alignment.Center,
+            modifier = Modifier.fillMaxSize(),
         ) {
-            content()
+            CompositionLocalProvider(
+                LocalElementSize provides getElementSize(maxBoxWidth = maxWidth),
+            ) {
+                content()
+            }
         }
     }
 }

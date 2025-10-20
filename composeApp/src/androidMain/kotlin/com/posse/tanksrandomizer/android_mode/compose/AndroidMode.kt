@@ -59,7 +59,6 @@ fun AndroidMode(
     }
 
     AndroidModeContent(
-        state = state,
         startedFromService = startedFromService,
         onEvent = viewModel::obtainEvent,
         modifier = modifier

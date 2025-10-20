@@ -8,11 +8,11 @@ import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ExperimentalLayoutApi
 import androidx.compose.foundation.layout.FlowRow
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -21,6 +21,9 @@ import androidx.compose.foundation.layout.requiredSize
 import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.windowsizeclass.ExperimentalMaterial3WindowSizeClassApi
+import androidx.compose.material3.windowsizeclass.WindowSizeClass
+import androidx.compose.material3.windowsizeclass.WindowWidthSizeClass
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.MutableState
@@ -34,6 +37,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.unit.DpSize
 import androidx.compose.ui.unit.dp
 import com.posse.tanksrandomizer.common.compose.base_components.BorderWidth
 import com.posse.tanksrandomizer.common.compose.base_components.ButtonsShapeSmall
@@ -73,6 +77,7 @@ fun FiltersBlock(
     }
 
     Column(
+        verticalArrangement = Arrangement.spacedBy(12.dp),
         horizontalAlignment = Alignment.CenterHorizontally,
         modifier = modifier
     ) {
@@ -80,22 +85,73 @@ fun FiltersBlock(
             components = components,
             onFilterItemClick = onFilterItemClick,
             diceClicked = diceClicked,
-            modifier = Modifier
-                .fillMaxWidth()
-        )
-
-        Spacer(Modifier.height(12.dp))
-
-        DiceAndSelectButtons(
-            onDiceClick = {
-                diceClicked.value = true
-                onDiceClick()
-            },
-            onTrashClick = onTrashClick,
-            onSelectAllClick = onSelectAllClick,
-            allDisabled = allDisabled,
             modifier = Modifier.fillMaxWidth()
         )
+
+        ButtonsByWidth(
+            onDiceClick = onDiceClick,
+            onTrashClick = onTrashClick,
+            onSelectAllClick = onSelectAllClick,
+            diceEnabled = !allDisabled,
+            diceClicked = diceClicked,
+            modifier = Modifier.fillMaxWidth()
+        )
+    }
+}
+
+@OptIn(ExperimentalMaterial3WindowSizeClassApi::class)
+@Composable
+private fun ButtonsByWidth(
+    onDiceClick: () -> Unit,
+    onTrashClick: () -> Unit,
+    onSelectAllClick: () -> Unit,
+    diceEnabled: Boolean,
+    diceClicked: MutableState<Boolean>,
+    modifier: Modifier = Modifier,
+) {
+    BoxWithConstraints(
+        modifier = modifier
+    ) {
+        val sizeClass = WindowSizeClass.calculateFromSize(
+            DpSize(width = maxWidth, height = maxHeight)
+        )
+
+        when (sizeClass.widthSizeClass) {
+            WindowWidthSizeClass.Compact -> {
+                Column(
+                    verticalArrangement = Arrangement.spacedBy(12.dp),
+                    horizontalAlignment = Alignment.CenterHorizontally,
+                    modifier = modifier
+                ) {
+                    SelectButtons(
+                        onTrashClick = onTrashClick,
+                        onSelectAllClick = onSelectAllClick,
+                        modifier = Modifier.fillMaxWidth()
+                    )
+
+                    DiceButton(
+                        onClick = {
+                            diceClicked.value = true
+                            onDiceClick()
+                        },
+                        enabled = diceEnabled
+                    )
+                }
+            }
+
+            else -> {
+                DiceAndSelectButtons(
+                    onDiceClick = {
+                        diceClicked.value = true
+                        onDiceClick()
+                    },
+                    onTrashClick = onTrashClick,
+                    onSelectAllClick = onSelectAllClick,
+                    diceEnabled = diceEnabled,
+                    Modifier.fillMaxWidth()
+                )
+            }
+        }
     }
 }
 

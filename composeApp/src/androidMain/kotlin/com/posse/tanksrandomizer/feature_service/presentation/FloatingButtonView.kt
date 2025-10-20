@@ -412,6 +412,6 @@ class FloatingButtonView(
     }
 
     companion object {
-        private const val ANIMATION_TIME = 2000L
+        private const val ANIMATION_TIME = 500L
     }
 }

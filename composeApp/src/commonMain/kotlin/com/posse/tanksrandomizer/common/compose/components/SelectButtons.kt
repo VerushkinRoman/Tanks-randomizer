@@ -6,11 +6,9 @@ import androidx.compose.ui.layout.Layout
 import androidx.compose.ui.unit.dp
 
 @Composable
-fun DiceAndSelectButtons(
-    onDiceClick: () -> Unit,
+fun SelectButtons(
     onTrashClick: () -> Unit,
     onSelectAllClick: () -> Unit,
-    diceEnabled: Boolean,
     modifier: Modifier = Modifier
 ) {
     Layout(
@@ -20,21 +18,13 @@ fun DiceAndSelectButtons(
                 onSelectAllClick = onSelectAllClick,
             )
 
-            DiceButton(
-                onClick = onDiceClick,
-                enabled = diceEnabled,
-            )
-
             TrashButton(
                 onTrashClick = onTrashClick,
             )
         }
     ) { measurables, constraints ->
-        val spacingPx = 12.dp.roundToPx()
-
         val selectAllMeasurable = measurables[0]
-        val diceMeasurable = measurables[1]
-        val trashMeasurable = measurables[2]
+        val trashMeasurable = measurables[1]
 
         val selectAllMaxWidth = selectAllMeasurable.maxIntrinsicWidth(constraints.maxHeight)
         val trashMaxWidth = trashMeasurable.maxIntrinsicWidth(constraints.maxHeight)
@@ -55,38 +45,24 @@ fun DiceAndSelectButtons(
             )
         )
 
-        val totalSpacingWidth = spacingPx * 2
-        val availableWidthForDice = constraints.maxWidth -
-                fixedSelectAllPlaceable.width -
-                fixedTrashPlaceable.width -
-                totalSpacingWidth
-
-        val diceWidth = maxOf(0, availableWidthForDice)
-
-        val dicePlaceable = diceMeasurable.measure(
-            constraints.copy(
-                minWidth = diceWidth,
-                maxWidth = diceWidth
-            )
-        )
-
         val totalHeight = maxOf(
             fixedSelectAllPlaceable.height,
-            dicePlaceable.height,
             fixedTrashPlaceable.height
         )
 
+        val spaceWithoutButtons = constraints.maxWidth - maxWidth * 2
+        val freeSpace = spaceWithoutButtons / 3
+        val minSpacingPx = 16.dp.roundToPx()
+        val centerSpace = maxOf(freeSpace, minSpacingPx)
+        val startSpace = (spaceWithoutButtons - centerSpace) / 2
+
         layout(constraints.maxWidth, totalHeight) {
             fixedSelectAllPlaceable.placeRelative(
-                0,
-                0
-            )
-            dicePlaceable.placeRelative(
-                fixedSelectAllPlaceable.width + spacingPx,
+                startSpace,
                 0
             )
             fixedTrashPlaceable.placeRelative(
-                fixedSelectAllPlaceable.width + spacingPx + dicePlaceable.width + spacingPx,
+                fixedSelectAllPlaceable.width + startSpace + centerSpace,
                 0
             )
         }

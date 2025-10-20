@@ -8,7 +8,7 @@ import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.WindowInsetsSides
 import androidx.compose.foundation.layout.only
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.safeDrawing
+import androidx.compose.foundation.layout.safeContent
 import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
@@ -38,11 +38,11 @@ fun CommonScreenColumn(
         verticalArrangement = Arrangement.Center,
         modifier = modifier
             .verticalScroll(rememberScrollState())
-            .windowInsetsPadding(WindowInsets.safeDrawing.only(WindowInsetsSides.Vertical))
+            .windowInsetsPadding(WindowInsets.safeContent.only(WindowInsetsSides.Vertical))
             .then(
                 if (runningAsOverlay && additionalSpace <= ButtonDefaults.MinHeight + 16.dp) {
                     Modifier.padding(horizontal = ButtonDefaults.MinHeight + 16.dp)
-                } else Modifier.padding(horizontal = 16.dp)
+                } else Modifier
             )
             .padding(vertical = 16.dp)
     ) {

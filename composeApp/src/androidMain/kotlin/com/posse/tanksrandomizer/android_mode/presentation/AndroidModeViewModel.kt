@@ -1,12 +1,12 @@
 package com.posse.tanksrandomizer.android_mode.presentation
 
-import com.posse.tanksrandomizer.common.core.di.Inject
-import com.posse.tanksrandomizer.common.presentation.interactor.SettingsInteractor
-import com.posse.tanksrandomizer.common.presentation.utils.BaseSharedViewModel
 import com.posse.tanksrandomizer.android_mode.presentation.model.AndroidModeAction
 import com.posse.tanksrandomizer.android_mode.presentation.model.AndroidModeEvent
 import com.posse.tanksrandomizer.android_mode.presentation.model.AndroidModeState
 import com.posse.tanksrandomizer.android_mode.presentation.use_cases.GetAndroidModeState
+import com.posse.tanksrandomizer.common.core.di.Inject
+import com.posse.tanksrandomizer.common.presentation.interactor.SettingsInteractor
+import com.posse.tanksrandomizer.common.presentation.utils.BaseSharedViewModel
 import kotlinx.coroutines.launch
 
 class AndroidModeViewModel(
@@ -23,14 +23,6 @@ class AndroidModeViewModel(
                     )
                 }
             }
-
-            launch {
-                settingsInteractor.windowInFullScreen.collect { fullScreen ->
-                    viewState = viewState.copy(
-                        windowInFullScreen = fullScreen
-                    )
-                }
-            }
         }
     }
 
@@ -42,7 +34,7 @@ class AndroidModeViewModel(
         }
     }
 
-    private fun collapseWindow(){
+    private fun collapseWindow() {
         settingsInteractor.setWindowInFullScreen(false)
     }
 

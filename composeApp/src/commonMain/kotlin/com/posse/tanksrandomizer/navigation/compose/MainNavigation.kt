@@ -9,6 +9,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import com.posse.tanksrandomizer.common.compose.utils.ErrorHandler
 import com.posse.tanksrandomizer.common.data.networking.ApiErrorResponse
 import com.posse.tanksrandomizer.common.data.networking.parseApiError
@@ -35,7 +36,8 @@ fun MainNavigation(
 
     Scaffold(
         snackbarHost = { SnackbarHost(hostState = snackbarHostState) },
-        modifier = modifier
+        containerColor = Color.Transparent,
+        modifier = modifier,
     ) {
         NavigationHost(
             showRotation = showRotation,

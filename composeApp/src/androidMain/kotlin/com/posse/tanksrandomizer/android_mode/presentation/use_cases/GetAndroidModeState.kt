@@ -9,7 +9,6 @@ class GetAndroidModeState(
     operator fun invoke(): AndroidModeState {
         return AndroidModeState(
             fullScreenModeEnabled = settingsInteractor.fullScreenModeEnabled.value,
-            windowInFullScreen = settingsInteractor.windowInFullScreen.value,
         )
     }
 }

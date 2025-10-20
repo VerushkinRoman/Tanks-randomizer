@@ -36,7 +36,7 @@ class AppActivity : ComponentActivity() {
         enableEdgeToEdge()
         addSplashScreen()
 
-        val repository:SettingsRepository = Inject.instance()
+        val repository: SettingsRepository = Inject.instance()
         val windowMode = !repository.getFullScreenMode()
         val canDrawOverlays = Settings.canDrawOverlays(this)
 
