@@ -148,9 +148,7 @@ class OverlayService : LifecycleService() {
                 windowInFullScreen = windowInFullScreen,
                 modifier = Modifier
                     .size(scaleSize)
-                    .graphicsLayer {
-                        alpha = opacity
-                    }
+                    .graphicsLayer { alpha = opacity }
             )
         }
     }

@@ -4,6 +4,8 @@ import com.posse.tanksrandomizer.common.domain.repository.AccountRepository
 import com.posse.tanksrandomizer.common.domain.utils.Dispatchers
 import com.posse.tanksrandomizer.common.domain.utils.EmptyResult
 import com.posse.tanksrandomizer.common.domain.utils.Error
+import com.posse.tanksrandomizer.common.domain.utils.NetworkError.Companion.isTokenError
+import com.posse.tanksrandomizer.common.domain.utils.onError
 import com.posse.tanksrandomizer.common.domain.utils.onSuccess
 import kotlinx.coroutines.withContext
 
@@ -12,6 +14,12 @@ class LogOut(
     private val dispatchers: Dispatchers,
 ) {
     suspend operator fun invoke(): EmptyResult<Error> = withContext(dispatchers.io) {
-        accountRepository.logOut().onSuccess { accountRepository.setToken(null) }
+        accountRepository.logOut()
+            .onSuccess { accountRepository.setToken(null) }
+            .onError { error ->
+                if (error.isTokenError()) {
+                    accountRepository.setToken(null)
+                }
+            }
     }
 }

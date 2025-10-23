@@ -1,14 +1,15 @@
 package com.posse.tanksrandomizer.feature_online_screen.presentation.use_cases
 
+import com.posse.tanksrandomizer.common.domain.models.AccountTank
+import com.posse.tanksrandomizer.common.domain.models.EncyclopediaTank
+import com.posse.tanksrandomizer.common.domain.models.toTank
 import com.posse.tanksrandomizer.common.domain.utils.Dispatchers
 import com.posse.tanksrandomizer.common.domain.utils.Error
 import com.posse.tanksrandomizer.common.domain.utils.Result
 import com.posse.tanksrandomizer.common.domain.utils.onError
-import com.posse.tanksrandomizer.common.domain.models.AccountTank
-import com.posse.tanksrandomizer.common.domain.models.EncyclopediaTank
-import com.posse.tanksrandomizer.feature_online_screen.domain.models.OnlineFilterObjects.Mastery
 import com.posse.tanksrandomizer.feature_online_screen.domain.models.Tank
 import com.posse.tanksrandomizer.feature_online_screen.domain.repository.OnlineScreenRepository
+import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
 class RefreshTanks(
@@ -22,7 +23,7 @@ class RefreshTanks(
                 .let { (it as Result.Success).data }
 
             val tankIds = tanks.map { it.id }.toSet()
-            val accountTanksToAdd = accountTanks.filter { it.id in tankIds }
+            val accountTanksToAdd = accountTanks.filter { it.id !in tankIds }
             val diffIds = accountTanksToAdd.map { it.id }
 
             val encyclopediaTanks: List<EncyclopediaTank> =
@@ -31,7 +32,7 @@ class RefreshTanks(
                     .let { (it as Result.Success).data }
 
             val accountTanksIds = accountTanks.map { it.id }.toSet()
-            val tanksToRemove = tanks.filter { it.id !in accountTanksIds }
+            val tanksToRemove = tanks.filter { it.id !in accountTanksIds }.toSet()
 
             val tanksToAdd = buildList {
                 encyclopediaTanks.forEach { encyclopediaTank ->
@@ -43,20 +44,11 @@ class RefreshTanks(
 
             val newTanks: List<Tank> = tanks - tanksToRemove + tanksToAdd
 
+            launch {
+                onlineScreenRepository.setTanksInGarage(newTanks)
+            }
+
             Result.Success(newTanks)
         }
-    }
-
-    private fun EncyclopediaTank.toTank(mastery: Mastery): Tank {
-        return Tank(
-            id = id,
-            name = name,
-            imageUrl = image,
-            tier = tier,
-            nation = nation,
-            isPremium = isPremium,
-            type = type,
-            mastery = mastery
-        )
     }
 }

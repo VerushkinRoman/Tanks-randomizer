@@ -4,6 +4,7 @@ import com.posse.tanksrandomizer.common.domain.models.CommonFilterObjects.ItemSt
 import com.posse.tanksrandomizer.common.domain.models.CommonFilterObjects.Nation
 import com.posse.tanksrandomizer.common.domain.models.CommonFilterObjects.Tier
 import com.posse.tanksrandomizer.common.domain.models.CommonFilterObjects.Type
+import com.posse.tanksrandomizer.common.domain.models.CommonFilterObjects.changeSelected
 import com.posse.tanksrandomizer.feature_online_screen.domain.models.OnlineFilterObjects.Mastery
 import com.posse.tanksrandomizer.feature_online_screen.domain.models.OnlineFilterObjects.Premium
 import com.posse.tanksrandomizer.feature_online_screen.domain.models.Tank
@@ -15,7 +16,10 @@ data class OnlineFilters(
     val types: List<Type> = Type.defaultValues,
     val mastery: List<Mastery> = Mastery.defaultValues,
 ) {
-    fun <T : ItemStatus<T>> changeItem(item: T): OnlineFilters {
+    val components: List<List<ItemStatus<*>>>
+        get() = listOf(tiers, types, mastery, premium, nations)
+
+    fun changeItem(item: ItemStatus<*>): OnlineFilters {
         return copy(
             tiers = if (item is Tier) tiers.changeSelected(item) else tiers,
             nations = if (item is Nation) nations.changeSelected(item) else nations,
@@ -26,27 +30,41 @@ data class OnlineFilters(
     }
 
     fun markRandomForTank(tank: Tank): OnlineFilters {
+        val tankTier = Tier.defaultValues.find { it.sort == tank.tier}
+        val tankNation = Nation.defaultValues.find { it.name == tank.nationName }
+        val tankType = Type.defaultValues.find { it.name == tank.typeName }
+        val tankMastery = Mastery.defaultValues.find { it.sort == tank.mastery }
         return copy(
-            tiers = markRandomForItem(tiers, tank.tier),
-            nations = markRandomForItem(nations, tank.nation),
-            types = markRandomForItem(types, tank.type),
+            tiers = markRandomForItem(tiers, tankTier),
+            nations = markRandomForItem(nations, tankNation),
+            types = markRandomForItem(types, tankType),
             premium = markRandomForPremium(premium, tank.isPremium),
-            mastery = markRandomForItem(mastery, tank.mastery)
+            mastery = markRandomForItem(mastery, tankMastery)
         )
     }
 
     private fun <T : ItemStatus<T>> markRandomForItem(
         items: List<T>,
-        tankItem: Any
+        tankItem: Any?
     ): List<T> {
         return items.map { filterItem ->
             when {
+                tankItem == null -> {
+                    filterItem.copy(
+                        random = false,
+                        selected = filterItem.selected
+                    )
+                }
+
                 filterItem::class == tankItem::class -> filterItem.copy(
                     random = true,
                     selected = filterItem.selected
                 )
 
-                else -> filterItem.copy(random = false, selected = filterItem.selected)
+                else -> filterItem.copy(
+                    random = false,
+                    selected = filterItem.selected
+                )
             }
         }
     }
@@ -70,11 +88,17 @@ data class OnlineFilters(
         }
     }
 
-    private fun <T : ItemStatus<T>> List<T>.changeSelected(
-        oldItem: Any
-    ): List<T> {
-        return map { item ->
-            if (item == oldItem) item.copy(selected = !item.selected) else item
-        }
+    fun clear(): OnlineFilters = changeAll(select = false)
+
+    fun selectAll(): OnlineFilters = changeAll(select = true)
+
+    private fun changeAll(select: Boolean): OnlineFilters {
+        return copy(
+            tiers = tiers.map { it.copy(selected = select) },
+            premium = premium.map { it.copy(selected = select) },
+            nations = nations.map { it.copy(selected = select) },
+            mastery = mastery.map { it.copy(selected = select) },
+            types = types.map { it.copy(selected = select) },
+        )
     }
 }

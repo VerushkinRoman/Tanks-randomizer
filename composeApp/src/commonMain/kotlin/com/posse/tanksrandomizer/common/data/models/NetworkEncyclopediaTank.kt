@@ -4,18 +4,6 @@ import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 @Serializable
-data class NetworkEncyclopediaTank(
-    val status: String,
-    val meta: EncyclopediaMetaData,
-    val data: Map<String, EncyclopediaTankData>,
-)
-
-@Serializable
-data class EncyclopediaMetaData(
-    val count: Int,
-)
-
-@Serializable
 data class EncyclopediaTankData(
     val name: String,
     val nation: String,
@@ -30,3 +18,5 @@ data class EncyclopediaTankData(
 data class ImageData(
     val preview: String,
 )
+
+typealias NetworkEncyclopediaTankData = Map<String, EncyclopediaTankData?>

@@ -1,5 +1,6 @@
 package com.posse.tanksrandomizer.common.data.networking
 
+@Suppress("SpellCheckingInspection")
 object EndpointConstants {
     const val MAX_REQUESTS_PER_SECONDS = 10
     const val MAX_PARAMETERS_PER_REQUEST = 100

@@ -1,8 +1,6 @@
 package com.posse.tanksrandomizer.feature_offline_screen.compose.components
 
 import androidx.compose.animation.core.animateFloatAsState
-import androidx.compose.foundation.clickable
-import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
@@ -10,13 +8,12 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.alpha
+import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.unit.dp
 import com.posse.tanksrandomizer.common.compose.base_components.CommonScreenColumn
-import com.posse.tanksrandomizer.common.compose.base_components.LoadingIndicator
+import com.posse.tanksrandomizer.common.compose.base_components.LoadingOverlay
 import com.posse.tanksrandomizer.common.compose.base_components.SmallButtonWithTextAndImage
 import com.posse.tanksrandomizer.common.compose.components.AdditionalBottomComponents
 import com.posse.tanksrandomizer.common.compose.components.FiltersBlock
@@ -35,7 +32,7 @@ internal fun OfflineScreenContent(
     onEvent: (OfflineScreenEvent) -> Unit,
     modifier: Modifier = Modifier,
 ) {
-    val alpha by animateFloatAsState(
+    val screenAlpha by animateFloatAsState(
         targetValue = if (viewState.loading) 0.3f else 1f
     )
 
@@ -49,7 +46,7 @@ internal fun OfflineScreenContent(
             onEvent = onEvent,
             modifier = Modifier
                 .fillMaxSize()
-                .alpha(alpha),
+                .graphicsLayer { alpha = screenAlpha },
         )
 
         LoadingOverlay(
@@ -97,30 +94,6 @@ private fun MainContent(
                 )
             },
             modifier = Modifier.fillMaxWidth(),
-        )
-    }
-}
-
-@Composable
-private fun LoadingOverlay(
-    visible: Boolean,
-    modifier: Modifier = Modifier,
-) {
-    Box(
-        contentAlignment = Alignment.Center,
-        modifier = modifier
-            .then(
-                if (visible) {
-                    Modifier.clickable(
-                        indication = null,
-                        interactionSource = remember { MutableInteractionSource() },
-                        onClick = {}
-                    )
-                } else Modifier
-            ),
-    ) {
-        LoadingIndicator(
-            loading = visible,
         )
     }
 }

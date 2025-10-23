@@ -81,14 +81,26 @@
     <string name="status_elite">Elite status</string>
     <string name="status_not_elite">Not elite status</string>
 
-
-<!--    Online Screen-->
-    <string name="logout">Log Out</string>
-
     <string name="no_marks">No marks</string>
     <string name="mark1">One mark</string>
     <string name="mark2">Two marks</string>
     <string name="mark3">Three marks</string>
+
+
+<!--    Online Screen-->
+    <string name="logout">Log Out</string>
+
+    <string name="class_none">no mastery</string>
+    <string name="class1">mastery class 1</string>
+    <string name="class2">mastery class 2</string>
+    <string name="class3">mastery class 3</string>
+    <string name="class_master">mastery master</string>
+
+    <string name="online_tanks_total">Tanks total</string>
+    <string name="online_tanks_refresh_time">Refreshed at</string>
+    <string name="online_tanks_refresh">Refreshed</string>
+    <string name="online_tanks_filtered">Tanks filtered</string>
+    <string name="online_random_tank">Random tank</string>
 
 
 <!--    WebView Screen-->

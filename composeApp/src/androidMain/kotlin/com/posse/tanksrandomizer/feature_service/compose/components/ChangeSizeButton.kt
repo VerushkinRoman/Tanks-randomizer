@@ -12,7 +12,7 @@ import androidx.compose.runtime.mutableFloatStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.alpha
+import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.graphics.vector.rememberVectorPainter
 import androidx.compose.ui.layout.onSizeChanged
 import androidx.compose.ui.unit.dp
@@ -37,10 +37,11 @@ internal fun ChangeSizeButton(
         AnimatedContent(
             targetState = windowInFullScreen,
             modifier = modifier
-                .alpha(opacity)
+                .graphicsLayer { alpha = opacity }
                 .padding(6.dp)
                 .onSizeChanged {
                     if (alpha != 1f && it.height != 0 && it.width != 0) {
+                        @Suppress("AssignedValueIsNeverRead")
                         alpha = 1f
                     }
                 }

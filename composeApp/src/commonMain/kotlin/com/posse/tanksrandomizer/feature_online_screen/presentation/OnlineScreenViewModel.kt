@@ -7,13 +7,12 @@ import com.posse.tanksrandomizer.common.domain.repository.AccountRepository
 import com.posse.tanksrandomizer.common.domain.repository.CommonTanksRepository
 import com.posse.tanksrandomizer.common.domain.utils.Dispatchers
 import com.posse.tanksrandomizer.common.domain.utils.Error
-import com.posse.tanksrandomizer.common.domain.utils.Result
+import com.posse.tanksrandomizer.common.domain.utils.NetworkError.Companion.isTokenError
 import com.posse.tanksrandomizer.common.domain.utils.onError
 import com.posse.tanksrandomizer.common.domain.utils.onSuccess
 import com.posse.tanksrandomizer.common.presentation.utils.BaseSharedViewModel
 import com.posse.tanksrandomizer.feature_online_screen.domain.models.Tank
 import com.posse.tanksrandomizer.feature_online_screen.domain.repository.OnlineScreenRepository
-import com.posse.tanksrandomizer.feature_online_screen.presentation.models.OnlineFilters
 import com.posse.tanksrandomizer.feature_online_screen.presentation.models.OnlineScreenAction
 import com.posse.tanksrandomizer.feature_online_screen.presentation.models.OnlineScreenEvent
 import com.posse.tanksrandomizer.feature_online_screen.presentation.models.OnlineScreenState
@@ -24,8 +23,9 @@ import com.posse.tanksrandomizer.feature_online_screen.presentation.use_cases.Re
 import com.posse.tanksrandomizer.feature_online_screen.presentation.use_cases.SaveOnlineScreenState
 import com.posse.tanksrandomizer.feature_online_screen.presentation.use_cases.UpdateToken
 import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.async
+import kotlin.time.ExperimentalTime
 
+@OptIn(ExperimentalTime::class)
 class OnlineScreenViewModel(
     filterRepository: CommonTanksRepository = Inject.instance(tag = RepositoryFor.OnlineScreen),
     onlineScreenRepository: OnlineScreenRepository = Inject.instance(),
@@ -36,7 +36,6 @@ class OnlineScreenViewModel(
     initialState = GetOnlineScreenStartState(
         commonTanksRepository = filterRepository,
         onlineScreenRepository = onlineScreenRepository,
-        accountRepository = accountRepository,
         filterTanks = filterTanks,
     ).invoke()
 ) {
@@ -61,6 +60,17 @@ class OnlineScreenViewModel(
         dispatchers = dispatchers,
     )
 
+    init {
+        withViewModelScope {
+            updateToken()
+                .onError { error ->
+                    if (error.isTokenError()) {
+                        logout()
+                    }
+                }
+        }
+    }
+
     override fun obtainEvent(viewEvent: OnlineScreenEvent) {
         when (viewEvent) {
             OnlineScreenEvent.ClearAction -> viewAction = null
@@ -68,12 +78,13 @@ class OnlineScreenViewModel(
             OnlineScreenEvent.RefreshAccountPressed -> refreshAccount()
             OnlineScreenEvent.SettingsPressed -> toggleSettings()
             OnlineScreenEvent.TrashFilterPressed -> resetFilter()
+            OnlineScreenEvent.CheckAllPressed -> checkAllFilter()
             OnlineScreenEvent.LogOutPressed -> logout()
-            is OnlineScreenEvent.FilterItemChanged<*> -> handleFilterItemChanged(viewEvent.item)
+            is OnlineScreenEvent.FilterItemChanged -> handleFilterItemChanged(viewEvent.item)
         }
     }
 
-    private fun <T : ItemStatus<T>> handleFilterItemChanged(item: T) {
+    private fun handleFilterItemChanged(item: ItemStatus<*>) {
         makeActionWithViewModelScopeAndSaveState {
             val newFilters = viewState.onlineFilters.changeItem(item)
             val tanksByFilter = filterTanks(tanks = viewState.tanksInGarage, filters = newFilters)
@@ -87,13 +98,22 @@ class OnlineScreenViewModel(
 
     private fun resetFilter() {
         makeActionWithViewModelScopeAndSaveState {
-            val tanksByFilter = filterTanks(tanks = viewState.tanksInGarage, filters = OnlineFilters())
-            viewState = viewState.updateFilters(OnlineFilters(), tanksByFilter)
+            val newFilters = viewState.onlineFilters.clear()
+            val tanksByFilter = filterTanks(tanks = viewState.tanksInGarage, filters = newFilters)
+            viewState = viewState.updateFilters(newFilters, tanksByFilter)
+        }
+    }
+
+    private fun checkAllFilter() {
+        makeActionWithViewModelScopeAndSaveState {
+            val newFilters = viewState.onlineFilters.selectAll()
+            val tanksByFilter = filterTanks(tanks = viewState.tanksInGarage, filters = newFilters)
+            viewState = viewState.updateFilters(newFilters, tanksByFilter)
         }
     }
 
     private fun generateTank() {
-        if (viewState.numberOfFilteredTanks == 0) return
+        if (viewState.tanksByFilter.isEmpty()) return
 
         makeActionWithViewModelScopeAndSaveState {
             val randomTank = viewState.tanksByFilter.random()
@@ -111,8 +131,14 @@ class OnlineScreenViewModel(
 
         withViewModelScope {
             logOutFromAccount()
-                .onError { showError(it) }
                 .onSuccess { viewAction = OnlineScreenAction.LogOut }
+                .onError { error ->
+                    if (error.isTokenError()) {
+                        viewAction = OnlineScreenAction.LogOut
+                    } else {
+                        showError(error)
+                    }
+                }
         }
     }
 
@@ -120,22 +146,25 @@ class OnlineScreenViewModel(
         startLoading()
 
         makeActionWithViewModelScopeAndSaveState {
-            val tokenDeferred = async { updateToken() }
-            val tanksDeferred = async { refreshTanks(viewState.tanksInGarage) }
+            updateToken()
+                .onError { error ->
+                    if (error.isTokenError()) {
+                        logout()
+                    } else {
+                        showError(error)
+                    }
+                    return@makeActionWithViewModelScopeAndSaveState
+                }
 
-            val newToken = tokenDeferred.await()
-
-            tanksDeferred.await()
+            refreshTanks(viewState.tanksInGarage)
                 .onSuccess { newTanks ->
                     handleRefreshSuccess(newTanks)
-                    newToken
-                        .onSuccess { viewState = viewState.copy(token = it) }
-                        .onError { showError(it) }
                 }
-                .onError {
-                    showError(it)
-                    if (newToken is Result.Success) {
-                        viewState = viewState.copy(token = newToken.data)
+                .onError { error ->
+                    if (error.isTokenError()) {
+                        logout()
+                    } else {
+                        showError(error)
                     }
                 }
         }

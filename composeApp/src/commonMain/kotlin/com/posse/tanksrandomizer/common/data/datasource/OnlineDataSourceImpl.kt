@@ -2,9 +2,10 @@ package com.posse.tanksrandomizer.common.data.datasource
 
 import com.posse.tanksrandomizer.common.data.di.ServerConstants.APPLICATION_ID
 import com.posse.tanksrandomizer.common.data.models.EncyclopediaTankData
-import com.posse.tanksrandomizer.common.data.models.NetworkAccountTank
-import com.posse.tanksrandomizer.common.data.models.NetworkEncyclopediaTank
-import com.posse.tanksrandomizer.common.data.models.NetworkToken
+import com.posse.tanksrandomizer.common.data.models.NetworkAccountTankResponse
+import com.posse.tanksrandomizer.common.data.models.NetworkAuthData
+import com.posse.tanksrandomizer.common.data.models.NetworkEncyclopediaTankData
+import com.posse.tanksrandomizer.common.data.networking.EmptyData
 import com.posse.tanksrandomizer.common.data.networking.EndpointConstants
 import com.posse.tanksrandomizer.common.data.networking.EndpointConstants.REDIRECT_URL
 import com.posse.tanksrandomizer.common.data.networking.safeCall
@@ -14,15 +15,18 @@ import com.posse.tanksrandomizer.common.data.util.toToken
 import com.posse.tanksrandomizer.common.domain.models.AccountTank
 import com.posse.tanksrandomizer.common.domain.models.EncyclopediaTank
 import com.posse.tanksrandomizer.common.domain.models.Token
-import com.posse.tanksrandomizer.common.domain.utils.DomainErrorType
 import com.posse.tanksrandomizer.common.domain.utils.EmptyResult
 import com.posse.tanksrandomizer.common.domain.utils.Error
 import com.posse.tanksrandomizer.common.domain.utils.NetworkError
 import com.posse.tanksrandomizer.common.domain.utils.Result
+import com.posse.tanksrandomizer.common.domain.utils.asEmptyDataResult
 import com.posse.tanksrandomizer.common.domain.utils.map
 import io.ktor.client.HttpClient
+import io.ktor.client.request.forms.FormDataContent
 import io.ktor.client.request.get
 import io.ktor.client.request.post
+import io.ktor.client.request.setBody
+import io.ktor.http.Parameters
 import kotlinx.coroutines.async
 import kotlinx.coroutines.awaitAll
 import kotlinx.coroutines.coroutineScope
@@ -41,24 +45,30 @@ class OnlineDataSourceImpl(
     }
 
     override suspend fun logOut(currentToken: Token): EmptyResult<Error> {
-        val logoutURL = LOGOUT +
-                "?application_id=${APPLICATION_ID}" +
-                "&access_token=${currentToken.accessToken}"
-
-        return safeCall<Unit> {
-            httpClient.post(urlString = logoutURL)
-        }
+        return safeCall<EmptyData> {
+            httpClient.post(urlString = LOGOUT) {
+                setBody(
+                    FormDataContent(Parameters.build {
+                        append("application_id", APPLICATION_ID)
+                        append("access_token", currentToken.accessToken)
+                    })
+                )
+            }
+        }.asEmptyDataResult()
     }
 
     override suspend fun getNewToken(currentToken: Token): Result<Token, Error> {
-        val prolongateURL = PROLONGATE +
-                "?application_id=${APPLICATION_ID}" +
-                "&access_token=${currentToken.accessToken}"
-
-        return safeCall<NetworkToken> {
-            httpClient.post(urlString = prolongateURL)
+        return safeCall<NetworkAuthData> {
+            httpClient.post(urlString = PROLONGATE) {
+                setBody(
+                    FormDataContent(Parameters.build {
+                        append("application_id", APPLICATION_ID)
+                        append("access_token", currentToken.accessToken)
+                    })
+                )
+            }
         }.map { response ->
-            response.data.toToken()
+            response.toToken()
         }
     }
 
@@ -69,13 +79,11 @@ class OnlineDataSourceImpl(
                 "&access_token=${currentToken.accessToken}" +
                 "&${STATS_PARAMS}"
 
-        return safeCall<NetworkAccountTank> {
+        return safeCall<NetworkAccountTankResponse> {
             httpClient.get(urlString = accountTanksUrl)
         }.map { response ->
-            response.data.values.toList().flatten().map { accountTankData ->
-                accountTankData.toAccountTank()
-                    ?: return Result.Error(DomainErrorType.MapperError)
-            }
+            response.values.flatten()
+                .map { networkAccountTank -> networkAccountTank.toAccountTank() }
         }
     }
 
@@ -97,13 +105,12 @@ class OnlineDataSourceImpl(
                 "?application_id=${APPLICATION_ID}" +
                 "&${ENCYCLOPEDIA_PARAMS}"
 
-        return safeCall<NetworkEncyclopediaTank> {
+        return safeCall<NetworkEncyclopediaTankData> {
             httpClient.get(urlString = allTanksUrl)
         }
             .map { response ->
-                response.data.values.toList().map { encyclopediaTankData ->
-                    encyclopediaTankData.toEncyclopediaTank()
-                        ?: return Result.Error(DomainErrorType.MapperError)
+                response.values.mapNotNull { encyclopediaTankData ->
+                    encyclopediaTankData?.toEncyclopediaTank()
                 }
             }
     }
@@ -130,9 +137,9 @@ class OnlineDataSourceImpl(
                 "&application_id=${APPLICATION_ID}" +
                 "&${ENCYCLOPEDIA_PARAMS}"
 
-        return safeCall<NetworkEncyclopediaTank> {
+        return safeCall<NetworkEncyclopediaTankData> {
             httpClient.get(urlString = tanksByIdUrl)
-        }.map { it.data.values.toList() }
+        }.map { it.values.filterNotNull() }
     }
 
     private fun processChunkResults(
@@ -150,12 +157,13 @@ class OnlineDataSourceImpl(
             .flatMap { it.data }
 
         val encyclopediaTanks = allTankData.map { tankData ->
-            tankData.toEncyclopediaTank() ?: return Result.Error(DomainErrorType.MapperError)
+            tankData.toEncyclopediaTank()
         }
 
         return Result.Success(encyclopediaTanks)
     }
 
+    @Suppress("SpellCheckingInspection")
     private companion object {
         const val MAX_PARALLEL_REQUESTS = EndpointConstants.MAX_REQUESTS_PER_SECONDS - 2
         const val LOGIN = EndpointConstants.AUTH_PATH + "login/"

@@ -21,6 +21,9 @@ data class OfflineFilters(
     val tankTypes: List<TankType> = TankType.defaultValues,
     val types: List<Type> = Type.defaultValues,
 ) {
+    val components: List<List<ItemStatus<*>>>
+        get() = listOf(tiers, types, marks, experiences, pinned, statuses, tankTypes, nations)
+
     fun changeItem(item: ItemStatus<*>): OfflineFilters {
         return copy(
             tiers = if (item is Tier) tiers.changeSelected(item) else tiers,
@@ -33,9 +36,6 @@ data class OfflineFilters(
             types = if (item is Type) types.changeSelected(item) else types,
         )
     }
-
-    val components: List<List<ItemStatus<*>>>
-        get() = listOf(tiers, types, marks, experiences, pinned, statuses, tankTypes, nations)
 
     fun clear(): OfflineFilters = changeAll(select = false)
 

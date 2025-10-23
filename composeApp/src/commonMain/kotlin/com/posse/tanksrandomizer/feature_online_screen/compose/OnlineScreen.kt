@@ -25,7 +25,7 @@ import kotlinx.coroutines.launch
 fun OnlineScreen(
     logOut: () -> Unit,
     showRotation: Boolean,
-    showFloatingButtonSettings: Boolean,
+    runningAsOverlay: Boolean,
     modifier: Modifier
 ) {
     val scope = rememberCoroutineScope()
@@ -37,7 +37,7 @@ fun OnlineScreen(
 
     SettingsBottomSheet(
         showRotation = showRotation,
-        runningAsOverlay = showFloatingButtonSettings,
+        runningAsOverlay = runningAsOverlay,
         modifier = modifier
     ) { paddingValues, bottomSheetState, snackbarHostState ->
         LaunchedEffect(action) {
@@ -68,6 +68,7 @@ fun OnlineScreen(
 
         OnlineScreenContent(
             viewState = state,
+            runningAsOverlay = runningAsOverlay,
             onEvent = viewModel::obtainEvent,
             modifier = Modifier
                 .fillMaxSize()

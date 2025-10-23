@@ -8,7 +8,6 @@ import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ExperimentalLayoutApi
 import androidx.compose.foundation.layout.FlowRow
@@ -21,8 +20,6 @@ import androidx.compose.foundation.layout.requiredSize
 import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.windowsizeclass.ExperimentalMaterial3WindowSizeClassApi
-import androidx.compose.material3.windowsizeclass.WindowSizeClass
 import androidx.compose.material3.windowsizeclass.WindowWidthSizeClass
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -34,13 +31,13 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.unit.DpSize
+import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.unit.dp
 import com.posse.tanksrandomizer.common.compose.base_components.BorderWidth
 import com.posse.tanksrandomizer.common.compose.base_components.ButtonsShapeSmall
+import com.posse.tanksrandomizer.common.compose.base_components.WidthSizeClassCalculator
 import com.posse.tanksrandomizer.common.compose.utils.LocalElementSize
 import com.posse.tanksrandomizer.common.compose.utils.additionalPadding
 import com.posse.tanksrandomizer.common.compose.utils.colorFilter
@@ -58,6 +55,7 @@ fun FiltersBlock(
     onDiceClick: () -> Unit,
     onTrashClick: () -> Unit,
     onSelectAllClick: () -> Unit,
+    diceEnabled: Boolean = true,
     modifier: Modifier = Modifier
 ) {
     val diceClicked = remember { mutableStateOf(false) }
@@ -73,6 +71,7 @@ fun FiltersBlock(
     var prevComponentsAllCleared by remember { mutableStateOf(true) }
     LaunchedEffect(components) {
         if (prevComponentsAllCleared) diceClicked.value = false
+        @Suppress("AssignedValueIsNeverRead")
         prevComponentsAllCleared = allCleared
     }
 
@@ -92,14 +91,13 @@ fun FiltersBlock(
             onDiceClick = onDiceClick,
             onTrashClick = onTrashClick,
             onSelectAllClick = onSelectAllClick,
-            diceEnabled = !allDisabled,
+            diceEnabled = !allDisabled && diceEnabled,
             diceClicked = diceClicked,
             modifier = Modifier.fillMaxWidth()
         )
     }
 }
 
-@OptIn(ExperimentalMaterial3WindowSizeClassApi::class)
 @Composable
 private fun ButtonsByWidth(
     onDiceClick: () -> Unit,
@@ -109,14 +107,10 @@ private fun ButtonsByWidth(
     diceClicked: MutableState<Boolean>,
     modifier: Modifier = Modifier,
 ) {
-    BoxWithConstraints(
+    WidthSizeClassCalculator(
         modifier = modifier
-    ) {
-        val sizeClass = WindowSizeClass.calculateFromSize(
-            DpSize(width = maxWidth, height = maxHeight)
-        )
-
-        when (sizeClass.widthSizeClass) {
+    ) { widthSizeClass ->
+        when (widthSizeClass) {
             WindowWidthSizeClass.Compact -> {
                 Column(
                     verticalArrangement = Arrangement.spacedBy(12.dp),
@@ -216,7 +210,7 @@ private fun FilterButton(
     diceClicked: MutableState<Boolean>,
     modifier: Modifier = Modifier
 ) {
-    val alpha by animateFloatAsState(
+    val buttonAlpha by animateFloatAsState(
         targetValue = if (item.selected) 1f else 0.1f,
     )
 
@@ -248,7 +242,7 @@ private fun FilterButton(
         modifier = modifier
             .height(LocalElementSize.current)
             .widthIn(min = LocalElementSize.current)
-            .alpha(alpha)
+            .graphicsLayer { alpha = buttonAlpha }
             .clickable(onClick = onItemClick)
             .border(
                 width = BorderWidth,

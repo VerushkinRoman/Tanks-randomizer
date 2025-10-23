@@ -1,6 +1,7 @@
 package com.posse.tanksrandomizer.navigation.compose.components
 
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.remember
@@ -11,6 +12,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.toRoute
+import com.posse.tanksrandomizer.common.compose.utils.getHorizontalEvenSafeContentPaddings
 import com.posse.tanksrandomizer.common.core.di.Inject
 import com.posse.tanksrandomizer.common.data.networking.EndpointConstants.REDIRECT_URL
 import com.posse.tanksrandomizer.common.domain.models.Token
@@ -64,7 +66,9 @@ fun NavigationHost(
                 toWebViewScreen = { url ->
                     navController.navigate(WebViewScreenRoute(url = url))
                 },
-                modifier = Modifier.fillMaxSize()
+                modifier = Modifier
+                    .fillMaxSize()
+                    .padding(horizontal = getHorizontalEvenSafeContentPaddings())
             )
 
             LaunchedEffect(true) {
@@ -79,7 +83,9 @@ fun NavigationHost(
                 },
                 showRotation = showRotation,
                 runningAsOverlay = runningAsOverlay,
-                modifier = Modifier.fillMaxSize()
+                modifier = Modifier
+                    .fillMaxSize()
+                    .padding(horizontal = getHorizontalEvenSafeContentPaddings())
             )
 
             LaunchedEffect(true) {
@@ -97,8 +103,10 @@ fun NavigationHost(
                     }
                 },
                 showRotation = showRotation,
-                showFloatingButtonSettings = runningAsOverlay,
-                modifier = Modifier.fillMaxSize()
+                runningAsOverlay = runningAsOverlay,
+                modifier = Modifier
+                    .fillMaxSize()
+                    .padding(horizontal = getHorizontalEvenSafeContentPaddings())
             )
 
             LaunchedEffect(true) {
@@ -161,6 +169,7 @@ private fun handleWebViewResult(
     navigateBack: () -> Unit,
     navigateToOnlineScreen: () -> Unit
 ) {
+    @Suppress("MoveVariableDeclarationIntoWhen", "RedundantSuppression")
     val result = RedirectParser.parse(resultUrl.removePrefix("${REDIRECT_URL}?"))
     when (result) {
         is RedirectResult.Success -> handleRedirectSuccessResult(

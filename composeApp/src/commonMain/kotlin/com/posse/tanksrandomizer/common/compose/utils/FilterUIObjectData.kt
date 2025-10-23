@@ -16,11 +16,21 @@ import com.posse.tanksrandomizer.feature_offline_screen.domain.models.OfflineFil
 import com.posse.tanksrandomizer.feature_offline_screen.domain.models.OfflineFilterObjects.Pinned
 import com.posse.tanksrandomizer.feature_offline_screen.domain.models.OfflineFilterObjects.Status
 import com.posse.tanksrandomizer.feature_offline_screen.domain.models.OfflineFilterObjects.TankType
+import com.posse.tanksrandomizer.feature_online_screen.domain.models.OnlineFilterObjects.Mastery
+import com.posse.tanksrandomizer.feature_online_screen.domain.models.OnlineFilterObjects.Premium
 import org.jetbrains.compose.resources.DrawableResource
 import org.jetbrains.compose.resources.StringResource
 import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.resources.stringResource
 import tanks_randomizer.composeapp.generated.resources.Res
+import tanks_randomizer.composeapp.generated.resources.class1
+import tanks_randomizer.composeapp.generated.resources.class2
+import tanks_randomizer.composeapp.generated.resources.class3
+import tanks_randomizer.composeapp.generated.resources.class_1
+import tanks_randomizer.composeapp.generated.resources.class_2
+import tanks_randomizer.composeapp.generated.resources.class_3
+import tanks_randomizer.composeapp.generated.resources.class_master
+import tanks_randomizer.composeapp.generated.resources.class_none
 import tanks_randomizer.composeapp.generated.resources.exp_bday
 import tanks_randomizer.composeapp.generated.resources.exp_birthday
 import tanks_randomizer.composeapp.generated.resources.exp_x2
@@ -230,10 +240,31 @@ enum class FilterUIObjectData(
         drawableResource = Res.drawable.mark3,
         stringResource = Res.string.mark3,
     ),
+
+    MasteryNone(
+        drawableResource = Res.drawable.class_none,
+        stringResource = Res.string.class_none,
+    ),
+    MasteryClass3(
+        drawableResource = Res.drawable.class_3,
+        stringResource = Res.string.class3,
+    ),
+    MasteryClass2(
+        drawableResource = Res.drawable.class_2,
+        stringResource = Res.string.class2,
+    ),
+    MasteryClass1(
+        drawableResource = Res.drawable.class_1,
+        stringResource = Res.string.class1,
+    ),
+    MasteryMaster(
+        drawableResource = Res.drawable.class_master,
+        stringResource = Res.string.class_master,
+    ),
 }
 
 @Composable
-fun <T> getFilterImage(item: ItemStatus<T>): Painter {
+fun getFilterImage(item: ItemStatus<*>): Painter {
     return when (item) {
         is Tier -> {
             when (item) {
@@ -312,12 +343,29 @@ fun <T> getFilterImage(item: ItemStatus<T>): Painter {
             }
         }
 
+        is Mastery -> {
+            when (item) {
+                is Mastery.None -> painterResource(FilterUIObjectData.MasteryNone.drawableResource)
+                is Mastery.Class3 -> painterResource(FilterUIObjectData.MasteryClass3.drawableResource)
+                is Mastery.Class2 -> painterResource(FilterUIObjectData.MasteryClass2.drawableResource)
+                is Mastery.Class1 -> painterResource(FilterUIObjectData.MasteryClass1.drawableResource)
+                is Mastery.Master -> painterResource(FilterUIObjectData.MasteryMaster.drawableResource)
+            }
+        }
+
+        is Premium -> {
+            when (item) {
+                is Premium.Common -> painterResource(FilterUIObjectData.Common.drawableResource)
+                is Premium.IsPremium -> painterResource(FilterUIObjectData.Premium.drawableResource)
+            }
+        }
+
         else -> throw RuntimeException("wrong item: $item")
     }
 }
 
 @Composable
-fun <T> getFilterName(item: ItemStatus<T>): String {
+fun getFilterName(item: ItemStatus<*>): String {
     return when (item) {
         is Tier -> {
             when (item) {
@@ -396,6 +444,23 @@ fun <T> getFilterName(item: ItemStatus<T>): String {
             }
         }
 
+        is Mastery -> {
+            when (item) {
+                is Mastery.None -> stringResource(FilterUIObjectData.MasteryNone.stringResource)
+                is Mastery.Class3 -> stringResource(FilterUIObjectData.MasteryClass3.stringResource)
+                is Mastery.Class2 -> stringResource(FilterUIObjectData.MasteryClass2.stringResource)
+                is Mastery.Class1 -> stringResource(FilterUIObjectData.MasteryClass1.stringResource)
+                is Mastery.Master -> stringResource(FilterUIObjectData.MasteryMaster.stringResource)
+            }
+        }
+
+        is Premium -> {
+            when (item) {
+                is Premium.Common -> stringResource(FilterUIObjectData.Common.stringResource)
+                is Premium.IsPremium -> stringResource(FilterUIObjectData.Premium.stringResource)
+            }
+        }
+
         else -> throw RuntimeException("wrong item: $item")
     }
 }
@@ -403,7 +468,7 @@ fun <T> getFilterName(item: ItemStatus<T>): String {
 @Composable
 fun ItemStatus<*>.useFullSize(): Boolean {
     return when (this) {
-        is Nation, is Experience -> true
+        is Nation, is Experience, is Mastery -> true
         else -> false
     }
 }
@@ -420,6 +485,7 @@ fun ItemStatus<*>.useSquare(): Boolean {
 fun ItemStatus<*>.additionalPadding(): Dp {
     return when (this) {
         is Nation -> 0.dp
+        is Mastery -> 6.dp
         else -> 3.dp
     }
 }
@@ -427,7 +493,7 @@ fun ItemStatus<*>.additionalPadding(): Dp {
 @Composable
 fun ItemStatus<*>.colorFilter(): ColorFilter? {
     return when (this) {
-        is Nation, is Experience, is MarkCount -> null
+        is Nation, is Experience, is MarkCount, is Mastery -> null
 
         is TankType -> ColorFilter.tint(
             when (this) {
@@ -435,6 +501,13 @@ fun ItemStatus<*>.colorFilter(): ColorFilter? {
                 is TankType.Premium -> MaterialTheme.colorScheme.tankTypesColors.premium
                 is TankType.Premiumized -> MaterialTheme.colorScheme.tankTypesColors.premiumized
                 is TankType.Collection -> MaterialTheme.colorScheme.tankTypesColors.collection
+            }
+        )
+
+        is Premium -> ColorFilter.tint(
+            when (this) {
+                is Premium.Common -> MaterialTheme.colorScheme.tankTypesColors.common
+                is Premium.IsPremium -> MaterialTheme.colorScheme.tankTypesColors.premium
             }
         )
 

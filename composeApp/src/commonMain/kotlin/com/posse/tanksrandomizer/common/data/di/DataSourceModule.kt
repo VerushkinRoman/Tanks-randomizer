@@ -7,7 +7,6 @@ import com.russhwolf.settings.Settings
 import io.ktor.client.HttpClient
 import io.ktor.client.plugins.contentnegotiation.ContentNegotiation
 import io.ktor.client.plugins.defaultRequest
-import io.ktor.client.plugins.logging.DEFAULT
 import io.ktor.client.plugins.logging.LogLevel
 import io.ktor.client.plugins.logging.Logger
 import io.ktor.client.plugins.logging.Logging
@@ -20,6 +19,14 @@ import org.kodein.di.bind
 import org.kodein.di.instance
 import org.kodein.di.singleton
 
+expect fun getKtorLogger(): Logger
+
+val commonLogger = object : Logger {
+    override fun log(message: String) {
+        println(message)
+    }
+}
+
 val commonDataSourceModule = DI.Module("CommonDataSourceModule") {
     bind<Settings>() with singleton {
         Settings()
@@ -28,8 +35,8 @@ val commonDataSourceModule = DI.Module("CommonDataSourceModule") {
     bind<HttpClient>() with singleton {
         HttpClient {
             install(Logging) {
-                logger = Logger.DEFAULT
-                level = LogLevel.BODY
+                logger = getKtorLogger()
+                level = LogLevel.ALL
             }
 
             install(ContentNegotiation) {

@@ -8,9 +8,7 @@ import io.ktor.client.call.body
 import io.ktor.client.statement.HttpResponse
 import kotlinx.serialization.json.Json
 import kotlinx.serialization.json.JsonObject
-import kotlinx.serialization.json.contentOrNull
 import kotlinx.serialization.json.decodeFromJsonElement
-import kotlinx.serialization.json.jsonPrimitive
 
 suspend inline fun <reified T> responseToResult(
     response: HttpResponse
@@ -28,16 +26,18 @@ suspend inline fun <reified T> responseToResult(
 
         val json = response.body<String>()
         val parsed = Json.decodeFromString<JsonObject>(json)
+        val decodedResponse = Json.decodeFromJsonElement<BlitzApiResponse>(parsed)
 
-        when (parsed["status"]?.jsonPrimitive?.contentOrNull) {
+        when (decodedResponse.status) {
             "ok" -> {
-                val data = parsed["data"]?.let { Json.decodeFromJsonElement<T>(it) }
-                    ?: Unit as T
+                val data = decodedResponse.data?.let { responseData ->
+                    Json.decodeFromJsonElement<T>(responseData) as T
+                } ?: return Result.Error(NetworkError.Serialization)
                 Result.Success(data)
             }
 
             "error" -> {
-                val error = Json.decodeFromJsonElement<ApiErrorResponse>(parsed["error"]!!)
+                val error = decodedResponse.error ?: return Result.Error(NetworkError.Unknown)
                 Result.Error(parseApiError(error))
             }
 

@@ -80,14 +80,26 @@
     <string name="status_elite">Элитный статус</string>
     <string name="status_not_elite">Не элитный статус</string>
 
-
-<!--    Online Screen-->
-    <string name="logout">Выйти</string>
-
     <string name="no_marks">Без отметок</string>
     <string name="mark1">Одна отметка</string>
     <string name="mark2">Две отметки</string>
     <string name="mark3">Три отметки</string>
+
+
+<!--    Online Screen-->
+    <string name="logout">Выйти</string>
+
+    <string name="class_none">Без мастрества</string>
+    <string name="class1">Мастерство 1 класса</string>
+    <string name="class2">Мастерство 2 класса</string>
+    <string name="class3">Мастерство 3 класса</string>
+    <string name="class_master">Мастерство мастер</string>
+
+    <string name="online_tanks_total">Всего танков</string>
+    <string name="online_tanks_refresh_time">Обновлено</string>
+    <string name="online_tanks_refresh">Обновить</string>
+    <string name="online_tanks_filtered">Отфильтровано танков</string>
+    <string name="online_random_tank">Случайный танк</string>
 
 
 <!--    WebView Screen-->

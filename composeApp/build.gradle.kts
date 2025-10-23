@@ -10,6 +10,7 @@ plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlinx.serialization)
     alias(libs.plugins.buildkonfig)
+    alias(libs.plugins.realmDB)
 }
 
 kotlin {
@@ -66,6 +67,7 @@ kotlin {
             implementation(libs.ktor.client.content.negotiation)
             implementation(libs.ktor.serialization.kotlinx.json)
             implementation(libs.ktor.client.logging)
+            implementation(libs.realmDB)
             api(libs.compose.webview.multiplatform) // use api since the desktop app need to access the Cef to initialize it.
         }
 
@@ -94,8 +96,8 @@ android {
         targetSdk = 36
 
         applicationId = "com.posse.tanksrandomizer"
-        versionCode = 8
-        versionName = "1.5.0"
+        versionCode = 9
+        versionName = "2.0.0"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
@@ -105,9 +107,12 @@ android {
     }
 
     bundle {
+        @Suppress("SpellCheckingInspection", "UnstableApiUsage")
         // Отключить динамическую доставку ресурсов по локалям
         language.enableSplit = false
+        @Suppress("UnstableApiUsage")
         density.enableSplit = true
+        @Suppress("UnstableApiUsage")
         abi.enableSplit = true
     }
 

@@ -6,7 +6,7 @@ interface OnlineScreenDataSource {
     fun getLastAccountUpdated(): Long?
     fun setLastAccountUpdated(dateTime: Long)
 
-    fun getTanksInGarage(): List<Tank>?
+    fun getTanksInGarage(): List<Tank>
     fun setTanksInGarage(tanks: List<Tank>)
 
     fun getSelectedTank(): Tank?

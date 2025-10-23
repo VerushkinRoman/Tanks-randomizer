@@ -5,7 +5,9 @@ import com.posse.tanksrandomizer.common.domain.utils.Dispatchers
 import com.posse.tanksrandomizer.feature_online_screen.domain.repository.OnlineScreenRepository
 import com.posse.tanksrandomizer.feature_online_screen.presentation.models.OnlineScreenState
 import kotlinx.coroutines.withContext
+import kotlin.time.ExperimentalTime
 
+@OptIn(ExperimentalTime::class)
 class SaveOnlineScreenState(
     private val filterRepository: CommonTanksRepository,
     private val onlineScreenRepository: OnlineScreenRepository,

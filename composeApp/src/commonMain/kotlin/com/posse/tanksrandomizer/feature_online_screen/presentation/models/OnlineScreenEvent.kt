@@ -5,9 +5,10 @@ import com.posse.tanksrandomizer.common.domain.models.CommonFilterObjects.ItemSt
 sealed interface OnlineScreenEvent {
     data object ClearAction : OnlineScreenEvent
     data object TrashFilterPressed : OnlineScreenEvent
+    data object CheckAllPressed : OnlineScreenEvent
     data object GenerateTankPressed : OnlineScreenEvent
     data object SettingsPressed : OnlineScreenEvent
     data object RefreshAccountPressed : OnlineScreenEvent
     data object LogOutPressed : OnlineScreenEvent
-    class FilterItemChanged<T : ItemStatus<T>>(val item: T) : OnlineScreenEvent
+    data class FilterItemChanged(val item: ItemStatus<*>) : OnlineScreenEvent
 }

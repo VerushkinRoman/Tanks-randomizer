@@ -1,9 +1,12 @@
 package com.posse.tanksrandomizer.feature_online_screen.domain.models
 
 import com.posse.tanksrandomizer.common.domain.models.CommonFilterObjects.ItemStatus
+import kotlinx.serialization.Serializable
 
 object OnlineFilterObjects {
+    @Serializable
     sealed interface Mastery : ItemStatus<Mastery> {
+        @Serializable
         data class None(
             override val name: String = "class none",
             override val sort: Int = 1,
@@ -14,6 +17,7 @@ object OnlineFilterObjects {
                 copy(selected = selected, random = random, sort = sort)
         }
 
+        @Serializable
         data class Class3(
             override val name: String = "class 3",
             override val sort: Int = 2,
@@ -24,6 +28,7 @@ object OnlineFilterObjects {
                 copy(selected = selected, random = random, sort = sort)
         }
 
+        @Serializable
         data class Class2(
             override val name: String = "class 2",
             override val sort: Int = 3,
@@ -34,6 +39,7 @@ object OnlineFilterObjects {
                 copy(selected = selected, random = random, sort = sort)
         }
 
+        @Serializable
         data class Class1(
             override val name: String = "class 1",
             override val sort: Int = 4,
@@ -44,6 +50,7 @@ object OnlineFilterObjects {
                 copy(selected = selected, random = random, sort = sort)
         }
 
+        @Serializable
         data class Master(
             override val name: String = "Master",
             override val sort: Int = 5,
@@ -65,7 +72,9 @@ object OnlineFilterObjects {
         }
     }
 
+    @Serializable
     sealed interface Premium : ItemStatus<Premium> {
+        @Serializable
         data class Common(
             override val name: String = "Common",
             override val sort: Int = 1,
@@ -76,6 +85,7 @@ object OnlineFilterObjects {
                 copy(selected = selected, random = random, sort = sort)
         }
 
+        @Serializable
         data class IsPremium(
             override val name: String = "IsPremium",
             override val sort: Int = 2,

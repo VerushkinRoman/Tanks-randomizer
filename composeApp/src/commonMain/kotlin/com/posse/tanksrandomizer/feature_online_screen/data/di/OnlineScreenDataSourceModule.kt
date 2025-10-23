@@ -7,12 +7,25 @@ import com.posse.tanksrandomizer.common.data.datasource.OnlineDataSourceImpl
 import com.posse.tanksrandomizer.common.domain.models.DataSourceFor
 import com.posse.tanksrandomizer.feature_online_screen.data.datasource.OnlineScreenDataSource
 import com.posse.tanksrandomizer.feature_online_screen.data.datasource.OnlineScreenDataSourceImpl
+import com.posse.tanksrandomizer.feature_online_screen.data.models.DBTank
+import io.realm.kotlin.Realm
+import io.realm.kotlin.RealmConfiguration
 import org.kodein.di.DI
 import org.kodein.di.bind
 import org.kodein.di.instance
 import org.kodein.di.provider
 
 val onlineScreenDataSourceModule = DI.Module("OnlineScreenDataSourceModule") {
+    bind<Realm>() with provider {
+        Realm.open(
+            configuration = RealmConfiguration.create(
+                schema = setOf(
+                    DBTank::class,
+                )
+            )
+        )
+    }
+
     bind<OfflineDataSource>(tag = DataSourceFor.OnlineScreen) with provider {
         OfflineDataSourceImpl(
             settings = instance(),
@@ -28,7 +41,8 @@ val onlineScreenDataSourceModule = DI.Module("OnlineScreenDataSourceModule") {
 
     bind<OnlineScreenDataSource>() with provider {
         OnlineScreenDataSourceImpl(
-            settings = instance()
+            settings = instance(),
+            database = instance(),
         )
     }
 }

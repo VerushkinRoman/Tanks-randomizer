@@ -33,10 +33,7 @@ internal fun AndroidApp(
     )
 
     CommonPlatformApp(
-        modifier = modifier
-            .graphicsLayer {
-                alpha = appAlpha
-            },
+        modifier = modifier.graphicsLayer { alpha = appAlpha },
     ) {
         AndroidMode(
             startedFromService = startedFromService,

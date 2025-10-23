@@ -16,10 +16,10 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ColorFilter
+import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.unit.dp
@@ -33,7 +33,7 @@ fun BigButtonWithImage(
     backgroundColor: Color = Color.Transparent,
     modifier: Modifier = Modifier
 ) {
-    val alpha by animateFloatAsState(
+    val buttonAlpha by animateFloatAsState(
         targetValue = if (enabled) 1f else 0.3f
     )
 
@@ -42,7 +42,7 @@ fun BigButtonWithImage(
         modifier = modifier
             .height(ButtonDefaults.MinHeight)
             .widthIn(min = ButtonDefaults.MinHeight)
-            .alpha(alpha)
+            .graphicsLayer { alpha = buttonAlpha }
             .then(
                 if (onClick != null) Modifier.clickable(
                     enabled = enabled,

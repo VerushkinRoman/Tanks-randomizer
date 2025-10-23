@@ -17,7 +17,6 @@ import androidx.compose.ui.platform.LocalLayoutDirection
 import androidx.compose.ui.unit.dp
 import com.posse.tanksrandomizer.android_mode.presentation.model.AndroidModeEvent
 import com.posse.tanksrandomizer.common.compose.base_components.BigButtonWithImage
-import com.posse.tanksrandomizer.common.compose.utils.getHorizontalEvenSafeContentPaddings
 import com.posse.tanksrandomizer.feature_offline_screen.compose.components.BackButtonExitApp
 import com.posse.tanksrandomizer.navigation.compose.MainNavigation
 import org.jetbrains.compose.resources.stringResource
@@ -36,9 +35,7 @@ fun AndroidModeContent(
         MainNavigation(
             showRotation = !startedFromService,
             runningAsOverlay = startedFromService,
-            modifier = Modifier
-                .fillMaxSize()
-                .padding(horizontal = getHorizontalEvenSafeContentPaddings())
+            modifier = Modifier.fillMaxSize()
         )
 
         if (startedFromService) {
