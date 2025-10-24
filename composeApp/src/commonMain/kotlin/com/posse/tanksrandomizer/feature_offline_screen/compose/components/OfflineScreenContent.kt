@@ -1,6 +1,9 @@
 package com.posse.tanksrandomizer.feature_offline_screen.compose.components
 
+import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.core.animateFloatAsState
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
@@ -49,10 +52,17 @@ internal fun OfflineScreenContent(
                 .graphicsLayer { alpha = screenAlpha },
         )
 
-        LoadingOverlay(
+        AnimatedVisibility(
             visible = viewState.loading,
-            modifier = Modifier.fillMaxSize(),
-        )
+            enter = fadeIn(),
+            exit = fadeOut(),
+            modifier = modifier,
+        ) {
+            LoadingOverlay(
+                visible = viewState.loading,
+                modifier = Modifier.fillMaxSize(),
+            )
+        }
     }
 }
 

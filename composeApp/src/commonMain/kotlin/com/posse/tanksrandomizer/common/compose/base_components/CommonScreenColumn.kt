@@ -44,9 +44,10 @@ fun CommonScreenColumn(
                     Modifier.padding(horizontal = ButtonDefaults.MinHeight + 16.dp)
                 } else Modifier
             )
-            .padding(vertical = 16.dp)
+            .padding(vertical = 8.dp)
     ) {
         Spacer(Modifier.weight(1f).onSizeChanged { size ->
+            @Suppress("AssignedValueIsNeverRead")
             additionalSpace = with(density) { size.height.toDp() }
         })
 

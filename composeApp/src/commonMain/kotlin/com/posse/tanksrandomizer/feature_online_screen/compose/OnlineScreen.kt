@@ -12,6 +12,7 @@ import androidx.compose.ui.Modifier
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.posse.tanksrandomizer.common.compose.components.SettingsBottomSheet
+import com.posse.tanksrandomizer.common.compose.utils.getHorizontalEvenSafeContentPaddings
 import com.posse.tanksrandomizer.common.compose.utils.showError
 import com.posse.tanksrandomizer.common.presentation.utils.collectAsStateWithLifecycle
 import com.posse.tanksrandomizer.feature_online_screen.compose.components.OnlineScreenContent
@@ -73,6 +74,7 @@ fun OnlineScreen(
             modifier = Modifier
                 .fillMaxSize()
                 .padding(paddingValues)
+                .padding(horizontal = getHorizontalEvenSafeContentPaddings()),
         )
     }
 }

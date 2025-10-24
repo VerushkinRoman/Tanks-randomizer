@@ -10,7 +10,7 @@ import androidx.compose.ui.Modifier
 
 @Composable
 fun LoadingOverlay(
-    visible: Boolean,
+    visible: Boolean = true,
     modifier: Modifier = Modifier,
 ) {
     Box(
@@ -26,8 +26,6 @@ fun LoadingOverlay(
                 } else Modifier
             ),
     ) {
-        LoadingIndicator(
-            loading = visible,
-        )
+        LoadingIndicator()
     }
 }

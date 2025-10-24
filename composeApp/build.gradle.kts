@@ -68,6 +68,8 @@ kotlin {
             implementation(libs.ktor.serialization.kotlinx.json)
             implementation(libs.ktor.client.logging)
             implementation(libs.realmDB)
+            implementation(libs.coil.compose)
+            implementation(libs.coil.network)
             api(libs.compose.webview.multiplatform) // use api since the desktop app need to access the Cef to initialize it.
         }
 

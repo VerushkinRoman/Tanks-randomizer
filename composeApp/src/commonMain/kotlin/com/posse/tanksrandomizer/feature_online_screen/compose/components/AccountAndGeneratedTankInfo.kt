@@ -1,13 +1,12 @@
 package com.posse.tanksrandomizer.feature_online_screen.compose.components
 
-import androidx.compose.foundation.background
+import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -16,14 +15,21 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.Autorenew
 import androidx.compose.material3.ButtonDefaults
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.windowsizeclass.WindowWidthSizeClass
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.graphics.vector.rememberVectorPainter
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import coil3.compose.AsyncImage
+import com.posse.tanksrandomizer.common.compose.base_components.LoadingIndicator
 import com.posse.tanksrandomizer.common.compose.base_components.RandomizerText
 import com.posse.tanksrandomizer.common.compose.base_components.SmallButtonWithTextAndImage
 import com.posse.tanksrandomizer.common.compose.base_components.WidthSizeClassCalculator
@@ -31,8 +37,10 @@ import com.posse.tanksrandomizer.feature_online_screen.compose.utils.getFiltered
 import com.posse.tanksrandomizer.feature_online_screen.compose.utils.getRefreshText
 import com.posse.tanksrandomizer.feature_online_screen.compose.utils.getTotalText
 import com.posse.tanksrandomizer.feature_online_screen.domain.models.Tank
+import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.resources.stringResource
 import tanks_randomizer.composeapp.generated.resources.Res
+import tanks_randomizer.composeapp.generated.resources.app_icon
 import tanks_randomizer.composeapp.generated.resources.online_random_tank
 import tanks_randomizer.composeapp.generated.resources.online_tanks_refresh
 import kotlin.time.ExperimentalTime
@@ -51,6 +59,7 @@ fun AccountAndGeneratedTankInfo(
     val totalText = getTotalText(tanksOverall)
     val refreshedText = getRefreshText(lastAccountUpdated)
     val filteredText = getFilteredText(tanksByFilter)
+    val tankName = generatedTank?.name ?: "-"
 
     WidthSizeClassCalculator(
         modifier = modifier
@@ -62,6 +71,7 @@ fun AccountAndGeneratedTankInfo(
                     totalText = totalText,
                     refreshedText = refreshedText,
                     filteredText = filteredText,
+                    tankName = tankName,
                     onRefresh = onRefresh,
                     modifier = Modifier.fillMaxSize()
                 )
@@ -73,6 +83,7 @@ fun AccountAndGeneratedTankInfo(
                     totalText = totalText,
                     refreshedText = refreshedText,
                     filteredText = filteredText,
+                    tankName = tankName,
                     onRefresh = onRefresh,
                     modifier = Modifier.fillMaxSize()
                 )
@@ -87,6 +98,7 @@ private fun CompactScreen(
     totalText: String,
     refreshedText: String,
     filteredText: String,
+    tankName: String,
     onRefresh: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
@@ -117,8 +129,20 @@ private fun CompactScreen(
 
         Spacer(Modifier.height(8.dp))
 
-        RandomTankBlock(
+        RandomizerText(
+            text = stringResource(Res.string.online_random_tank),
+        )
+
+        Spacer(Modifier.height(4.dp))
+
+        RandomTankImage(
             generatedTank = generatedTank,
+        )
+
+        Spacer(Modifier.height(4.dp))
+
+        RandomizerText(
+            text = tankName,
         )
     }
 }
@@ -129,6 +153,7 @@ private fun WideScreen(
     totalText: String,
     refreshedText: String,
     filteredText: String,
+    tankName: String,
     onRefresh: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
@@ -172,9 +197,35 @@ private fun WideScreen(
 
         Spacer(Modifier.height(8.dp))
 
-        RandomTankBlock(
-            generatedTank = generatedTank,
-        )
+        Row(
+            horizontalArrangement = Arrangement.Center,
+            verticalAlignment = Alignment.CenterVertically,
+            modifier = Modifier
+                .fillMaxWidth()
+                .horizontalScroll(rememberScrollState())
+        ) {
+            Box(
+                contentAlignment = Alignment.CenterEnd,
+                modifier = Modifier.weight(1f),
+            ) {
+                RandomizerText(
+                    text = stringResource(Res.string.online_random_tank),
+                )
+            }
+
+            Spacer(Modifier.width(16.dp))
+
+            RandomTankImage(
+                generatedTank = generatedTank,
+            )
+
+            Spacer(Modifier.width(16.dp))
+
+            RandomizerText(
+                text = tankName,
+                modifier = Modifier.weight(1f),
+            )
+        }
     }
 }
 
@@ -193,28 +244,35 @@ private fun RefreshButton(
 }
 
 @Composable
-private fun RandomTankBlock(
+private fun RandomTankImage(
     generatedTank: Tank?,
     modifier: Modifier = Modifier
 ) {
-    Column(
-        horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.spacedBy(4.dp),
+    var loading by remember { mutableStateOf(false) }
+    val loadingAlpha by animateFloatAsState(
+        targetValue = if (loading) 0f else 1f
+    )
+    Box(
+        contentAlignment = Alignment.Center,
         modifier = modifier,
     ) {
-        RandomizerText(
-            text = stringResource(Res.string.online_random_tank),
-        )
-
-        Box(
+        AsyncImage(
+            model = generatedTank?.imageUrl,
+            contentDescription = generatedTank?.name,
+            contentScale = ContentScale.FillHeight,
+            placeholder = if (generatedTank == null && !loading) painterResource(Res.drawable.app_icon) else null,
+            error = painterResource(Res.drawable.app_icon),
+            onLoading = { loading = true },
+            onSuccess = { loading = false },
+            onError = { loading = false },
             modifier = Modifier
                 .height(ButtonDefaults.MinHeight * 2)
-                .aspectRatio(16 / 9f)
-                .background(MaterialTheme.colorScheme.primary)
+                .width(ButtonDefaults.MinHeight * 3)
+                .graphicsLayer { alpha = loadingAlpha }
         )
 
-        RandomizerText(
-            text = generatedTank?.name ?: "-",
-        )
+        if (loading) {
+            LoadingIndicator()
+        }
     }
 }
