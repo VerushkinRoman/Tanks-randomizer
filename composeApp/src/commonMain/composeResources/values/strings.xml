@@ -98,7 +98,7 @@
 
     <string name="online_tanks_total">Tanks total</string>
     <string name="online_tanks_refresh_time">Refreshed at</string>
-    <string name="online_tanks_refresh">Refreshed</string>
+    <string name="online_tanks_refresh">Refresh</string>
     <string name="online_tanks_filtered">Tanks filtered</string>
     <string name="online_random_tank">Random tank</string>
 
@@ -110,6 +110,8 @@
     <string name="refresh_page">Refresh</string>
 
     <string name="exit">Exit</string>
+
+    <string name="webview_restart_required">Restart required</string>
 
 
 <!--    Errors-->

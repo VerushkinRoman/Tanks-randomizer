@@ -4,9 +4,6 @@ import com.posse.tanksrandomizer.common.compose.utils.ScreenRotation
 import com.posse.tanksrandomizer.common.domain.models.ButtonOffset
 
 interface ScreenSettingsDataSource {
-    fun getWindowInFullScreen(): Boolean
-    fun setWindowInFullScreen(enabled: Boolean)
-
     fun getButtonLandscapeOffset(): ButtonOffset?
     fun setButtonLandscapeOffset(buttonOffset: ButtonOffset)
 

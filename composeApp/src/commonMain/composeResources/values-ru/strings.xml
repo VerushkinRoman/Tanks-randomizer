@@ -110,6 +110,8 @@
 
     <string name="exit">Выйти</string>
 
+    <string name="webview_restart_required">Требуется перезапуск</string>
+
 
 <!--    Errors-->
     <string name="network_api_error">Ошибка API</string>

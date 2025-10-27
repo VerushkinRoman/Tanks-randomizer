@@ -9,11 +9,8 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
-import androidx.compose.material3.windowsizeclass.WindowWidthSizeClass
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.graphicsLayer
@@ -21,7 +18,6 @@ import androidx.compose.ui.unit.dp
 import com.posse.tanksrandomizer.common.compose.base_components.CommonScreenColumn
 import com.posse.tanksrandomizer.common.compose.base_components.LoadingOverlay
 import com.posse.tanksrandomizer.common.compose.base_components.SmallButtonWithTextAndImage
-import com.posse.tanksrandomizer.common.compose.base_components.WidthSizeClassCalculator
 import com.posse.tanksrandomizer.common.compose.components.AdditionalBottomComponents
 import com.posse.tanksrandomizer.common.compose.components.FiltersBlock
 import com.posse.tanksrandomizer.feature_online_screen.presentation.models.OnlineScreenEvent
@@ -79,57 +75,44 @@ private fun MainContent(
     onEvent: (OnlineScreenEvent) -> Unit,
     modifier: Modifier = Modifier,
 ) {
-    WidthSizeClassCalculator(
+    CommonScreenColumn(
+        runningAsOverlay = runningAsOverlay,
         modifier = modifier,
-    ) { sizeClass ->
-        val verticalPadding by remember(sizeClass) {
-            mutableStateOf(
-                when (sizeClass) {
-                    WindowWidthSizeClass.Compact -> 24.dp
-                    else -> 8.dp
-                }
-            )
-        }
+    ) {
+        AccountAndGeneratedTankInfo(
+            generatedTank = viewState.generatedTank,
+            lastAccountUpdated = viewState.lastAccountUpdated,
+            tanksOverall = viewState.tanksInGarage.size,
+            tanksByFilter = viewState.tanksByFilter.size,
+            onRefresh = { onEvent(OnlineScreenEvent.RefreshAccountPressed) },
+            modifier = Modifier.fillMaxWidth()
+        )
 
-        CommonScreenColumn(
-            runningAsOverlay = runningAsOverlay,
-            modifier = Modifier.fillMaxSize(),
-        ) {
-            AccountAndGeneratedTankInfo(
-                generatedTank = viewState.generatedTank,
-                lastAccountUpdated = viewState.lastAccountUpdated,
-                tanksOverall = viewState.tanksInGarage.size,
-                tanksByFilter = viewState.tanksByFilter.size,
-                onRefresh = { onEvent(OnlineScreenEvent.RefreshAccountPressed) },
-                modifier = Modifier.fillMaxWidth()
-            )
+        Spacer(
+            Modifier.height(24.dp)
+        )
 
-            Spacer(
-                Modifier.height(verticalPadding)
-            )
+        FiltersBlock(
+            components = viewState.onlineFilters.components,
+            onFilterItemClick = { onEvent(OnlineScreenEvent.FilterItemChanged(it)) },
+            onDiceClick = { onEvent(OnlineScreenEvent.GenerateTankPressed) },
+            onTrashClick = { onEvent(OnlineScreenEvent.TrashFilterPressed) },
+            onSelectAllClick = { onEvent(OnlineScreenEvent.CheckAllPressed) },
+            diceEnabled = viewState.tanksByFilter.isNotEmpty(),
+            modifier = Modifier.fillMaxWidth(),
+        )
 
-            FiltersBlock(
-                components = viewState.onlineFilters.components,
-                onFilterItemClick = { onEvent(OnlineScreenEvent.FilterItemChanged(it)) },
-                onDiceClick = { onEvent(OnlineScreenEvent.GenerateTankPressed) },
-                onTrashClick = { onEvent(OnlineScreenEvent.TrashFilterPressed) },
-                onSelectAllClick = { onEvent(OnlineScreenEvent.CheckAllPressed) },
-                diceEnabled = viewState.tanksByFilter.isNotEmpty(),
-                modifier = Modifier.fillMaxWidth(),
-            )
+        Spacer(Modifier.height(24.dp))
 
-            Spacer(Modifier.height(verticalPadding))
-
-            AdditionalBottomComponents(
-                onSettingsPressed = { onEvent(OnlineScreenEvent.SettingsPressed) },
-                additionalButton = {
-                    LogOutButton(
-                        onClick = { onEvent(OnlineScreenEvent.LogOutPressed) },
-                    )
-                },
-                modifier = Modifier.fillMaxWidth(),
-            )
-        }
+        AdditionalBottomComponents(
+            onSettingsPressed = { onEvent(OnlineScreenEvent.SettingsPressed) },
+            additionalButton = {
+                LogOutButton(
+                    onClick = { onEvent(OnlineScreenEvent.LogOutPressed) },
+                )
+            },
+            modifier = Modifier.fillMaxWidth(),
+        )
     }
 }
 

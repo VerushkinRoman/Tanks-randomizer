@@ -20,7 +20,7 @@ class SettingsInteractorImpl(
 ) : SettingsInteractor {
     private val scope: CoroutineScope = CoroutineScope(dispatchers.io + SupervisorJob())
 
-    private val _windowInFullScreen: MutableStateFlow<Boolean> = MutableStateFlow(repository.getWindowInFullScreen())
+    private val _windowInFullScreen: MutableStateFlow<Boolean> = MutableStateFlow(false)
     override val windowInFullScreen: StateFlow<Boolean> = _windowInFullScreen.asStateFlow()
 
     private val _buttonLandscapeOffset: MutableStateFlow<ButtonOffset?> = MutableStateFlow(repository.getButtonLandscapeOffset())
@@ -57,7 +57,7 @@ class SettingsInteractorImpl(
 
     override fun setWindowInFullScreen(fullScreen: Boolean) {
         _windowInFullScreen.value = fullScreen
-        repository.setWindowInFullScreen(fullScreen)
+//        repository.setWindowInFullScreen(fullScreen)
     }
 
     override fun setButtonLandscapeOffset(offset: ButtonOffset) {

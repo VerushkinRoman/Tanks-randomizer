@@ -30,3 +30,5 @@ serverConstants.properties
 *.jks
 *.pepk
 /captures
+/cache
+/kcef-bundle

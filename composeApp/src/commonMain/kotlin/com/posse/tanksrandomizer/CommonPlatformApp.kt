@@ -47,6 +47,6 @@ private fun getElementSize(maxBoxWidth: Dp): Dp {
     val right = with(density) { safeDrawing.getRight(density, layoutDirection).toDp() }
     val maxWidth = maxBoxWidth - left - right
     val elementWidthByScreen = (maxWidth - (20 * 6).dp) / 12
-    val elementSize = minOf(elementWidthByScreen, ButtonDefaults.MinHeight)
+    val elementSize = minOf(elementWidthByScreen, ButtonDefaults.MinHeight * (3f/4f))
     return elementSize
 }

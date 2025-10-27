@@ -13,9 +13,6 @@ class SettingsRepositoryImpl(
     override fun getFullScreenMode(): Boolean = dataSource.getFullScreenMode()
     override fun setFullScreenMode(fullScreen: Boolean) = dataSource.setFullScreenMode(fullScreen)
 
-    override fun getWindowInFullScreen(): Boolean = dataSource.getWindowInFullScreen()
-    override fun setWindowInFullScreen(enabled: Boolean) = dataSource.setWindowInFullScreen(enabled)
-
     override fun getButtonLandscapeOffset(): ButtonOffset? = dataSource.getButtonLandscapeOffset()
     override fun setButtonLandscapeOffset(buttonOffset: ButtonOffset) = dataSource.setButtonLandscapeOffset(buttonOffset)
 

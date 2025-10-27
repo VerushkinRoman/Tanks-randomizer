@@ -25,8 +25,8 @@ fun AdditionalBottomComponents(
         SettingsButton(settingsPressed = onSettingsPressed)
 
         Box(
-            contentAlignment = Alignment.CenterEnd,
-            modifier = Modifier.weight(1f)
+            contentAlignment = Alignment.TopEnd,
+            modifier = Modifier.weight(1f),
         ) {
             additionalButton()
         }

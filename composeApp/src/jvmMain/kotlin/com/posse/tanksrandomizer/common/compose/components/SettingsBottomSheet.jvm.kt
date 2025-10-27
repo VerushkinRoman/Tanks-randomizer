@@ -18,12 +18,15 @@ actual fun SettingsBottomSheet(
     showRotation: Boolean,
     runningAsOverlay: Boolean,
     modifier: Modifier,
-    content: @Composable ((PaddingValues, SheetState, SnackbarHostState) -> Unit)
+    content: @Composable ((paddingValues: PaddingValues, bottomSheetState: SheetState, snackbarHostState: SnackbarHostState) -> Unit)
 ) {
     Box(
         contentAlignment = Alignment.Center,
-        modifier = Modifier
+        modifier = modifier
     ) {
-        content(PaddingValues(0.dp), rememberModalBottomSheetState(), remember { SnackbarHostState() })
+        content(
+            PaddingValues(0.dp),
+            rememberModalBottomSheetState(),
+            remember { SnackbarHostState() })
     }
 }

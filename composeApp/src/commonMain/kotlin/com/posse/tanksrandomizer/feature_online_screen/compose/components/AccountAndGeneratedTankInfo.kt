@@ -40,7 +40,7 @@ import com.posse.tanksrandomizer.feature_online_screen.domain.models.Tank
 import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.resources.stringResource
 import tanks_randomizer.composeapp.generated.resources.Res
-import tanks_randomizer.composeapp.generated.resources.app_icon
+import tanks_randomizer.composeapp.generated.resources.app_logo
 import tanks_randomizer.composeapp.generated.resources.online_random_tank
 import tanks_randomizer.composeapp.generated.resources.online_tanks_refresh
 import kotlin.time.ExperimentalTime
@@ -260,8 +260,8 @@ private fun RandomTankImage(
             model = generatedTank?.imageUrl,
             contentDescription = generatedTank?.name,
             contentScale = ContentScale.FillHeight,
-            placeholder = if (generatedTank == null && !loading) painterResource(Res.drawable.app_icon) else null,
-            error = painterResource(Res.drawable.app_icon),
+            placeholder = if (generatedTank == null && !loading) painterResource(Res.drawable.app_logo) else null,
+            error = painterResource(Res.drawable.app_logo),
             onLoading = { loading = true },
             onSuccess = { loading = false },
             onError = { loading = false },

@@ -24,11 +24,11 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.multiplatform.webview.web.LoadingState
-import com.multiplatform.webview.web.WebView
 import com.multiplatform.webview.web.rememberWebViewNavigator
 import com.multiplatform.webview.web.rememberWebViewState
 import com.posse.tanksrandomizer.common.data.networking.EndpointConstants.REDIRECT_URL
 import com.posse.tanksrandomizer.feature_webview_screen.compose.components.ActionButtonsRow
+import com.posse.tanksrandomizer.feature_webview_screen.compose.components.PlatformWebView
 import com.posse.tanksrandomizer.feature_webview_screen.compose.model.NavigationAction.Exit
 import com.posse.tanksrandomizer.feature_webview_screen.compose.model.NavigationAction.GoBack
 import com.posse.tanksrandomizer.feature_webview_screen.compose.model.NavigationAction.GoForward
@@ -96,7 +96,7 @@ fun WebViewScreen(
                 .padding(horizontal = 8.dp)
         )
 
-        WebView(
+        PlatformWebView(
             state = state,
             navigator = navigator,
             modifier = Modifier.fillMaxSize()

@@ -15,9 +15,6 @@ class ScreenSettingsDataSourceImpl(
 ) : ScreenSettingsDataSource {
     private val settings: SharedPreferencesSettings = SharedPreferencesSettings(sharedPreferences)
 
-    override fun getWindowInFullScreen(): Boolean = settings.getBoolean("WindowInFullScreen", true)
-    override fun setWindowInFullScreen(enabled: Boolean) = settings.putBoolean("WindowInFullScreen", enabled)
-
     override fun getButtonLandscapeOffset(): ButtonOffset? = settings.decodeValueOrNull<ButtonOffset>("ButtonLandscapeOffset")
     override fun setButtonLandscapeOffset(buttonOffset: ButtonOffset) = settings.encodeValue("ButtonLandscapeOffset", buttonOffset)
 

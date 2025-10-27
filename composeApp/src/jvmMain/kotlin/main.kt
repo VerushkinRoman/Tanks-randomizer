@@ -1,23 +1,18 @@
-import androidx.compose.foundation.layout.WindowInsets
-import androidx.compose.foundation.layout.WindowInsetsSides
-import androidx.compose.foundation.layout.asPaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.only
-import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.safeDrawing
 import androidx.compose.material3.ButtonDefaults
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Scaffold
+import androidx.compose.runtime.DisposableEffect
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Window
 import androidx.compose.ui.window.application
 import androidx.compose.ui.window.rememberWindowState
+import com.multiplatform.webview.util.addTempDirectoryRemovalHook
 import com.posse.tanksrandomizer.CommonPlatformApp
 import com.posse.tanksrandomizer.common.core.platform.PlatformConfiguration
 import com.posse.tanksrandomizer.common.core.platform.PlatformSDK
 import com.posse.tanksrandomizer.navigation.compose.MainNavigation
+import dev.datlag.kcef.KCEF
 import org.jetbrains.compose.resources.painterResource
 import tanks_randomizer.composeapp.generated.resources.Res
 import tanks_randomizer.composeapp.generated.resources.app_icon
@@ -25,6 +20,7 @@ import java.awt.Dimension
 
 fun main() = application {
     PlatformSDK.init(PlatformConfiguration())
+    addTempDirectoryRemovalHook()
 
     Window(
         title = "Random Tank Generator",
@@ -33,23 +29,19 @@ fun main() = application {
         icon = painterResource(Res.drawable.app_icon)
     ) {
         window.minimumSize = Dimension(
-            with(LocalDensity.current) { (ButtonDefaults.MinHeight * 16).toPx().toInt() },
+            with(LocalDensity.current) { (ButtonDefaults.MinHeight * 18).toPx().toInt() },
             550
         )
 
         CommonPlatformApp {
-            Scaffold(
-                contentColor = MaterialTheme.colorScheme.onSurface,
-                containerColor = MaterialTheme.colorScheme.scrim,
-                modifier = Modifier
-                    .fillMaxSize()
-                    .padding(
-                        WindowInsets.safeDrawing
-                            .only(WindowInsetsSides.Horizontal)
-                            .asPaddingValues()
-                    )
-            ) {
-                MainNavigation()
+            MainNavigation(
+                modifier = Modifier.fillMaxSize()
+            )
+        }
+
+        DisposableEffect(Unit) {
+            onDispose {
+                KCEF.disposeBlocking()
             }
         }
     }

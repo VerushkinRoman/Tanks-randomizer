@@ -7,10 +7,10 @@ import androidx.compose.material3.SheetValue
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import androidx.lifecycle.viewmodel.compose.viewModel
 import com.posse.tanksrandomizer.common.compose.components.SettingsBottomSheet
 import com.posse.tanksrandomizer.common.compose.utils.getHorizontalEvenSafeContentPaddings
 import com.posse.tanksrandomizer.common.compose.utils.showError
@@ -31,7 +31,7 @@ fun OnlineScreen(
 ) {
     val scope = rememberCoroutineScope()
 
-    val viewModel = viewModel { OnlineScreenViewModel() }
+    val viewModel = remember { OnlineScreenViewModel() }
 
     val state by viewModel.viewStates().collectAsStateWithLifecycle()
     val action by viewModel.viewActions().collectAsStateWithLifecycle()

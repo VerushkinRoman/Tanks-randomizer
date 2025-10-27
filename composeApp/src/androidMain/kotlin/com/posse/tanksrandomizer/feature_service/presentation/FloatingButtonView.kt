@@ -100,7 +100,7 @@ class FloatingButtonView(
 
     private fun setUpdates() {
         scope.launch {
-            windowInFullScreen.collect { fullScreen ->
+            windowInFullScreen.collect {
                 if (sizeInitialized) {
                     updateLayoutParams()
                 }

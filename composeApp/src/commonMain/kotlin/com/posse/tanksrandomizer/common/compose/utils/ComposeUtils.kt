@@ -14,6 +14,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.layout
 import androidx.compose.ui.platform.LocalLayoutDirection
 import androidx.compose.ui.unit.Dp
+import androidx.compose.ui.unit.dp
 import com.posse.tanksrandomizer.common.domain.utils.Error
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
@@ -48,5 +49,5 @@ fun getHorizontalEvenSafeContentPaddings(): Dp {
     val startPadding = horizontalPaddings.calculateStartPadding(layoutDirection)
     val endPadding = horizontalPaddings.calculateEndPadding(layoutDirection)
 
-    return maxOf(startPadding, endPadding)
+    return maxOf(startPadding, endPadding, 16.dp)
 }

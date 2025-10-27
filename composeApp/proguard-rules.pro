@@ -9,8 +9,6 @@
     @android.webkit.JavascriptInterface <methods>;
 }
 
--keep class kotlinx.coroutines.swing.SwingDispatcherFactory
-
 -keepattributes JavascriptInterface
 
 -keepattributes *Annotation*

@@ -56,6 +56,7 @@ class OverlayService : LifecycleService() {
         super.onStartCommand(intent, flags, startId)
         val startedAsService = intent?.getBooleanExtra(STARTED_AS_SERVICE, false) ?: false
         asService.value = startedAsService
+        settingsInteractor.setWindowInFullScreen(!startedAsService)
         startService()
         return START_NOT_STICKY
     }
