@@ -1,15 +1,15 @@
 package com.posse.tanksrandomizer.feature_main_screen.compose.components
 
-import androidx.compose.animation.AnimatedVisibility
-import androidx.compose.animation.fadeIn
-import androidx.compose.animation.fadeOut
+import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.safeDrawing
@@ -26,6 +26,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.unit.dp
 import com.posse.tanksrandomizer.common.compose.base_components.LoadingIndicator
 import com.posse.tanksrandomizer.common.compose.base_components.WidthSizeClassCalculator
@@ -71,23 +72,26 @@ internal fun MainScreenContent(
                 )
             }
 
+            Spacer(Modifier.height(0.dp))
+
             MainScreenButtons(
                 loading = viewState.loading,
                 onLoginClick = { onEvent(MainScreenEvent.LogIn) },
                 onOfflineClick = { onEvent(MainScreenEvent.ToOfflineScreen) },
             )
 
-            Column(
-                modifier = if (useWeight) Modifier.weight(1f) else Modifier
+            Box(
+                contentAlignment = Alignment.TopCenter,
+                modifier = if (useWeight) Modifier.weight(1f) else Modifier,
             ) {
-                AnimatedVisibility(
-                    visible = viewState.loading,
-                    enter = fadeIn(),
-                    exit = fadeOut(),
-                    modifier = modifier,
-                ) {
-                    LoadingIndicator()
-                }
+                val loadingAlpha by animateFloatAsState(
+                    targetValue = if (viewState.loading) 1f else 0f
+                )
+                LoadingIndicator(
+                    modifier = Modifier.graphicsLayer {
+                        alpha = loadingAlpha
+                    }
+                )
             }
         }
     }

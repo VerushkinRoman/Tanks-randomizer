@@ -4,6 +4,7 @@ import com.posse.tanksrandomizer.common.data.datasource.OfflineDataSource
 import com.posse.tanksrandomizer.common.data.datasource.OnlineDataSource
 import com.posse.tanksrandomizer.common.domain.models.AccountTank
 import com.posse.tanksrandomizer.common.domain.models.EncyclopediaTank
+import com.posse.tanksrandomizer.common.domain.models.MissedEncyclopediaTanks
 import com.posse.tanksrandomizer.common.domain.utils.DomainErrorType
 import com.posse.tanksrandomizer.common.domain.utils.Error
 import com.posse.tanksrandomizer.common.domain.utils.Result
@@ -29,8 +30,8 @@ class OnlineScreenRepositoryImpl(
         }
     }
 
-    override fun setLastAccountUpdated(dateTime: Instant) {
-        onlineScreenDataSource.setLastAccountUpdated(dateTime.epochSeconds)
+    override fun setLastAccountUpdated(dateTime: Instant?) {
+        onlineScreenDataSource.setLastAccountUpdated(dateTime?.epochSeconds)
     }
 
     override fun getTanksInGarage(): List<Tank> = onlineScreenDataSource.getTanksInGarage()
@@ -50,6 +51,21 @@ class OnlineScreenRepositoryImpl(
 
     override suspend fun getEncyclopediaTanks(ids: List<Int>): Result<List<EncyclopediaTank>, Error> {
         val token = offlineDataSource.getToken() ?: return Result.Error(DomainErrorType.TokenError)
-        return onlineDataSource.getEncyclopediaTanks(ids = ids, currentToken = token)
+        val encyclopediaTanksResult = onlineDataSource.getEncyclopediaTanks(ids = ids, currentToken = token)
+
+        when (encyclopediaTanksResult) {
+            is Result.Error<Error> -> return encyclopediaTanksResult
+            is Result.Success<List<EncyclopediaTank>> -> {
+                val encyclopediaTanks = encyclopediaTanksResult.data
+                val encyclopediaTanksIds = encyclopediaTanks.map { it.id }.toSet()
+                val missedIds = ids - encyclopediaTanksIds
+                val missedTanks = MissedEncyclopediaTanks.value.filter { it.id in missedIds }
+                val resultTanks = encyclopediaTanks + missedTanks
+
+                println(ids - resultTanks.map { it.id }.toSet())
+
+                return Result.Success(resultTanks)
+            }
+        }
     }
 }

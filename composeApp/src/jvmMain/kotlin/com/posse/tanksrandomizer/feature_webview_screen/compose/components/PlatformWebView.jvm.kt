@@ -102,7 +102,7 @@ actual fun PlatformWebView(
                 modifier = Modifier.fillMaxSize()
             ) {
                 LinearProgressIndicator(
-                    progress = { downloading },
+                    progress = { downloading / 100 },
                     color = MaterialTheme.colorScheme.onPrimary,
                     trackColor = MaterialTheme.colorScheme.primary,
                     strokeCap = ProgressIndicatorDefaults.LinearStrokeCap,

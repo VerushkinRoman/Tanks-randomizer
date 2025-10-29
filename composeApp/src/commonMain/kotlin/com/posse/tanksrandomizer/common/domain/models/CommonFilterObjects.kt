@@ -149,7 +149,7 @@ object CommonFilterObjects {
     sealed interface Nation : ItemStatus<Nation> {
         @Serializable
         data class USSR(
-            override val name: String = "ussr",
+            override val name: String = NATION_USSR,
             override val sort: Int = 1,
             override val selected: Boolean = true,
             override val random: Boolean = false,
@@ -160,7 +160,7 @@ object CommonFilterObjects {
 
         @Serializable
         data class USA(
-            override val name: String = "usa",
+            override val name: String = NATION_USA,
             override val sort: Int = 2,
             override val selected: Boolean = true,
             override val random: Boolean = false,
@@ -171,7 +171,7 @@ object CommonFilterObjects {
 
         @Serializable
         data class Germany(
-            override val name: String = "germany",
+            override val name: String = NATION_GERMANY,
             override val sort: Int = 3,
             override val selected: Boolean = true,
             override val random: Boolean = false,
@@ -182,7 +182,7 @@ object CommonFilterObjects {
 
         @Serializable
         data class UK(
-            override val name: String = "uk",
+            override val name: String = NATION_UK,
             override val sort: Int = 4,
             override val selected: Boolean = true,
             override val random: Boolean = false,
@@ -193,7 +193,7 @@ object CommonFilterObjects {
 
         @Serializable
         data class Japan(
-            override val name: String = "japan",
+            override val name: String = NATION_JAPAN,
             override val sort: Int = 5,
             override val selected: Boolean = true,
             override val random: Boolean = false,
@@ -204,7 +204,7 @@ object CommonFilterObjects {
 
         @Serializable
         data class China(
-            override val name: String = "china",
+            override val name: String = NATION_CHINA,
             override val sort: Int = 6,
             override val selected: Boolean = true,
             override val random: Boolean = false,
@@ -215,7 +215,7 @@ object CommonFilterObjects {
 
         @Serializable
         data class France(
-            override val name: String = "france",
+            override val name: String = NATION_FRANCE,
             override val sort: Int = 7,
             override val selected: Boolean = true,
             override val random: Boolean = false,
@@ -226,7 +226,7 @@ object CommonFilterObjects {
 
         @Serializable
         data class European(
-            override val name: String = "european",
+            override val name: String = NATION_EUROPEAN,
             override val sort: Int = 8,
             override val selected: Boolean = true,
             override val random: Boolean = false,
@@ -237,7 +237,7 @@ object CommonFilterObjects {
 
         @Serializable
         data class Other(
-            override val name: String = "other",
+            override val name: String = NATION_OTHER,
             override val sort: Int = 9,
             override val selected: Boolean = true,
             override val random: Boolean = false,
@@ -248,9 +248,9 @@ object CommonFilterObjects {
 
         companion object {
             val defaultValues = listOf(
+                USSR(),
                 USA(),
                 Germany(),
-                USSR(),
                 UK(),
                 Japan(),
                 China(),
@@ -258,6 +258,16 @@ object CommonFilterObjects {
                 European(),
                 Other(),
             ).sortedBy { it.sort }
+
+            const val NATION_USSR = "ussr"
+            const val NATION_USA = "usa"
+            const val NATION_GERMANY = "germany"
+            const val NATION_UK = "uk"
+            const val NATION_JAPAN = "japan"
+            const val NATION_CHINA = "china"
+            const val NATION_FRANCE = "france"
+            const val NATION_EUROPEAN = "european"
+            const val NATION_OTHER = "other"
         }
     }
 
@@ -265,7 +275,7 @@ object CommonFilterObjects {
     sealed interface Type : ItemStatus<Type> {
         @Serializable
         data class Light(
-            override val name: String = "lightTank",
+            override val name: String = LIGHT_TANK,
             override val sort: Int = 1,
             override val selected: Boolean = true,
             override val random: Boolean = false,
@@ -276,7 +286,7 @@ object CommonFilterObjects {
 
         @Serializable
         data class Medium(
-            override val name: String = "mediumTank",
+            override val name: String = MEDIUM_TANK,
             override val sort: Int = 2,
             override val selected: Boolean = true,
             override val random: Boolean = false,
@@ -287,7 +297,7 @@ object CommonFilterObjects {
 
         @Serializable
         data class Heavy(
-            override val name: String = "heavyTank",
+            override val name: String = HEAVY_TANK,
             override val sort: Int = 3,
             override val selected: Boolean = true,
             override val random: Boolean = false,
@@ -298,7 +308,7 @@ object CommonFilterObjects {
 
         @Serializable
         data class TankDestroyer(
-            override val name: String = "AT-SPG",
+            override val name: String = TANK_DESTROYER,
             override val sort: Int = 4,
             override val selected: Boolean = true,
             override val random: Boolean = false,
@@ -314,6 +324,11 @@ object CommonFilterObjects {
                 Heavy(),
                 TankDestroyer(),
             ).sortedBy { it.sort }
+
+            const val LIGHT_TANK = "lightTank"
+            const val MEDIUM_TANK = "mediumTank"
+            const val HEAVY_TANK = "heavyTank"
+            const val TANK_DESTROYER = "AT-SPG"
         }
     }
 }

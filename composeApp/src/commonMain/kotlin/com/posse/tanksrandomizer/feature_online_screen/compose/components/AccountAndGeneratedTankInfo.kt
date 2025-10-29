@@ -143,6 +143,7 @@ private fun CompactScreen(
 
         RandomizerText(
             text = tankName,
+            capitalize = false,
         )
     }
 }
@@ -195,7 +196,7 @@ private fun WideScreen(
             )
         }
 
-        Spacer(Modifier.height(8.dp))
+        Spacer(Modifier.height(24.dp))
 
         Row(
             horizontalArrangement = Arrangement.Center,
@@ -223,6 +224,7 @@ private fun WideScreen(
 
             RandomizerText(
                 text = tankName,
+                capitalize = false,
                 modifier = Modifier.weight(1f),
             )
         }

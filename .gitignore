@@ -20,9 +20,6 @@ xcuserdata
 /.idea/workspace.xml
 /.idea/navEditor.xml
 /.idea/assetWizardSettings.xml
-/app/release
-/app/primakov
-/app/dsr
 signingKey.properties
 serverConstants.properties
 *.apk
@@ -30,5 +27,8 @@ serverConstants.properties
 *.jks
 *.pepk
 /captures
-/cache
-/kcef-bundle
+composeApp/cache
+composeApp/kcef-bundle
+composeApp/default.realm.management
+composeApp/default.realm
+composeApp/default.realm.lock

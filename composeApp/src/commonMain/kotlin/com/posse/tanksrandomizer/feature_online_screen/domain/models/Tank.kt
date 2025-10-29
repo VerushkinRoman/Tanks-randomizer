@@ -6,7 +6,7 @@ import kotlinx.serialization.Serializable
 data class Tank(
     val id: Int,
     val name: String,
-    val imageUrl: String,
+    val imageUrl: String?,
     val tier: Int,
     val nationName: String,
     val isPremium: Boolean,

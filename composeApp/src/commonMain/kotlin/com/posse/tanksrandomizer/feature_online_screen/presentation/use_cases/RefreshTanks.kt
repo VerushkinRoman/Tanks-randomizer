@@ -18,23 +18,32 @@ class RefreshTanks(
 ) {
     suspend operator fun invoke(tanks: List<Tank>): Result<List<Tank>, Error> {
         return withContext(dispatchers.io) {
-            val accountTanks: List<AccountTank> = onlineScreenRepository.getAccountTanks()
+            val accountTanks: Set<AccountTank> = onlineScreenRepository.getAccountTanks()
                 .onError { error -> return@withContext Result.Error(error) }
                 .let { (it as Result.Success).data }
+                .toSet()
+                .also { println(it.size) }
 
-            val tankIds = tanks.map { it.id }.toSet()
-            val accountTanksToAdd = accountTanks.filter { it.id !in tankIds }
-            val diffIds = accountTanksToAdd.map { it.id }
+            val masteryUpdatedTanks = tanks.mapNotNull { tank ->
+                accountTanks
+                    .find { it.id == tank.id }
+                    ?.let { tank.copy(mastery = it.mastery) }
+            }.toSet()
 
-            val encyclopediaTanks: List<EncyclopediaTank> =
-                onlineScreenRepository.getEncyclopediaTanks(diffIds)
+            val tankIds = masteryUpdatedTanks.map { it.id }.toSet()
+            val accountTanksToAdd = accountTanks.filter { it.id !in tankIds }.toSet()
+            val diffIds = accountTanksToAdd.map { it.id }.toSet()
+
+            val encyclopediaTanks: Set<EncyclopediaTank> =
+                onlineScreenRepository.getEncyclopediaTanks(diffIds.toList())
                     .onError { error -> return@withContext Result.Error(error) }
                     .let { (it as Result.Success).data }
+                    .toSet()
 
             val accountTanksIds = accountTanks.map { it.id }.toSet()
-            val tanksToRemove = tanks.filter { it.id !in accountTanksIds }.toSet()
+            val tanksToRemove = masteryUpdatedTanks.filter { it.id !in accountTanksIds }.toSet()
 
-            val tanksToAdd = buildList {
+            val tanksToAdd = buildSet {
                 encyclopediaTanks.forEach { encyclopediaTank ->
                     accountTanksToAdd.find { it.id == encyclopediaTank.id }?.let { accountTank ->
                         add(encyclopediaTank.toTank(mastery = accountTank.mastery))
@@ -42,7 +51,7 @@ class RefreshTanks(
                 }
             }
 
-            val newTanks: List<Tank> = tanks - tanksToRemove + tanksToAdd
+            val newTanks: List<Tank> = (masteryUpdatedTanks - tanksToRemove + tanksToAdd).toList()
 
             launch {
                 onlineScreenRepository.setTanksInGarage(newTanks)

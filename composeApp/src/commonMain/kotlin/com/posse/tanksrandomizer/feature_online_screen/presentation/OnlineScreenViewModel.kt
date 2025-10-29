@@ -57,6 +57,7 @@ class OnlineScreenViewModel(
 
     private val logOutFromAccount = LogOut(
         accountRepository = accountRepository,
+        onlineScreenRepository = onlineScreenRepository,
         dispatchers = dispatchers,
     )
 
@@ -131,7 +132,10 @@ class OnlineScreenViewModel(
 
         withViewModelScope {
             logOutFromAccount()
-                .onSuccess { viewAction = OnlineScreenAction.LogOut }
+                .onSuccess {
+                    checkAllFilter()
+                    viewAction = OnlineScreenAction.LogOut
+                }
                 .onError { error ->
                     if (error.isTokenError()) {
                         viewAction = OnlineScreenAction.LogOut

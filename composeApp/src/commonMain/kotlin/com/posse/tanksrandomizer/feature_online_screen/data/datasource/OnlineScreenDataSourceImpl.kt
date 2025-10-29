@@ -20,7 +20,7 @@ class OnlineScreenDataSourceImpl(
     private val database: Realm,
 ) : OnlineScreenDataSource {
     override fun getLastAccountUpdated(): Long? = settings.getLongOrNull(key = "LastAccountUpdated")
-    override fun setLastAccountUpdated(dateTime: Long) = settings.set(key = "LastAccountUpdated", value = dateTime)
+    override fun setLastAccountUpdated(dateTime: Long?) = settings.set(key = "LastAccountUpdated", value = dateTime)
 
     override fun getTanksInGarage(): List<Tank> {
         return database

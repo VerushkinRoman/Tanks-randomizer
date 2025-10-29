@@ -7,7 +7,7 @@ import io.realm.kotlin.types.annotations.PrimaryKey
 class DBTank: RealmObject {
     @PrimaryKey var id: Int = 0
     var name: String = ""
-    var imageUrl: String = ""
+    var imageUrl: String? = null
     var tier: Int = 0
     var nationName: String = ""
     var isPremium: Boolean = false

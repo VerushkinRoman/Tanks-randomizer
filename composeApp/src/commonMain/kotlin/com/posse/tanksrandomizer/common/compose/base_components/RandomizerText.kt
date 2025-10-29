@@ -13,10 +13,11 @@ import androidx.compose.ui.unit.sp
 fun RandomizerText(
     text: String,
     fontSize: TextUnit = 10.sp,
+    capitalize: Boolean = true,
     modifier: Modifier = Modifier
 ) {
     Text(
-        text = text.uppercase(),
+        text = if (capitalize) text.uppercase() else text,
         color = MaterialTheme.colorScheme.onSurface,
         style = MaterialTheme.typography.bodySmall,
         fontSize = fontSize,

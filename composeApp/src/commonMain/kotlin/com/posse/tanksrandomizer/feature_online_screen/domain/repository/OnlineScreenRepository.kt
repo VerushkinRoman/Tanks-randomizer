@@ -17,7 +17,7 @@ interface OnlineScreenRepository {
     @OptIn(ExperimentalTime::class)
     fun getLastAccountUpdated(): Instant?
     @OptIn(ExperimentalTime::class)
-    fun setLastAccountUpdated(dateTime: Instant)
+    fun setLastAccountUpdated(dateTime: Instant?)
 
     fun getTanksInGarage(): List<Tank>
     fun setTanksInGarage(tanks: List<Tank>)
