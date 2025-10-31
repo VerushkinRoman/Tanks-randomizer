@@ -101,6 +101,15 @@
     <string name="online_tanks_filtered">Отфильтровано танков</string>
     <string name="online_random_tank">Случайный танк</string>
 
+    <string name="online_tooltip_title">Не все танки?</string>
+    <string name="online_tooltip_text">Если количество танков не совпадает с количеством в ангаре, то необходимо вычислить те, которых нет и провести на каждом хотя бы 1 бой. Затем обновить и проверить результат. Если танк все-равно не появляется, то ждите обновления программы.</string>
+    <string name="online_tooltip_button">Понятно</string>
+    <string name="online_tooltip_content_description">Информация</string>
+
+    <string name="online_dialog_message">Выйти из аккаунта?</string>
+    <string name="online_dialog_dismiss">Отмена</string>
+    <string name="online_dialog_confirm">Выйти</string>
+
 
 <!--    WebView Screen-->
     <string name="go_back">Назад</string>

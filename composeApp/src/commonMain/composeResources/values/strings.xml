@@ -102,6 +102,15 @@
     <string name="online_tanks_filtered">Tanks filtered</string>
     <string name="online_random_tank">Random tank</string>
 
+    <string name="online_tooltip_title">Not all tanks?</string>
+    <string name="online_tooltip_text">If the number of tanks doesn't match the number in the garage, you need to identify the missing ones and play at least 1 battle with each. Then update and check the result. If a tank still doesn't appear, wait for the program update.</string>
+    <string name="online_tooltip_button">Got it</string>
+    <string name="online_tooltip_content_description">Information</string>
+
+    <string name="online_dialog_message">Log out of account?</string>
+    <string name="online_dialog_dismiss">Cancel</string>
+    <string name="online_dialog_confirm">Confirm</string>
+
 
 <!--    WebView Screen-->
     <string name="go_back">Back</string>

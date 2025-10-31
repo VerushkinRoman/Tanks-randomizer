@@ -10,5 +10,7 @@ sealed interface OnlineScreenEvent {
     data object SettingsPressed : OnlineScreenEvent
     data object RefreshAccountPressed : OnlineScreenEvent
     data object LogOutPressed : OnlineScreenEvent
+    data object ConfirmLogout : OnlineScreenEvent
+    data object DismissLogout : OnlineScreenEvent
     data class FilterItemChanged(val item: ItemStatus<*>) : OnlineScreenEvent
 }

@@ -29,7 +29,7 @@ fun main() = application {
         icon = painterResource(Res.drawable.app_icon)
     ) {
         window.minimumSize = Dimension(
-            with(LocalDensity.current) { (ButtonDefaults.MinHeight * 18).toPx().toInt() },
+            with(LocalDensity.current) { (ButtonDefaults.MinHeight * 12).toPx().toInt() },
             550
         )
 

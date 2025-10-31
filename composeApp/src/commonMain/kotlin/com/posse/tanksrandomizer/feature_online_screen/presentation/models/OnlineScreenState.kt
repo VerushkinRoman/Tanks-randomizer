@@ -12,6 +12,7 @@ data class OnlineScreenState(
     val tanksByFilter: List<Tank>,
     val generatedTank: Tank?,
     val lastAccountUpdated: Instant?,
+    val logoutDialogVisible: Boolean = false,
     val loading: Boolean = false,
 ) {
     fun updateTanks(

@@ -5,8 +5,7 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -15,6 +14,7 @@ import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
@@ -23,25 +23,27 @@ import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.unit.dp
+import com.posse.tanksrandomizer.common.compose.utils.LocalElementSize
 
 @Composable
-fun BigButtonWithImage(
+fun ButtonWithImage(
     painter: Painter,
     contentDescription: String,
     enabled: Boolean = true,
     onClick: (() -> Unit)? = null,
     backgroundColor: Color = Color.Transparent,
+    isBig: Boolean = true,
     modifier: Modifier = Modifier
 ) {
     val buttonAlpha by animateFloatAsState(
         targetValue = if (enabled) 1f else 0.3f
     )
 
-    Row(
-        horizontalArrangement = Arrangement.Center,
+    Box(
+        contentAlignment = Alignment.Center,
         modifier = modifier
-            .height(ButtonDefaults.MinHeight)
-            .widthIn(min = ButtonDefaults.MinHeight)
+            .height(if (isBig) ButtonDefaults.MinHeight else LocalElementSize.current)
+            .widthIn(min = if (isBig) ButtonDefaults.MinHeight else LocalElementSize.current)
             .graphicsLayer { alpha = buttonAlpha }
             .then(
                 if (onClick != null) Modifier.clickable(
@@ -50,13 +52,13 @@ fun BigButtonWithImage(
                 ) else Modifier
             )
             .background(backgroundColor)
-            .clip(ButtonsShapeLarge)
+            .clip(if (isBig) ButtonsShapeLarge else ButtonsShapeSmall)
             .border(
                 width = BorderWidth,
                 color = MaterialTheme.colorScheme.onSurface,
-                shape = ButtonsShapeLarge
+                shape = if (isBig) ButtonsShapeLarge else ButtonsShapeSmall
             )
-            .padding(6.dp),
+            .padding(if (isBig) 6.dp else 2.dp),
     ) {
         Image(
             painter = painter,

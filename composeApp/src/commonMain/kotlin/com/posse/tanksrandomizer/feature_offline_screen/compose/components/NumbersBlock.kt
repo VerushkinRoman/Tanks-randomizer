@@ -25,7 +25,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.posse.tanksrandomizer.common.compose.base_components.BigButtonWithImage
+import com.posse.tanksrandomizer.common.compose.base_components.ButtonWithImage
 import com.posse.tanksrandomizer.common.compose.base_components.BorderWidth
 import com.posse.tanksrandomizer.common.compose.base_components.ButtonsShapeLarge
 import com.posse.tanksrandomizer.common.compose.base_components.ButtonsShapeSmall
@@ -100,7 +100,7 @@ internal fun NumbersBlock(
             horizontalArrangement = Arrangement.spacedBy(6.dp, Alignment.CenterHorizontally),
             verticalAlignment = Alignment.CenterVertically,
         ) {
-            BigButtonWithImage(
+            ButtonWithImage(
                 painter = painterResource(Res.drawable.trash),
                 contentDescription = stringResource(Res.string.trash),
                 onClick = { onEvent(OfflineScreenEvent.TrashNumberPressed) }
@@ -111,7 +111,7 @@ internal fun NumbersBlock(
                 modifier = Modifier.padding(horizontal = 6.dp)
             )
 
-            BigButtonWithImage(
+            ButtonWithImage(
                 painter = painterResource(Res.drawable.dice),
                 contentDescription = stringResource(Res.string.dice),
                 onClick = { onEvent(OfflineScreenEvent.GenerateNumberPressed) }

@@ -63,12 +63,7 @@ class OnlineScreenViewModel(
 
     init {
         withViewModelScope {
-            updateToken()
-                .onError { error ->
-                    if (error.isTokenError()) {
-                        logout()
-                    }
-                }
+            refreshAccount()
         }
     }
 
@@ -80,7 +75,9 @@ class OnlineScreenViewModel(
             OnlineScreenEvent.SettingsPressed -> toggleSettings()
             OnlineScreenEvent.TrashFilterPressed -> resetFilter()
             OnlineScreenEvent.CheckAllPressed -> checkAllFilter()
-            OnlineScreenEvent.LogOutPressed -> logout()
+            OnlineScreenEvent.LogOutPressed -> showDialog()
+            OnlineScreenEvent.ConfirmLogout -> logout()
+            OnlineScreenEvent.DismissLogout -> hideDialog()
             is OnlineScreenEvent.FilterItemChanged -> handleFilterItemChanged(viewEvent.item)
         }
     }
@@ -177,6 +174,14 @@ class OnlineScreenViewModel(
     private suspend fun handleRefreshSuccess(newTanks: List<Tank>) {
         val tanksByFilter = filterTanks(tanks = newTanks, filters = viewState.onlineFilters)
         viewState = viewState.updateTanks(newTanks, tanksByFilter)
+    }
+
+    private fun showDialog() {
+        viewState = viewState.copy(logoutDialogVisible = true)
+    }
+
+    private fun hideDialog() {
+        viewState = viewState.copy(logoutDialogVisible = false)
     }
 
     private fun stopLoading() {

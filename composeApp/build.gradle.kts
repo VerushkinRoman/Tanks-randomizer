@@ -1,7 +1,7 @@
+import com.codingfeline.buildkonfig.compiler.FieldSpec.Type.STRING
 import org.gradle.internal.extensions.stdlib.capitalized
 import org.jetbrains.compose.desktop.application.dsl.TargetFormat
 import java.util.Properties
-import com.codingfeline.buildkonfig.compiler.FieldSpec.Type.STRING
 
 plugins {
     alias(libs.plugins.multiplatform)
@@ -50,7 +50,7 @@ kotlin {
             implementation(compose.materialIconsExtended)
             implementation(libs.window.size.clazz)
             implementation(libs.kotlinx.coroutines.core)
-            implementation(libs.androidx.lifecycle.viewmodel)
+            implementation(libs.androidx.lifecycle.viewmodel.compose)
             implementation(libs.androidx.lifecycle.runtime.compose)
             implementation(libs.androidx.navigation.composee)
             implementation(libs.kotlinx.serialization.json)
@@ -235,6 +235,7 @@ compose.desktop {
 
         buildTypes.release.proguard {
             obfuscate.set(true)
+            optimize.set(false)
             configurationFiles.from(
                 project.file("proguard-rules.pro"),
                 project.file("compose-desktop.pro"),

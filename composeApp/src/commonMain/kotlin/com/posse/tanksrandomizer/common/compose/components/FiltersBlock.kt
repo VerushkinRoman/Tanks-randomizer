@@ -33,6 +33,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.unit.dp
 import com.posse.tanksrandomizer.common.compose.base_components.BorderWidth
@@ -40,12 +41,13 @@ import com.posse.tanksrandomizer.common.compose.base_components.ButtonsShapeSmal
 import com.posse.tanksrandomizer.common.compose.base_components.WidthSizeClassCalculator
 import com.posse.tanksrandomizer.common.compose.utils.LocalElementSize
 import com.posse.tanksrandomizer.common.compose.utils.additionalPadding
-import com.posse.tanksrandomizer.common.compose.utils.colorFilter
+import com.posse.tanksrandomizer.common.compose.utils.borderColor
+import com.posse.tanksrandomizer.common.compose.utils.color
 import com.posse.tanksrandomizer.common.compose.utils.getFilterImage
 import com.posse.tanksrandomizer.common.compose.utils.getFilterName
+import com.posse.tanksrandomizer.common.compose.utils.useColorFilter
 import com.posse.tanksrandomizer.common.compose.utils.useFullSize
 import com.posse.tanksrandomizer.common.compose.utils.useSquare
-import com.posse.tanksrandomizer.common.domain.models.CommonFilterObjects
 import com.posse.tanksrandomizer.common.domain.models.CommonFilterObjects.ItemStatus
 
 @Composable
@@ -214,22 +216,35 @@ private fun FilterButton(
         targetValue = if (item.selected) 1f else 0.1f,
     )
 
-    val defaultBorderColor =
-        if (item is CommonFilterObjects.Nation) Color.Transparent
-        else MaterialTheme.colorScheme.onPrimary
-
     val border by animateColorAsState(
         targetValue = when {
             item.random -> {
                 if (!diceClicked.value) {
                     Color.Green
                 } else {
-                    defaultBorderColor
+                    item.borderColor()
                 }
             }
 
             else -> {
-                defaultBorderColor
+                item.borderColor()
+            }
+        },
+        finishedListener = { diceClicked.value = false },
+    )
+
+    val tintColor by animateColorAsState(
+        targetValue = when {
+            item.random -> {
+                if (!diceClicked.value) {
+                    item.color(selected = true)
+                } else {
+                    item.color(selected = false)
+                }
+            }
+
+            else -> {
+                item.color(selected = false)
             }
         },
         finishedListener = { diceClicked.value = false },
@@ -238,7 +253,7 @@ private fun FilterButton(
     Image(
         painter = getFilterImage(item),
         contentDescription = getFilterName(item),
-        colorFilter = item.colorFilter(),
+        colorFilter = if (item.useColorFilter()) ColorFilter.tint(tintColor) else null,
         modifier = modifier
             .height(LocalElementSize.current)
             .widthIn(min = LocalElementSize.current)

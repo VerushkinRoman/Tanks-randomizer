@@ -2,7 +2,7 @@ package com.posse.tanksrandomizer.common.compose.utils
 
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.graphics.ColorFilter
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
@@ -491,26 +491,43 @@ fun ItemStatus<*>.additionalPadding(): Dp {
 }
 
 @Composable
-fun ItemStatus<*>.colorFilter(): ColorFilter? {
+fun ItemStatus<*>.color(selected: Boolean): Color {
     return when (this) {
-        is Nation, is Experience, is MarkCount, is Mastery -> null
+        is Nation, is Experience, is MarkCount, is Mastery -> Color.Unspecified
 
-        is TankType -> ColorFilter.tint(
+        is TankType -> {
             when (this) {
                 is TankType.Common -> MaterialTheme.colorScheme.tankTypesColors.common
                 is TankType.Premium -> MaterialTheme.colorScheme.tankTypesColors.premium
                 is TankType.Premiumized -> MaterialTheme.colorScheme.tankTypesColors.premiumized
                 is TankType.Collection -> MaterialTheme.colorScheme.tankTypesColors.collection
             }
-        )
+        }
 
-        is Premium -> ColorFilter.tint(
+        is Premium -> {
             when (this) {
                 is Premium.Common -> MaterialTheme.colorScheme.tankTypesColors.common
                 is Premium.IsPremium -> MaterialTheme.colorScheme.tankTypesColors.premium
             }
-        )
+        }
 
-        else -> ColorFilter.tint(MaterialTheme.colorScheme.onPrimary)
+        else -> {
+            if (selected) MaterialTheme.colorScheme.onBackground
+            else MaterialTheme.colorScheme.onPrimary
+        }
     }
+}
+
+@Composable
+fun ItemStatus<*>.useColorFilter(): Boolean {
+    return when (this) {
+        is Nation, is Experience, is MarkCount, is Mastery -> false
+        else -> true
+    }
+}
+
+@Composable
+fun ItemStatus<*>.borderColor(): Color {
+    return if (this is Nation) Color.Transparent
+    else MaterialTheme.colorScheme.onPrimary
 }

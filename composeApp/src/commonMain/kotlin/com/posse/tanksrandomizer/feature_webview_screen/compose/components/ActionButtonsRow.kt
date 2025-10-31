@@ -23,7 +23,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.rememberVectorPainter
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
-import com.posse.tanksrandomizer.common.compose.base_components.BigButtonWithImage
+import com.posse.tanksrandomizer.common.compose.base_components.ButtonWithImage
 import com.posse.tanksrandomizer.common.compose.base_components.BorderWidth
 import com.posse.tanksrandomizer.common.compose.base_components.ButtonsShapeLarge
 import com.posse.tanksrandomizer.feature_webview_screen.compose.model.NavigationAction
@@ -121,7 +121,7 @@ private fun BackButton(
     onClick: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
-    BigButtonWithImage(
+    ButtonWithImage(
         painter = rememberVectorPainter(Icons.AutoMirrored.Rounded.ArrowBack),
         contentDescription = stringResource(Res.string.go_back),
         enabled = enabled,
@@ -136,7 +136,7 @@ private fun ForwardButton(
     onClick: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
-    BigButtonWithImage(
+    ButtonWithImage(
         painter = rememberVectorPainter(Icons.AutoMirrored.Rounded.ArrowForward),
         contentDescription = stringResource(Res.string.go_forward),
         enabled = enabled,
@@ -157,13 +157,13 @@ private fun StopAndReloadButton(
         modifier = modifier,
     ) { enabled ->
         if (enabled) {
-            BigButtonWithImage(
+            ButtonWithImage(
                 painter = rememberVectorPainter(Icons.Rounded.Refresh),
                 contentDescription = stringResource(Res.string.refresh_page),
                 onClick = onReloadClick,
             )
         } else {
-            BigButtonWithImage(
+            ButtonWithImage(
                 painter = rememberVectorPainter(Icons.Rounded.Close),
                 contentDescription = stringResource(Res.string.stop_loading),
                 onClick = onStopClick,

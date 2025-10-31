@@ -35,24 +35,31 @@ class AppActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         addSplashScreen()
+    }
 
-        val repository: SettingsRepository = Inject.instance()
-        val windowMode = !repository.getFullScreenMode()
-        val canDrawOverlays = Settings.canDrawOverlays(this)
+    override fun onResume() {
+        super.onResume()
+        launchApp()
+    }
+}
 
-        if (windowMode && canDrawOverlays) {
-            startWindowMode(
-                context = this,
-                startedAsService = true,
+private fun AppActivity.launchApp() {
+    val repository: SettingsRepository = Inject.instance()
+    val windowMode = !repository.getFullScreenMode()
+    val canDrawOverlays = Settings.canDrawOverlays(this)
+
+    if (windowMode && canDrawOverlays) {
+        startWindowMode(
+            context = this,
+            startedAsService = true,
+        )
+    } else {
+        rotateDevice()
+        setContent {
+            AndroidApp(
+                startedFromService = false,
+                startedAsService = false,
             )
-        } else {
-            rotateDevice()
-            setContent {
-                AndroidApp(
-                    startedFromService = false,
-                    startedAsService = false,
-                )
-            }
         }
     }
 }

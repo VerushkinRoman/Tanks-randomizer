@@ -10,7 +10,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.rememberVectorPainter
 import androidx.compose.ui.unit.dp
-import com.posse.tanksrandomizer.common.compose.base_components.BigButtonWithImage
+import com.posse.tanksrandomizer.common.compose.base_components.ButtonWithImage
 import com.posse.tanksrandomizer.feature_settings_pane.compose.components.common.CommonSettingsActionTitle
 import org.jetbrains.compose.resources.stringResource
 import tanks_randomizer.composeapp.generated.resources.Res
@@ -34,7 +34,7 @@ fun OverlayPermissionControl(
             modifier = Modifier.weight(1f),
         )
 
-        BigButtonWithImage(
+        ButtonWithImage(
             painter = rememberVectorPainter(Icons.Rounded.Tune),
             contentDescription = stringResource(Res.string.settings_overlay_button),
             onClick = openOverlaySettings,

@@ -24,8 +24,9 @@ import com.posse.tanksrandomizer.common.compose.utils.LocalElementSize
 @Composable
 fun SmallButtonWithTextAndImage(
     text: String,
-    painter: Painter,
+    painter: Painter? = null,
     textFirst: Boolean = true,
+    enabled: Boolean = true,
     onClick: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
@@ -34,12 +35,15 @@ fun SmallButtonWithTextAndImage(
         horizontalArrangement = Arrangement.Center,
         modifier = modifier
             .height(LocalElementSize.current)
-            .clickable(onClick = onClick)
-            .clip(ButtonsShapeSmall)
+            .then(
+                if (enabled) Modifier.clickable(onClick = onClick)
+                else Modifier
+            )
+            .clip(ButtonsShapeLarge)
             .border(
                 width = BorderWidth,
                 color = MaterialTheme.colorScheme.onSurface,
-                shape = ButtonsShapeSmall
+                shape = ButtonsShapeLarge
             )
             .padding(horizontal = 12.dp, vertical = 4.dp)
     ) {
@@ -50,13 +54,15 @@ fun SmallButtonWithTextAndImage(
             Spacer(Modifier.width(6.dp))
         }
 
-        Image(
-            painter = painter,
-            contentDescription = text,
-            colorFilter = ColorFilter.tint(MaterialTheme.colorScheme.onSurface),
-            contentScale = ContentScale.FillHeight,
-            modifier = Modifier.fillMaxHeight()
-        )
+        painter?.let {
+            Image(
+                painter = painter,
+                contentDescription = text,
+                colorFilter = ColorFilter.tint(MaterialTheme.colorScheme.onSurface),
+                contentScale = ContentScale.FillHeight,
+                modifier = Modifier.fillMaxHeight()
+            )
+        }
 
         if (!textFirst) {
             Spacer(Modifier.width(6.dp))

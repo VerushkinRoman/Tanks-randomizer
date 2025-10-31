@@ -16,7 +16,7 @@ import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.graphics.vector.rememberVectorPainter
 import androidx.compose.ui.layout.onSizeChanged
 import androidx.compose.ui.unit.dp
-import com.posse.tanksrandomizer.common.compose.base_components.BigButtonWithImage
+import com.posse.tanksrandomizer.common.compose.base_components.ButtonWithImage
 import com.posse.tanksrandomizer.common.compose.theme.AppTheme
 import org.jetbrains.compose.resources.stringResource
 import tanks_randomizer.composeapp.generated.resources.Res
@@ -46,7 +46,7 @@ internal fun ChangeSizeButton(
                     }
                 }
         ) { fullScreen ->
-            BigButtonWithImage(
+            ButtonWithImage(
                 painter = rememberVectorPainter(if (fullScreen) Icons.Rounded.CloseFullscreen else Icons.Rounded.OpenInFull),
                 contentDescription = stringResource(if (fullScreen) Res.string.collapse_app else Res.string.expand_app),
             )

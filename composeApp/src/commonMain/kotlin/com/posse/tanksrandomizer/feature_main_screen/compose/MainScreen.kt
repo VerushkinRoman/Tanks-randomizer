@@ -13,6 +13,7 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import androidx.lifecycle.viewmodel.compose.viewModel
 import com.posse.tanksrandomizer.common.compose.utils.getHorizontalEvenSafeContentPaddings
 import com.posse.tanksrandomizer.common.compose.utils.showError
 import com.posse.tanksrandomizer.common.presentation.utils.collectAsStateWithLifecycle
@@ -27,7 +28,7 @@ fun MainScreen(
     toWebViewScreen: (url: String) -> Unit,
     modifier: Modifier,
 ) {
-    val viewModel = remember { MainScreenViewModel() }
+    val viewModel = viewModel { MainScreenViewModel() }
 
     val state by viewModel.viewStates().collectAsStateWithLifecycle()
     val action by viewModel.viewActions().collectAsStateWithLifecycle()
