@@ -19,10 +19,4 @@ sealed interface NetworkError : Error {
     object InvalidIpAddress : NetworkError
     object RequestLimitExceeded : NetworkError
     data class InvalidField(val field: String) : NetworkError
-
-    companion object {
-        fun Error.isTokenError(): Boolean {
-            return this is InvalidField && field.contains("access_token")
-        }
-    }
 }

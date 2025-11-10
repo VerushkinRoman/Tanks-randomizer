@@ -70,6 +70,7 @@ kotlin {
             implementation(libs.realmDB)
             implementation(libs.coil.compose)
             implementation(libs.coil.network)
+            implementation(libs.localina)
             api(libs.compose.webview.multiplatform) // use api since the desktop app need to access the Cef to initialize it.
         }
 

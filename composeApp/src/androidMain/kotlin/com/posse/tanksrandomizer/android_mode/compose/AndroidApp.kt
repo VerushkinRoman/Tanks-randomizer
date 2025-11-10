@@ -12,7 +12,7 @@ import androidx.compose.ui.graphics.graphicsLayer
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.posse.tanksrandomizer.CommonPlatformApp
 import com.posse.tanksrandomizer.common.core.di.Inject
-import com.posse.tanksrandomizer.common.presentation.interactor.SettingsInteractor
+import com.posse.tanksrandomizer.feature_settings_screen.presentation.interactor.SettingsInteractor
 
 @Composable
 internal fun AndroidApp(

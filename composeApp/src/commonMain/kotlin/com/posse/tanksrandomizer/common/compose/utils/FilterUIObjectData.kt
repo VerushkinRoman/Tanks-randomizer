@@ -16,8 +16,8 @@ import com.posse.tanksrandomizer.feature_offline_screen.domain.models.OfflineFil
 import com.posse.tanksrandomizer.feature_offline_screen.domain.models.OfflineFilterObjects.Pinned
 import com.posse.tanksrandomizer.feature_offline_screen.domain.models.OfflineFilterObjects.Status
 import com.posse.tanksrandomizer.feature_offline_screen.domain.models.OfflineFilterObjects.TankType
-import com.posse.tanksrandomizer.feature_online_screen.domain.models.OnlineFilterObjects.Mastery
-import com.posse.tanksrandomizer.feature_online_screen.domain.models.OnlineFilterObjects.Premium
+import com.posse.tanksrandomizer.feature_online_navigation.feature_online_screen.domain.models.OnlineFilterObjects.Mastery
+import com.posse.tanksrandomizer.feature_online_navigation.feature_online_screen.domain.models.OnlineFilterObjects.Premium
 import org.jetbrains.compose.resources.DrawableResource
 import org.jetbrains.compose.resources.StringResource
 import org.jetbrains.compose.resources.painterResource

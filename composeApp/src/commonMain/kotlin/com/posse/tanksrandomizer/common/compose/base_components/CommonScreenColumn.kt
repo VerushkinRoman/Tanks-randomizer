@@ -33,12 +33,13 @@ fun CommonScreenColumn(
 ) {
     val density = LocalDensity.current
     var additionalSpace: Dp by remember { mutableStateOf(0.dp) }
+
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center,
         modifier = modifier
             .verticalScroll(rememberScrollState())
-            .windowInsetsPadding(WindowInsets.safeContent.only(WindowInsetsSides.Vertical))
+            .windowInsetsPadding(WindowInsets.safeContent.only(WindowInsetsSides.Vertical)) // TODO top if portrait and vertical if landscape
             .then(
                 if (runningAsOverlay && additionalSpace <= ButtonDefaults.MinHeight + 16.dp) {
                     Modifier.padding(horizontal = ButtonDefaults.MinHeight + 16.dp)

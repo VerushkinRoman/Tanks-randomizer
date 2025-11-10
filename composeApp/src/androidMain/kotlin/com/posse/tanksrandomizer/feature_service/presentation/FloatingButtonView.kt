@@ -25,8 +25,8 @@ import androidx.lifecycle.setViewTreeLifecycleOwner
 import androidx.lifecycle.setViewTreeViewModelStoreOwner
 import androidx.savedstate.setViewTreeSavedStateRegistryOwner
 import com.posse.tanksrandomizer.common.core.di.Inject
-import com.posse.tanksrandomizer.common.domain.models.ButtonOffset
-import com.posse.tanksrandomizer.common.presentation.interactor.SettingsInteractor
+import com.posse.tanksrandomizer.feature_settings_screen.domain.models.ButtonOffset
+import com.posse.tanksrandomizer.feature_settings_screen.presentation.interactor.SettingsInteractor
 import com.posse.tanksrandomizer.feature_service.presentation.model.MyLifecycleOwner
 import com.posse.tanksrandomizer.feature_service.utils.WindowUtils.appHeight
 import com.posse.tanksrandomizer.feature_service.utils.WindowUtils.appWidth

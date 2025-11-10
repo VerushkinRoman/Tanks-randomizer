@@ -6,6 +6,7 @@ import androidx.compose.runtime.collectAsState
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Job
 import kotlinx.coroutines.channels.BufferOverflow
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -17,7 +18,6 @@ import kotlin.coroutines.CoroutineContext
 import kotlin.coroutines.EmptyCoroutineContext
 
 abstract class BaseSharedViewModel<State : Any, Action, Event>(initialState: State) : ViewModel() {
-
     private val _viewStates = MutableStateFlow(initialState)
     fun viewStates() = _viewStates.asStateFlow()
 
@@ -40,8 +40,8 @@ abstract class BaseSharedViewModel<State : Any, Action, Event>(initialState: Sta
 
     abstract fun obtainEvent(viewEvent: Event)
 
-    protected fun withViewModelScope(block: suspend CoroutineScope.() -> Unit) {
-        viewModelScope.launch(block = block)
+    protected fun withViewModelScope(block: suspend CoroutineScope.() -> Unit): Job {
+        return viewModelScope.launch(block = block)
     }
 }
 

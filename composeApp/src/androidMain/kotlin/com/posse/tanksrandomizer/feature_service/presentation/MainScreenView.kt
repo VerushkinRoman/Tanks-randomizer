@@ -19,7 +19,7 @@ import androidx.lifecycle.setViewTreeLifecycleOwner
 import androidx.lifecycle.setViewTreeViewModelStoreOwner
 import androidx.savedstate.setViewTreeSavedStateRegistryOwner
 import com.posse.tanksrandomizer.common.core.di.Inject
-import com.posse.tanksrandomizer.common.presentation.interactor.SettingsInteractor
+import com.posse.tanksrandomizer.feature_settings_screen.presentation.interactor.SettingsInteractor
 import com.posse.tanksrandomizer.feature_service.presentation.model.MyLifecycleOwner
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.SupervisorJob

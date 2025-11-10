@@ -5,15 +5,13 @@ import com.posse.tanksrandomizer.common.data.models.EncyclopediaTankData
 import com.posse.tanksrandomizer.common.data.models.NetworkAccountTankResponse
 import com.posse.tanksrandomizer.common.data.models.NetworkAuthData
 import com.posse.tanksrandomizer.common.data.models.NetworkEncyclopediaTankData
+import com.posse.tanksrandomizer.common.data.models.toAccountTank
+import com.posse.tanksrandomizer.common.data.models.toEncyclopediaTank
+import com.posse.tanksrandomizer.common.data.models.toToken
 import com.posse.tanksrandomizer.common.data.networking.EmptyData
 import com.posse.tanksrandomizer.common.data.networking.EndpointConstants
 import com.posse.tanksrandomizer.common.data.networking.EndpointConstants.REDIRECT_URL
 import com.posse.tanksrandomizer.common.data.networking.safeCall
-import com.posse.tanksrandomizer.common.data.util.toAccountTank
-import com.posse.tanksrandomizer.common.data.util.toEncyclopediaTank
-import com.posse.tanksrandomizer.common.data.util.toToken
-import com.posse.tanksrandomizer.common.domain.models.AccountTank
-import com.posse.tanksrandomizer.common.domain.models.EncyclopediaTank
 import com.posse.tanksrandomizer.common.domain.models.Token
 import com.posse.tanksrandomizer.common.domain.utils.EmptyResult
 import com.posse.tanksrandomizer.common.domain.utils.Error
@@ -21,6 +19,8 @@ import com.posse.tanksrandomizer.common.domain.utils.NetworkError
 import com.posse.tanksrandomizer.common.domain.utils.Result
 import com.posse.tanksrandomizer.common.domain.utils.asEmptyDataResult
 import com.posse.tanksrandomizer.common.domain.utils.map
+import com.posse.tanksrandomizer.feature_online_navigation.feature_online_screen.domain.models.AccountTank
+import com.posse.tanksrandomizer.feature_online_navigation.feature_online_screen.domain.models.EncyclopediaTank
 import io.ktor.client.HttpClient
 import io.ktor.client.request.forms.FormDataContent
 import io.ktor.client.request.get

@@ -47,8 +47,8 @@
 
 
 <!--    Settings Pane-->
-    <string name="settings_opacity_title">Button opacity</string>
-    <string name="settings_size_title">Button size</string>
+    <string name="settings_opacity_title">Window mode button opacity</string>
+    <string name="settings_size_title">Window mode button size</string>
 
     <string name="settings_overlay_title">App overlay settings</string>
     <string name="settings_overlay_desc">Grant app overlay settings to unlock app window mode</string>
@@ -64,6 +64,12 @@
     <string name="settings_screen_rotation_orientation_landscape">landscape</string>
     <string name="settings_screen_rotation_orientation_portrait">portrait</string>
     <string name="settings_screen_rotation_orientation_auto">auto</string>
+
+
+<!--    Navigation-->
+    <string name="navigation_label_online">Lesta</string>
+    <string name="navigation_label_offline">Offline</string>
+    <string name="navigation_label_settings">Settings</string>
 
 
 <!--    Main Screen-->

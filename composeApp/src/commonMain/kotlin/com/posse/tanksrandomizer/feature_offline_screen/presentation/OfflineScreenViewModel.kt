@@ -6,10 +6,6 @@ import com.posse.tanksrandomizer.common.domain.models.CommonFilterObjects.ItemSt
 import com.posse.tanksrandomizer.common.domain.models.RepositoryFor
 import com.posse.tanksrandomizer.common.domain.repository.CommonTanksRepository
 import com.posse.tanksrandomizer.common.domain.utils.Dispatchers
-import com.posse.tanksrandomizer.common.domain.utils.Error
-import com.posse.tanksrandomizer.common.domain.utils.onError
-import com.posse.tanksrandomizer.common.domain.utils.onSuccess
-import com.posse.tanksrandomizer.common.presentation.use_cases.LogInToAccount
 import com.posse.tanksrandomizer.common.presentation.utils.BaseSharedViewModel
 import com.posse.tanksrandomizer.feature_offline_screen.domain.repository.OfflineScreenRepository
 import com.posse.tanksrandomizer.feature_offline_screen.presentation.models.Numbers
@@ -19,6 +15,8 @@ import com.posse.tanksrandomizer.feature_offline_screen.presentation.models.Offl
 import com.posse.tanksrandomizer.feature_offline_screen.presentation.use_cases.GenerateOfflineFilter
 import com.posse.tanksrandomizer.feature_offline_screen.presentation.use_cases.GetOfflineScreenStartState
 import com.posse.tanksrandomizer.feature_offline_screen.presentation.use_cases.SaveOfflineScreenState
+import kotlinx.coroutines.CancellationException
+import kotlinx.coroutines.cancelChildren
 import kotlinx.coroutines.launch
 
 class OfflineScreenViewModel(
@@ -34,13 +32,8 @@ class OfflineScreenViewModel(
     private val generateOfflineFilter = GenerateOfflineFilter(dispatchers = dispatchers)
 
     private val saveOfflineScreenState = SaveOfflineScreenState(
-        filterRepository = filterRepository,
+        offlineScreenCommonRepository = filterRepository,
         offlineScreenRepository = offlineScreenRepository,
-        dispatchers = dispatchers,
-    )
-
-    private val logInToAccount = LogInToAccount(
-        accountRepository = Inject.instance(),
         dispatchers = dispatchers,
     )
 
@@ -52,9 +45,6 @@ class OfflineScreenViewModel(
             OfflineScreenEvent.CheckAllPressed -> checkAllFilter()
             OfflineScreenEvent.TrashFilterPressed -> resetFilter()
             OfflineScreenEvent.TrashNumberPressed -> resetQuantity()
-            OfflineScreenEvent.SettingsPressed -> toggleSettings()
-            OfflineScreenEvent.LogInPressed -> logIn()
-            OfflineScreenEvent.OnScreenLaunch -> stopLoading()
             is OfflineScreenEvent.FilterItemChanged -> handleFilterItemChanged(viewEvent.item)
             is OfflineScreenEvent.QuantityChanged -> changeQuantity(viewEvent.amount)
         }
@@ -69,7 +59,11 @@ class OfflineScreenViewModel(
 
     private fun generateFilter() {
         makeActionWithViewModelScopeAndSaveState {
-            val newFilters = generateOfflineFilter(viewState.offlineFilters)
+            val newFilters = generateOfflineFilter(
+                offlineFilters = viewState.offlineFilters,
+                previousFilters = viewState.previousFilters,
+            )
+
             viewState = viewState.updateFilters(newFilters)
         }
     }
@@ -105,26 +99,6 @@ class OfflineScreenViewModel(
         }
     }
 
-    private fun toggleSettings() {
-        viewAction = OfflineScreenAction.ToggleSettings
-    }
-
-    private fun logIn() {
-        if (viewState.loading) return
-
-        viewState = viewState.copy(loading = true)
-
-        withViewModelScope {
-            logInToAccount()
-                .onError { error -> showError(error) }
-                .onSuccess { url -> viewAction = OfflineScreenAction.LogIn(url) }
-        }
-    }
-
-    private fun stopLoading() {
-        viewState = viewState.copy(loading = false)
-    }
-
     private fun makeActionWithViewModelScopeAndSaveState(
         action: suspend () -> Unit
     ) {
@@ -134,8 +108,8 @@ class OfflineScreenViewModel(
         }
     }
 
-    private fun showError(error: Error) {
-        viewAction = OfflineScreenAction.ShowError(error)
-        stopLoading()
+    public override fun onCleared() {
+        super.onCleared()
+        viewModelScope.coroutineContext.cancelChildren(CancellationException("onCleared"))
     }
 }

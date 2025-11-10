@@ -1,7 +1,7 @@
 package com.posse.tanksrandomizer.common.data.datasource
 
-import com.posse.tanksrandomizer.common.domain.models.AccountTank
-import com.posse.tanksrandomizer.common.domain.models.EncyclopediaTank
+import com.posse.tanksrandomizer.feature_online_navigation.feature_online_screen.domain.models.AccountTank
+import com.posse.tanksrandomizer.feature_online_navigation.feature_online_screen.domain.models.EncyclopediaTank
 import com.posse.tanksrandomizer.common.domain.models.Token
 import com.posse.tanksrandomizer.common.domain.utils.EmptyResult
 import com.posse.tanksrandomizer.common.domain.utils.Error

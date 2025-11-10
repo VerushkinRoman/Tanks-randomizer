@@ -1,5 +1,6 @@
 package com.posse.tanksrandomizer.common.data.models
 
+import com.posse.tanksrandomizer.feature_online_navigation.feature_online_screen.domain.models.EncyclopediaTank
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
@@ -20,3 +21,15 @@ data class ImageData(
 )
 
 typealias NetworkEncyclopediaTankData = Map<String, EncyclopediaTankData?>
+
+fun EncyclopediaTankData.toEncyclopediaTank(): EncyclopediaTank {
+    return EncyclopediaTank(
+        id = tankId,
+        isPremium = isPremium,
+        name = name,
+        nationName = nation,
+        tier = tier,
+        typeName = type,
+        image = images.preview,
+    )
+}

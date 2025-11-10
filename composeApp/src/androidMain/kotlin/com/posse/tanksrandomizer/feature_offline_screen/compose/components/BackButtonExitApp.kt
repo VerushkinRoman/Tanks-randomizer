@@ -10,36 +10,35 @@ import org.jetbrains.compose.resources.stringResource
 import tanks_randomizer.composeapp.generated.resources.Res
 import tanks_randomizer.composeapp.generated.resources.press_back_again_to_exit
 
+@Suppress("AssignedValueIsNeverRead")
 @Composable
-internal fun BackButtonExitApp(enabled: () -> Boolean = { true }) {
+internal fun BackButtonExitApp(
+    enabled: Boolean = true
+) {
     val context = LocalContext.current
+    var lastTimeBackPressed = remember { 0L }
+    var isBackShown = remember { false }
 
-    context.findActivity()?.let { activity ->
-        var lastTimeBackPressed = remember { 0L }
+    val text = stringResource(Res.string.press_back_again_to_exit)
 
-        var isBackShown = remember { false }
-
-        val text = stringResource(Res.string.press_back_again_to_exit)
-
-        BackHandler(enabled()) {
-            if (System.currentTimeMillis() - lastTimeBackPressed < BACK_BUTTON_EXIT_DELAY && isBackShown) {
-                activity.finishAndRemoveTask()
-                return@BackHandler
-            } else {
-                isBackShown = false
-            }
-
-            Toast
-                .makeText(
-                    context,
-                    text,
-                    Toast.LENGTH_SHORT
-                )
-                .show()
-
-            isBackShown = true
-            lastTimeBackPressed = System.currentTimeMillis()
+    BackHandler(enabled) {
+        if (System.currentTimeMillis() - lastTimeBackPressed < BACK_BUTTON_EXIT_DELAY && isBackShown) {
+            context.findActivity()?.finishAndRemoveTask()
+            return@BackHandler
+        } else {
+            isBackShown = false
         }
+
+        Toast
+            .makeText(
+                context,
+                text,
+                Toast.LENGTH_SHORT
+            )
+            .show()
+
+        isBackShown = true
+        lastTimeBackPressed = System.currentTimeMillis()
     }
 }
 

@@ -26,7 +26,7 @@ import com.posse.tanksrandomizer.CHANNEL_ID
 import com.posse.tanksrandomizer.android_mode.compose.AndroidApp
 import com.posse.tanksrandomizer.common.compose.components.STARTED_AS_SERVICE
 import com.posse.tanksrandomizer.common.core.di.Inject
-import com.posse.tanksrandomizer.common.presentation.interactor.SettingsInteractor
+import com.posse.tanksrandomizer.feature_settings_screen.presentation.interactor.SettingsInteractor
 import com.posse.tanksrandomizer.feature_service.compose.components.ChangeSizeButton
 import com.posse.tanksrandomizer.feature_service.presentation.FloatingButtonView
 import com.posse.tanksrandomizer.feature_service.presentation.MainScreenView

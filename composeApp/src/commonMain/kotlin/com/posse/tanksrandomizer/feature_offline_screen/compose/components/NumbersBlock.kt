@@ -31,7 +31,7 @@ import com.posse.tanksrandomizer.common.compose.base_components.ButtonsShapeLarg
 import com.posse.tanksrandomizer.common.compose.base_components.ButtonsShapeSmall
 import com.posse.tanksrandomizer.common.compose.utils.LocalElementSize
 import com.posse.tanksrandomizer.common.compose.utils.invisibleModifier
-import com.posse.tanksrandomizer.common.domain.utils.BoxedInt
+import com.posse.tanksrandomizer.feature_offline_screen.domain.utils.BoxedInt
 import com.posse.tanksrandomizer.feature_offline_screen.presentation.models.Numbers
 import com.posse.tanksrandomizer.feature_offline_screen.presentation.models.OfflineScreenEvent
 import com.posse.tanksrandomizer.feature_offline_screen.presentation.models.OfflineScreenEvent.QuantityChanged

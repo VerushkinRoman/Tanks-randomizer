@@ -9,7 +9,6 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.ExperimentalLayoutApi
 import androidx.compose.foundation.layout.FlowRow
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.aspectRatio
@@ -38,8 +37,8 @@ import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.unit.dp
 import com.posse.tanksrandomizer.common.compose.base_components.BorderWidth
 import com.posse.tanksrandomizer.common.compose.base_components.ButtonsShapeSmall
-import com.posse.tanksrandomizer.common.compose.base_components.WidthSizeClassCalculator
 import com.posse.tanksrandomizer.common.compose.utils.LocalElementSize
+import com.posse.tanksrandomizer.common.compose.utils.LocalSizeClass
 import com.posse.tanksrandomizer.common.compose.utils.additionalPadding
 import com.posse.tanksrandomizer.common.compose.utils.borderColor
 import com.posse.tanksrandomizer.common.compose.utils.color
@@ -109,49 +108,44 @@ private fun ButtonsByWidth(
     diceClicked: MutableState<Boolean>,
     modifier: Modifier = Modifier,
 ) {
-    WidthSizeClassCalculator(
-        modifier = modifier
-    ) { widthSizeClass ->
-        when (widthSizeClass) {
-            WindowWidthSizeClass.Compact -> {
-                Column(
-                    verticalArrangement = Arrangement.spacedBy(12.dp),
-                    horizontalAlignment = Alignment.CenterHorizontally,
-                    modifier = modifier
-                ) {
-                    SelectButtons(
-                        onTrashClick = onTrashClick,
-                        onSelectAllClick = onSelectAllClick,
-                        modifier = Modifier.fillMaxWidth()
-                    )
+    when (LocalSizeClass.current.widthSizeClass) {
+        WindowWidthSizeClass.Compact -> {
+            Column(
+                verticalArrangement = Arrangement.spacedBy(12.dp),
+                horizontalAlignment = Alignment.CenterHorizontally,
+                modifier = modifier,
+            ) {
+                SelectButtons(
+                    onTrashClick = onTrashClick,
+                    onSelectAllClick = onSelectAllClick,
+                    modifier = Modifier.fillMaxWidth(),
+                )
 
-                    DiceButton(
-                        onClick = {
-                            diceClicked.value = true
-                            onDiceClick()
-                        },
-                        enabled = diceEnabled
-                    )
-                }
-            }
-
-            else -> {
-                DiceAndSelectButtons(
-                    onDiceClick = {
+                DiceButton(
+                    onClick = {
                         diceClicked.value = true
                         onDiceClick()
                     },
-                    onTrashClick = onTrashClick,
-                    onSelectAllClick = onSelectAllClick,
-                    diceEnabled = diceEnabled,
-                    Modifier.fillMaxWidth()
+                    enabled = diceEnabled,
                 )
             }
+        }
+
+        else -> {
+            DiceAndSelectButtons(
+                onDiceClick = {
+                    diceClicked.value = true
+                    onDiceClick()
+                },
+                onTrashClick = onTrashClick,
+                onSelectAllClick = onSelectAllClick,
+                diceEnabled = diceEnabled,
+                modifier = modifier,
+            )
         }
     }
 }
 
-@OptIn(ExperimentalLayoutApi::class)
 @Composable
 private fun Filters(
     components: List<List<ItemStatus<*>>>,

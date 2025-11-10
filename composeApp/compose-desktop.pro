@@ -113,3 +113,106 @@
 -dontnote com.android.org.conscrypt.SSLParametersImpl
 -dontnote org.apache.harmony.xnet.provider.jsse.SSLParametersImpl
 -dontnote sun.security.ssl.SSLContextImpl
+
+# ===============================================
+# KTOR HTTP CLIENT RULES
+# ===============================================
+
+# Сохраняем все классы Ktor
+-keep class io.ktor.** { *; }
+-dontwarn io.ktor.**
+
+# Сохраняем сервисные загрузчики
+-keep class kotlinx.coroutines.internal.MainDispatcherLoader
+-keep class kotlinx.coroutines.internal.FastServiceLoader
+-keep class kotlinx.coroutines.android.AndroidDispatcherFactory
+
+# Сохраняем META-INF/services для ServiceLoader
+-keepattributes SourceFile,LineNumberTable,*Annotation*,EnclosingMethod,Signature,InnerClasses
+
+# Сохраняем файлы сервисов в META-INF
+-keep class META-INF.services.** { *; }
+
+# Для HTTP движков
+-keep class io.ktor.client.engine.** { *; }
+-keep class * implements io.ktor.client.engine.HttpClientEngineFactory {
+    public <methods>;
+}
+
+# Конкретно для CIO движка
+-keep class io.ktor.client.engine.cio.** { *; }
+-keep class io.ktor.client.engine.cio.CIOEngineFactory { *; }
+
+# Для корутин
+-keep class kotlinx.coroutines.** { *; }
+-dontwarn kotlinx.coroutines.**
+
+# Сохраняем фабрики через ServiceLoader
+-keepclasseswithmembers class * {
+    public static ** create();
+}
+
+-keepclasseswithmembers class * {
+    public static ** getInstance();
+}
+
+# ServiceLoader поддержка
+-keep class * implements java.util.function.Supplier
+-keep class * implements org.kodein.type.TypeToken
+
+# Сохраняем методы, используемые через рефлексию
+-keepclassmembers class * {
+    @kotlin.jvm.JvmName <methods>;
+}
+
+# ===============================================
+# REALM RULES
+# ===============================================
+
+# Сохраняем все классы Realm
+-keep class io.realm.** { *; }
+-dontwarn io.realm.**
+
+# Сохраняем нативные методы Realm
+-keepclasseswithmembers class * {
+    native <methods>;
+}
+
+# Сохраняем SoLoader и нативные библиотеки
+-keep class io.realm.kotlin.jvm.SoLoader { *; }
+-keep class io.realm.kotlin.internal.interop.** { *; }
+
+# Сохраняем методы, используемые через рефлексию
+-keepclassmembers class io.realm.kotlin.jvm.SoLoader {
+    public static void load();
+}
+
+# Сохраняем все модели Realm
+-keep class com.posse.tanksrandomizer.feature_online_screen.data.models.** { *; }
+
+# Сохраняем схемы Realm
+-keep class * extends io.realm.kotlin.types.RealmObject { *; }
+-keep class * implements io.realm.kotlin.types.BaseRealmObject { *; }
+
+# Сохраняем Companion объекты для моделей Realm
+-keepclassmembers class ** {
+    public static ** Companion;
+}
+
+# Сохраняем методы, генерируемые Realm
+-keepclassmembers class * {
+    public static ** io_realm_kotlin_schema(...);
+}
+
+# Сохраняем аннотации Realm
+-keepattributes *Annotation*
+-keep @io.realm.kotlin.types.annotations.Ignore class *
+-keep @io.realm.kotlin.types.annotations.PrimaryKey class *
+-keep @io.realm.kotlin.types.annotations.Index class *
+-keep @io.realm.kotlin.types.annotations.RealmClass class *
+
+# Сохраняем сервисные загрузчики для Realm
+-keep class META-INF.services.io.realm.** { *; }
+
+# Для внутренних классов Realm
+-keepclassmembers class io.realm.kotlin.internal.** { *; }

@@ -51,8 +51,8 @@ fun ButtonWithImage(
                     onClick = onClick
                 ) else Modifier
             )
-            .background(backgroundColor)
             .clip(if (isBig) ButtonsShapeLarge else ButtonsShapeSmall)
+            .background(backgroundColor)
             .border(
                 width = BorderWidth,
                 color = MaterialTheme.colorScheme.onSurface,

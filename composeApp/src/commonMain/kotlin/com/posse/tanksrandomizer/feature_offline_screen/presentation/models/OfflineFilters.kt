@@ -53,4 +53,23 @@ data class OfflineFilters(
             types = types.map { it.copy(selected = select) },
         )
     }
+
+    override fun equals(other: Any?): Boolean {
+        if (this === other) return true
+        if (other !is OfflineFilters) return false
+
+        return tiers == other.tiers &&
+                experiences == other.experiences &&
+                nations == other.nations &&
+                pinned == other.pinned &&
+                statuses == other.statuses &&
+                marks == other.marks &&
+                tankTypes == other.tankTypes &&
+                types == other.types
+    }
+
+    override fun hashCode(): Int {
+        return listOf(tiers, experiences, nations, pinned, statuses, marks, tankTypes, types)
+            .fold(1) { acc, list -> acc * 31 + list.hashCode() }
+    }
 }

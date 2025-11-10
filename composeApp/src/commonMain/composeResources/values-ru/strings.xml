@@ -45,9 +45,9 @@
     <string name="close_app">Закрыть приложение</string>
 
 
-<!--    Settings Pane-->
-    <string name="settings_opacity_title">Прозрачность кнопки</string>
-    <string name="settings_size_title">Размер кнопки</string>
+<!--    Settings Screen-->
+    <string name="settings_opacity_title">Прозрачность кнопки оконного режима</string>
+    <string name="settings_size_title">Размер кнопки оконного режима</string>
 
     <string name="settings_overlay_title">Настройки наложения приложения</string>
     <string name="settings_overlay_desc">Включите настройку поверх других приложений, чтобы разблокировать оконный режим</string>
@@ -63,6 +63,12 @@
     <string name="settings_screen_rotation_orientation_landscape">альбомная</string>
     <string name="settings_screen_rotation_orientation_portrait">портретная</string>
     <string name="settings_screen_rotation_orientation_auto">авто</string>
+
+
+<!--    Navigation-->
+    <string name="navigation_label_online">Леста</string>
+    <string name="navigation_label_offline">Офлайн</string>
+    <string name="navigation_label_settings">Настройки</string>
 
 
 <!--    Main Screen-->
