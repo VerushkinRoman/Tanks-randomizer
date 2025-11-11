@@ -3,6 +3,7 @@ package com.posse.tanksrandomizer.feature_settings_screen.presentation
 import androidx.lifecycle.viewModelScope
 import com.posse.tanksrandomizer.common.core.di.Inject
 import com.posse.tanksrandomizer.common.presentation.utils.BaseSharedViewModel
+import com.posse.tanksrandomizer.feature_settings_screen.domain.models.AppLocale
 import com.posse.tanksrandomizer.feature_settings_screen.domain.models.ScreenRotation
 import com.posse.tanksrandomizer.feature_settings_screen.domain.repository.SettingsRepository
 import com.posse.tanksrandomizer.feature_settings_screen.presentation.interactor.SettingsInteractor
@@ -14,7 +15,7 @@ import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.cancelChildren
 
 class SettingsScreenViewModel(
-    repository: SettingsRepository = Inject.instance(),
+    private val repository: SettingsRepository = Inject.instance(),
     private val settingsInteractor: SettingsInteractor = Inject.instance(),
 ) : BaseSharedViewModel<SettingsState, SettingsAction, SettingsEvent>(
     initialState = GetSettingsState(repository).invoke()
@@ -27,7 +28,18 @@ class SettingsScreenViewModel(
             is SettingsEvent.SetButtonOpacity -> saveButtonOpacity(viewEvent.opacity)
             is SettingsEvent.SetButtonSize -> saveButtonSize(viewEvent.size)
             is SettingsEvent.FullScreenModeChanged -> changeFullScreen(viewEvent.fullScreen)
+            is SettingsEvent.ChangeLocale -> changeLocale(viewEvent.locale)
         }
+    }
+
+    private fun changeLocale(locale: AppLocale) {
+        viewState = viewState.copy(
+            locale = locale
+        )
+
+        repository.setLocale(locale)
+
+        viewAction = SettingsAction.UpdateLocale(locale)
     }
 
     private fun saveButtonOpacity(opacity: Float) {
@@ -51,7 +63,7 @@ class SettingsScreenViewModel(
             screenRotation = screenRotation
         )
 
-        settingsInteractor.setRotation(screenRotation)
+        repository.setRotation(screenRotation)
     }
 
     private fun changeFullScreen(fullScreen: Boolean) {

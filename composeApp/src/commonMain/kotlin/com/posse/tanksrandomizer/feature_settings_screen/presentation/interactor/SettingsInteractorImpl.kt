@@ -1,9 +1,8 @@
 package com.posse.tanksrandomizer.feature_settings_screen.presentation.interactor
 
-import com.posse.tanksrandomizer.feature_settings_screen.domain.models.ScreenRotation
+import com.posse.tanksrandomizer.common.domain.utils.Dispatchers
 import com.posse.tanksrandomizer.feature_settings_screen.domain.models.ButtonOffset
 import com.posse.tanksrandomizer.feature_settings_screen.domain.repository.SettingsRepository
-import com.posse.tanksrandomizer.common.domain.utils.Dispatchers
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.SupervisorJob
@@ -82,6 +81,4 @@ class SettingsInteractorImpl(
     override fun setFloatingButtonSize(size: Float) {
         _floatingButtonSize.value = size
     }
-
-    override fun setRotation(screenRotation: ScreenRotation) = repository.setRotation(screenRotation)
 }

@@ -12,6 +12,7 @@ import com.posse.tanksrandomizer.feature_settings_screen.compose.components.Sett
 import com.posse.tanksrandomizer.feature_settings_screen.presentation.SettingsScreenViewModel
 import com.posse.tanksrandomizer.feature_settings_screen.presentation.model.SettingsAction
 import com.posse.tanksrandomizer.feature_settings_screen.presentation.model.SettingsEvent
+import io.github.sudarshanmhasrup.localina.api.LocaleUpdater
 
 @Composable
 fun SettingsScreen(
@@ -27,6 +28,9 @@ fun SettingsScreen(
         action?.let {
             when (it) {
                 SettingsAction.GoToAppSettings -> openSettings()
+                is SettingsAction.UpdateLocale -> {
+                    LocaleUpdater.updateLocale(it.locale.name.lowercase())
+                }
             }
             viewModel.obtainEvent(SettingsEvent.ClearAction)
         }

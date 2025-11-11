@@ -51,7 +51,7 @@ fun SmallButtonWithTextAndImage(
             RandomizerText(
                 text = text,
             )
-            Spacer(Modifier.width(6.dp))
+            if (painter != null) Spacer(Modifier.width(6.dp))
         }
 
         painter?.let {
@@ -65,7 +65,7 @@ fun SmallButtonWithTextAndImage(
         }
 
         if (!textFirst) {
-            Spacer(Modifier.width(6.dp))
+            if (painter != null) Spacer(Modifier.width(6.dp))
             RandomizerText(
                 text = text,
             )

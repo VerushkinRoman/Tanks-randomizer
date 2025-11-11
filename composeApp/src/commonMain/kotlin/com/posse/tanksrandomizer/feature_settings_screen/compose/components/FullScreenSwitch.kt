@@ -30,9 +30,9 @@ import tanks_randomizer.composeapp.generated.resources.settings_mode_window
 fun FullScreenSwitch(
     fullScreenModeEnabled: Boolean,
     onEvent: (SettingsEvent) -> Unit,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
 ) {
-    var canDrawOverlay by remember { mutableStateOf(false) }
+    var canDrawOverlay by remember { mutableStateOf(canDrawOverlay()) }
 
     LifecycleResumeEffect(true) {
         canDrawOverlay = canDrawOverlay()

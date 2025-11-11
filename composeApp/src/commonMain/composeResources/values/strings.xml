@@ -46,12 +46,14 @@
     <string name="close_app">Close app</string>
 
 
-<!--    Settings Pane-->
+<!--    Settings Screen-->
+    <string name="settings_language_title">App language</string>
+
     <string name="settings_opacity_title">Window mode button opacity</string>
     <string name="settings_size_title">Window mode button size</string>
 
     <string name="settings_overlay_title">App overlay settings</string>
-    <string name="settings_overlay_desc">Grant app overlay settings to unlock app window mode</string>
+    <string name="settings_overlay_desc">Grant app overlay permission to unlock window mode</string>
     <string name="settings_overlay_button">Button to open overlay settings</string>
 
     <string name="settings_mode_title">Screen mode</string>

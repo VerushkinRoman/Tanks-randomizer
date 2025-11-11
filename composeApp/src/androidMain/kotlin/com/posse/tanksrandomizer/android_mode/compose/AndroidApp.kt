@@ -7,10 +7,15 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.graphicsLayer
+import androidx.compose.ui.platform.LocalContext
+import androidx.lifecycle.compose.LifecycleResumeEffect
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.posse.tanksrandomizer.App
 import com.posse.tanksrandomizer.CommonPlatformApp
+import com.posse.tanksrandomizer.common.compose.components.startFullScreenMode
 import com.posse.tanksrandomizer.common.core.di.Inject
 import com.posse.tanksrandomizer.feature_settings_screen.presentation.interactor.SettingsInteractor
 
@@ -22,8 +27,10 @@ internal fun AndroidApp(
     @SuppressLint("ModifierParameter") modifier: Modifier = Modifier.fillMaxSize()
 ) {
     val settingsInteractor: SettingsInteractor = remember { Inject.instance() }
+    var lastModeFullscreenEnabled by remember { mutableStateOf(settingsInteractor.fullScreenModeEnabled.value) }
     val windowInFullScreen by settingsInteractor.windowInFullScreen.collectAsStateWithLifecycle()
     val fullScreenModeEnabled by settingsInteractor.fullScreenModeEnabled.collectAsStateWithLifecycle()
+
     val visible by remember(windowInFullScreen, fullScreenModeEnabled) {
         mutableStateOf(windowInFullScreen || fullScreenModeEnabled)
     }
@@ -31,6 +38,21 @@ internal fun AndroidApp(
     val appAlpha by animateFloatAsState(
         if (visible) 1f else 0f
     )
+
+    val context = LocalContext.current
+    LifecycleResumeEffect(true) {
+        if (!App.canDrawOverlay()) {
+            settingsInteractor.setFullScreenMode(true)
+            if (!lastModeFullscreenEnabled) {
+                startFullScreenMode(context = context)
+            }
+        }
+
+        @Suppress("AssignedValueIsNeverRead")
+        lastModeFullscreenEnabled = settingsInteractor.fullScreenModeEnabled.value
+
+        onPauseOrDispose { }
+    }
 
     CommonPlatformApp(
         modifier = modifier.graphicsLayer { alpha = appAlpha },

@@ -1,6 +1,5 @@
 package com.posse.tanksrandomizer.feature_settings_screen.presentation.interactor
 
-import com.posse.tanksrandomizer.feature_settings_screen.domain.models.ScreenRotation
 import com.posse.tanksrandomizer.feature_settings_screen.domain.models.ButtonOffset
 import kotlinx.coroutines.flow.StateFlow
 
@@ -22,6 +21,4 @@ interface SettingsInteractor {
 
     val floatingButtonSize: StateFlow<Float>
     fun setFloatingButtonSize(size: Float)
-
-    fun setRotation(screenRotation: ScreenRotation)
 }

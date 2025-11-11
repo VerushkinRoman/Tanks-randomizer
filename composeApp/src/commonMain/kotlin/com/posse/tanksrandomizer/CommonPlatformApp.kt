@@ -9,10 +9,13 @@ import androidx.compose.material3.windowsizeclass.ExperimentalMaterial3WindowSiz
 import androidx.compose.material3.windowsizeclass.WindowSizeClass
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.platform.LocalLayoutDirection
+import androidx.compose.ui.text.intl.Locale
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.DpSize
 import androidx.compose.ui.unit.dp
@@ -20,25 +23,52 @@ import com.posse.tanksrandomizer.common.compose.components.AppBackground
 import com.posse.tanksrandomizer.common.compose.theme.AppTheme
 import com.posse.tanksrandomizer.common.compose.utils.LocalElementSize
 import com.posse.tanksrandomizer.common.compose.utils.LocalSizeClass
+import com.posse.tanksrandomizer.common.core.di.Inject
+import com.posse.tanksrandomizer.feature_settings_screen.domain.models.AppLocale
+import com.posse.tanksrandomizer.feature_settings_screen.domain.repository.SettingsRepository
+import io.github.sudarshanmhasrup.localina.api.LocaleUpdater
+import io.github.sudarshanmhasrup.localina.api.LocalinaApp
 
 @Composable
 internal fun CommonPlatformApp(
     modifier: Modifier = Modifier,
     content: @Composable () -> Unit
 ) = AppTheme {
-    AppBackground(
-        modifier = modifier,
-    ) {
-        BoxWithConstraints(
-            contentAlignment = Alignment.Center,
-            modifier = Modifier.fillMaxSize(),
+    val repository = remember { Inject.instance<SettingsRepository>() }
+
+    LocalinaApp {
+        val currentLanguageCode = Locale.current.language
+
+        LaunchedEffect(true) {
+            val locale = repository.getLocale()
+
+            if (locale == null) {
+                val currentLocale = AppLocale
+                    .entries
+                    .find { it.name.lowercase() == currentLanguageCode }
+                    ?: AppLocale.En
+
+                repository.setLocale(currentLocale)
+                LocaleUpdater.updateLocale(currentLocale.name.lowercase())
+            } else {
+                LocaleUpdater.updateLocale(locale.name.lowercase())
+            }
+        }
+
+        AppBackground(
+            modifier = modifier,
         ) {
-            CompositionLocalProvider(
-                LocalElementSize provides getElementSize(maxBoxWidth = maxWidth),
-                LocalSizeClass provides getSizeClass(maxWidth, maxHeight)
+            BoxWithConstraints(
+                contentAlignment = Alignment.Center,
+                modifier = Modifier.fillMaxSize(),
             ) {
-                println(LocalSizeClass.current)
-                content()
+                CompositionLocalProvider(
+                    LocalElementSize provides getElementSize(maxBoxWidth = maxWidth),
+                    LocalSizeClass provides getSizeClass(maxWidth, maxHeight)
+                ) {
+                    println(LocalSizeClass.current)
+                    content()
+                }
             }
         }
     }

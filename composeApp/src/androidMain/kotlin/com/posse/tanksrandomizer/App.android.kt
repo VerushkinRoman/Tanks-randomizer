@@ -25,6 +25,7 @@ import com.posse.tanksrandomizer.feature_settings_screen.domain.models.ScreenRot
 import com.posse.tanksrandomizer.feature_settings_screen.domain.models.ScreenRotation.Landscape
 import com.posse.tanksrandomizer.feature_settings_screen.domain.models.ScreenRotation.Portrait
 import com.posse.tanksrandomizer.feature_settings_screen.domain.repository.SettingsRepository
+import com.posse.tanksrandomizer.feature_settings_screen.presentation.interactor.SettingsInteractor
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
@@ -63,12 +64,12 @@ class AppActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         addSplashScreen()
+        launchApp()
     }
 
     override fun onResume() {
         super.onResume()
         instance = this
-        launchApp()
     }
 
     override fun onPause() {
@@ -95,9 +96,13 @@ class AppActivity : ComponentActivity() {
 }
 
 private fun AppActivity.launchApp() {
-    val repository: SettingsRepository = Inject.instance()
-    val windowMode = !repository.getFullScreenMode()
+    val settingsInteractor: SettingsInteractor = Inject.instance()
+    val windowMode = !settingsInteractor.fullScreenModeEnabled.value
     val canDrawOverlays = Settings.canDrawOverlays(this)
+
+    if (!canDrawOverlays){
+        settingsInteractor.setFullScreenMode(false)
+    }
 
     if (windowMode && canDrawOverlays) {
         startWindowMode(

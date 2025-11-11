@@ -1,5 +1,6 @@
 package com.posse.tanksrandomizer.feature_settings_screen.domain.repository
 
+import com.posse.tanksrandomizer.feature_settings_screen.domain.models.AppLocale
 import com.posse.tanksrandomizer.feature_settings_screen.domain.models.ButtonOffset
 import com.posse.tanksrandomizer.feature_settings_screen.domain.models.ScreenRotation
 
@@ -21,4 +22,7 @@ interface SettingsRepository {
 
     fun getFloatingButtonSize(): Float
     fun setFloatingButtonSize(size: Float)
+
+    fun getLocale(): AppLocale?
+    fun setLocale(locale: AppLocale)
 }

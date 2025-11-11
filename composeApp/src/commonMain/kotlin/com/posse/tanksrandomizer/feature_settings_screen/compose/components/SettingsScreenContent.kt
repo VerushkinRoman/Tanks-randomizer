@@ -40,7 +40,15 @@ fun SettingsScreenContent(
         runningAsOverlay = runningAsOverlay,
         modifier = modifier
     ) {
+        LocaleBlock(
+            currentLocale = viewState.locale,
+            onLocaleChange = { onEvent(SettingsEvent.ChangeLocale(it)) },
+            modifier = Modifier.fillMaxWidth()
+        )
+
         if (rotationAvailable) {
+            divider()
+
             RotationBlock(
                 screenRotation = viewState.screenRotation,
                 showRotation = showRotation,

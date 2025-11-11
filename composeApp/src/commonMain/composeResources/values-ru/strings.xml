@@ -46,11 +46,13 @@
 
 
 <!--    Settings Screen-->
+    <string name="settings_language_title">Язык приложения</string>
+
     <string name="settings_opacity_title">Прозрачность кнопки оконного режима</string>
     <string name="settings_size_title">Размер кнопки оконного режима</string>
 
     <string name="settings_overlay_title">Настройки наложения приложения</string>
-    <string name="settings_overlay_desc">Включите настройку поверх других приложений, чтобы разблокировать оконный режим</string>
+    <string name="settings_overlay_desc">Включите настройку поверх других приложений чтобы разблокировать оконный режим</string>
     <string name="settings_overlay_button">Кнопка открытия настроек наложения</string>
 
     <string name="settings_mode_title">Режим экрана</string>

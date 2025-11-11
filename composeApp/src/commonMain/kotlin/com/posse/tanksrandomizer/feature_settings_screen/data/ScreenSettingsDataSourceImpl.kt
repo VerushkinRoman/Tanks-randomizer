@@ -1,5 +1,6 @@
 package com.posse.tanksrandomizer.feature_settings_screen.data
 
+import com.posse.tanksrandomizer.feature_settings_screen.domain.models.AppLocale
 import com.posse.tanksrandomizer.feature_settings_screen.domain.models.ButtonOffset
 import com.posse.tanksrandomizer.feature_settings_screen.domain.models.ScreenRotation
 import com.russhwolf.settings.ExperimentalSettingsApi
@@ -29,4 +30,7 @@ class ScreenSettingsDataSourceImpl(
 
     override fun getFloatingButtonSize(): Float = settings.getFloat("FloatingButtonSize", 1F)
     override fun setFloatingButtonSize(size: Float) = settings.putFloat("FloatingButtonSize", size)
+
+    override fun getLocale(): AppLocale? = settings.decodeValueOrNull<AppLocale>("AppLocale")
+    override fun setLocale(locale: AppLocale) = settings.encodeValue("AppLocale", locale)
 }

@@ -14,7 +14,7 @@ import androidx.compose.ui.unit.dp
 @Composable
 fun CommonSettingsActionTitle(
     title: String,
-    subtitle: String,
+    subtitle: String? = null,
     modifier: Modifier = Modifier,
     centered: Boolean = false
 ) {
@@ -31,13 +31,15 @@ fun CommonSettingsActionTitle(
             overflow = TextOverflow.Ellipsis,
         )
 
-        Text(
-            text = subtitle,
-            color = MaterialTheme.colorScheme.onSurface,
-            style = MaterialTheme.typography.bodySmall,
-            textAlign = TextAlign.Center,
-            maxLines = 2,
-            overflow = TextOverflow.Ellipsis,
-        )
+        subtitle?.let {
+            Text(
+                text = subtitle,
+                color = MaterialTheme.colorScheme.onSurface,
+                style = MaterialTheme.typography.bodySmall,
+                textAlign = TextAlign.Center,
+                maxLines = 2,
+                overflow = TextOverflow.Ellipsis,
+            )
+        }
     }
 }

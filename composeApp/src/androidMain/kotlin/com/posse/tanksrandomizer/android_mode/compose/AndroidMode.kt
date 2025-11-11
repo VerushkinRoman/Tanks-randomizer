@@ -1,6 +1,5 @@
 package com.posse.tanksrandomizer.android_mode.compose
 
-import android.provider.Settings
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.LaunchedEffect
@@ -10,6 +9,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.posse.tanksrandomizer.App
 import com.posse.tanksrandomizer.android_mode.compose.components.AndroidModeContent
 import com.posse.tanksrandomizer.android_mode.presentation.AndroidModeViewModel
 import com.posse.tanksrandomizer.android_mode.presentation.model.AndroidModeAction
@@ -31,7 +31,7 @@ fun AndroidMode(
     val windowMode by remember(state.fullScreenModeEnabled, context) {
         mutableStateOf(
             !state.fullScreenModeEnabled
-                    && Settings.canDrawOverlays(context)
+                    && App.canDrawOverlay()
         )
     }
 
