@@ -3,12 +3,16 @@ package com.posse.tanksrandomizer.feature_settings_screen.compose.components
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.widthIn
+import androidx.compose.foundation.layout.wrapContentWidth
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.Fullscreen
@@ -18,6 +22,7 @@ import androidx.compose.material.icons.rounded.VisibilityOff
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Slider
+import androidx.compose.material3.SliderColors
 import androidx.compose.material3.SliderDefaults
 import androidx.compose.material3.SliderState
 import androidx.compose.material3.Text
@@ -41,6 +46,7 @@ import androidx.compose.ui.graphics.vector.VectorPainter
 import androidx.compose.ui.graphics.vector.rememberVectorPainter
 import androidx.compose.ui.layout.onSizeChanged
 import androidx.compose.ui.platform.LocalDensity
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.DpSize
@@ -151,8 +157,9 @@ private fun CommonBlock(
     val title: @Composable () -> Unit = {
         Text(
             text = titleText,
-            color = MaterialTheme.colorScheme.onSurface,
+            color = MaterialTheme.colorScheme.primary,
             style = MaterialTheme.typography.bodyLarge,
+            textAlign = TextAlign.Center,
             maxLines = 2,
             overflow = TextOverflow.Ellipsis,
         )
@@ -170,31 +177,7 @@ private fun CommonBlock(
     }
 
     when (getScreenSize()) {
-        ScreenSize.Large -> {
-            val density = LocalDensity.current
-
-            Row(
-                verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = Arrangement.SpaceBetween,
-                modifier = modifier
-            ) {
-                title()
-
-                Spacer(Modifier.width(16.dp))
-
-                Box(
-                    modifier = Modifier
-                        .onSizeChanged { size ->
-                            onWidthChange(size.width)
-                        }
-                        .width(if (maxWidth == 0) Dp.Unspecified else with(density) { maxWidth.toDp() })
-                ) {
-                    slider()
-                }
-            }
-        }
-
-        else -> {
+        ScreenSize.Small, ScreenSize.Large -> {
             Column(
                 verticalArrangement = Arrangement.spacedBy(4.dp),
                 horizontalAlignment = Alignment.CenterHorizontally,
@@ -202,6 +185,41 @@ private fun CommonBlock(
             ) {
                 title()
                 slider()
+            }
+        }
+
+        ScreenSize.Medium -> {
+            val density = LocalDensity.current
+
+            BoxWithConstraints(modifier = modifier) {
+                Row(
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.SpaceBetween,
+                    modifier = Modifier.fillMaxSize()
+                ) {
+
+                    val maxWidthDp = this@BoxWithConstraints.maxWidth * 0.5f
+
+                    Box(
+                        modifier = Modifier
+                            .widthIn(max = maxWidthDp)
+                            .wrapContentWidth()
+                    ) {
+                        title()
+                    }
+
+                    Spacer(Modifier.width(16.dp))
+
+                    Box(
+                        modifier = Modifier
+                            .onSizeChanged { size ->
+                                onWidthChange(size.width)
+                            }
+                            .width(if (maxWidth == 0) Dp.Unspecified else with(density) { maxWidth.toDp() })
+                    ) {
+                        slider()
+                    }
+                }
             }
         }
     }
@@ -230,22 +248,22 @@ private fun SettingsSlider(
             }
     }
 
+    val sliderColors = SliderDefaults.colors(
+        thumbColor = MaterialTheme.colorScheme.primary,
+        activeTrackColor = MaterialTheme.colorScheme.onPrimaryContainer,
+        inactiveTrackColor = MaterialTheme.colorScheme.primaryContainer,
+    )
+
     Slider(
         state = sliderState,
-        colors = SliderDefaults.colors(
-            thumbColor = MaterialTheme.colorScheme.onSurface,
-            activeTrackColor = MaterialTheme.colorScheme.onPrimary,
-            activeTickColor = Color.Transparent,
-            inactiveTrackColor = MaterialTheme.colorScheme.primary,
-            inactiveTickColor = Color.Transparent,
-        ),
+        colors = sliderColors,
         track = {
             val iconSize = DpSize(20.dp, 20.dp)
             val iconPadding = 10.dp
             val thumbTrackGapSize = 6.dp
             val trackCornerSize = 12.dp
-            val activeIconColor = MaterialTheme.colorScheme.onSurface
-            val inactiveIconColor = MaterialTheme.colorScheme.onSurface
+            val activeIconColor = MaterialTheme.colorScheme.primary
+            val inactiveIconColor = MaterialTheme.colorScheme.primary
             val trackIconStart: DrawScope.(Offset, Color) -> Unit = { offset, color ->
                 translate(offset.x + iconPadding.toPx(), offset.y) {
                     with(startIcon) {
@@ -306,13 +324,14 @@ private fun SettingsSlider(
                 }
                 .border(
                     width = BorderWidth,
-                    color = MaterialTheme.colorScheme.onBackground,
+                    color = MaterialTheme.colorScheme.primary,
                     shape = RoundedCornerShape(trackCornerSize),
                 )
 
             PlatformTrack(
                 sliderState = sliderState,
                 thumbTrackGapSize = thumbTrackGapSize,
+                colors = sliderColors,
                 trackCornerSize = trackCornerSize,
                 modifier = trackModifier,
             )
@@ -327,6 +346,7 @@ expect fun PlatformTrack(
     sliderState: SliderState,
     thumbTrackGapSize: Dp,
     drawStopIndicator: (DrawScope.(Offset) -> Unit)? = null,
+    colors: SliderColors,
     trackCornerSize: Dp,
     modifier: Modifier,
 )

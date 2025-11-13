@@ -1,12 +1,13 @@
 package com.posse.tanksrandomizer.navigation.compose.components
 
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.material3.LocalContentColor
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.NavigationBar
-import androidx.compose.material3.NavigationBarItem
-import androidx.compose.material3.NavigationBarItemDefaults
+import androidx.compose.material3.NavigationRail
+import androidx.compose.material3.NavigationRailItem
+import androidx.compose.material3.NavigationRailItemDefaults
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -16,7 +17,7 @@ import com.posse.tanksrandomizer.navigation.presentation.screens.ScreenRoute
 import org.jetbrains.compose.resources.stringResource
 
 @Composable
-fun SingleSmallScreenNavigation(
+fun SingleMediumScreenNavigation(
     snackbarHostState: SnackbarHostState,
     runningAsOverlay: Boolean,
     modifier: Modifier = Modifier,
@@ -24,9 +25,15 @@ fun SingleSmallScreenNavigation(
     SingleScreenNavigation(
         snackbarHostState = snackbarHostState,
     ) { navController, onRedirectError, startDestination, currentDestination ->
-        Column(
-            modifier = modifier
+        Row(
+            modifier = modifier,
         ) {
+            NavRail(
+                navController = navController,
+                currentDestination = currentDestination,
+                modifier = Modifier.fillMaxHeight(),
+            )
+
             SingleScreenNavigationHost(
                 navController = navController,
                 startDestination = startDestination,
@@ -34,38 +41,34 @@ fun SingleSmallScreenNavigation(
                 onRedirectError = onRedirectError,
                 modifier = Modifier.weight(1f),
             )
-
-            NavBar(
-                navController = navController,
-                currentDestination = currentDestination,
-                modifier = Modifier.fillMaxWidth(),
-            )
         }
     }
 }
 
 @Composable
-private fun NavBar(
+private fun NavRail(
     navController: NavHostController,
     currentDestination: ScreenRoute,
     modifier: Modifier = Modifier
 ) {
-    NavigationBar(
+    NavigationRail(
         containerColor = MaterialTheme.colorScheme.primaryContainer,
         contentColor = MaterialTheme.colorScheme.primary,
         modifier = modifier,
     ) {
+        Spacer(Modifier.weight(1f))
+
         NavigationItem.entries.forEach { item ->
             val selected = item.screenRoute == currentDestination
 
-            NavigationBarItem(
+            NavigationRailItem(
                 selected = selected,
                 onClick = {
                     navController.navigate(item.screenRoute) {
                         launchSingleTop = true
                     }
                 },
-                colors = NavigationBarItemDefaults.colors(
+                colors = NavigationRailItemDefaults.colors(
                     selectedIconColor = MaterialTheme.colorScheme.primary,
                     selectedTextColor = MaterialTheme.colorScheme.primary,
                     unselectedIconColor = MaterialTheme.colorScheme.onPrimaryContainer,
@@ -85,5 +88,7 @@ private fun NavBar(
                 },
             )
         }
+
+        Spacer(Modifier.weight(1f))
     }
 }

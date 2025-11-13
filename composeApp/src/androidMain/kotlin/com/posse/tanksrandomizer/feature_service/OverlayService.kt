@@ -30,6 +30,7 @@ import com.posse.tanksrandomizer.feature_settings_screen.presentation.interactor
 import com.posse.tanksrandomizer.feature_service.compose.components.ChangeSizeButton
 import com.posse.tanksrandomizer.feature_service.presentation.FloatingButtonView
 import com.posse.tanksrandomizer.feature_service.presentation.MainScreenView
+import com.posse.tanksrandomizer.feature_settings_screen.domain.models.ScreenRotation
 import kotlinx.coroutines.DelicateCoroutinesApi
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.delay
@@ -57,6 +58,7 @@ class OverlayService : LifecycleService() {
         val startedAsService = intent?.getBooleanExtra(STARTED_AS_SERVICE, false) ?: false
         asService.value = startedAsService
         settingsInteractor.setWindowInFullScreen(!startedAsService)
+        settingsInteractor.setScreenRotation(ScreenRotation.Auto)
         startService()
         return START_NOT_STICKY
     }

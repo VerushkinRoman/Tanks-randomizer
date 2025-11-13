@@ -1,6 +1,7 @@
 package com.posse.tanksrandomizer.feature_settings_screen.compose.components
 
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.SliderColors
 import androidx.compose.material3.SliderDefaults
 import androidx.compose.material3.SliderState
 import androidx.compose.runtime.Composable
@@ -15,12 +16,14 @@ actual fun PlatformTrack(
     sliderState: SliderState,
     thumbTrackGapSize: Dp,
     drawStopIndicator: (DrawScope.(Offset) -> Unit)?,
+    colors: SliderColors,
     trackCornerSize: Dp,
     modifier: Modifier
 ) = SliderDefaults.Track(
     sliderState = sliderState,
     thumbTrackGapSize = thumbTrackGapSize,
     drawStopIndicator = drawStopIndicator,
+    colors = colors,
     trackInsideCornerSize = trackCornerSize,
     modifier = modifier
 )

@@ -1,9 +1,13 @@
 package com.posse.tanksrandomizer.feature_settings_screen.presentation.interactor
 
 import com.posse.tanksrandomizer.feature_settings_screen.domain.models.ButtonOffset
+import com.posse.tanksrandomizer.feature_settings_screen.domain.models.ScreenRotation
 import kotlinx.coroutines.flow.StateFlow
 
 interface SettingsInteractor {
+    val screenRotation: StateFlow<ScreenRotation>
+    fun setScreenRotation(rotation: ScreenRotation)
+
     val windowInFullScreen: StateFlow<Boolean>
     fun setWindowInFullScreen(fullScreen: Boolean)
 

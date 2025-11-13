@@ -12,7 +12,7 @@ actual fun LoadingIndicator(
     modifier: Modifier
 ) {
     LoadingIndicator(
-        color = MaterialTheme.colorScheme.onPrimary,
+        color = MaterialTheme.colorScheme.onPrimaryContainer,
         modifier = modifier
     )
 }

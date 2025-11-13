@@ -308,7 +308,7 @@ private fun RandomTankImage(
             onSuccess = { loading = false },
             onError = { loading = false },
             colorFilter = if (emptyTank || generatedTank?.imageUrl == null) ColorFilter.tint(
-                MaterialTheme.colorScheme.onBackground
+                MaterialTheme.colorScheme.primary
             ) else null,
             modifier = Modifier
                 .height(ButtonDefaults.MinHeight * 2)
@@ -358,7 +358,7 @@ private fun TotalTanks(
                 RichTooltip(
                     shape = ButtonsShapeSmall,
                     colors = TooltipDefaults.richTooltipColors(
-                        containerColor = MaterialTheme.colorScheme.primary,
+                        containerColor = MaterialTheme.colorScheme.primaryContainer,
                     ),
                     title = {
                         RandomizerText(

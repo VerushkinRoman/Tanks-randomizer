@@ -2,6 +2,7 @@ package com.posse.tanksrandomizer.feature_settings_screen.presentation.interacto
 
 import com.posse.tanksrandomizer.common.domain.utils.Dispatchers
 import com.posse.tanksrandomizer.feature_settings_screen.domain.models.ButtonOffset
+import com.posse.tanksrandomizer.feature_settings_screen.domain.models.ScreenRotation
 import com.posse.tanksrandomizer.feature_settings_screen.domain.repository.SettingsRepository
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.FlowPreview
@@ -18,6 +19,9 @@ class SettingsInteractorImpl(
     dispatchers: Dispatchers,
 ) : SettingsInteractor {
     private val scope: CoroutineScope = CoroutineScope(dispatchers.io + SupervisorJob())
+
+    private val _screenRotation: MutableStateFlow<ScreenRotation> = MutableStateFlow(repository.getRotation())
+    override val screenRotation: StateFlow<ScreenRotation> = _screenRotation.asStateFlow()
 
     private val _windowInFullScreen: MutableStateFlow<Boolean> = MutableStateFlow(false)
     override val windowInFullScreen: StateFlow<Boolean> = _windowInFullScreen.asStateFlow()
@@ -53,6 +57,26 @@ class SettingsInteractorImpl(
                     repository.setFloatingButtonOpacity(opacity)
                 }
         }
+
+        scope.launch {
+            _buttonPortraitOffset
+                .debounce { 2000 }
+                .collect { offset ->
+                    offset?.let {
+                        repository.setButtonPortraitOffset(offset)
+                    }
+                }
+        }
+
+        scope.launch {
+            _buttonLandscapeOffset
+                .debounce { 2000 }
+                .collect { offset ->
+                    offset?.let {
+                        repository.setButtonLandscapeOffset(offset)
+                    }
+                }
+        }
     }
 
     override fun setWindowInFullScreen(fullScreen: Boolean) {
@@ -61,17 +85,20 @@ class SettingsInteractorImpl(
 
     override fun setButtonLandscapeOffset(offset: ButtonOffset) {
         _buttonLandscapeOffset.value = offset
-        repository.setButtonLandscapeOffset(offset)
     }
 
     override fun setButtonPortraitOffset(offset: ButtonOffset) {
         _buttonPortraitOffset.value = offset
-        repository.setButtonPortraitOffset(offset)
     }
 
     override fun setFullScreenMode(fullScreen: Boolean) {
         _fullScreenMode.value = fullScreen
         repository.setFullScreenMode(fullScreen)
+    }
+
+    override fun setScreenRotation(rotation: ScreenRotation) {
+        _screenRotation.value = rotation
+        repository.setRotation(rotation)
     }
 
     override fun setFloatingButtonOpacity(opacity: Float) {

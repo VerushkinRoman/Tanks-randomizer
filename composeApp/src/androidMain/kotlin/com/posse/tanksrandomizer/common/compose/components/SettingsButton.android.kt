@@ -28,13 +28,13 @@ actual fun SettingsButton(
     Image(
         imageVector = Icons.Rounded.Settings,
         contentDescription = stringResource(Res.string.settings),
-        colorFilter = ColorFilter.tint(MaterialTheme.colorScheme.onSurface),
+        colorFilter = ColorFilter.tint(MaterialTheme.colorScheme.primary),
         modifier = modifier
             .size(ButtonDefaults.MinHeight)
             .clickable(onClick = settingsPressed)
             .border(
                 width = BorderWidth,
-                color = MaterialTheme.colorScheme.onSurface,
+                color = MaterialTheme.colorScheme.primary,
                 shape = ButtonsShapeLarge
             )
             .clip(ButtonsShapeLarge)

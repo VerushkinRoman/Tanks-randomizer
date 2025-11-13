@@ -25,7 +25,7 @@ fun CommonSettingsActionTitle(
     ) {
         Text(
             text = title,
-            color = MaterialTheme.colorScheme.onSurface,
+            color = MaterialTheme.colorScheme.primary,
             style = MaterialTheme.typography.bodyLarge,
             maxLines = 1,
             overflow = TextOverflow.Ellipsis,
@@ -34,7 +34,7 @@ fun CommonSettingsActionTitle(
         subtitle?.let {
             Text(
                 text = subtitle,
-                color = MaterialTheme.colorScheme.onSurface,
+                color = MaterialTheme.colorScheme.primary,
                 style = MaterialTheme.typography.bodySmall,
                 textAlign = TextAlign.Center,
                 maxLines = 2,

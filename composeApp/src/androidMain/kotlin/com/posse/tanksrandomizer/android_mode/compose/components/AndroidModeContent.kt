@@ -33,7 +33,6 @@ fun AndroidModeContent(
         modifier = modifier,
     ) {
         MainNavigation(
-            showRotation = !startedFromService,
             runningAsOverlay = startedFromService,
             modifier = Modifier.fillMaxSize()
         )

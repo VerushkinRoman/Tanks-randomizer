@@ -54,7 +54,7 @@ internal fun NumbersBlock(
         Row(
             horizontalArrangement = Arrangement.spacedBy(6.dp, Alignment.CenterHorizontally),
             modifier = Modifier
-                .background(MaterialTheme.colorScheme.primary)
+                .background(MaterialTheme.colorScheme.primaryContainer)
                 .padding(4.dp)
                 .horizontalScroll(rememberScrollState())
         ) {
@@ -150,7 +150,7 @@ private fun NumberItem(
         ) {
             Text(
                 text = it.int.toString(),
-                color = MaterialTheme.colorScheme.onSurface,
+                color = MaterialTheme.colorScheme.primary,
                 style = MaterialTheme.typography.bodyMedium,
                 fontWeight = FontWeight.Black,
             )
@@ -170,7 +170,7 @@ private fun NumberItem(
             .widthIn(min = LocalElementSize.current)
             .border(
                 width = BorderWidth,
-                color = MaterialTheme.colorScheme.onSurface,
+                color = MaterialTheme.colorScheme.primary,
                 shape = ButtonsShapeSmall
             )
             .clip(ButtonsShapeSmall)
@@ -188,7 +188,7 @@ private fun NumberItem(
         ) {
             Text(
                 text = it.toString(),
-                color = MaterialTheme.colorScheme.onSurface,
+                color = MaterialTheme.colorScheme.primary,
                 style = MaterialTheme.typography.bodySmall,
                 fontWeight = FontWeight.Black,
             )
@@ -210,7 +210,7 @@ private fun NumberButton(
             .clickable(onClick = onClick)
             .border(
                 width = BorderWidth,
-                color = MaterialTheme.colorScheme.onPrimary,
+                color = MaterialTheme.colorScheme.onPrimaryContainer,
                 shape = ButtonsShapeSmall
             )
             .clip(ButtonsShapeSmall)
@@ -218,7 +218,7 @@ private fun NumberButton(
     ) {
         Text(
             text = number,
-            color = MaterialTheme.colorScheme.onPrimary,
+            color = MaterialTheme.colorScheme.onPrimaryContainer,
             style = MaterialTheme.typography.bodySmall,
             fontSize = 10.sp,
             fontWeight = FontWeight.Black,

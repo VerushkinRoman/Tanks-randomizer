@@ -512,8 +512,8 @@ fun ItemStatus<*>.color(selected: Boolean): Color {
         }
 
         else -> {
-            if (selected) MaterialTheme.colorScheme.onBackground
-            else MaterialTheme.colorScheme.onPrimary
+            if (selected) MaterialTheme.colorScheme.primary
+            else MaterialTheme.colorScheme.onPrimaryContainer
         }
     }
 }
@@ -529,5 +529,5 @@ fun ItemStatus<*>.useColorFilter(): Boolean {
 @Composable
 fun ItemStatus<*>.borderColor(): Color {
     return if (this is Nation) Color.Transparent
-    else MaterialTheme.colorScheme.onPrimary
+    else MaterialTheme.colorScheme.onPrimaryContainer
 }

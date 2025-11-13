@@ -10,9 +10,9 @@ import androidx.compose.ui.graphics.Color
 
 private val lightScheme = lightColorScheme(
     primary = primaryLight,
-    onPrimary = onPrimaryLight,
-//    primaryContainer = primaryContainerLight,
-//    onPrimaryContainer = onPrimaryContainerLight,
+//    onPrimary = onPrimaryLight,
+    primaryContainer = primaryContainerLight,
+    onPrimaryContainer = onPrimaryContainerLight,
 //    secondary = secondaryLight,
 //    onSecondary = onSecondaryLight,
 //    secondaryContainer = secondaryContainerLight,
@@ -26,7 +26,7 @@ private val lightScheme = lightColorScheme(
 //    errorContainer = errorContainerLight,
 //    onErrorContainer = onErrorContainerLight,
     background = backgroundLight,
-    onBackground = onBackgroundLight,
+//    onBackground = onBackgroundLight,
 //    surface = surfaceLight,
 //    onSurface = onSurfaceLight,
 //    surfaceVariant = surfaceVariantLight,
@@ -48,9 +48,9 @@ private val lightScheme = lightColorScheme(
 
 private val darkScheme = darkColorScheme(
     primary = primaryDark,
-    onPrimary = onPrimaryDark,
-//    primaryContainer = primaryContainerDark,
-//    onPrimaryContainer = onPrimaryContainerDark,
+//    onPrimary = onPrimaryDark,
+    primaryContainer = primaryContainerDark,
+    onPrimaryContainer = onPrimaryContainerDark,
 //    secondary = secondaryDark,
 //    onSecondary = onSecondaryDark,
 //    secondaryContainer = secondaryContainerDark,
@@ -64,7 +64,7 @@ private val darkScheme = darkColorScheme(
 //    errorContainer = errorContainerDark,
 //    onErrorContainer = onErrorContainerDark,
     background = backgroundDark,
-    onBackground = onBackgroundDark,
+//    onBackground = onBackgroundDark,
 //    surface = surfaceDark,
 //    onSurface = onSurfaceDark,
 //    surfaceVariant = surfaceVariantDark,
@@ -91,30 +91,29 @@ class TankTypesColors(
     val collection: Color = tankTypeCollectionColor,
 )
 
+@Suppress("UnusedReceiverParameter")
 val ColorScheme.tankTypesColors: TankTypesColors
     get() = TankTypesColors()
 
 @Composable
 internal fun AppTheme(
 //    darkTheme: Boolean = isSystemInDarkTheme(),
+    darkTheme: Boolean = true,
     // Dynamic color is available on Android 12+
-    dynamicColor: Boolean = true,
+//    dynamicColor: Boolean = true,
+    dynamicColor: Boolean = false,
     content: @Composable () -> Unit
 ) {
-    SystemAppearance(false)
-//    SystemAppearance(!darkTheme)
+    SystemAppearance(!darkTheme)
 
-//    val colorScheme = dynamicColorScheme(darkTheme, dynamicColor)
-//        ?: when {
-//            darkTheme -> darkScheme
-//            else -> lightScheme
-//        }
-
-//    val colorScheme = dynamicColorScheme(true, dynamicColor) ?: darkScheme
+    val colorScheme = dynamicColorScheme(darkTheme, dynamicColor)
+        ?: when {
+            darkTheme -> darkScheme
+            else -> lightScheme
+        }
 
     MaterialTheme(
-//        colorScheme = colorScheme,
-        colorScheme = darkScheme,
+        colorScheme = colorScheme,
         typography = AppTypography,
         content = content
     )
@@ -128,16 +127,16 @@ internal expect fun dynamicColorScheme(darkTheme: Boolean, dynamicColor: Boolean
 
 @Composable
 fun themedSegmentedButtonColors() = SegmentedButtonDefaults.colors(
-    activeContainerColor = MaterialTheme.colorScheme.primary,
-    activeContentColor = MaterialTheme.colorScheme.onSurface,
-    activeBorderColor = MaterialTheme.colorScheme.onSurface,
-    inactiveContainerColor = MaterialTheme.colorScheme.primary,
-    inactiveContentColor = MaterialTheme.colorScheme.onSurface,
-    inactiveBorderColor = MaterialTheme.colorScheme.onSurface,
-    disabledActiveContainerColor = MaterialTheme.colorScheme.primary,
-    disabledActiveContentColor = MaterialTheme.colorScheme.onSurface,
-    disabledActiveBorderColor = MaterialTheme.colorScheme.onSurface,
-    disabledInactiveContainerColor = MaterialTheme.colorScheme.primary,
-    disabledInactiveContentColor = MaterialTheme.colorScheme.onSurface,
-    disabledInactiveBorderColor = MaterialTheme.colorScheme.onSurface,
+    activeContainerColor = MaterialTheme.colorScheme.primaryContainer,
+    activeContentColor = MaterialTheme.colorScheme.primary,
+    activeBorderColor = MaterialTheme.colorScheme.primary,
+    inactiveContainerColor = MaterialTheme.colorScheme.primaryContainer,
+    inactiveContentColor = MaterialTheme.colorScheme.primary,
+    inactiveBorderColor = MaterialTheme.colorScheme.primary,
+    disabledActiveContainerColor = MaterialTheme.colorScheme.primaryContainer,
+    disabledActiveContentColor = MaterialTheme.colorScheme.primary,
+    disabledActiveBorderColor = MaterialTheme.colorScheme.primary,
+    disabledInactiveContainerColor = MaterialTheme.colorScheme.primaryContainer,
+    disabledInactiveContentColor = MaterialTheme.colorScheme.primary,
+    disabledInactiveBorderColor = MaterialTheme.colorScheme.primary,
 )

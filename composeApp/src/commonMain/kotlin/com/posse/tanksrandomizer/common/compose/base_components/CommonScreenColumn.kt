@@ -24,6 +24,9 @@ import androidx.compose.ui.layout.onSizeChanged
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
+import com.posse.tanksrandomizer.common.compose.utils.ScreenSize
+import com.posse.tanksrandomizer.common.compose.utils.getHorizontalEvenSafeContentPaddings
+import com.posse.tanksrandomizer.common.compose.utils.getScreenSize
 
 @Composable
 fun CommonScreenColumn(
@@ -34,16 +37,24 @@ fun CommonScreenColumn(
     val density = LocalDensity.current
     var additionalSpace: Dp by remember { mutableStateOf(0.dp) }
 
+    val screenSize = getScreenSize()
+    val horizontal = remember(screenSize) {
+        when (screenSize) {
+            ScreenSize.Small, ScreenSize.Large -> false
+            ScreenSize.Medium -> true
+        }
+    }
+
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center,
         modifier = modifier
             .verticalScroll(rememberScrollState())
-            .windowInsetsPadding(WindowInsets.safeContent.only(WindowInsetsSides.Vertical)) // TODO top if portrait and vertical if landscape
-            .then(
-                if (runningAsOverlay && additionalSpace <= ButtonDefaults.MinHeight + 16.dp) {
-                    Modifier.padding(horizontal = ButtonDefaults.MinHeight + 16.dp)
-                } else Modifier
+            .windowInsetsPadding(WindowInsets.safeContent.only(WindowInsetsSides.Vertical))
+            .padding(
+                horizontal = if (horizontal && runningAsOverlay && additionalSpace <= ButtonDefaults.MinHeight + 16.dp) {
+                    maxOf(ButtonDefaults.MinHeight + 16.dp, getHorizontalEvenSafeContentPaddings())
+                } else getHorizontalEvenSafeContentPaddings()
             )
             .padding(vertical = 8.dp)
     ) {

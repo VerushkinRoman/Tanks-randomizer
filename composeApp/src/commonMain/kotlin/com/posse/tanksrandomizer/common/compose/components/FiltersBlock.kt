@@ -184,7 +184,7 @@ private fun FilterItemsRow(
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.spacedBy(4.dp, Alignment.CenterHorizontally),
             modifier = Modifier
-                .background(MaterialTheme.colorScheme.primary)
+                .background(MaterialTheme.colorScheme.primaryContainer)
                 .padding(4.dp)
                 .horizontalScroll(rememberScrollState())
         ) {

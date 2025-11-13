@@ -50,7 +50,7 @@ internal fun MainScreenLogInButton(
         shape = ButtonsShapeLarge,
         enabled = !loading,
         contentPadding = contentPadding,
-        border = BorderStroke(width = BorderWidth, color = MaterialTheme.colorScheme.onSurface),
+        border = BorderStroke(width = BorderWidth, color = MaterialTheme.colorScheme.primary),
         modifier = modifier.graphicsLayer { alpha = buttonAlpha }
     ) {
         Row(
@@ -80,7 +80,7 @@ private fun LestaLogo(
         painter = painterResource(Res.drawable.lesta_logo),
         contentDescription = null,
         contentScale = ContentScale.FillHeight,
-        colorFilter = ColorFilter.tint(MaterialTheme.colorScheme.onSurface),
+        colorFilter = ColorFilter.tint(MaterialTheme.colorScheme.primary),
         modifier = Modifier.height(imageHeight),
     )
 }
@@ -91,7 +91,7 @@ private fun LoginText(
 ) {
     Text(
         text = stringResource(Res.string.login_online).uppercase(),
-        color = MaterialTheme.colorScheme.onSurface,
+        color = MaterialTheme.colorScheme.primary,
         style = MaterialTheme.typography.bodySmall,
         fontWeight = FontWeight.Black,
         modifier = modifier,

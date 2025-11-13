@@ -17,7 +17,6 @@ import com.posse.tanksrandomizer.feature_settings_screen.presentation.model.Sett
 @Composable
 fun SettingsScreenContent(
     viewState: SettingsState,
-    showRotation: Boolean,
     runningAsOverlay: Boolean,
     onEvent: (SettingsEvent) -> Unit,
     modifier: Modifier = Modifier
@@ -29,7 +28,7 @@ fun SettingsScreenContent(
 
         HorizontalDivider(
             thickness = BorderWidth,
-            color = MaterialTheme.colorScheme.onBackground,
+            color = MaterialTheme.colorScheme.primary,
             modifier = Modifier.fillMaxWidth()
         )
 
@@ -51,7 +50,7 @@ fun SettingsScreenContent(
 
             RotationBlock(
                 screenRotation = viewState.screenRotation,
-                showRotation = showRotation,
+                enabled = !runningAsOverlay,
                 onEvent = onEvent,
                 modifier = Modifier.fillMaxWidth(),
             )

@@ -24,13 +24,13 @@ fun main() = application {
 
     Window(
         title = "Random Tank Generator",
-        state = rememberWindowState(width = 600.dp, height = 550.dp),
+        state = rememberWindowState(width = 600.dp, height = 600.dp),
         onCloseRequest = ::exitApplication,
         icon = painterResource(Res.drawable.app_icon)
     ) {
         window.minimumSize = Dimension(
-            with(LocalDensity.current) { (ButtonDefaults.MinHeight * 12).toPx().toInt() },
-            550
+            with(LocalDensity.current) { (ButtonDefaults.MinHeight * 11).toPx().toInt() },
+            400
         )
 
         CommonPlatformApp {

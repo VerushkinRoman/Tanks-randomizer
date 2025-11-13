@@ -46,7 +46,7 @@ fun AppBackground(
                 .hazeEffect(
                     state = hazeState,
                     style = CupertinoMaterials.thin(
-                        MaterialTheme.colorScheme.primary
+                        MaterialTheme.colorScheme.background
                     )
                 )
         )

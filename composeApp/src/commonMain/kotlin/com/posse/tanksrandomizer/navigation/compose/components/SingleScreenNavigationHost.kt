@@ -23,7 +23,6 @@ import com.posse.tanksrandomizer.navigation.presentation.screens.ScreenRoute.Set
 fun SingleScreenNavigationHost(
     navController: NavHostController,
     startDestination: ScreenRoute,
-    showRotation: Boolean,
     runningAsOverlay: Boolean,
     onRedirectError: (ErrorResponse) -> Unit,
     modifier: Modifier = Modifier
@@ -68,7 +67,6 @@ fun SingleScreenNavigationHost(
 
             SettingsScreen(
                 viewModel = viewModel,
-                showRotation = showRotation,
                 runningAsOverlay = runningAsOverlay,
                 modifier = Modifier.fillMaxSize()
             )

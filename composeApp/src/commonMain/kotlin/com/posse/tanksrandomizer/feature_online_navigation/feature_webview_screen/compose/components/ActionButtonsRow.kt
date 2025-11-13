@@ -90,7 +90,7 @@ private fun GoBackButton(
         onClick = onClick,
         shape = ButtonsShapeLarge,
         contentPadding = contentPadding,
-        border = BorderStroke(width = BorderWidth, color = MaterialTheme.colorScheme.onSurface),
+        border = BorderStroke(width = BorderWidth, color = MaterialTheme.colorScheme.primary),
         modifier = modifier
     ) {
         Row(
@@ -101,13 +101,13 @@ private fun GoBackButton(
             Icon(
                 imageVector = Icons.AutoMirrored.Rounded.ArrowBack,
                 contentDescription = stringResource(Res.string.exit),
-                tint = MaterialTheme.colorScheme.onSurface,
+                tint = MaterialTheme.colorScheme.primary,
                 modifier = Modifier.height(imageHeight),
             )
 
             Text(
                 text = stringResource(Res.string.exit).uppercase(),
-                color = MaterialTheme.colorScheme.onSurface,
+                color = MaterialTheme.colorScheme.primary,
                 style = MaterialTheme.typography.bodySmall,
                 fontWeight = FontWeight.Black,
             )

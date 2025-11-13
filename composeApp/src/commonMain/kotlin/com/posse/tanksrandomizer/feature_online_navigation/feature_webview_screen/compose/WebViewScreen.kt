@@ -23,6 +23,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
+import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.multiplatform.webview.web.LoadingState
@@ -38,6 +39,7 @@ import com.posse.tanksrandomizer.feature_online_navigation.feature_webview_scree
 import com.posse.tanksrandomizer.feature_online_navigation.feature_webview_screen.compose.model.NavigationAction.Reload
 import com.posse.tanksrandomizer.feature_online_navigation.feature_webview_screen.compose.model.NavigationAction.StopLoading
 
+@OptIn(ExperimentalComposeUiApi::class)
 @Composable
 fun WebViewScreen(
     url: String,
@@ -74,8 +76,8 @@ fun WebViewScreen(
     ) {
         LinearProgressIndicator(
             progress = { loadingProgress },
-            color = MaterialTheme.colorScheme.onPrimary,
-            trackColor = MaterialTheme.colorScheme.primary,
+            color = MaterialTheme.colorScheme.onPrimaryContainer,
+            trackColor = MaterialTheme.colorScheme.primaryContainer,
             strokeCap = ProgressIndicatorDefaults.LinearStrokeCap,
             modifier = Modifier.fillMaxWidth(),
         )
@@ -117,4 +119,9 @@ fun WebViewScreen(
             }
         }
     }
+
+    WebViewBackHandler(onBack = goBack)
 }
+
+@Composable
+expect fun WebViewBackHandler(onBack: ()-> Unit)

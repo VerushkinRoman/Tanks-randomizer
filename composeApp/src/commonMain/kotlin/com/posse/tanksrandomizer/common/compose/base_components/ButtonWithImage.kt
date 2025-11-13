@@ -55,7 +55,7 @@ fun ButtonWithImage(
             .background(backgroundColor)
             .border(
                 width = BorderWidth,
-                color = MaterialTheme.colorScheme.onSurface,
+                color = MaterialTheme.colorScheme.primary,
                 shape = if (isBig) ButtonsShapeLarge else ButtonsShapeSmall
             )
             .padding(if (isBig) 6.dp else 2.dp),
@@ -63,7 +63,7 @@ fun ButtonWithImage(
         Image(
             painter = painter,
             contentDescription = contentDescription,
-            colorFilter = ColorFilter.tint(MaterialTheme.colorScheme.onSurface),
+            colorFilter = ColorFilter.tint(MaterialTheme.colorScheme.primary),
             contentScale = ContentScale.FillHeight,
             modifier = Modifier.fillMaxHeight()
         )

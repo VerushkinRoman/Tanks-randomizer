@@ -74,6 +74,7 @@ internal fun MainScreenContent(
         MainScreenLogInButton(
             loading = viewState.loading,
             onClick = { onEvent(MainScreenEvent.LogIn) },
+            modifier = Modifier.fillMaxWidth(0.5f)
         )
 
         Box(

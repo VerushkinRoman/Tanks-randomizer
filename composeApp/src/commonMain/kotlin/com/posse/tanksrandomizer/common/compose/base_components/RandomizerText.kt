@@ -17,7 +17,7 @@ fun RandomizerText(
     fontSize: TextUnit = 10.sp,
     capitalize: Boolean = true,
     singleLine: Boolean = true,
-    color: Color = MaterialTheme.colorScheme.onBackground,
+    color: Color = MaterialTheme.colorScheme.primary,
     modifier: Modifier = Modifier
 ) {
     Text(

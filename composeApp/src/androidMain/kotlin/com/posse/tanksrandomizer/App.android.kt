@@ -98,10 +98,10 @@ class AppActivity : ComponentActivity() {
 private fun AppActivity.launchApp() {
     val settingsInteractor: SettingsInteractor = Inject.instance()
     val windowMode = !settingsInteractor.fullScreenModeEnabled.value
-    val canDrawOverlays = Settings.canDrawOverlays(this)
+    val canDrawOverlays = App.canDrawOverlay()
 
-    if (!canDrawOverlays){
-        settingsInteractor.setFullScreenMode(false)
+    if (!canDrawOverlays) {
+        settingsInteractor.setFullScreenMode(true)
     }
 
     if (windowMode && canDrawOverlays) {

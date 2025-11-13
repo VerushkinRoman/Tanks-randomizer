@@ -18,7 +18,18 @@ fun CommonSettingsActionBlock(
     modifier: Modifier = Modifier,
 ) {
     when (getScreenSize()) {
-        ScreenSize.Large -> {
+        ScreenSize.Small, ScreenSize.Large -> {
+            Column(
+                verticalArrangement = Arrangement.spacedBy(4.dp),
+                horizontalAlignment = Alignment.CenterHorizontally,
+                modifier = modifier
+            ) {
+                caption(true)
+                action()
+            }
+        }
+
+        ScreenSize.Medium -> {
             Row(
                 verticalAlignment = Alignment.CenterVertically,
                 horizontalArrangement = Arrangement.spacedBy(16.dp),
@@ -29,17 +40,6 @@ fun CommonSettingsActionBlock(
                 ) {
                     caption(false)
                 }
-                action()
-            }
-        }
-
-        else -> {
-            Column(
-                verticalArrangement = Arrangement.spacedBy(4.dp),
-                horizontalAlignment = Alignment.CenterHorizontally,
-                modifier = modifier
-            ) {
-                caption(true)
                 action()
             }
         }

@@ -20,6 +20,16 @@ class SettingsScreenViewModel(
 ) : BaseSharedViewModel<SettingsState, SettingsAction, SettingsEvent>(
     initialState = GetSettingsState(repository).invoke()
 ) {
+    init {
+        withViewModelScope {
+            settingsInteractor.screenRotation.collect { rotation ->
+                viewState = viewState.copy(
+                    screenRotation = rotation
+                )
+            }
+        }
+    }
+
     override fun obtainEvent(viewEvent: SettingsEvent) {
         when (viewEvent) {
             SettingsEvent.ClearAction -> viewAction = null
@@ -63,7 +73,7 @@ class SettingsScreenViewModel(
             screenRotation = screenRotation
         )
 
-        repository.setRotation(screenRotation)
+        settingsInteractor.setScreenRotation(screenRotation)
     }
 
     private fun changeFullScreen(fullScreen: Boolean) {

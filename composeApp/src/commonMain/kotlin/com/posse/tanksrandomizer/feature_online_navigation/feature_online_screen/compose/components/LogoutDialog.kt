@@ -44,7 +44,7 @@ fun LogoutDialog(
         Card(
             shape = ButtonsShapeSmall,
             colors = CardDefaults.cardColors(
-                containerColor = MaterialTheme.colorScheme.primary
+                containerColor = MaterialTheme.colorScheme.primaryContainer
             ),
         ) {
             Column(

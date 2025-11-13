@@ -16,8 +16,8 @@ fun CommonLoadingIndicator(
     modifier: Modifier = Modifier
 ) {
     CircularProgressIndicator(
-        color = MaterialTheme.colorScheme.onPrimary,
-        trackColor = MaterialTheme.colorScheme.primary,
+        color = MaterialTheme.colorScheme.onPrimaryContainer,
+        trackColor = MaterialTheme.colorScheme.primaryContainer,
         strokeCap = StrokeCap.Round,
         modifier = modifier
     )

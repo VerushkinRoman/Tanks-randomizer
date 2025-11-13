@@ -1,6 +1,5 @@
 package com.posse.tanksrandomizer.feature_settings_screen.compose.components
 
-import androidx.compose.foundation.clickable
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.ScreenRotation
 import androidx.compose.material.icons.rounded.StayCurrentLandscape
@@ -29,7 +28,7 @@ import tanks_randomizer.composeapp.generated.resources.settings_screen_rotation_
 @Composable
 fun RotationBlock(
     screenRotation: ScreenRotation,
-    showRotation: Boolean,
+    enabled: Boolean,
     onEvent: (SettingsEvent) -> Unit,
     modifier: Modifier = Modifier
 ) {
@@ -47,24 +46,13 @@ fun RotationBlock(
         action = {
             RotationControlButtons(
                 screenRotation = screenRotation,
+                enabled = enabled,
                 onAutoRotateClick = { onEvent(SettingsEvent.RotationChanged(ScreenRotation.Auto)) },
                 onPortraitRotateClick = { onEvent(SettingsEvent.RotationChanged(ScreenRotation.Portrait)) },
                 onLandscapeRotateClick = { onEvent(SettingsEvent.RotationChanged(ScreenRotation.Landscape)) },
             )
         },
-        modifier = modifier
-            .then(
-                if (showRotation) Modifier
-                else {
-                    Modifier
-                        .clickable(
-                            interactionSource = null,
-                            indication = null,
-                            onClick = {}
-                        )
-                        .alpha(0.3f)
-                }
-            )
+        modifier = modifier.alpha(if (enabled) 1f else 0.3f)
     )
 }
 
@@ -95,6 +83,7 @@ private fun RotationDescription(
 @Composable
 private fun RotationControlButtons(
     screenRotation: ScreenRotation,
+    enabled: Boolean,
     onAutoRotateClick: () -> Unit,
     onLandscapeRotateClick: () -> Unit,
     onPortraitRotateClick: () -> Unit,
@@ -104,6 +93,7 @@ private fun RotationControlButtons(
         modifier = modifier
     ) {
         SegmentedButton(
+            enabled = enabled,
             shape = SegmentedButtonDefaults.itemShape(
                 index = 0,
                 count = 3,
@@ -120,6 +110,7 @@ private fun RotationControlButtons(
         )
 
         SegmentedButton(
+            enabled = enabled,
             shape = SegmentedButtonDefaults.itemShape(
                 index = 1,
                 count = 3,
@@ -136,6 +127,7 @@ private fun RotationControlButtons(
         )
 
         SegmentedButton(
+            enabled = enabled,
             shape = SegmentedButtonDefaults.itemShape(
                 index = 2,
                 count = 3,

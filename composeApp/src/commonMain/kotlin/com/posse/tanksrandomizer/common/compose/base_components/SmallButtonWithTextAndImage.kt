@@ -42,7 +42,7 @@ fun SmallButtonWithTextAndImage(
             .clip(ButtonsShapeLarge)
             .border(
                 width = BorderWidth,
-                color = MaterialTheme.colorScheme.onSurface,
+                color = MaterialTheme.colorScheme.primary,
                 shape = ButtonsShapeLarge
             )
             .padding(horizontal = 12.dp, vertical = 4.dp)
@@ -58,7 +58,7 @@ fun SmallButtonWithTextAndImage(
             Image(
                 painter = painter,
                 contentDescription = text,
-                colorFilter = ColorFilter.tint(MaterialTheme.colorScheme.onSurface),
+                colorFilter = ColorFilter.tint(MaterialTheme.colorScheme.primary),
                 contentScale = ContentScale.FillHeight,
                 modifier = Modifier.fillMaxHeight()
             )
