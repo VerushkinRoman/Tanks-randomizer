@@ -25,4 +25,7 @@ interface SettingsInteractor {
 
     val floatingButtonSize: StateFlow<Float>
     fun setFloatingButtonSize(size: Float)
+
+    fun getDesktopWindowSize(): Pair<Int, Int>?
+    fun setDesktopWindowSize(size: Pair<Int, Int>)
 }

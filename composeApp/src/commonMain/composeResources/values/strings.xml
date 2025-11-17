@@ -76,7 +76,7 @@
 
 <!--    Main Screen-->
     <string name="login_online">Log In</string>
-    <string name="login_offline">Continue offline</string>
+    <string name="login_description">Access your Tanks Blitz garage by logging into your Lesta account!</string>
 
 
 <!--    Offline Screen-->

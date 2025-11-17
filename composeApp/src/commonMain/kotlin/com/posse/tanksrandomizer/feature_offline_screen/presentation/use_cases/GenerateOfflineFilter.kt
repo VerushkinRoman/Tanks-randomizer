@@ -13,7 +13,7 @@ class GenerateOfflineFilter(
 
     suspend operator fun invoke(
         offlineFilters: OfflineFilters,
-        previousFilters: OfflineFilters,
+        previousFilters: OfflineFilters?,
     ): OfflineFilters = withContext(dispatchers.io) {
         when {
             offlineFilters == previousFilters -> previousFilters
@@ -23,7 +23,7 @@ class GenerateOfflineFilter(
 
     private fun generateUniqueFilters(
         offlineFilters: OfflineFilters,
-        previousFilters: OfflineFilters,
+        previousFilters: OfflineFilters?,
     ): OfflineFilters {
         return generateSequence { offlineFilters.generateRandom() }
             .first { isFiltersAllowed(offlineFilters = it, previousFilters = previousFilters) }
@@ -31,7 +31,7 @@ class GenerateOfflineFilter(
 
     private fun isFiltersAllowed(
         offlineFilters: OfflineFilters,
-        previousFilters: OfflineFilters,
+        previousFilters: OfflineFilters?,
     ): Boolean {
         val allowDuplicate = Random.nextFloat() < 0.3
         val filtersAreDifferent = offlineFilters != previousFilters

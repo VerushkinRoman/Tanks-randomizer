@@ -5,6 +5,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.TextLayoutResult
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
@@ -18,6 +19,8 @@ fun RandomizerText(
     capitalize: Boolean = true,
     singleLine: Boolean = true,
     color: Color = MaterialTheme.colorScheme.primary,
+    textAlign: TextAlign = TextAlign.Justify,
+    onTextLayout: ((TextLayoutResult) -> Unit)? = null,
     modifier: Modifier = Modifier
 ) {
     Text(
@@ -28,7 +31,8 @@ fun RandomizerText(
         fontWeight = FontWeight.Black,
         maxLines = if (singleLine) 1 else Int.MAX_VALUE,
         overflow = TextOverflow.Ellipsis,
-        textAlign = TextAlign.Justify,
+        textAlign = textAlign,
+        onTextLayout = onTextLayout,
         modifier = modifier
     )
 }

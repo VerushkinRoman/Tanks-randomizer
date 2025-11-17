@@ -29,42 +29,56 @@ fun SelectButtons(
         val selectAllMaxWidth = selectAllMeasurable.maxIntrinsicWidth(constraints.maxHeight)
         val trashMaxWidth = trashMeasurable.maxIntrinsicWidth(constraints.maxHeight)
 
-        val maxWidth = maxOf(selectAllMaxWidth, trashMaxWidth)
+        val buttonWidth = maxOf(selectAllMaxWidth, trashMaxWidth)
 
-        val fixedSelectAllPlaceable = selectAllMeasurable.measure(
-            constraints.copy(
-                minWidth = maxWidth,
-                maxWidth = maxWidth
+        val minSpacing = 16.dp.roundToPx()
+
+        val requiredHorizontalWidth = (buttonWidth * 2) + minSpacing
+
+        if (requiredHorizontalWidth > constraints.maxWidth) {
+            val verticalConstraints =
+                constraints.copy(minWidth = buttonWidth, maxWidth = constraints.maxWidth)
+            val selectAllPlaceable = selectAllMeasurable.measure(verticalConstraints)
+            val trashPlaceable = trashMeasurable.measure(verticalConstraints)
+
+            val verticalSpacing = 12.dp.roundToPx()
+
+            val totalHeight = selectAllPlaceable.height + verticalSpacing + trashPlaceable.height
+            val startSpace = (constraints.maxWidth - buttonWidth) / 2
+
+            layout(constraints.maxWidth, totalHeight) {
+                selectAllPlaceable.placeRelative(x = startSpace, y = 0)
+                trashPlaceable.placeRelative(
+                    x = startSpace,
+                    y = selectAllPlaceable.height + verticalSpacing
+                )
+            }
+
+        } else {
+            val horizontalConstraints = constraints.copy(
+                minWidth = buttonWidth,
+                maxWidth = buttonWidth
             )
-        )
+            val selectAllPlaceable = selectAllMeasurable.measure(horizontalConstraints)
+            val trashPlaceable = trashMeasurable.measure(horizontalConstraints)
 
-        val fixedTrashPlaceable = trashMeasurable.measure(
-            constraints.copy(
-                minWidth = maxWidth,
-                maxWidth = maxWidth
-            )
-        )
+            val totalHeight = maxOf(selectAllPlaceable.height, trashPlaceable.height)
 
-        val totalHeight = maxOf(
-            fixedSelectAllPlaceable.height,
-            fixedTrashPlaceable.height
-        )
+            val spaceWithoutButtons = constraints.maxWidth - buttonWidth * 2
+            val freeSpace = spaceWithoutButtons / 3
+            val centerSpace = maxOf(freeSpace, minSpacing)
+            val startSpace = (spaceWithoutButtons - centerSpace) / 2
 
-        val spaceWithoutButtons = constraints.maxWidth - maxWidth * 2
-        val freeSpace = spaceWithoutButtons / 3
-        val minSpacingPx = 16.dp.roundToPx()
-        val centerSpace = maxOf(freeSpace, minSpacingPx)
-        val startSpace = (spaceWithoutButtons - centerSpace) / 2
-
-        layout(constraints.maxWidth, totalHeight) {
-            fixedSelectAllPlaceable.placeRelative(
-                startSpace,
-                0
-            )
-            fixedTrashPlaceable.placeRelative(
-                fixedSelectAllPlaceable.width + startSpace + centerSpace,
-                0
-            )
+            layout(constraints.maxWidth, totalHeight) {
+                selectAllPlaceable.placeRelative(
+                    x = startSpace,
+                    y = 0
+                )
+                trashPlaceable.placeRelative(
+                    x = startSpace + selectAllPlaceable.width + centerSpace,
+                    y = 0
+                )
+            }
         }
     }
 }

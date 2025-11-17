@@ -75,7 +75,7 @@
 
 <!--    Main Screen-->
     <string name="login_online">Войти</string>
-    <string name="login_offline">Продолжить оффлайн</string>
+    <string name="login_description">Войдите в аккаунт Lesta для доступа к Вашему ангару в Tanks Blitz!</string>
 
 
 <!--    Offline Screen-->

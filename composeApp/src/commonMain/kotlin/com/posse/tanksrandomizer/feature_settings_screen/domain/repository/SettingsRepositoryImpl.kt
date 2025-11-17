@@ -28,4 +28,7 @@ class SettingsRepositoryImpl(
 
     override fun getLocale(): AppLocale? = dataSource.getLocale()
     override fun setLocale(locale: AppLocale) = dataSource.setLocale(locale)
+
+    override fun getDesktopWindowSize(): Pair<Int, Int>? = dataSource.getDesktopWindowSize()
+    override fun setDesktopWindowSize(size: Pair<Int, Int>) = dataSource.setDesktopWindowSize(size)
 }

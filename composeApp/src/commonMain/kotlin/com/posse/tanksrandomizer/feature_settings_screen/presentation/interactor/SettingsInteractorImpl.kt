@@ -41,6 +41,8 @@ class SettingsInteractorImpl(
     private val _floatingButtonSize: MutableStateFlow<Float> = MutableStateFlow(repository.getFloatingButtonSize())
     override val floatingButtonSize: StateFlow<Float> = _floatingButtonSize.asStateFlow()
 
+    private val _desktopWindowSize: MutableStateFlow<Pair<Int, Int>?> = MutableStateFlow(repository.getDesktopWindowSize())
+
     init {
         scope.launch {
             _floatingButtonSize
@@ -77,6 +79,16 @@ class SettingsInteractorImpl(
                     }
                 }
         }
+
+        scope.launch {
+            _desktopWindowSize
+                .debounce { 2000 }
+                .collect { size ->
+                    size?.let {
+                        repository.setDesktopWindowSize(size)
+                    }
+                }
+        }
     }
 
     override fun setWindowInFullScreen(fullScreen: Boolean) {
@@ -107,5 +119,10 @@ class SettingsInteractorImpl(
 
     override fun setFloatingButtonSize(size: Float) {
         _floatingButtonSize.value = size
+    }
+
+    override fun getDesktopWindowSize(): Pair<Int, Int>? = _desktopWindowSize.value
+    override fun setDesktopWindowSize(size: Pair<Int, Int>) {
+        _desktopWindowSize.value = size
     }
 }

@@ -11,19 +11,16 @@ class GetOfflineScreenStartState(
     private val offlineScreenRepository: OfflineScreenRepository,
 ) {
     operator fun invoke(): OfflineScreenState {
-        val offlineFilters = OfflineFilters(
-            tiers = commonTanksRepository.getTiers(),
-            experiences = offlineScreenRepository.getExperiences(),
-            nations = commonTanksRepository.getNations(),
-            pinned = offlineScreenRepository.getPinned(),
-            statuses = offlineScreenRepository.getStatuses(),
-            tankTypes = offlineScreenRepository.getTankTypes(),
-            types = commonTanksRepository.getTypes(),
-        )
-
         return OfflineScreenState(
-            offlineFilters = offlineFilters,
-            previousFilters = offlineFilters,
+            offlineFilters = OfflineFilters(
+                tiers = commonTanksRepository.getTiers(),
+                experiences = offlineScreenRepository.getExperiences(),
+                nations = commonTanksRepository.getNations(),
+                pinned = offlineScreenRepository.getPinned(),
+                statuses = offlineScreenRepository.getStatuses(),
+                tankTypes = offlineScreenRepository.getTankTypes(),
+                types = commonTanksRepository.getTypes(),
+            ),
             numbers = Numbers(
                 quantity = offlineScreenRepository.getQuantity(),
             ),

@@ -8,8 +8,8 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import com.posse.tanksrandomizer.common.compose.utils.LocalSizeClass
 import com.posse.tanksrandomizer.common.compose.utils.ScreenSize
-import com.posse.tanksrandomizer.common.compose.utils.getScreenSize
 import com.posse.tanksrandomizer.navigation.compose.components.MultipleLargeScreenNavigation
 import com.posse.tanksrandomizer.navigation.compose.components.SingleMediumScreenNavigation
 import com.posse.tanksrandomizer.navigation.compose.components.SingleSmallScreenNavigation
@@ -26,7 +26,7 @@ fun MainNavigation(
         containerColor = Color.Transparent,
         modifier = modifier,
     ) {
-        when (getScreenSize()) {
+        when (LocalSizeClass.current) {
             ScreenSize.Small -> SingleSmallScreenNavigation(
                 runningAsOverlay = runningAsOverlay,
                 snackbarHostState = snackbarHostState,

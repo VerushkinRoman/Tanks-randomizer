@@ -25,4 +25,7 @@ interface SettingsRepository {
 
     fun getLocale(): AppLocale?
     fun setLocale(locale: AppLocale)
+
+    fun getDesktopWindowSize(): Pair<Int, Int>?
+    fun setDesktopWindowSize(size: Pair<Int, Int>)
 }

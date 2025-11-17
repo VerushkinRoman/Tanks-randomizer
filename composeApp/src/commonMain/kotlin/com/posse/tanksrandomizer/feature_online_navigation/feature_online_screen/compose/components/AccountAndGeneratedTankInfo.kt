@@ -23,7 +23,6 @@ import androidx.compose.material3.TooltipAnchorPosition
 import androidx.compose.material3.TooltipBox
 import androidx.compose.material3.TooltipDefaults
 import androidx.compose.material3.rememberTooltipState
-import androidx.compose.material3.windowsizeclass.WindowWidthSizeClass
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -45,6 +44,7 @@ import com.posse.tanksrandomizer.common.compose.base_components.LoadingIndicator
 import com.posse.tanksrandomizer.common.compose.base_components.RandomizerText
 import com.posse.tanksrandomizer.common.compose.base_components.SmallButtonWithTextAndImage
 import com.posse.tanksrandomizer.common.compose.utils.LocalSizeClass
+import com.posse.tanksrandomizer.common.compose.utils.ScreenSize
 import com.posse.tanksrandomizer.feature_online_navigation.feature_online_screen.compose.utils.getFilteredText
 import com.posse.tanksrandomizer.feature_online_navigation.feature_online_screen.compose.utils.getRefreshText
 import com.posse.tanksrandomizer.feature_online_navigation.feature_online_screen.compose.utils.getTotalText
@@ -79,8 +79,8 @@ fun AccountAndGeneratedTankInfo(
     val filteredText = getFilteredText(tanksByFilter)
     val tankName = generatedTank?.name ?: "-"
 
-    when (LocalSizeClass.current.widthSizeClass) {
-        WindowWidthSizeClass.Compact -> {
+    when (LocalSizeClass.current) {
+        ScreenSize.Small -> {
             CompactScreen(
                 generatedTank = generatedTank,
                 totalText = totalText,

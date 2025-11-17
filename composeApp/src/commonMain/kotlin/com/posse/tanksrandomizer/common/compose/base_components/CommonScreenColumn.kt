@@ -24,9 +24,9 @@ import androidx.compose.ui.layout.onSizeChanged
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
+import com.posse.tanksrandomizer.common.compose.utils.LocalSizeClass
 import com.posse.tanksrandomizer.common.compose.utils.ScreenSize
 import com.posse.tanksrandomizer.common.compose.utils.getHorizontalEvenSafeContentPaddings
-import com.posse.tanksrandomizer.common.compose.utils.getScreenSize
 
 @Composable
 fun CommonScreenColumn(
@@ -37,11 +37,11 @@ fun CommonScreenColumn(
     val density = LocalDensity.current
     var additionalSpace: Dp by remember { mutableStateOf(0.dp) }
 
-    val screenSize = getScreenSize()
+    val screenSize = LocalSizeClass.current
     val horizontal = remember(screenSize) {
         when (screenSize) {
-            ScreenSize.Small, ScreenSize.Large -> false
-            ScreenSize.Medium -> true
+            ScreenSize.Small -> false
+            else -> true
         }
     }
 

@@ -33,4 +33,7 @@ class ScreenSettingsDataSourceImpl(
 
     override fun getLocale(): AppLocale? = settings.decodeValueOrNull<AppLocale>("AppLocale")
     override fun setLocale(locale: AppLocale) = settings.encodeValue("AppLocale", locale)
+
+    override fun getDesktopWindowSize(): Pair<Int, Int>? = settings.decodeValueOrNull<Pair<Int, Int>>("DesktopWindowSize")
+    override fun setDesktopWindowSize(size: Pair<Int, Int>) = settings.encodeValue("DesktopWindowSize", size)
 }

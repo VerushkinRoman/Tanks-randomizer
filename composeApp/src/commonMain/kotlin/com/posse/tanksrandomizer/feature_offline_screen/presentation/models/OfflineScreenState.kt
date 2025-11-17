@@ -2,12 +2,12 @@ package com.posse.tanksrandomizer.feature_offline_screen.presentation.models
 
 data class OfflineScreenState(
     val offlineFilters: OfflineFilters,
-    val previousFilters: OfflineFilters,
+    val previousFilters: OfflineFilters? = null,
     val numbers: Numbers,
 ) {
     fun updateFilters(newFilters: OfflineFilters) = copy(
         offlineFilters = newFilters,
-        previousFilters = newFilters
+        previousFilters = offlineFilters,
     )
 
     fun updateQuantity(newQuantity: Int) = copy(

@@ -52,8 +52,8 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.DpSize
 import androidx.compose.ui.unit.dp
 import com.posse.tanksrandomizer.common.compose.base_components.BorderWidth
+import com.posse.tanksrandomizer.common.compose.utils.LocalSizeClass
 import com.posse.tanksrandomizer.common.compose.utils.ScreenSize
-import com.posse.tanksrandomizer.common.compose.utils.getScreenSize
 import com.posse.tanksrandomizer.feature_settings_screen.presentation.model.SettingsEvent
 import com.posse.tanksrandomizer.feature_settings_screen.presentation.model.SettingsState
 import org.jetbrains.compose.resources.stringResource
@@ -176,8 +176,8 @@ private fun CommonBlock(
         )
     }
 
-    when (getScreenSize()) {
-        ScreenSize.Small, ScreenSize.Large -> {
+    when (LocalSizeClass.current) {
+        ScreenSize.Small -> {
             Column(
                 verticalArrangement = Arrangement.spacedBy(4.dp),
                 horizontalAlignment = Alignment.CenterHorizontally,
@@ -188,7 +188,7 @@ private fun CommonBlock(
             }
         }
 
-        ScreenSize.Medium -> {
+        else -> {
             val density = LocalDensity.current
 
             BoxWithConstraints(modifier = modifier) {

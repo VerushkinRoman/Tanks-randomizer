@@ -8,8 +8,8 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import com.posse.tanksrandomizer.common.compose.utils.LocalSizeClass
 import com.posse.tanksrandomizer.common.compose.utils.ScreenSize
-import com.posse.tanksrandomizer.common.compose.utils.getScreenSize
 
 @Composable
 fun CommonSettingsActionBlock(
@@ -17,8 +17,8 @@ fun CommonSettingsActionBlock(
     action: @Composable () -> Unit,
     modifier: Modifier = Modifier,
 ) {
-    when (getScreenSize()) {
-        ScreenSize.Small, ScreenSize.Large -> {
+    when (LocalSizeClass.current) {
+        ScreenSize.Small -> {
             Column(
                 verticalArrangement = Arrangement.spacedBy(4.dp),
                 horizontalAlignment = Alignment.CenterHorizontally,
@@ -29,7 +29,7 @@ fun CommonSettingsActionBlock(
             }
         }
 
-        ScreenSize.Medium -> {
+        else -> {
             Row(
                 verticalAlignment = Alignment.CenterVertically,
                 horizontalArrangement = Arrangement.spacedBy(16.dp),

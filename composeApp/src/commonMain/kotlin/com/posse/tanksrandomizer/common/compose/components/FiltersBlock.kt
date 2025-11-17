@@ -19,7 +19,6 @@ import androidx.compose.foundation.layout.requiredSize
 import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.windowsizeclass.WindowWidthSizeClass
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.MutableState
@@ -39,6 +38,7 @@ import com.posse.tanksrandomizer.common.compose.base_components.BorderWidth
 import com.posse.tanksrandomizer.common.compose.base_components.ButtonsShapeSmall
 import com.posse.tanksrandomizer.common.compose.utils.LocalElementSize
 import com.posse.tanksrandomizer.common.compose.utils.LocalSizeClass
+import com.posse.tanksrandomizer.common.compose.utils.ScreenSize
 import com.posse.tanksrandomizer.common.compose.utils.additionalPadding
 import com.posse.tanksrandomizer.common.compose.utils.borderColor
 import com.posse.tanksrandomizer.common.compose.utils.color
@@ -108,8 +108,8 @@ private fun ButtonsByWidth(
     diceClicked: MutableState<Boolean>,
     modifier: Modifier = Modifier,
 ) {
-    when (LocalSizeClass.current.widthSizeClass) {
-        WindowWidthSizeClass.Compact -> {
+    when (LocalSizeClass.current) {
+        ScreenSize.Small -> {
             Column(
                 verticalArrangement = Arrangement.spacedBy(12.dp),
                 horizontalAlignment = Alignment.CenterHorizontally,

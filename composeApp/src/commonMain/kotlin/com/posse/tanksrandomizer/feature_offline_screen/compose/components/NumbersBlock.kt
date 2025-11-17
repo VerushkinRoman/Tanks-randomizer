@@ -25,8 +25,8 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.posse.tanksrandomizer.common.compose.base_components.ButtonWithImage
 import com.posse.tanksrandomizer.common.compose.base_components.BorderWidth
+import com.posse.tanksrandomizer.common.compose.base_components.ButtonWithImage
 import com.posse.tanksrandomizer.common.compose.base_components.ButtonsShapeLarge
 import com.posse.tanksrandomizer.common.compose.base_components.ButtonsShapeSmall
 import com.posse.tanksrandomizer.common.compose.utils.LocalElementSize
@@ -166,7 +166,7 @@ private fun NumberItem(
     Box(
         contentAlignment = Alignment.Center,
         modifier = modifier
-            .height(LocalElementSize.current)
+            .height(LocalElementSize.current.coerceAtLeast(ButtonDefaults.MinHeight * 2 / 3))
             .widthIn(min = LocalElementSize.current)
             .border(
                 width = BorderWidth,
@@ -205,7 +205,7 @@ private fun NumberButton(
     Box(
         contentAlignment = Alignment.Center,
         modifier = modifier
-            .height(LocalElementSize.current)
+            .height(LocalElementSize.current.coerceAtLeast(ButtonDefaults.MinHeight * 2 / 3))
             .widthIn(min = LocalElementSize.current)
             .clickable(onClick = onClick)
             .border(
