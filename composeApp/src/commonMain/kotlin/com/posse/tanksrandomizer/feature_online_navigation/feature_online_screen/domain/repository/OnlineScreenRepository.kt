@@ -1,5 +1,6 @@
 package com.posse.tanksrandomizer.feature_online_navigation.feature_online_screen.domain.repository
 
+import com.posse.tanksrandomizer.common.domain.models.Token
 import com.posse.tanksrandomizer.feature_online_navigation.feature_online_screen.domain.models.AccountTank
 import com.posse.tanksrandomizer.feature_online_navigation.feature_online_screen.domain.models.EncyclopediaTank
 import com.posse.tanksrandomizer.common.domain.utils.Error
@@ -28,6 +29,6 @@ interface OnlineScreenRepository {
     fun getPremium(): List<Premium>
     fun setPremium(premium: List<Premium>)
 
-    suspend fun getAccountTanks(): Result<List<AccountTank>, Error>
-    suspend fun getEncyclopediaTanks(ids: List<Int>): Result<List<EncyclopediaTank>, Error>
+    suspend fun getAccountTanks(token: Token): Result<List<AccountTank>, Error>
+    suspend fun getEncyclopediaTanks(token: Token, ids: List<Int>): Result<List<EncyclopediaTank>, Error>
 }

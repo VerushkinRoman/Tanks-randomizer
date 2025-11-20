@@ -1,14 +1,15 @@
 package com.posse.tanksrandomizer.feature_online_navigation.feature_online_screen.presentation
 
-import androidx.lifecycle.viewModelScope
 import com.posse.tanksrandomizer.common.compose.utils.ErrorHandler.isTokenError
 import com.posse.tanksrandomizer.common.core.di.Inject
 import com.posse.tanksrandomizer.common.domain.models.CommonFilterObjects.ItemStatus
 import com.posse.tanksrandomizer.common.domain.models.RepositoryFor
+import com.posse.tanksrandomizer.common.domain.models.Token
 import com.posse.tanksrandomizer.common.domain.repository.AccountRepository
 import com.posse.tanksrandomizer.common.domain.repository.CommonTanksRepository
 import com.posse.tanksrandomizer.common.domain.utils.Dispatchers
 import com.posse.tanksrandomizer.common.domain.utils.Error
+import com.posse.tanksrandomizer.common.domain.utils.Result
 import com.posse.tanksrandomizer.common.domain.utils.onError
 import com.posse.tanksrandomizer.common.domain.utils.onSuccess
 import com.posse.tanksrandomizer.common.presentation.utils.BaseSharedViewModel
@@ -24,20 +25,15 @@ import com.posse.tanksrandomizer.feature_online_navigation.feature_online_screen
 import com.posse.tanksrandomizer.feature_online_navigation.feature_online_screen.presentation.use_cases.RefreshTanks
 import com.posse.tanksrandomizer.feature_online_navigation.feature_online_screen.presentation.use_cases.SaveOnlineScreenState
 import com.posse.tanksrandomizer.feature_online_navigation.feature_online_screen.presentation.use_cases.UpdateToken
-import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Job
-import kotlinx.coroutines.cancelChildren
-import kotlinx.coroutines.delay
-import kotlinx.coroutines.isActive
-import kotlin.time.Duration.Companion.seconds
 import kotlin.time.ExperimentalTime
 
 @OptIn(ExperimentalTime::class)
 class OnlineScreenViewModel(
     filterRepository: CommonTanksRepository = Inject.instance(tag = RepositoryFor.OnlineScreen),
     onlineScreenRepository: OnlineScreenRepository = Inject.instance(),
-    accountRepository: AccountRepository = Inject.instance(),
+    private val accountRepository: AccountRepository = Inject.instance(),
     dispatchers: Dispatchers = Inject.instance(),
     private val filterTanks: FilterTanks = FilterTanks(dispatchers = dispatchers),
 ) : BaseSharedViewModel<OnlineScreenState, OnlineScreenAction, OnlineScreenEvent>(
@@ -74,12 +70,7 @@ class OnlineScreenViewModel(
     )
 
     init {
-        withViewModelScope {
-            delay(5.seconds)
-            if (this.isActive) {
-                refreshAccount(launchedByUser = false)
-            }
-        }
+        refreshAccount(launchedByUser = false)
     }
 
     override fun obtainEvent(viewEvent: OnlineScreenEvent) {
@@ -161,17 +152,26 @@ class OnlineScreenViewModel(
         startLoading()
 
         makeActionWithViewModelScopeAndSaveState {
-            updateToken()
-                .onError { error ->
-                    if (error.isTokenError()) {
-                        logout(launchedByUser = launchedByUser)
-                    } else {
-                        showError(error = error, launchedByUser = launchedByUser)
+            val token = updateToken()
+                .let { result ->
+                    when (result) {
+                        is Result.Success<Token> -> {
+                            result.data
+                        }
+
+                        is Result.Error<*> -> {
+                            val error = result.error
+                            if (error.isTokenError()) {
+                                logout(launchedByUser = launchedByUser)
+                            } else {
+                                showError(error = error, launchedByUser = launchedByUser)
+                            }
+                            return@makeActionWithViewModelScopeAndSaveState
+                        }
                     }
-                    return@makeActionWithViewModelScopeAndSaveState
                 }
 
-            refreshTanks(viewState.tanksInGarage)
+            refreshTanks(token = token, tanks = viewState.tanksInGarage)
                 .onSuccess { newTanks ->
                     handleRefreshSuccess(newTanks)
                 }
@@ -219,10 +219,5 @@ class OnlineScreenViewModel(
             saveOnlineScreenState(viewState)
             stopLoading()
         }
-    }
-
-    public override fun onCleared() {
-        super.onCleared()
-        viewModelScope.coroutineContext.cancelChildren(CancellationException("onCleared"))
     }
 }

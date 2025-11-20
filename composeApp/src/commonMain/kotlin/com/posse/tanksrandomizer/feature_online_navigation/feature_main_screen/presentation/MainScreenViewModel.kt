@@ -1,19 +1,16 @@
 package com.posse.tanksrandomizer.feature_online_navigation.feature_main_screen.presentation
 
-import androidx.lifecycle.viewModelScope
 import com.posse.tanksrandomizer.common.core.di.Inject
 import com.posse.tanksrandomizer.common.domain.repository.AccountRepository
 import com.posse.tanksrandomizer.common.domain.utils.Dispatchers
 import com.posse.tanksrandomizer.common.domain.utils.Error
 import com.posse.tanksrandomizer.common.domain.utils.onError
 import com.posse.tanksrandomizer.common.domain.utils.onSuccess
-import com.posse.tanksrandomizer.feature_online_navigation.feature_online_screen.presentation.use_cases.LogInToAccount
 import com.posse.tanksrandomizer.common.presentation.utils.BaseSharedViewModel
 import com.posse.tanksrandomizer.feature_online_navigation.feature_main_screen.presentation.models.MainScreenAction
 import com.posse.tanksrandomizer.feature_online_navigation.feature_main_screen.presentation.models.MainScreenEvent
 import com.posse.tanksrandomizer.feature_online_navigation.feature_main_screen.presentation.models.MainScreenState
-import kotlinx.coroutines.CancellationException
-import kotlinx.coroutines.cancelChildren
+import com.posse.tanksrandomizer.feature_online_navigation.feature_online_screen.presentation.use_cases.LogInToAccount
 
 class MainScreenViewModel(
     accountRepository: AccountRepository = Inject.instance(),
@@ -53,10 +50,5 @@ class MainScreenViewModel(
     private fun showError(error: Error) {
         viewAction = MainScreenAction.ShowError(error)
         stopLoading()
-    }
-
-    public override fun onCleared() {
-        super.onCleared()
-        viewModelScope.coroutineContext.cancelChildren(CancellationException("onCleared"))
     }
 }

@@ -14,8 +14,10 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import androidx.lifecycle.viewmodel.compose.viewModel
 import com.posse.tanksrandomizer.common.compose.utils.showError
 import com.posse.tanksrandomizer.common.presentation.utils.collectAsStateWithLifecycle
+import com.posse.tanksrandomizer.common.presentation.utils.getPlatformFactory
 import com.posse.tanksrandomizer.feature_online_navigation.feature_online_screen.compose.components.LogoutDialog
 import com.posse.tanksrandomizer.feature_online_navigation.feature_online_screen.compose.components.OnlineScreenContent
 import com.posse.tanksrandomizer.feature_online_navigation.feature_online_screen.presentation.OnlineScreenViewModel
@@ -24,7 +26,7 @@ import com.posse.tanksrandomizer.feature_online_navigation.feature_online_screen
 
 @Composable
 fun OnlineScreen(
-    viewModel: OnlineScreenViewModel,
+    viewModel: OnlineScreenViewModel = viewModel(factory = getPlatformFactory()),
     logOut: () -> Unit,
     runningAsOverlay: Boolean,
     modifier: Modifier,

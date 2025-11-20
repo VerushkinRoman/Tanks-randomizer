@@ -1,14 +1,26 @@
 package com.posse.tanksrandomizer.feature_online_navigation.navigation.presentation.screens
 
+import androidx.navigation3.runtime.NavKey
+import androidx.savedstate.serialization.SavedStateConfiguration
 import kotlinx.serialization.Serializable
+import kotlinx.serialization.modules.SerializersModule
+import kotlinx.serialization.modules.polymorphic
 
-interface OnlineNavigationRoute {
-    @Serializable
-    object MainScreenRoute : OnlineNavigationRoute
+@Serializable
+object MainScreenRoute : NavKey
 
-    @Serializable
-    object OnlineScreenRoute : OnlineNavigationRoute
+@Serializable
+object OnlineScreenRoute : NavKey
 
-    @Serializable
-    data class WebViewScreenRoute(val url: String)
+@Serializable
+data class WebViewScreenRoute(val url: String) : NavKey
+
+val onlineNavigationConfig = SavedStateConfiguration {
+    serializersModule = SerializersModule {
+        polymorphic(NavKey::class) {
+            subclass(MainScreenRoute::class, MainScreenRoute.serializer())
+            subclass(OnlineScreenRoute::class, OnlineScreenRoute.serializer())
+            subclass(WebViewScreenRoute::class, WebViewScreenRoute.serializer())
+        }
+    }
 }

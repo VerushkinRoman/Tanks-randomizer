@@ -1,4 +1,4 @@
-package com.posse.tanksrandomizer
+package com.posse.tanksrandomizer.common.compose
 
 import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.foundation.layout.fillMaxSize
@@ -13,8 +13,8 @@ import com.posse.tanksrandomizer.common.compose.components.AppBackground
 import com.posse.tanksrandomizer.common.compose.theme.AppTheme
 import com.posse.tanksrandomizer.common.compose.utils.LocalElementSize
 import com.posse.tanksrandomizer.common.compose.utils.LocalSizeClass
-import com.posse.tanksrandomizer.common.compose.utils.getElementSize
-import com.posse.tanksrandomizer.common.compose.utils.getScreenSize
+import com.posse.tanksrandomizer.common.compose.utils.elementSize
+import com.posse.tanksrandomizer.common.compose.utils.screenSize
 import com.posse.tanksrandomizer.common.core.di.Inject
 import com.posse.tanksrandomizer.feature_settings_screen.domain.models.AppLocale
 import com.posse.tanksrandomizer.feature_settings_screen.domain.repository.SettingsRepository
@@ -52,8 +52,8 @@ internal fun CommonPlatformApp(
             modifier = modifier,
         ) {
             CompositionLocalProvider(
-                LocalElementSize provides getElementSize(maxBoxWidth = maxWidth),
-                LocalSizeClass provides getScreenSize(maxWidth, maxHeight),
+                LocalElementSize provides elementSize(maxWidth),
+                LocalSizeClass provides screenSize(maxWidth, maxHeight),
             ) {
                 AppBackground(
                     modifier = Modifier.fillMaxSize(),

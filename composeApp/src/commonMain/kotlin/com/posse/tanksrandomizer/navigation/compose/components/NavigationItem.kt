@@ -14,13 +14,13 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.graphics.vector.rememberVectorPainter
 import androidx.compose.ui.layout.ContentScale
+import androidx.navigation3.runtime.NavKey
 import com.posse.tanksrandomizer.navigation.compose.components.NavigationItem.Offline
 import com.posse.tanksrandomizer.navigation.compose.components.NavigationItem.Online
 import com.posse.tanksrandomizer.navigation.compose.components.NavigationItem.Settings
-import com.posse.tanksrandomizer.navigation.presentation.screens.ScreenRoute
-import com.posse.tanksrandomizer.navigation.presentation.screens.ScreenRoute.OfflineScreenRoute
-import com.posse.tanksrandomizer.navigation.presentation.screens.ScreenRoute.OnlineNavigationRoute
-import com.posse.tanksrandomizer.navigation.presentation.screens.ScreenRoute.SettingsScreenRoute
+import com.posse.tanksrandomizer.navigation.presentation.screens.OfflineScreenRoute
+import com.posse.tanksrandomizer.navigation.presentation.screens.OnlineNavigationRoute
+import com.posse.tanksrandomizer.navigation.presentation.screens.SettingsScreenRoute
 import org.jetbrains.compose.resources.StringResource
 import org.jetbrains.compose.resources.painterResource
 import tanks_randomizer.composeapp.generated.resources.Res
@@ -30,7 +30,7 @@ import tanks_randomizer.composeapp.generated.resources.navigation_label_offline
 import tanks_randomizer.composeapp.generated.resources.navigation_label_online
 import tanks_randomizer.composeapp.generated.resources.navigation_label_settings
 
-enum class NavigationItem(val label: StringResource, val screenRoute: ScreenRoute) {
+enum class NavigationItem(val label: StringResource, val screenRoute: NavKey) {
     Online(label = Res.string.navigation_label_online, screenRoute = OnlineNavigationRoute),
     Offline(label = Res.string.navigation_label_offline, screenRoute = OfflineScreenRoute),
     Settings(label = Res.string.navigation_label_settings, screenRoute = SettingsScreenRoute),

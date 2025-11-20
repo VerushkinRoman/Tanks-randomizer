@@ -26,7 +26,7 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.posse.tanksrandomizer.common.compose.utils.LocalSizeClass
 import com.posse.tanksrandomizer.common.compose.utils.ScreenSize
-import com.posse.tanksrandomizer.common.compose.utils.getHorizontalEvenSafeContentPaddings
+import com.posse.tanksrandomizer.common.compose.utils.horizontalEvenSafeContentPaddings
 
 @Composable
 fun CommonScreenColumn(
@@ -53,8 +53,8 @@ fun CommonScreenColumn(
             .windowInsetsPadding(WindowInsets.safeContent.only(WindowInsetsSides.Vertical))
             .padding(
                 horizontal = if (horizontal && runningAsOverlay && additionalSpace <= ButtonDefaults.MinHeight + 16.dp) {
-                    maxOf(ButtonDefaults.MinHeight + 16.dp, getHorizontalEvenSafeContentPaddings())
-                } else getHorizontalEvenSafeContentPaddings()
+                    maxOf(ButtonDefaults.MinHeight + 16.dp, horizontalEvenSafeContentPaddings)
+                } else horizontalEvenSafeContentPaddings
             )
             .padding(vertical = 8.dp)
     ) {

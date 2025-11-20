@@ -15,8 +15,6 @@ import com.posse.tanksrandomizer.feature_offline_screen.presentation.models.Offl
 import com.posse.tanksrandomizer.feature_offline_screen.presentation.use_cases.GenerateOfflineFilter
 import com.posse.tanksrandomizer.feature_offline_screen.presentation.use_cases.GetOfflineScreenStartState
 import com.posse.tanksrandomizer.feature_offline_screen.presentation.use_cases.SaveOfflineScreenState
-import kotlinx.coroutines.CancellationException
-import kotlinx.coroutines.cancelChildren
 import kotlinx.coroutines.launch
 
 class OfflineScreenViewModel(
@@ -106,10 +104,5 @@ class OfflineScreenViewModel(
             action()
             saveOfflineScreenState(viewState)
         }
-    }
-
-    public override fun onCleared() {
-        super.onCleared()
-        viewModelScope.coroutineContext.cancelChildren(CancellationException("onCleared"))
     }
 }

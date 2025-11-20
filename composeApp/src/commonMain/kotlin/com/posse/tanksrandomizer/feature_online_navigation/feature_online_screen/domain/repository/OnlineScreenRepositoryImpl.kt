@@ -2,13 +2,13 @@ package com.posse.tanksrandomizer.feature_online_navigation.feature_online_scree
 
 import com.posse.tanksrandomizer.common.data.datasource.OfflineDataSource
 import com.posse.tanksrandomizer.common.data.datasource.OnlineDataSource
-import com.posse.tanksrandomizer.feature_online_navigation.feature_online_screen.domain.models.AccountTank
-import com.posse.tanksrandomizer.feature_online_navigation.feature_online_screen.domain.models.EncyclopediaTank
-import com.posse.tanksrandomizer.feature_online_navigation.feature_online_screen.domain.models.MissedEncyclopediaTanks
-import com.posse.tanksrandomizer.common.domain.utils.DomainErrorType
+import com.posse.tanksrandomizer.common.domain.models.Token
 import com.posse.tanksrandomizer.common.domain.utils.Error
 import com.posse.tanksrandomizer.common.domain.utils.Result
 import com.posse.tanksrandomizer.feature_online_navigation.feature_online_screen.data.datasource.OnlineScreenDataSource
+import com.posse.tanksrandomizer.feature_online_navigation.feature_online_screen.domain.models.AccountTank
+import com.posse.tanksrandomizer.feature_online_navigation.feature_online_screen.domain.models.EncyclopediaTank
+import com.posse.tanksrandomizer.feature_online_navigation.feature_online_screen.domain.models.MissedEncyclopediaTanks
 import com.posse.tanksrandomizer.feature_online_navigation.feature_online_screen.domain.models.OnlineFilterObjects.Mastery
 import com.posse.tanksrandomizer.feature_online_navigation.feature_online_screen.domain.models.OnlineFilterObjects.Premium
 import com.posse.tanksrandomizer.feature_online_navigation.feature_online_screen.domain.models.Tank
@@ -44,13 +44,14 @@ class OnlineScreenRepositoryImpl(
 
     override fun setPremium(premium: List<Premium>) = offlineDataSource.setProperties(premium)
 
-    override suspend fun getAccountTanks(): Result<List<AccountTank>, Error> {
-        val token = offlineDataSource.getToken() ?: return Result.Error(DomainErrorType.TokenError)
+    override suspend fun getAccountTanks(token: Token): Result<List<AccountTank>, Error> {
         return onlineDataSource.getAccountTanks(currentToken = token)
     }
 
-    override suspend fun getEncyclopediaTanks(ids: List<Int>): Result<List<EncyclopediaTank>, Error> {
-        val token = offlineDataSource.getToken() ?: return Result.Error(DomainErrorType.TokenError)
+    override suspend fun getEncyclopediaTanks(
+        token: Token,
+        ids: List<Int>
+    ): Result<List<EncyclopediaTank>, Error> {
         val encyclopediaTanksResult = onlineDataSource.getEncyclopediaTanks(ids = ids, currentToken = token)
 
         when (encyclopediaTanksResult) {

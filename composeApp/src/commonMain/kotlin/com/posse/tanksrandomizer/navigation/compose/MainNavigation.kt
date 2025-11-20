@@ -10,9 +10,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import com.posse.tanksrandomizer.common.compose.utils.LocalSizeClass
 import com.posse.tanksrandomizer.common.compose.utils.ScreenSize
-import com.posse.tanksrandomizer.navigation.compose.components.MultipleLargeScreenNavigation
-import com.posse.tanksrandomizer.navigation.compose.components.SingleMediumScreenNavigation
-import com.posse.tanksrandomizer.navigation.compose.components.SingleSmallScreenNavigation
+import com.posse.tanksrandomizer.navigation.compose.components.MultipleLargeScreen
+import com.posse.tanksrandomizer.navigation.compose.components.SingleScreenNavigation
 
 @Composable
 fun MainNavigation(
@@ -27,19 +26,13 @@ fun MainNavigation(
         modifier = modifier,
     ) {
         when (LocalSizeClass.current) {
-            ScreenSize.Small -> SingleSmallScreenNavigation(
+            ScreenSize.Large -> MultipleLargeScreen(
                 runningAsOverlay = runningAsOverlay,
                 snackbarHostState = snackbarHostState,
                 modifier = Modifier.fillMaxSize(),
             )
 
-            ScreenSize.Medium -> SingleMediumScreenNavigation(
-                runningAsOverlay = runningAsOverlay,
-                snackbarHostState = snackbarHostState,
-                modifier = Modifier.fillMaxSize(),
-            )
-
-            ScreenSize.Large -> MultipleLargeScreenNavigation(
+            else -> SingleScreenNavigation(
                 runningAsOverlay = runningAsOverlay,
                 snackbarHostState = snackbarHostState,
                 modifier = Modifier.fillMaxSize(),

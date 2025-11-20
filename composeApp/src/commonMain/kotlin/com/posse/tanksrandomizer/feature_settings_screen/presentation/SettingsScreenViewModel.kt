@@ -1,6 +1,5 @@
 package com.posse.tanksrandomizer.feature_settings_screen.presentation
 
-import androidx.lifecycle.viewModelScope
 import com.posse.tanksrandomizer.common.core.di.Inject
 import com.posse.tanksrandomizer.common.presentation.utils.BaseSharedViewModel
 import com.posse.tanksrandomizer.feature_settings_screen.domain.models.AppLocale
@@ -11,8 +10,6 @@ import com.posse.tanksrandomizer.feature_settings_screen.presentation.model.Sett
 import com.posse.tanksrandomizer.feature_settings_screen.presentation.model.SettingsEvent
 import com.posse.tanksrandomizer.feature_settings_screen.presentation.model.SettingsState
 import com.posse.tanksrandomizer.feature_settings_screen.presentation.use_cases.GetSettingsState
-import kotlinx.coroutines.CancellationException
-import kotlinx.coroutines.cancelChildren
 
 class SettingsScreenViewModel(
     private val repository: SettingsRepository = Inject.instance(),
@@ -82,10 +79,5 @@ class SettingsScreenViewModel(
         )
 
         settingsInteractor.setFullScreenMode(fullScreen)
-    }
-
-    public override fun onCleared() {
-        super.onCleared()
-        viewModelScope.coroutineContext.cancelChildren(CancellationException("onCleared"))
     }
 }

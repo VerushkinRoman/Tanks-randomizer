@@ -12,7 +12,7 @@ import androidx.compose.ui.window.WindowPosition
 import androidx.compose.ui.window.application
 import androidx.compose.ui.window.rememberWindowState
 import com.multiplatform.webview.util.addTempDirectoryRemovalHook
-import com.posse.tanksrandomizer.CommonPlatformApp
+import com.posse.tanksrandomizer.common.compose.CommonPlatformApp
 import com.posse.tanksrandomizer.common.core.di.Inject
 import com.posse.tanksrandomizer.common.core.platform.PlatformConfiguration
 import com.posse.tanksrandomizer.common.core.platform.PlatformSDK

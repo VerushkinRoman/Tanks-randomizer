@@ -29,9 +29,7 @@ import kotlinx.coroutines.launch
 
 val invisibleModifier = Modifier.layout { measurable, constraints ->
     val placeable = measurable.measure(constraints)
-    layout(placeable.measuredWidth, placeable.measuredHeight) {
-
-    }
+    layout(placeable.measuredWidth, placeable.measuredHeight) {}
 }
 
 val LocalElementSize = staticCompositionLocalOf<Dp> { error("no default implementation") }
@@ -49,26 +47,25 @@ fun showError(
     }
 }
 
-@Composable
-fun getHorizontalEvenSafeContentPaddings(): Dp {
-    val layoutDirection = LocalLayoutDirection.current
-    val horizontalPaddings = WindowInsets.safeContent
-        .only(WindowInsetsSides.Horizontal)
-        .asPaddingValues()
-    val startPadding = horizontalPaddings.calculateStartPadding(layoutDirection)
-    val endPadding = horizontalPaddings.calculateEndPadding(layoutDirection)
+val horizontalEvenSafeContentPaddings: Dp
+    @Composable get() {
+        val layoutDirection = LocalLayoutDirection.current
+        val horizontalPaddings = WindowInsets.safeContent
+            .only(WindowInsetsSides.Horizontal)
+            .asPaddingValues()
+        val startPadding = horizontalPaddings.calculateStartPadding(layoutDirection)
+        val endPadding = horizontalPaddings.calculateEndPadding(layoutDirection)
 
-    return maxOf(startPadding, endPadding, 16.dp)
-}
+        return maxOf(startPadding, endPadding, 16.dp)
+    }
 
 @OptIn(ExperimentalMaterial3WindowSizeClassApi::class)
-@Composable
-fun getScreenSize(maxWidth: Dp, maxHeight: Dp): ScreenSize {
+val screenSize: (maxWidth: Dp, maxHeight: Dp) -> ScreenSize = { maxWidth, maxHeight ->
     val windowSizeClass = WindowSizeClass.calculateFromSize(
         DpSize(width = maxWidth, height = maxHeight)
     )
 
-    return when (windowSizeClass.widthSizeClass) {
+    when (windowSizeClass.widthSizeClass) {
         WindowWidthSizeClass.Compact -> ScreenSize.Small
         WindowWidthSizeClass.Medium -> ScreenSize.Medium
         WindowWidthSizeClass.Expanded if windowSizeClass.heightSizeClass != WindowHeightSizeClass.Compact -> ScreenSize.Large
@@ -82,8 +79,7 @@ enum class ScreenSize {
     Large,
 }
 
-@Composable
-fun getElementSize(maxBoxWidth: Dp): Dp {
+val elementSize: @Composable (maxBoxWidth: Dp) -> Dp = { maxBoxWidth ->
     val density = LocalDensity.current
     val layoutDirection = LocalLayoutDirection.current
     val safeDrawing = WindowInsets.safeDrawing
@@ -92,5 +88,5 @@ fun getElementSize(maxBoxWidth: Dp): Dp {
     val maxWidth = maxBoxWidth - left - right
     val elementWidthByScreen = (maxWidth - (20 * 6).dp) / 12
     val elementSize = minOf(elementWidthByScreen, ButtonDefaults.MinHeight * (3f / 4f))
-    return elementSize
+    elementSize
 }

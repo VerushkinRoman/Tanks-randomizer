@@ -2,30 +2,29 @@ package com.posse.tanksrandomizer.feature_online_navigation.navigation.compose
 
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.remember
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.navigation.NavHostController
-import androidx.navigation.compose.NavHost
-import androidx.navigation.compose.composable
-import androidx.navigation.compose.rememberNavController
-import androidx.navigation.toRoute
+import androidx.lifecycle.viewmodel.navigation3.rememberViewModelStoreNavEntryDecorator
+import androidx.navigation3.runtime.NavKey
+import androidx.navigation3.runtime.entryProvider
+import androidx.navigation3.runtime.rememberNavBackStack
+import androidx.navigation3.runtime.rememberSaveableStateHolderNavEntryDecorator
+import androidx.navigation3.ui.NavDisplay
 import com.posse.tanksrandomizer.common.core.di.Inject
 import com.posse.tanksrandomizer.common.data.networking.EndpointConstants.REDIRECT_URL
 import com.posse.tanksrandomizer.common.domain.models.Token
 import com.posse.tanksrandomizer.common.domain.repository.AccountRepository
 import com.posse.tanksrandomizer.feature_online_navigation.feature_main_screen.compose.MainScreen
-import com.posse.tanksrandomizer.feature_online_navigation.feature_main_screen.presentation.MainScreenViewModel
 import com.posse.tanksrandomizer.feature_online_navigation.feature_online_screen.compose.OnlineScreen
-import com.posse.tanksrandomizer.feature_online_navigation.feature_online_screen.presentation.OnlineScreenViewModel
 import com.posse.tanksrandomizer.feature_online_navigation.feature_webview_screen.compose.WebViewScreen
 import com.posse.tanksrandomizer.feature_online_navigation.navigation.presentation.models.ErrorResponse
 import com.posse.tanksrandomizer.feature_online_navigation.navigation.presentation.models.RedirectResult
 import com.posse.tanksrandomizer.feature_online_navigation.navigation.presentation.models.SuccessResponse
-import com.posse.tanksrandomizer.feature_online_navigation.navigation.presentation.screens.OnlineNavigationRoute
-import com.posse.tanksrandomizer.feature_online_navigation.navigation.presentation.screens.OnlineNavigationRoute.MainScreenRoute
-import com.posse.tanksrandomizer.feature_online_navigation.navigation.presentation.screens.OnlineNavigationRoute.OnlineScreenRoute
-import com.posse.tanksrandomizer.feature_online_navigation.navigation.presentation.screens.OnlineNavigationRoute.WebViewScreenRoute
+import com.posse.tanksrandomizer.feature_online_navigation.navigation.presentation.screens.MainScreenRoute
+import com.posse.tanksrandomizer.feature_online_navigation.navigation.presentation.screens.OnlineScreenRoute
+import com.posse.tanksrandomizer.feature_online_navigation.navigation.presentation.screens.WebViewScreenRoute
+import com.posse.tanksrandomizer.feature_online_navigation.navigation.presentation.screens.onlineNavigationConfig
 import com.posse.tanksrandomizer.feature_online_navigation.navigation.presentation.util.RedirectParser
 import kotlin.time.Clock
 import kotlin.time.Duration.Companion.days
@@ -33,87 +32,73 @@ import kotlin.time.ExperimentalTime
 
 @Composable
 fun OnlineNavigation(
-    navController: NavHostController = rememberNavController(),
     runningAsOverlay: Boolean,
     onRedirectError: (ErrorResponse) -> Unit,
     modifier: Modifier = Modifier
 ) {
     val accountRepository: AccountRepository = remember { Inject.instance() }
 
-    val startDestination: OnlineNavigationRoute = remember(accountRepository) {
-        getStartOnlineDestination(accountRepository)
-    }
+    val startDestination =
+        remember(accountRepository) { getStartOnlineDestination(accountRepository) }
+    val navBackStack = rememberNavBackStack(onlineNavigationConfig, startDestination)
 
-    NavHost(
-        navController = navController,
-        startDestination = startDestination,
+    NavDisplay(
+        backStack = navBackStack,
+        contentAlignment = Alignment.Center,
+        onBack = {},
         modifier = modifier,
-    ) {
-        composable<MainScreenRoute> { backStackEntry ->
-            val viewModel = remember(backStackEntry) { MainScreenViewModel() }
-
-            DisposableEffect(viewModel) {
-                onDispose {
-                    viewModel.onCleared()
-                }
+        entryDecorators =
+            listOf(
+                rememberSaveableStateHolderNavEntryDecorator(),
+                rememberViewModelStoreNavEntryDecorator(
+                    removeViewModelStoreOnPop = { true }
+                ),
+            ),
+        entryProvider = entryProvider {
+            entry<MainScreenRoute> {
+                MainScreen(
+                    toWebViewScreen = { url ->
+                        navBackStack.add(WebViewScreenRoute(url))
+                    },
+                    modifier = Modifier.fillMaxSize(),
+                )
             }
 
-            MainScreen(
-                viewModel = viewModel,
-                toWebViewScreen = { url ->
-                    navController.navigate(WebViewScreenRoute(url = url)) {
-                        launchSingleTop = true
-                    }
-                },
-                modifier = Modifier.fillMaxSize()
-            )
-        }
-
-        composable<OnlineScreenRoute> { backStackEntry ->
-            val viewModel = remember(backStackEntry) { OnlineScreenViewModel() }
-
-            DisposableEffect(viewModel) {
-                onDispose {
-                    viewModel.onCleared()
-                }
-            }
-
-            OnlineScreen(
-                viewModel = viewModel,
-                logOut = {
-                    navController.navigate(MainScreenRoute) {
-                        popUpTo<OnlineScreenRoute> { inclusive = true }
-                    }
-                },
-                runningAsOverlay = runningAsOverlay,
-                modifier = Modifier.fillMaxSize()
-            )
-        }
-
-        composable<WebViewScreenRoute> { backStackEntry ->
-            val url: String = backStackEntry.toRoute<WebViewScreenRoute>().url
-
-            WebViewScreen(
-                url = url,
-                runningAsOverlay = runningAsOverlay,
-                goBack = { navController.navigateUp() },
-                onResult = { resultUrl ->
-                    handleWebViewResult(
-                        resultUrl = resultUrl,
-                        accountRepository = accountRepository,
-                        onRedirectError = onRedirectError,
-                        navigateBack = { navController.navigateUp() },
-                        navigateToOnlineScreen = {
-                            navController.navigate(OnlineScreenRoute) {
-                                popUpTo<WebViewScreenRoute> { inclusive = true }
-                            }
+            entry<OnlineScreenRoute> {
+                OnlineScreen(
+                    logOut = {
+                        navBackStack.add(MainScreenRoute)
+                        if (navBackStack.size > 1) {
+                            navBackStack.subList(0, navBackStack.size - 1).clear()
                         }
-                    )
-                },
-                modifier = Modifier.fillMaxSize()
-            )
+                    },
+                    runningAsOverlay = runningAsOverlay,
+                    modifier = Modifier.fillMaxSize(),
+                )
+            }
+
+            entry<WebViewScreenRoute> { key ->
+                WebViewScreen(
+                    url = key.url,
+                    runningAsOverlay = runningAsOverlay,
+                    goBack = { navBackStack.removeLastOrNull() },
+                    onResult = { resultUrl ->
+                        handleWebViewResult(
+                            resultUrl = resultUrl,
+                            accountRepository = accountRepository,
+                            onRedirectError = onRedirectError,
+                            navigateBack = { navBackStack.removeLastOrNull() },
+                            navigateToOnlineScreen = {
+                                navBackStack.clear()
+                                navBackStack.add(OnlineScreenRoute)
+                            }
+                        )
+                    },
+                    modifier = Modifier.fillMaxSize(),
+                )
+            }
         }
-    }
+    )
 }
 
 private fun handleWebViewResult(
@@ -195,7 +180,7 @@ private fun handleRedirectSuccessResult(
 @OptIn(ExperimentalTime::class)
 private fun getStartOnlineDestination(
     accountRepository: AccountRepository,
-): OnlineNavigationRoute {
+): NavKey {
     val token: Token = accountRepository.getToken() ?: return MainScreenRoute
     val tokenExpired = token.expiresAt - 1.days.inWholeSeconds <= Clock.System.now().epochSeconds
 

@@ -1,7 +1,7 @@
 package com.posse.tanksrandomizer.android_mode.compose
 
+import android.annotation.SuppressLint
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -9,6 +9,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import androidx.lifecycle.viewmodel.compose.viewModel
 import com.posse.tanksrandomizer.App
 import com.posse.tanksrandomizer.android_mode.compose.components.AndroidModeContent
 import com.posse.tanksrandomizer.android_mode.presentation.AndroidModeViewModel
@@ -19,12 +20,12 @@ import com.posse.tanksrandomizer.common.compose.components.startWindowMode
 
 @Composable
 fun AndroidMode(
+    viewModel: AndroidModeViewModel = viewModel(),
     startedFromService: Boolean,
     startedAsService: Boolean,
     exitApp: () -> Unit,
-    modifier: Modifier = Modifier
+    @SuppressLint("ModifierParameter") modifier: Modifier = Modifier
 ) {
-    val viewModel = remember { AndroidModeViewModel() }
     val state by viewModel.viewStates().collectAsStateWithLifecycle()
 
     val context = LocalContext.current
@@ -55,12 +56,6 @@ fun AndroidMode(
                 }
                 viewModel.obtainEvent(AndroidModeEvent.ClearAction)
             }
-        }
-    }
-
-    DisposableEffect(viewModel) {
-        onDispose {
-            viewModel.onCleared()
         }
     }
 

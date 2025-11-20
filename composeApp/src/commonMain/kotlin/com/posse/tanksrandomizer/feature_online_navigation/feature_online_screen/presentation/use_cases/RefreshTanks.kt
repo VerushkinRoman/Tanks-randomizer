@@ -1,5 +1,6 @@
 package com.posse.tanksrandomizer.feature_online_navigation.feature_online_screen.presentation.use_cases
 
+import com.posse.tanksrandomizer.common.domain.models.Token
 import com.posse.tanksrandomizer.feature_online_navigation.feature_online_screen.domain.models.AccountTank
 import com.posse.tanksrandomizer.feature_online_navigation.feature_online_screen.domain.models.EncyclopediaTank
 import com.posse.tanksrandomizer.feature_online_navigation.feature_online_screen.domain.models.toTank
@@ -16,9 +17,9 @@ class RefreshTanks(
     private val onlineScreenRepository: OnlineScreenRepository,
     private val dispatchers: Dispatchers,
 ) {
-    suspend operator fun invoke(tanks: List<Tank>): Result<List<Tank>, Error> {
+    suspend operator fun invoke(token: Token, tanks: List<Tank>): Result<List<Tank>, Error> {
         return withContext(dispatchers.io) {
-            val accountTanks: Set<AccountTank> = onlineScreenRepository.getAccountTanks()
+            val accountTanks: Set<AccountTank> = onlineScreenRepository.getAccountTanks(token = token)
                 .onError { error -> return@withContext Result.Error(error) }
                 .let { (it as Result.Success).data }
                 .toSet()
@@ -35,7 +36,7 @@ class RefreshTanks(
             val diffIds = accountTanksToAdd.map { it.id }.toSet()
 
             val encyclopediaTanks: Set<EncyclopediaTank> =
-                onlineScreenRepository.getEncyclopediaTanks(diffIds.toList())
+                onlineScreenRepository.getEncyclopediaTanks(token = token, ids = diffIds.toList())
                     .onError { error -> return@withContext Result.Error(error) }
                     .let { (it as Result.Success).data }
                     .toSet()

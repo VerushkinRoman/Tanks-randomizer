@@ -5,7 +5,9 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import androidx.lifecycle.viewmodel.compose.viewModel
 import com.posse.tanksrandomizer.common.presentation.utils.collectAsStateWithLifecycle
+import com.posse.tanksrandomizer.common.presentation.utils.getPlatformFactory
 import com.posse.tanksrandomizer.feature_settings_screen.compose.components.SettingsScreenContent
 import com.posse.tanksrandomizer.feature_settings_screen.presentation.SettingsScreenViewModel
 import com.posse.tanksrandomizer.feature_settings_screen.presentation.model.SettingsAction
@@ -14,7 +16,7 @@ import io.github.sudarshanmhasrup.localina.api.LocaleUpdater
 
 @Composable
 fun SettingsScreen(
-    viewModel: SettingsScreenViewModel,
+    viewModel: SettingsScreenViewModel = viewModel(factory = getPlatformFactory()),
     runningAsOverlay: Boolean,
     modifier: Modifier = Modifier,
 ) {
