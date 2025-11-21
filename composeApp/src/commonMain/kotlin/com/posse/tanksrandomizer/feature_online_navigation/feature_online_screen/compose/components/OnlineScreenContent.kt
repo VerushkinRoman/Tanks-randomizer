@@ -30,6 +30,14 @@ fun OnlineScreenContent(
     CommonScreenColumn(
         runningAsOverlay = runningAsOverlay,
         modifier = modifier,
+//        modifier = modifier
+//            .padding(4.dp)
+//            .border(
+//                width = BorderWidth,
+//                color = MaterialTheme.colorScheme.primary,
+//                shape = CutCornerShape(topStartPercent = 0, topEndPercent = 2, bottomStartPercent = 2, bottomEndPercent = 0)
+//            )
+//            .padding(4.dp),
     ) {
         AccountAndGeneratedTankInfo(
             generatedTank = viewState.generatedTank,

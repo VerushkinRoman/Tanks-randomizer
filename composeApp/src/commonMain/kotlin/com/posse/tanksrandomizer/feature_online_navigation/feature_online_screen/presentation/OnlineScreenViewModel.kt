@@ -38,6 +38,7 @@ class OnlineScreenViewModel(
     private val filterTanks: FilterTanks = FilterTanks(dispatchers = dispatchers),
 ) : BaseSharedViewModel<OnlineScreenState, OnlineScreenAction, OnlineScreenEvent>(
     initialState = GetOnlineScreenStartState(
+        accountRepository = accountRepository,
         commonTanksRepository = filterRepository,
         onlineScreenRepository = onlineScreenRepository,
         filterTanks = filterTanks,

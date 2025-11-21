@@ -287,6 +287,7 @@ private fun RandomTankImage(
     modifier: Modifier = Modifier
 ) {
     var loading by remember { mutableStateOf(false) }
+    var error by remember { mutableStateOf(false) }
     val loadingAlpha by animateFloatAsState(
         targetValue = if (loading) 0f else 1f
     )
@@ -304,10 +305,19 @@ private fun RandomTankImage(
             contentScale = ContentScale.FillHeight,
             placeholder = if (emptyTank) painterResource(Res.drawable.app_logo_monochrome) else null,
             error = painterResource(Res.drawable.app_logo_monochrome),
-            onLoading = { loading = true },
-            onSuccess = { loading = false },
-            onError = { loading = false },
-            colorFilter = if (emptyTank || generatedTank?.imageUrl == null) ColorFilter.tint(
+            onLoading = {
+                error = false
+                loading = true
+            },
+            onSuccess = {
+                error = false
+                loading = false
+            },
+            onError = {
+                error = true
+                loading = false
+            },
+            colorFilter = if (emptyTank || generatedTank?.imageUrl == null || error) ColorFilter.tint(
                 MaterialTheme.colorScheme.primary
             ) else null,
             modifier = Modifier

@@ -22,6 +22,7 @@ xcuserdata
 /.idea/assetWizardSettings.xml
 signingKey.properties
 serverConstants.properties
+google-services.json
 *.apk
 *.aab
 *.jks

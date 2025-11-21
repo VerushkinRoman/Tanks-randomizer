@@ -192,6 +192,8 @@ private fun NavBackStack<NavKey>.navigateToRoute(
     route: NavKey,
     navigationRepository: NavigationRepository
 ) {
+    if (lastOrNull() == route) return
+
     add(route)
     if (size > 1) {
         subList(0, size - 1).clear()

@@ -12,4 +12,7 @@ interface OfflineDataSource {
 
     fun getToken(): Token?
     fun setToken(token: Token?)
+
+    fun getNickname(): String?
+    fun setNickname(nickname: String?)
 }

@@ -11,6 +11,8 @@ plugins {
     alias(libs.plugins.kotlinx.serialization)
     alias(libs.plugins.buildkonfig)
     alias(libs.plugins.realmDB)
+    alias(libs.plugins.google.gms.google.services)
+    alias(libs.plugins.google.firebase.crashlytics)
 }
 
 kotlin {
@@ -70,6 +72,7 @@ kotlin {
             implementation(libs.coil.compose)
             implementation(libs.coil.network)
             implementation(libs.localina)
+            implementation(libs.firebase.crashlytics)
             api(libs.compose.webview.multiplatform) // use api since the desktop app need to access the Cef to initialize it.
         }
 
@@ -98,8 +101,8 @@ android {
         targetSdk = 36
 
         applicationId = "com.posse.tanksrandomizer"
-        versionCode = 9
-        versionName = "2.0.0"
+        versionCode = 10
+        versionName = "2.0.1"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
@@ -173,7 +176,7 @@ android {
         debug {
             signingConfig = signingConfigs.getByName("release")
             versionNameSuffix = "-debug"
-            applicationIdSuffix = ".debug"
+//            applicationIdSuffix = ".debug"
         }
     }
 
@@ -210,6 +213,9 @@ android {
             }
         }
     }
+}
+dependencies {
+    implementation(libs.firebase.crashlytics)
 }
 
 compose.desktop {

@@ -30,6 +30,13 @@ class OfflineDataSourceImpl(
     override fun getToken(): Token? = settings.decodeValueOrNull(key = "token")
     override fun setToken(token: Token?) = settings.encodeValue(key = "token", value = token)
 
+    override fun getNickname(): String? = settings.getStringOrNull(key = "nickname")
+    override fun setNickname(nickname: String?) {
+        nickname?.let {
+            settings.putString(key = "nickname", value = nickname)
+        } ?: settings.remove("nickname")
+    }
+
     private fun <T : ItemStatus<T>> setProperty(property: T) {
         settings.putBoolean(
             key = "${property.name}_random${dataSourceFor.value}",

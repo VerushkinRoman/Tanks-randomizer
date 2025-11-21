@@ -1,5 +1,6 @@
 package com.posse.tanksrandomizer.feature_online_navigation.feature_online_screen.presentation.use_cases
 
+import com.posse.tanksrandomizer.common.domain.repository.AccountRepository
 import com.posse.tanksrandomizer.common.domain.repository.CommonTanksRepository
 import com.posse.tanksrandomizer.feature_online_navigation.feature_online_screen.domain.repository.OnlineScreenRepository
 import com.posse.tanksrandomizer.feature_online_navigation.feature_online_screen.presentation.models.OnlineFilters
@@ -9,6 +10,7 @@ import kotlin.time.ExperimentalTime
 
 @OptIn(ExperimentalTime::class)
 class GetOnlineScreenStartState(
+    private val accountRepository: AccountRepository,
     private val commonTanksRepository: CommonTanksRepository,
     private val onlineScreenRepository: OnlineScreenRepository,
     private val filterTanks: FilterTanks,
@@ -29,6 +31,7 @@ class GetOnlineScreenStartState(
         }
 
         return OnlineScreenState(
+            nickname = accountRepository.getNickname(),
             onlineFilters = onlineFilters,
             tanksInGarage = tanksInGarage,
             tanksByFilter = tanksByFilter,

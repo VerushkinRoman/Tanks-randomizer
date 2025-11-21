@@ -7,6 +7,7 @@ import kotlin.time.Instant
 
 @OptIn(ExperimentalTime::class)
 data class OnlineScreenState(
+    val nickname: String?,
     val onlineFilters: OnlineFilters,
     val tanksInGarage: List<Tank>,
     val tanksByFilter: List<Tank>,

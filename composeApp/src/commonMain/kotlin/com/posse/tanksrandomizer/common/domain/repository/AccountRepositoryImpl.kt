@@ -15,6 +15,9 @@ class AccountRepositoryImpl(
     override fun getToken(): Token? = offlineDataSource.getToken()
     override fun setToken(token: Token?) = offlineDataSource.setToken(token)
 
+    override fun getNickname(): String? = offlineDataSource.getNickname()
+    override fun setNickname(nickname: String?) = offlineDataSource.setNickname(nickname)
+
     override suspend fun getNewToken(): Result<Token, Error> {
         val token = offlineDataSource.getToken() ?: return Result.Error(DomainErrorType.TokenError)
         return onlineDataSource.getNewToken(token)

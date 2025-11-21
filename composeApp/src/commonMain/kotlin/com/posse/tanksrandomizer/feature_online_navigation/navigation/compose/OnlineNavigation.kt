@@ -171,6 +171,8 @@ private fun handleRedirectSuccessResult(
             )
         )
 
+        accountRepository.setNickname(successResponse.nickname)
+
         navigateToOnlineScreen()
     } else {
         onRedirectError("Params error: ${errorParams.joinToString(", ")}")
