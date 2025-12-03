@@ -1,6 +1,5 @@
 package com.posse.tanksrandomizer.feature_settings_screen.presentation
 
-import com.posse.tanksrandomizer.common.core.di.Inject
 import com.posse.tanksrandomizer.common.presentation.utils.BaseSharedViewModel
 import com.posse.tanksrandomizer.feature_settings_screen.domain.models.AppLocale
 import com.posse.tanksrandomizer.feature_settings_screen.domain.models.ScreenRotation
@@ -12,8 +11,8 @@ import com.posse.tanksrandomizer.feature_settings_screen.presentation.model.Sett
 import com.posse.tanksrandomizer.feature_settings_screen.presentation.use_cases.GetSettingsState
 
 class SettingsScreenViewModel(
-    private val repository: SettingsRepository = Inject.instance(),
-    private val settingsInteractor: SettingsInteractor = Inject.instance(),
+    private val repository: SettingsRepository,
+    private val settingsInteractor: SettingsInteractor,
 ) : BaseSharedViewModel<SettingsState, SettingsAction, SettingsEvent>(
     initialState = GetSettingsState(repository).invoke()
 ) {

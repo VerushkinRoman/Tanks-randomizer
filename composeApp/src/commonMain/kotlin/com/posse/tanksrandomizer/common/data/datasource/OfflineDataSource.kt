@@ -4,15 +4,12 @@ import com.posse.tanksrandomizer.common.domain.models.CommonFilterObjects.ItemSt
 import com.posse.tanksrandomizer.common.domain.models.Token
 
 interface OfflineDataSource {
-    fun <T : ItemStatus<T>> setProperties(properties: List<T>)
-    fun <T : ItemStatus<T>> getProperties(defaultItems: List<T>): List<T>
+    fun <T : ItemStatus<T>> setProperties(id: String, properties: List<T>)
+    fun <T : ItemStatus<T>> getProperties(id: String, defaultItems: List<T>): List<T>
 
     fun setCurrentScreenRoute(screenRoute: String)
     fun getScreenRoute(): String?
 
-    fun getToken(): Token?
-    fun setToken(token: Token?)
-
-    fun getNickname(): String?
-    fun setNickname(nickname: String?)
+    fun getToken(accountId: Int): Token?
+    fun setToken(accountId: Int, token: Token?)
 }

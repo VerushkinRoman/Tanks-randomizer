@@ -1,9 +1,7 @@
 package com.posse.tanksrandomizer.feature_offline_screen.presentation
 
 import androidx.lifecycle.viewModelScope
-import com.posse.tanksrandomizer.common.core.di.Inject
 import com.posse.tanksrandomizer.common.domain.models.CommonFilterObjects.ItemStatus
-import com.posse.tanksrandomizer.common.domain.models.RepositoryFor
 import com.posse.tanksrandomizer.common.domain.repository.CommonTanksRepository
 import com.posse.tanksrandomizer.common.domain.utils.Dispatchers
 import com.posse.tanksrandomizer.common.presentation.utils.BaseSharedViewModel
@@ -18,14 +16,15 @@ import com.posse.tanksrandomizer.feature_offline_screen.presentation.use_cases.S
 import kotlinx.coroutines.launch
 
 class OfflineScreenViewModel(
-    filterRepository: CommonTanksRepository = Inject.instance(tag = RepositoryFor.OfflineScreen),
-    offlineScreenRepository: OfflineScreenRepository = Inject.instance(),
-    dispatchers: Dispatchers = Inject.instance(),
+    private val id: String = "", //TODO
+    filterRepository: CommonTanksRepository,
+    offlineScreenRepository: OfflineScreenRepository,
+    dispatchers: Dispatchers,
 ) : BaseSharedViewModel<OfflineScreenState, OfflineScreenAction, OfflineScreenEvent>(
     initialState = GetOfflineScreenStartState(
         commonTanksRepository = filterRepository,
-        offlineScreenRepository = offlineScreenRepository
-    ).invoke()
+        offlineScreenRepository = offlineScreenRepository,
+    ).invoke(id)
 ) {
     private val generateOfflineFilter = GenerateOfflineFilter(dispatchers = dispatchers)
 
@@ -102,7 +101,7 @@ class OfflineScreenViewModel(
     ) {
         viewModelScope.launch {
             action()
-            saveOfflineScreenState(viewState)
+            saveOfflineScreenState(id, viewState)
         }
     }
 }

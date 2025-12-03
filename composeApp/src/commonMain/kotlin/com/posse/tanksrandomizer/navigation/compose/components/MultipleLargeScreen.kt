@@ -22,7 +22,7 @@ import com.posse.tanksrandomizer.common.compose.utils.LocalSizeClass
 import com.posse.tanksrandomizer.common.compose.utils.elementSize
 import com.posse.tanksrandomizer.common.compose.utils.screenSize
 import com.posse.tanksrandomizer.feature_offline_screen.compose.OfflineScreen
-import com.posse.tanksrandomizer.feature_online_navigation.navigation.compose.OnlineNavigation
+import com.posse.tanksrandomizer.feature_online_navigation.navigation.compose.PagedOnlineScreens
 import com.posse.tanksrandomizer.feature_online_navigation.navigation.presentation.models.ErrorResponse
 import com.posse.tanksrandomizer.feature_settings_screen.compose.SettingsScreen
 import kotlinx.coroutines.launch
@@ -92,7 +92,7 @@ private fun OnlineScreenPane(
             LocalElementSize provides elementSize(maxWidth),
             LocalSizeClass provides screenSize(maxWidth, maxHeight),
         ) {
-            OnlineNavigation(
+            PagedOnlineScreens(
                 runningAsOverlay = runningAsOverlay,
                 onRedirectError = onRedirectError,
                 modifier = Modifier.fillMaxSize(),

@@ -1,7 +1,8 @@
-package com.posse.tanksrandomizer.feature_online_navigation.feature_online_screen.domain.models
+package com.posse.tanksrandomizer.feature_online_navigation.common.domain.models
 
 import com.posse.tanksrandomizer.common.domain.models.CommonFilterObjects.Type
 import com.posse.tanksrandomizer.common.domain.models.CommonFilterObjects.Nation
+import com.posse.tanksrandomizer.feature_online_navigation.feature_online_screen.domain.models.Tank
 
 data class EncyclopediaTank(
     val id: Int,

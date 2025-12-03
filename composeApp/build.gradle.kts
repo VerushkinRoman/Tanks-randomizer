@@ -60,7 +60,9 @@ kotlin {
             implementation(libs.multiplatformSettings)
             implementation(libs.multiplatformSettings.serialization)
             implementation(libs.multiplatformSettings.coroutines)
+            implementation(libs.multiplatformSettings.makeObservable)
             implementation(libs.kodein)
+            implementation(libs.kodein.compose)
             implementation(libs.haze)
             implementation(libs.haze.materials)
             implementation(libs.ktor.core)
@@ -72,7 +74,6 @@ kotlin {
             implementation(libs.coil.compose)
             implementation(libs.coil.network)
             implementation(libs.localina)
-            implementation(libs.firebase.crashlytics)
             api(libs.compose.webview.multiplatform) // use api since the desktop app need to access the Cef to initialize it.
         }
 
@@ -83,6 +84,7 @@ kotlin {
             implementation(libs.android.material.theme)
             implementation(libs.androidx.lifecycle.service)
             implementation(libs.androidx.material3)
+            implementation(libs.firebase.crashlytics)
         }
 
         jvmMain.dependencies {
@@ -101,7 +103,7 @@ android {
         targetSdk = 36
 
         applicationId = "com.posse.tanksrandomizer"
-        versionCode = 10
+        versionCode = 11
         versionName = "2.0.1"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"

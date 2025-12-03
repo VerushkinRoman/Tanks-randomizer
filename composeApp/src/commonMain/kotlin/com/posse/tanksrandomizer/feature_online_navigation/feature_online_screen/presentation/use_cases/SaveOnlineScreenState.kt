@@ -2,7 +2,7 @@ package com.posse.tanksrandomizer.feature_online_navigation.feature_online_scree
 
 import com.posse.tanksrandomizer.common.domain.repository.CommonTanksRepository
 import com.posse.tanksrandomizer.common.domain.utils.Dispatchers
-import com.posse.tanksrandomizer.feature_online_navigation.feature_online_screen.domain.repository.OnlineScreenRepository
+import com.posse.tanksrandomizer.feature_online_navigation.common.domain.repository.OnlineScreenRepository
 import com.posse.tanksrandomizer.feature_online_navigation.feature_online_screen.presentation.models.OnlineScreenState
 import kotlinx.coroutines.withContext
 import kotlin.time.ExperimentalTime
@@ -13,13 +13,12 @@ class SaveOnlineScreenState(
     private val onlineScreenRepository: OnlineScreenRepository,
     private val dispatchers: Dispatchers,
 ) {
-    suspend operator fun invoke(state: OnlineScreenState) = withContext(dispatchers.io) {
-        filterRepository.setTypes(state.onlineFilters.types)
-        onlineScreenRepository.setPremium(state.onlineFilters.premium)
-        filterRepository.setTiers(state.onlineFilters.tiers)
-        filterRepository.setNations(state.onlineFilters.nations)
-        onlineScreenRepository.setMastery(state.onlineFilters.mastery)
-        onlineScreenRepository.setSelectedTank(state.generatedTank)
-        state.lastAccountUpdated?.let { onlineScreenRepository.setLastAccountUpdated(it) }
+    suspend operator fun invoke(screenId: String, state: OnlineScreenState) = withContext(dispatchers.io) {
+        filterRepository.setTypes(screenId, state.onlineFilters.types)
+        onlineScreenRepository.setPremium(screenId, state.onlineFilters.premium)
+        filterRepository.setTiers(screenId, state.onlineFilters.tiers)
+        filterRepository.setNations(screenId, state.onlineFilters.nations)
+        onlineScreenRepository.setMastery(screenId, state.onlineFilters.mastery)
+        onlineScreenRepository.setSelectedTank(screenId, state.generatedTank)
     }
 }

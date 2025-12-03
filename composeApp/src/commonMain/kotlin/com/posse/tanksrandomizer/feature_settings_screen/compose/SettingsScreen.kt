@@ -5,21 +5,20 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import androidx.lifecycle.viewmodel.compose.viewModel
 import com.posse.tanksrandomizer.common.presentation.utils.collectAsStateWithLifecycle
-import com.posse.tanksrandomizer.common.presentation.utils.getPlatformFactory
 import com.posse.tanksrandomizer.feature_settings_screen.compose.components.SettingsScreenContent
 import com.posse.tanksrandomizer.feature_settings_screen.presentation.SettingsScreenViewModel
 import com.posse.tanksrandomizer.feature_settings_screen.presentation.model.SettingsAction
 import com.posse.tanksrandomizer.feature_settings_screen.presentation.model.SettingsEvent
 import io.github.sudarshanmhasrup.localina.api.LocaleUpdater
+import org.kodein.di.compose.viewmodel.rememberViewModel
 
 @Composable
 fun SettingsScreen(
-    viewModel: SettingsScreenViewModel = viewModel(factory = getPlatformFactory()),
     runningAsOverlay: Boolean,
     modifier: Modifier = Modifier,
 ) {
+    val viewModel: SettingsScreenViewModel by rememberViewModel()
     val state by viewModel.viewStates().collectAsStateWithLifecycle()
     val action by viewModel.viewActions().collectAsStateWithLifecycle()
 

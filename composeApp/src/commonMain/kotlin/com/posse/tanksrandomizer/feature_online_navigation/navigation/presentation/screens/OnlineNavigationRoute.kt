@@ -2,6 +2,7 @@ package com.posse.tanksrandomizer.feature_online_navigation.navigation.presentat
 
 import androidx.navigation3.runtime.NavKey
 import androidx.savedstate.serialization.SavedStateConfiguration
+import com.posse.tanksrandomizer.feature_online_navigation.common.presentation.models.OnlineScreenNavigationData
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.modules.SerializersModule
 import kotlinx.serialization.modules.polymorphic
@@ -10,7 +11,7 @@ import kotlinx.serialization.modules.polymorphic
 object MainScreenRoute : NavKey
 
 @Serializable
-object OnlineScreenRoute : NavKey
+data class OnlineScreenRoute(val navigationData: OnlineScreenNavigationData) : NavKey
 
 @Serializable
 data class WebViewScreenRoute(val url: String) : NavKey

@@ -11,7 +11,7 @@ data class SuccessResponse(
     val status: String? = null,
     val accessToken: String?,
     val nickname: String?,
-    val accountId: String?,
+    val accountId: Int?,
     val expiresAt: String?,
 )
 

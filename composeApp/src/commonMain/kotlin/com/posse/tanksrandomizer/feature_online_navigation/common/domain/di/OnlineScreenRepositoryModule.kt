@@ -1,4 +1,4 @@
-package com.posse.tanksrandomizer.feature_online_navigation.feature_online_screen.domain.di
+package com.posse.tanksrandomizer.feature_online_navigation.common.domain.di
 
 import com.posse.tanksrandomizer.common.domain.models.DataSourceFor
 import com.posse.tanksrandomizer.common.domain.models.RepositoryFor
@@ -6,8 +6,8 @@ import com.posse.tanksrandomizer.common.domain.repository.AccountRepository
 import com.posse.tanksrandomizer.common.domain.repository.AccountRepositoryImpl
 import com.posse.tanksrandomizer.common.domain.repository.CommonTanksRepository
 import com.posse.tanksrandomizer.common.domain.repository.CommonTanksRepositoryImpl
-import com.posse.tanksrandomizer.feature_online_navigation.feature_online_screen.domain.repository.OnlineScreenRepository
-import com.posse.tanksrandomizer.feature_online_navigation.feature_online_screen.domain.repository.OnlineScreenRepositoryImpl
+import com.posse.tanksrandomizer.feature_online_navigation.common.domain.repository.OnlineScreenRepository
+import com.posse.tanksrandomizer.feature_online_navigation.common.domain.repository.OnlineScreenRepositoryImpl
 import org.kodein.di.DI
 import org.kodein.di.bind
 import org.kodein.di.instance
@@ -18,7 +18,8 @@ val onlineScreenRepositoryModule = DI.Module("OnlineScreenRepositoryModule") {
         OnlineScreenRepositoryImpl(
             onlineScreenDataSource = instance(),
             onlineDataSource = instance(),
-            offlineDataSource = instance(tag = DataSourceFor.OnlineScreen)
+            offlineDataSource = instance(tag = DataSourceFor.OnlineScreen),
+            dispatchers = instance(),
         )
     }
 
@@ -30,8 +31,8 @@ val onlineScreenRepositoryModule = DI.Module("OnlineScreenRepositoryModule") {
 
     bind<AccountRepository>() with provider {
         AccountRepositoryImpl(
+            onlineDataSource = instance(),
             offlineDataSource = instance(tag = DataSourceFor.Common),
-            onlineDataSource = instance()
         )
     }
 }

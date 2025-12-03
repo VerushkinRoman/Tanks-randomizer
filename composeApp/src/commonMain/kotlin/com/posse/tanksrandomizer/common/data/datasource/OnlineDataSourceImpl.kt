@@ -19,8 +19,8 @@ import com.posse.tanksrandomizer.common.domain.utils.NetworkError
 import com.posse.tanksrandomizer.common.domain.utils.Result
 import com.posse.tanksrandomizer.common.domain.utils.asEmptyDataResult
 import com.posse.tanksrandomizer.common.domain.utils.map
-import com.posse.tanksrandomizer.feature_online_navigation.feature_online_screen.domain.models.AccountTank
-import com.posse.tanksrandomizer.feature_online_navigation.feature_online_screen.domain.models.EncyclopediaTank
+import com.posse.tanksrandomizer.feature_online_navigation.common.domain.models.EncyclopediaTank
+import com.posse.tanksrandomizer.feature_online_navigation.common.domain.models.MasteryTank
 import io.ktor.client.HttpClient
 import io.ktor.client.request.forms.FormDataContent
 import io.ktor.client.request.get
@@ -72,7 +72,7 @@ class OnlineDataSourceImpl(
         }
     }
 
-    override suspend fun getAccountTanks(currentToken: Token): Result<List<AccountTank>, Error> {
+    override suspend fun getMasteryTanks(currentToken: Token): Result<List<MasteryTank>, Error> {
         val accountTanksUrl = STATS +
                 "?application_id=${APPLICATION_ID}" +
                 "&account_id=${currentToken.accountId}" +
@@ -83,24 +83,19 @@ class OnlineDataSourceImpl(
             httpClient.get(urlString = accountTanksUrl)
         }.map { response ->
             response.values.flatten()
-                .map { networkAccountTank -> networkAccountTank.toAccountTank() }
+                .map { networkAccountTank -> networkAccountTank.toAccountTank(currentToken.accountId) }
         }
     }
 
     override suspend fun getEncyclopediaTanks(
         ids: List<Int>,
-        currentToken: Token
     ): Result<List<EncyclopediaTank>, Error> = when {
         ids.isEmpty() -> Result.Success(emptyList())
-        shouldLoadAllTanks(ids) -> loadAllTanks()
+        shouldLoadAllTanks(ids) -> getAllEncyclopediaTanks()
         else -> loadTanksInChunks(ids)
     }
 
-    private fun shouldLoadAllTanks(ids: List<Int>): Boolean {
-        return ids.chunked(EndpointConstants.MAX_PARAMETERS_PER_REQUEST).size > MAX_PARALLEL_REQUESTS
-    }
-
-    private suspend fun loadAllTanks(): Result<List<EncyclopediaTank>, Error> {
+    override suspend fun getAllEncyclopediaTanks(): Result<List<EncyclopediaTank>, Error> {
         val allTanksUrl = ENCYCLOPEDIA +
                 "?application_id=${APPLICATION_ID}" +
                 "&${ENCYCLOPEDIA_PARAMS}"
@@ -113,6 +108,10 @@ class OnlineDataSourceImpl(
                     encyclopediaTankData?.toEncyclopediaTank()
                 }
             }
+    }
+
+    private fun shouldLoadAllTanks(ids: List<Int>): Boolean {
+        return ids.chunked(EndpointConstants.MAX_PARAMETERS_PER_REQUEST).size > MAX_PARALLEL_REQUESTS
     }
 
     private suspend fun loadTanksInChunks(ids: List<Int>): Result<List<EncyclopediaTank>, Error> {

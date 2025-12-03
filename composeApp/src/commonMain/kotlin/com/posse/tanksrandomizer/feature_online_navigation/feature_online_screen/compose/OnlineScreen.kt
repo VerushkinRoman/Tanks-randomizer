@@ -14,28 +14,29 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import androidx.lifecycle.viewmodel.compose.viewModel
 import com.posse.tanksrandomizer.common.compose.utils.showError
 import com.posse.tanksrandomizer.common.presentation.utils.collectAsStateWithLifecycle
-import com.posse.tanksrandomizer.common.presentation.utils.getPlatformFactory
+import com.posse.tanksrandomizer.feature_online_navigation.common.presentation.models.OnlineScreenNavigationData
 import com.posse.tanksrandomizer.feature_online_navigation.feature_online_screen.compose.components.LogoutDialog
 import com.posse.tanksrandomizer.feature_online_navigation.feature_online_screen.compose.components.OnlineScreenContent
 import com.posse.tanksrandomizer.feature_online_navigation.feature_online_screen.presentation.OnlineScreenViewModel
 import com.posse.tanksrandomizer.feature_online_navigation.feature_online_screen.presentation.models.OnlineScreenAction
 import com.posse.tanksrandomizer.feature_online_navigation.feature_online_screen.presentation.models.OnlineScreenEvent
+import org.kodein.di.compose.viewmodel.rememberViewModel
 
 @Composable
 fun OnlineScreen(
-    viewModel: OnlineScreenViewModel = viewModel(factory = getPlatformFactory()),
+    navigationData: OnlineScreenNavigationData,
     logOut: () -> Unit,
     runningAsOverlay: Boolean,
     modifier: Modifier,
 ) {
-    val scope = rememberCoroutineScope()
-    val snackbarHostState = remember { SnackbarHostState() }
-
+    val viewModel: OnlineScreenViewModel by rememberViewModel(arg = navigationData)
     val state by viewModel.viewStates().collectAsStateWithLifecycle()
     val action by viewModel.viewActions().collectAsStateWithLifecycle()
+
+    val scope = rememberCoroutineScope()
+    val snackbarHostState = remember { SnackbarHostState() }
 
     LaunchedEffect(action) {
         action?.let { onlineScreenAction ->

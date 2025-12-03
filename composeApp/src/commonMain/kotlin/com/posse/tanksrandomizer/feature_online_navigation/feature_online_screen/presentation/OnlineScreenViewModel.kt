@@ -1,20 +1,17 @@
 package com.posse.tanksrandomizer.feature_online_navigation.feature_online_screen.presentation
 
 import com.posse.tanksrandomizer.common.compose.utils.ErrorHandler.isTokenError
-import com.posse.tanksrandomizer.common.core.di.Inject
 import com.posse.tanksrandomizer.common.domain.models.CommonFilterObjects.ItemStatus
-import com.posse.tanksrandomizer.common.domain.models.RepositoryFor
-import com.posse.tanksrandomizer.common.domain.models.Token
 import com.posse.tanksrandomizer.common.domain.repository.AccountRepository
 import com.posse.tanksrandomizer.common.domain.repository.CommonTanksRepository
 import com.posse.tanksrandomizer.common.domain.utils.Dispatchers
 import com.posse.tanksrandomizer.common.domain.utils.Error
-import com.posse.tanksrandomizer.common.domain.utils.Result
 import com.posse.tanksrandomizer.common.domain.utils.onError
 import com.posse.tanksrandomizer.common.domain.utils.onSuccess
 import com.posse.tanksrandomizer.common.presentation.utils.BaseSharedViewModel
-import com.posse.tanksrandomizer.feature_online_navigation.feature_online_screen.domain.models.Tank
-import com.posse.tanksrandomizer.feature_online_navigation.feature_online_screen.domain.repository.OnlineScreenRepository
+import com.posse.tanksrandomizer.feature_online_navigation.common.domain.repository.OnlineScreenRepository
+import com.posse.tanksrandomizer.feature_online_navigation.common.presentation.interactor.OnlineScreensInteractor
+import com.posse.tanksrandomizer.feature_online_navigation.common.presentation.interactor.TokenInteractor
 import com.posse.tanksrandomizer.feature_online_navigation.feature_online_screen.presentation.models.OnlineScreenAction
 import com.posse.tanksrandomizer.feature_online_navigation.feature_online_screen.presentation.models.OnlineScreenEvent
 import com.posse.tanksrandomizer.feature_online_navigation.feature_online_screen.presentation.models.OnlineScreenState
@@ -22,35 +19,31 @@ import com.posse.tanksrandomizer.feature_online_navigation.feature_online_screen
 import com.posse.tanksrandomizer.feature_online_navigation.feature_online_screen.presentation.use_cases.GenerateTank
 import com.posse.tanksrandomizer.feature_online_navigation.feature_online_screen.presentation.use_cases.GetOnlineScreenStartState
 import com.posse.tanksrandomizer.feature_online_navigation.feature_online_screen.presentation.use_cases.LogOut
-import com.posse.tanksrandomizer.feature_online_navigation.feature_online_screen.presentation.use_cases.RefreshTanks
 import com.posse.tanksrandomizer.feature_online_navigation.feature_online_screen.presentation.use_cases.SaveOnlineScreenState
-import com.posse.tanksrandomizer.feature_online_navigation.feature_online_screen.presentation.use_cases.UpdateToken
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Job
+import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.launch
 import kotlin.time.ExperimentalTime
 
 @OptIn(ExperimentalTime::class)
 class OnlineScreenViewModel(
-    filterRepository: CommonTanksRepository = Inject.instance(tag = RepositoryFor.OnlineScreen),
-    onlineScreenRepository: OnlineScreenRepository = Inject.instance(),
-    private val accountRepository: AccountRepository = Inject.instance(),
-    dispatchers: Dispatchers = Inject.instance(),
-    private val filterTanks: FilterTanks = FilterTanks(dispatchers = dispatchers),
+    private val screenId: String,
+    private val accountId: Int,
+    filterRepository: CommonTanksRepository,
+    private val onlineScreenRepository: OnlineScreenRepository,
+    accountRepository: AccountRepository,
+    private val onlineScreensInteractor: OnlineScreensInteractor,
+    interactor: TokenInteractor,
+    dispatchers: Dispatchers,
 ) : BaseSharedViewModel<OnlineScreenState, OnlineScreenAction, OnlineScreenEvent>(
     initialState = GetOnlineScreenStartState(
-        accountRepository = accountRepository,
         commonTanksRepository = filterRepository,
         onlineScreenRepository = onlineScreenRepository,
-        filterTanks = filterTanks,
-    ).invoke()
+    ).invoke(screenId)
 ) {
     private val saveOnlineScreenState = SaveOnlineScreenState(
         filterRepository = filterRepository,
-        onlineScreenRepository = onlineScreenRepository,
-        dispatchers = dispatchers,
-    )
-
-    private val refreshTanks = RefreshTanks(
         onlineScreenRepository = onlineScreenRepository,
         dispatchers = dispatchers,
     )
@@ -59,19 +52,40 @@ class OnlineScreenViewModel(
         dispatchers = dispatchers,
     )
 
-    private val updateToken = UpdateToken(
-        accountRepository = accountRepository,
-        dispatchers = dispatchers,
-    )
-
     private val logOutFromAccount = LogOut(
         accountRepository = accountRepository,
+        onlineScreensInteractor = onlineScreensInteractor,
         onlineScreenRepository = onlineScreenRepository,
         dispatchers = dispatchers,
     )
 
+    private val filterTanks = FilterTanks(
+        dispatchers = dispatchers,
+    )
+
     init {
-        refreshAccount(launchedByUser = false)
+        withViewModelScope {
+            interactor.tokenStatus.first { statuses ->
+                statuses.any { it.accountId == accountId && !it.updating }
+            }.let {
+                refreshAccount(launchedByUser = false)
+            }
+
+            launch {
+                onlineScreenRepository.getTanksFlowForAccount(accountId).collect { newTanks ->
+                    val tanksByFilter = filterTanks(tanks = newTanks, filters = viewState.onlineFilters)
+                    viewState = viewState.updateTanks(newTanks, tanksByFilter)
+                }
+            }
+
+            launch {
+                onlineScreenRepository.getLastAccountUpdated(accountId).collect { lastUpdated ->
+                    viewState = viewState.copy(
+                        lastAccountUpdated = lastUpdated
+                    )
+                }
+            }
+        }
     }
 
     override fun obtainEvent(viewEvent: OnlineScreenEvent) {
@@ -132,7 +146,7 @@ class OnlineScreenViewModel(
         startLoading()
 
         withViewModelScope {
-            logOutFromAccount()
+            logOutFromAccount(screenId = screenId)
                 .onSuccess {
                     checkAllFilter()
                     viewAction = OnlineScreenAction.LogOut
@@ -148,33 +162,13 @@ class OnlineScreenViewModel(
     }
 
     private fun refreshAccount(launchedByUser: Boolean) {
-        if (viewState.loading) return
-
         startLoading()
 
-        makeActionWithViewModelScopeAndSaveState {
-            val token = updateToken()
-                .let { result ->
-                    when (result) {
-                        is Result.Success<Token> -> {
-                            result.data
-                        }
-
-                        is Result.Error<*> -> {
-                            val error = result.error
-                            if (error.isTokenError()) {
-                                logout(launchedByUser = launchedByUser)
-                            } else {
-                                showError(error = error, launchedByUser = launchedByUser)
-                            }
-                            return@makeActionWithViewModelScopeAndSaveState
-                        }
-                    }
-                }
-
-            refreshTanks(token = token, tanks = viewState.tanksInGarage)
-                .onSuccess { newTanks ->
-                    handleRefreshSuccess(newTanks)
+        withViewModelScope {
+            onlineScreenRepository
+                .refreshTanks(accountId)
+                .onSuccess {
+                    stopLoading()
                 }
                 .onError { error ->
                     if (error.isTokenError()) {
@@ -184,11 +178,6 @@ class OnlineScreenViewModel(
                     }
                 }
         }
-    }
-
-    private suspend fun handleRefreshSuccess(newTanks: List<Tank>) {
-        val tanksByFilter = filterTanks(tanks = newTanks, filters = viewState.onlineFilters)
-        viewState = viewState.updateTanks(newTanks, tanksByFilter)
     }
 
     private fun showDialog() {
@@ -217,7 +206,7 @@ class OnlineScreenViewModel(
     ): Job {
         return withViewModelScope {
             action()
-            saveOnlineScreenState(viewState)
+            saveOnlineScreenState(screenId, viewState)
             stopLoading()
         }
     }

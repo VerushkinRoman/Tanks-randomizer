@@ -35,6 +35,7 @@ import com.posse.tanksrandomizer.navigation.presentation.screens.mainNavigationC
 import com.posse.tanksrandomizer.navigation.presentation.screens.toRoute
 import kotlinx.coroutines.launch
 import org.jetbrains.compose.resources.stringResource
+import org.kodein.di.compose.rememberInstance
 
 @Composable
 fun SingleScreenNavigation(
@@ -42,7 +43,7 @@ fun SingleScreenNavigation(
     runningAsOverlay: Boolean,
     modifier: Modifier = Modifier,
 ) {
-    val navigationRepository: NavigationRepository = remember { Inject.instance() }
+    val navigationRepository: NavigationRepository by rememberInstance()
     val scope = rememberCoroutineScope()
     val startDestination =
         remember(navigationRepository) { navigationRepository.startDestination() }

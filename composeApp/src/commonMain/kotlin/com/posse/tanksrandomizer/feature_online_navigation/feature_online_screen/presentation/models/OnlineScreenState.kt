@@ -7,14 +7,13 @@ import kotlin.time.Instant
 
 @OptIn(ExperimentalTime::class)
 data class OnlineScreenState(
-    val nickname: String?,
     val onlineFilters: OnlineFilters,
-    val tanksInGarage: List<Tank>,
-    val tanksByFilter: List<Tank>,
+    val tanksInGarage: List<Tank> = emptyList(),
+    val tanksByFilter: List<Tank> = emptyList(),
     val generatedTank: Tank?,
-    val lastAccountUpdated: Instant?,
+    val lastAccountUpdated: Instant? = null,
     val logoutDialogVisible: Boolean = false,
-    val loading: Boolean = false,
+    val loading: Boolean = true,
 ) {
     fun updateTanks(
         newTanks: List<Tank>,

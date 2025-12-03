@@ -6,18 +6,18 @@ import com.posse.tanksrandomizer.feature_offline_screen.domain.models.OfflineFil
 import com.posse.tanksrandomizer.feature_offline_screen.domain.models.OfflineFilterObjects.TankType
 
 interface OfflineScreenRepository {
-    fun getQuantity(): Int
-    fun setQuantity(quantity: Int)
+    fun getQuantity(id: String): Int
+    fun setQuantity(id: String, quantity: Int)
 
-    fun getExperiences(): List<Experience>
-    fun setExperiences(experiences: List<Experience>)
+    fun getExperiences(id: String): List<Experience>
+    fun setExperiences(id: String, experiences: List<Experience>)
 
-    fun getTankTypes(): List<TankType>
-    fun setTankTypes(tankTypes: List<TankType>)
+    fun getTankTypes(id: String): List<TankType>
+    fun setTankTypes(id: String, tankTypes: List<TankType>)
 
-    fun getPinned(): List<Pinned>
-    fun setPinned(pinned: List<Pinned>)
+    fun getPinned(id: String): List<Pinned>
+    fun setPinned(id: String, pinned: List<Pinned>)
 
-    fun getStatuses(): List<Status>
-    fun setStatuses(statuses: List<Status>)
+    fun getStatuses(id: String): List<Status>
+    fun setStatuses(id: String, statuses: List<Status>)
 }

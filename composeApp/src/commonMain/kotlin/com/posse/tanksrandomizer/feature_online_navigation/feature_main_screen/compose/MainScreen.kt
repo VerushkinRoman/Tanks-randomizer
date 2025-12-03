@@ -12,21 +12,20 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import androidx.lifecycle.viewmodel.compose.viewModel
 import com.posse.tanksrandomizer.common.compose.utils.showError
 import com.posse.tanksrandomizer.common.presentation.utils.collectAsStateWithLifecycle
-import com.posse.tanksrandomizer.common.presentation.utils.getPlatformFactory
 import com.posse.tanksrandomizer.feature_online_navigation.feature_main_screen.compose.components.MainScreenContent
 import com.posse.tanksrandomizer.feature_online_navigation.feature_main_screen.presentation.MainScreenViewModel
 import com.posse.tanksrandomizer.feature_online_navigation.feature_main_screen.presentation.models.MainScreenAction
 import com.posse.tanksrandomizer.feature_online_navigation.feature_main_screen.presentation.models.MainScreenEvent
+import org.kodein.di.compose.viewmodel.rememberViewModel
 
 @Composable
 fun MainScreen(
-    viewModel: MainScreenViewModel = viewModel(factory = getPlatformFactory()),
     toWebViewScreen: (url: String) -> Unit,
     modifier: Modifier,
 ) {
+    val viewModel: MainScreenViewModel by rememberViewModel()
     val state by viewModel.viewStates().collectAsStateWithLifecycle()
     val action by viewModel.viewActions().collectAsStateWithLifecycle()
 

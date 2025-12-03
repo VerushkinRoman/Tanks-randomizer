@@ -14,52 +14,50 @@ class OfflineDataSourceImpl(
     private val settings: Settings,
     private val dataSourceFor: DataSourceFor,
 ) : OfflineDataSource {
-    override fun <T : ItemStatus<T>> setProperties(properties: List<T>) {
-        properties.forEach { setProperty(it) }
+    override fun <T : ItemStatus<T>> setProperties(id: String, properties: List<T>) {
+        properties.forEach { setProperty(id, it) }
     }
 
-    override fun <T : ItemStatus<T>> getProperties(defaultItems: List<T>): List<T> {
-        return defaultItems.map { getProperty(it) }
+    override fun <T : ItemStatus<T>> getProperties(id: String, defaultItems: List<T>): List<T> {
+        return defaultItems.map { getProperty(id, it) }
     }
 
-    override fun getScreenRoute(): String? = settings.getStringOrNull(key = "last_screen")
-    override fun setCurrentScreenRoute(screenRoute: String) {
-        settings.putString(key = "last_screen", value = screenRoute)
-    }
+    override fun getScreenRoute(): String? = settings.getStringOrNull(LAST_SCREEN_KEY)
+    override fun setCurrentScreenRoute(screenRoute: String) = settings.putString(LAST_SCREEN_KEY, value = screenRoute)
 
-    override fun getToken(): Token? = settings.decodeValueOrNull(key = "token")
-    override fun setToken(token: Token?) = settings.encodeValue(key = "token", value = token)
+    override fun getToken(accountId: Int): Token? = settings.decodeValueOrNull("${TOKEN_KEY}_$accountId")
+    override fun setToken(accountId: Int, token: Token?) = settings.encodeValue("${TOKEN_KEY}_$accountId", value = token)
 
-    override fun getNickname(): String? = settings.getStringOrNull(key = "nickname")
-    override fun setNickname(nickname: String?) {
-        nickname?.let {
-            settings.putString(key = "nickname", value = nickname)
-        } ?: settings.remove("nickname")
-    }
-
-    private fun <T : ItemStatus<T>> setProperty(property: T) {
+    private fun <T : ItemStatus<T>> setProperty(id: String, property: T) {
         settings.putBoolean(
-            key = "${property.name}_random${dataSourceFor.value}",
+            key = "${property.name}_${RANDOM_KEY}${dataSourceFor.value}_$id",
             value = property.random,
         )
 
         settings.putBoolean(
-            key = "${property.name}_selected${dataSourceFor.value}",
+            key = "${property.name}_${SELECTED_KEY}${dataSourceFor.value}_$id",
             value = property.selected,
         )
     }
 
-    private fun <T : ItemStatus<T>> getProperty(defaultItem: T): T {
+    private fun <T : ItemStatus<T>> getProperty(id: String, defaultItem: T): T {
         val random = settings.getBoolean(
-            key = "${defaultItem.name}_random${dataSourceFor.value}",
+            key = "${defaultItem.name}_${RANDOM_KEY}${dataSourceFor.value}_$id",
             defaultValue = defaultItem.random,
         )
 
         val selected = settings.getBoolean(
-            key = "${defaultItem.name}_selected${dataSourceFor.value}",
+            key = "${defaultItem.name}_${SELECTED_KEY}${dataSourceFor.value}_$id",
             defaultValue = defaultItem.selected,
         )
 
         return defaultItem.copy(selected = selected, random = random)
+    }
+
+    companion object {
+        private const val LAST_SCREEN_KEY = "last_screen"
+        private const val TOKEN_KEY = "token"
+        private const val RANDOM_KEY = "random"
+        private const val SELECTED_KEY = "selected"
     }
 }

@@ -11,7 +11,7 @@ import androidx.navigation3.runtime.entryProvider
 import androidx.navigation3.runtime.rememberSaveableStateHolderNavEntryDecorator
 import androidx.navigation3.ui.NavDisplay
 import com.posse.tanksrandomizer.feature_offline_screen.compose.OfflineScreen
-import com.posse.tanksrandomizer.feature_online_navigation.navigation.compose.OnlineNavigation
+import com.posse.tanksrandomizer.feature_online_navigation.navigation.compose.PagedOnlineScreens
 import com.posse.tanksrandomizer.feature_online_navigation.navigation.presentation.models.ErrorResponse
 import com.posse.tanksrandomizer.feature_settings_screen.compose.SettingsScreen
 import com.posse.tanksrandomizer.navigation.presentation.screens.OfflineScreenRoute
@@ -31,14 +31,14 @@ fun SingleScreenNavigationHost(
         onBack = {},
         modifier = modifier,
         entryDecorators = listOf(
-                rememberSaveableStateHolderNavEntryDecorator(),
-                rememberViewModelStoreNavEntryDecorator(
-                    removeViewModelStoreOnPop = { true }
-                ),
+            rememberSaveableStateHolderNavEntryDecorator(),
+            rememberViewModelStoreNavEntryDecorator(
+                removeViewModelStoreOnPop = { true }
             ),
+        ),
         entryProvider = entryProvider {
             entry<OnlineNavigationRoute> {
-                OnlineNavigation(
+                PagedOnlineScreens(
                     runningAsOverlay = runningAsOverlay,
                     onRedirectError = onRedirectError,
                     modifier = Modifier.fillMaxSize()

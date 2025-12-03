@@ -11,18 +11,18 @@ class OfflineScreenRepositoryImpl(
     private val offlineDataSource: OfflineDataSource,
     private val offlineScreenDataSource: OfflineScreenDataSource,
 ) : OfflineScreenRepository {
-    override fun getQuantity(): Int = offlineScreenDataSource.getQuantity()
-    override fun setQuantity(quantity: Int) = offlineScreenDataSource.setQuantity(quantity)
+    override fun getQuantity(id: String): Int = offlineScreenDataSource.getQuantity()
+    override fun setQuantity(id: String, quantity: Int) = offlineScreenDataSource.setQuantity(quantity)
 
-    override fun getExperiences(): List<Experience> = offlineDataSource.getProperties(defaultItems = Experience.defaultValues)
-    override fun setExperiences(experiences: List<Experience>) = offlineDataSource.setProperties(experiences)
+    override fun getExperiences(id: String): List<Experience> = offlineDataSource.getProperties(id, Experience.defaultValues)
+    override fun setExperiences(id: String, experiences: List<Experience>) = offlineDataSource.setProperties(id, experiences)
 
-    override fun getTankTypes(): List<TankType> = offlineDataSource.getProperties(defaultItems = TankType.defaultValues)
-    override fun setTankTypes(tankTypes: List<TankType>) = offlineDataSource.setProperties(tankTypes)
+    override fun getTankTypes(id: String): List<TankType> = offlineDataSource.getProperties(id, TankType.defaultValues)
+    override fun setTankTypes(id: String, tankTypes: List<TankType>) = offlineDataSource.setProperties(id, tankTypes)
 
-    override fun getPinned(): List<Pinned> = offlineDataSource.getProperties(defaultItems = Pinned.defaultValues)
-    override fun setPinned(pinned: List<Pinned>) = offlineDataSource.setProperties(pinned)
+    override fun getPinned(id: String): List<Pinned> = offlineDataSource.getProperties(id, Pinned.defaultValues)
+    override fun setPinned(id: String, pinned: List<Pinned>) = offlineDataSource.setProperties(id, pinned)
 
-    override fun getStatuses(): List<Status> = offlineDataSource.getProperties(defaultItems = Status.defaultValues)
-    override fun setStatuses(statuses: List<Status>) = offlineDataSource.setProperties(statuses)
+    override fun getStatuses(id: String): List<Status> = offlineDataSource.getProperties(id, Status.defaultValues)
+    override fun setStatuses(id: String, statuses: List<Status>) = offlineDataSource.setProperties(id, statuses)
 }

@@ -3,7 +3,10 @@ package com.posse.tanksrandomizer.common.data.di
 import com.posse.tanksrandomizer.common.data.datasource.OfflineDataSource
 import com.posse.tanksrandomizer.common.data.datasource.OfflineDataSourceImpl
 import com.posse.tanksrandomizer.common.domain.models.DataSourceFor
+import com.russhwolf.settings.ExperimentalSettingsApi
+import com.russhwolf.settings.ObservableSettings
 import com.russhwolf.settings.Settings
+import com.russhwolf.settings.observable.makeObservable
 import io.ktor.client.HttpClient
 import io.ktor.client.plugins.contentnegotiation.ContentNegotiation
 import io.ktor.client.plugins.defaultRequest
@@ -30,6 +33,11 @@ val commonLogger = object : Logger {
 val commonDataSourceModule = DI.Module("CommonDataSourceModule") {
     bind<Settings>() with singleton {
         Settings()
+    }
+
+    @OptIn(ExperimentalSettingsApi::class)
+    bind<ObservableSettings>() with singleton {
+        instance<Settings>().makeObservable()
     }
 
     bind<HttpClient>() with singleton {

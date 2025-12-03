@@ -4,6 +4,7 @@ import com.posse.tanksrandomizer.common.data.networking.ApiErrorResponse
 import com.posse.tanksrandomizer.common.data.networking.parseApiError
 import com.posse.tanksrandomizer.common.domain.utils.DomainErrorType
 import com.posse.tanksrandomizer.common.domain.utils.DomainErrorType.MapperError
+import com.posse.tanksrandomizer.common.domain.utils.DomainErrorType.NoTokensInRepo
 import com.posse.tanksrandomizer.common.domain.utils.DomainErrorType.TokenError
 import com.posse.tanksrandomizer.common.domain.utils.Error
 import com.posse.tanksrandomizer.common.domain.utils.NetworkError
@@ -58,6 +59,7 @@ object ErrorHandler {
 
                 is DomainErrorType -> when (error) {
                     MapperError -> Res.string.domain_mapper_error
+                    NoTokensInRepo -> Res.string.domain_token_error
                     TokenError -> Res.string.domain_token_error
                 }
 

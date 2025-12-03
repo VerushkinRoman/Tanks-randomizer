@@ -11,14 +11,14 @@ class SaveOfflineScreenState(
     private val offlineScreenRepository: OfflineScreenRepository,
     private val dispatchers: Dispatchers,
 ) {
-    suspend operator fun invoke(state: OfflineScreenState) = withContext(dispatchers.io) {
-        offlineScreenCommonRepository.setTypes(state.offlineFilters.types)
-        offlineScreenCommonRepository.setTiers(state.offlineFilters.tiers)
-        offlineScreenCommonRepository.setNations(state.offlineFilters.nations)
-        offlineScreenRepository.setTankTypes(state.offlineFilters.tankTypes)
-        offlineScreenRepository.setPinned(state.offlineFilters.pinned)
-        offlineScreenRepository.setStatuses(state.offlineFilters.statuses)
-        offlineScreenRepository.setExperiences(state.offlineFilters.experiences)
-        offlineScreenRepository.setQuantity(state.numbers.quantity)
+    suspend operator fun invoke(id: String, state: OfflineScreenState) = withContext(dispatchers.io) {
+        offlineScreenCommonRepository.setTypes(id, state.offlineFilters.types)
+        offlineScreenCommonRepository.setTiers(id, state.offlineFilters.tiers)
+        offlineScreenCommonRepository.setNations(id, state.offlineFilters.nations)
+        offlineScreenRepository.setTankTypes(id, state.offlineFilters.tankTypes)
+        offlineScreenRepository.setPinned(id, state.offlineFilters.pinned)
+        offlineScreenRepository.setStatuses(id, state.offlineFilters.statuses)
+        offlineScreenRepository.setExperiences(id, state.offlineFilters.experiences)
+        offlineScreenRepository.setQuantity(id, state.numbers.quantity)
     }
 }

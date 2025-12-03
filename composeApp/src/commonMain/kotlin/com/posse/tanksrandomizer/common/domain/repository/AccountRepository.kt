@@ -6,13 +6,11 @@ import com.posse.tanksrandomizer.common.domain.utils.Error
 import com.posse.tanksrandomizer.common.domain.utils.Result
 
 interface AccountRepository {
-    fun getToken(): Token?
-    fun setToken(token: Token?)
+    fun getToken(accountId: Int): Token?
+    fun setToken(accountId: Int, token: Token?)
 
-    fun getNickname(): String?
-    fun setNickname(nickname: String?)
+    suspend fun getNewToken(token: Token): Result<Token, Error>
 
-    suspend fun logIn(): Result<String ,Error>
-    suspend fun logOut(): EmptyResult<Error>
-    suspend fun getNewToken(): Result<Token, Error>
+    suspend fun logIn(): Result<String, Error>
+    suspend fun logOut(token: Token): EmptyResult<Error>
 }

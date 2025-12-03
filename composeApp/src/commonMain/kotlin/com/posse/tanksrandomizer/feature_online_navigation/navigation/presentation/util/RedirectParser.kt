@@ -25,7 +25,7 @@ object RedirectParser {
                             status = params[ResponseStatus.STATUS.value],
                             accessToken = params[SuccessResponseParams.ACCESS_TOKEN.value],
                             nickname = params[SuccessResponseParams.NICKNAME.value],
-                            accountId = params[SuccessResponseParams.ACCOUNT_ID.value],
+                            accountId = params[SuccessResponseParams.ACCOUNT_ID.value]?.toIntOrNull(),
                             expiresAt = params[SuccessResponseParams.EXPIRES_AT.value],
                         )
                     )

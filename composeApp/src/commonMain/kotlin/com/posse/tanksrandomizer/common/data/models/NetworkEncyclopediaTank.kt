@@ -1,6 +1,6 @@
 package com.posse.tanksrandomizer.common.data.models
 
-import com.posse.tanksrandomizer.feature_online_navigation.feature_online_screen.domain.models.EncyclopediaTank
+import com.posse.tanksrandomizer.feature_online_navigation.common.domain.models.EncyclopediaTank
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
