@@ -11,7 +11,6 @@ import com.posse.tanksrandomizer.feature_online_navigation.navigation.presentati
 import com.posse.tanksrandomizer.feature_online_navigation.navigation.presentation.models.PagedOnlineScreensEvent
 import com.posse.tanksrandomizer.feature_online_navigation.navigation.presentation.models.PagedOnlineScreensState
 import com.posse.tanksrandomizer.feature_online_navigation.navigation.presentation.use_cases.AddNewScreen
-import com.posse.tanksrandomizer.feature_online_navigation.navigation.presentation.use_cases.ChangeName
 import com.posse.tanksrandomizer.feature_online_navigation.navigation.presentation.use_cases.ChangePosition
 import com.posse.tanksrandomizer.feature_online_navigation.navigation.presentation.use_cases.GetPagedOnlineScreenStartState
 import com.posse.tanksrandomizer.feature_online_navigation.navigation.presentation.use_cases.RemoveScreen
@@ -38,7 +37,6 @@ class PagedOnlineScreensViewModel(
 
     private val addNewScreen = AddNewScreen()
     private val changePosition = ChangePosition()
-    private val changeName = ChangeName()
     private val selectScreen = SelectScreen()
 
     init {
@@ -54,14 +52,8 @@ class PagedOnlineScreensViewModel(
             PagedOnlineScreensEvent.ClearAction -> viewAction = null
             PagedOnlineScreensEvent.AddScreenPressed -> addScreen()
             is PagedOnlineScreensEvent.RemoveScreenPressed -> removeScreen(viewEvent.id)
-            is PagedOnlineScreensEvent.EditMenuCalled -> showEditMenu(viewEvent.id)
-            PagedOnlineScreensEvent.EditMenuDismissed -> hideEditMenu()
             is PagedOnlineScreensEvent.MoveLeft -> changePosition(viewEvent.id, -1)
             is PagedOnlineScreensEvent.MoveRight -> changePosition(viewEvent.id, 1)
-            is PagedOnlineScreensEvent.OnNameChanged -> changeName(viewEvent.id, viewEvent.name)
-            is PagedOnlineScreensEvent.ShowNameEditField -> showEditName(viewEvent.id)
-            is PagedOnlineScreensEvent.OnNameEdited -> onNameEdited(viewEvent.name)
-            PagedOnlineScreensEvent.OnNameEditDismissed -> closeNameEditField()
             is PagedOnlineScreensEvent.OnlineScreenSelected -> selectScreen(viewEvent.id)
             is PagedOnlineScreensEvent.OnSuccessLogin -> setSuccessLoginResult(
                 viewEvent.id,
@@ -93,24 +85,6 @@ class PagedOnlineScreensViewModel(
         }
     }
 
-    private fun changeName(id: String, name: String) {
-        makeActionWithViewModelScopeAndSaveState {
-            viewState = viewState.copy(
-                editMenuOnElementId = null,
-                nameEditFieldValue = null,
-            )
-            changeName(id, name, viewState.screens)
-        }
-    }
-
-    private fun showEditMenu(id: String) {
-        viewState = viewState.copy(editMenuOnElementId = id)
-    }
-
-    private fun hideEditMenu() {
-        viewState = viewState.copy(editMenuOnElementId = null)
-    }
-
     private fun selectScreen(id: String) {
         if (viewState.screens.find { it.id == id }?.selected == true) return
 
@@ -119,27 +93,10 @@ class PagedOnlineScreensViewModel(
         }
     }
 
-    private fun closeNameEditField() {
-        viewState = viewState.copy(
-            editMenuOnElementId = null,
-            nameEditFieldValue = null,
-        )
-    }
-
     private fun setSuccessLoginResult(id: String, name: String, token: Token) {
         makeActionWithViewModelScopeAndSaveState {
             setSuccessLoginResult(id, name, token, viewState.screens)
         }
-    }
-
-    private fun onNameEdited(name: String) {
-        val shortName = name.take(MAX_NAME_LENGTH)
-        viewState = viewState.copy(nameEditFieldValue = shortName)
-    }
-
-    private fun showEditName(id: String) {
-        val name = viewState.screens.find { it.id == id }?.name ?: return
-        viewState = viewState.copy(nameEditFieldValue = name)
     }
 
     private fun makeActionWithViewModelScopeAndSaveState(
@@ -149,9 +106,5 @@ class PagedOnlineScreensViewModel(
             val screens = action()
             onlineScreensInteractor.setOnlineScreens(screens)
         }
-    }
-
-    companion object {
-        private const val MAX_NAME_LENGTH = 25
     }
 }

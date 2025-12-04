@@ -24,6 +24,8 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
+import kotlin.time.Clock
+import kotlin.time.Duration.Companion.days
 import kotlin.time.ExperimentalTime
 
 @OptIn(ExperimentalTime::class)
@@ -40,7 +42,7 @@ class OnlineScreenViewModel(
     initialState = GetOnlineScreenStartState(
         commonTanksRepository = filterRepository,
         onlineScreenRepository = onlineScreenRepository,
-    ).invoke(screenId)
+    ).invoke(screenId, accountId)
 ) {
     private val saveOnlineScreenState = SaveOnlineScreenState(
         filterRepository = filterRepository,
@@ -68,7 +70,14 @@ class OnlineScreenViewModel(
             interactor.tokenStatus.first { statuses ->
                 statuses.any { it.accountId == accountId && !it.updating }
             }.let {
-                refreshAccount(launchedByUser = false)
+                onlineScreenRepository.getLastAccountUpdated(accountId).first()
+                    ?.let { updatedTime ->
+                        if (Clock.System.now() - updatedTime > 1.days) {
+                            refreshAccount(launchedByUser = false)
+                        } else {
+                            stopLoading()
+                        }
+                    } ?: refreshAccount(launchedByUser = false)
             }
 
             launch {

@@ -1,7 +1,6 @@
 package com.posse.tanksrandomizer.feature_online_navigation.feature_online_screen.presentation.models
 
 import com.posse.tanksrandomizer.feature_online_navigation.feature_online_screen.domain.models.Tank
-import kotlin.time.Clock
 import kotlin.time.ExperimentalTime
 import kotlin.time.Instant
 
@@ -22,7 +21,6 @@ data class OnlineScreenState(
         return copy(
             tanksInGarage = newTanks,
             tanksByFilter = tanksByFilter,
-            lastAccountUpdated = Clock.System.now()
         )
     }
 

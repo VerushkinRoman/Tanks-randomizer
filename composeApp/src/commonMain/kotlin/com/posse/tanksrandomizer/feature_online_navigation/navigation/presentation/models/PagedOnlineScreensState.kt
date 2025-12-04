@@ -4,6 +4,4 @@ import com.posse.tanksrandomizer.feature_online_navigation.common.domain.models.
 
 data class PagedOnlineScreensState(
     val screens: OnlineScreens,
-    val editMenuOnElementId: String? = null,
-    val nameEditFieldValue: String? = null,
 )

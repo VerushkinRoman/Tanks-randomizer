@@ -71,6 +71,9 @@
     <string name="navigation_label_online">Леста</string>
     <string name="navigation_label_offline">Офлайн</string>
     <string name="navigation_label_settings">Настройки</string>
+    <string name="navigation_menu_left">Влево</string>
+    <string name="navigation_menu_right">Вправо</string>
+    <string name="navigation_menu_delete">Удалить</string>
 
 
 <!--    Main Screen-->

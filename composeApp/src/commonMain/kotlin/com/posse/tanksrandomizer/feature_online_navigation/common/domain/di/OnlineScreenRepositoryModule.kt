@@ -12,9 +12,10 @@ import org.kodein.di.DI
 import org.kodein.di.bind
 import org.kodein.di.instance
 import org.kodein.di.provider
+import org.kodein.di.singleton
 
 val onlineScreenRepositoryModule = DI.Module("OnlineScreenRepositoryModule") {
-    bind<OnlineScreenRepository>() with provider {
+    bind<OnlineScreenRepository>() with singleton {
         OnlineScreenRepositoryImpl(
             onlineScreenDataSource = instance(),
             onlineDataSource = instance(),
