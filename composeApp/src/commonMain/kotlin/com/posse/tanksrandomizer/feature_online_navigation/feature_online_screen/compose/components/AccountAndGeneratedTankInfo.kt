@@ -217,7 +217,7 @@ private fun WideScreen(
             )
         }
 
-        Spacer(Modifier.height(24.dp))
+        Spacer(Modifier.height(8.dp))
 
         Row(
             horizontalArrangement = Arrangement.Center,

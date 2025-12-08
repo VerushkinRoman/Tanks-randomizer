@@ -12,6 +12,7 @@ import androidx.navigation3.runtime.entryProvider
 import androidx.navigation3.runtime.rememberNavBackStack
 import androidx.navigation3.runtime.rememberSaveableStateHolderNavEntryDecorator
 import androidx.navigation3.ui.NavDisplay
+import com.posse.tanksrandomizer.common.compose.components.getNavAnimation
 import com.posse.tanksrandomizer.common.domain.models.Token
 import com.posse.tanksrandomizer.feature_online_navigation.common.domain.models.OnlineScreens
 import com.posse.tanksrandomizer.feature_online_navigation.navigation.presentation.models.ErrorResponse
@@ -34,6 +35,8 @@ internal fun PagedNavigation(
     onRedirectError: (ErrorResponse) -> Unit,
     onSuccessLogin: (id:String, name:String, token:Token)-> Unit,
     state: PagedOnlineScreensState,
+    selectedOrder: Int,
+    previousSelectedOrder: Int,
     modifier: Modifier = Modifier,
 ) {
     val startDestination = remember { getNavigationEntry(state.screens) }
@@ -62,6 +65,10 @@ internal fun PagedNavigation(
                     removeViewModelStoreOnPop = { true }
                 ),
             ),
+        transitionSpec = getNavAnimation(
+            selectedOrder = selectedOrder,
+            previousSelectedOrder = previousSelectedOrder,
+        ),
         entryProvider = entryProvider {
             entry<Page0Navigation> { navigation ->
                 OnlineNavigation(

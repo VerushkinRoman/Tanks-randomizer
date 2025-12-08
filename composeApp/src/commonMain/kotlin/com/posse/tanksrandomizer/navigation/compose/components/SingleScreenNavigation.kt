@@ -15,9 +15,13 @@ import androidx.compose.material3.NavigationRailItem
 import androidx.compose.material3.NavigationRailItemDefaults
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clipToBounds
 import androidx.navigation3.runtime.NavBackStack
 import androidx.navigation3.runtime.NavKey
 import androidx.navigation3.runtime.rememberNavBackStack
@@ -25,7 +29,6 @@ import com.posse.tanksrandomizer.common.compose.base_components.RandomizerText
 import com.posse.tanksrandomizer.common.compose.utils.ErrorHandler.getRedirectErrorMessage
 import com.posse.tanksrandomizer.common.compose.utils.LocalSizeClass
 import com.posse.tanksrandomizer.common.compose.utils.ScreenSize
-import com.posse.tanksrandomizer.common.core.di.Inject
 import com.posse.tanksrandomizer.common.domain.models.ResponseStatus
 import com.posse.tanksrandomizer.navigation.domain.repository.NavigationRepository
 import com.posse.tanksrandomizer.navigation.presentation.screens.OfflineScreenRoute
@@ -49,6 +52,29 @@ fun SingleScreenNavigation(
         remember(navigationRepository) { navigationRepository.startDestination() }
     val navBackStack = rememberNavBackStack(mainNavigationConfig, startDestination)
 
+    val portrait = when (LocalSizeClass.current) {
+        ScreenSize.Small -> true
+        else -> false
+    }
+
+    var selectedItem by remember {
+        mutableIntStateOf(
+            when (startDestination) {
+                is OnlineNavigationRoute -> 0
+                is OfflineScreenRoute -> 1
+                is SettingsScreenRoute -> 2
+                else -> 0
+            }
+        )
+    }
+
+    var previousSelectedItem by remember {mutableIntStateOf(selectedItem)}
+
+    val onItemSelected: (Int) -> Unit = { index ->
+        previousSelectedItem = selectedItem
+        selectedItem = index
+    }
+
     val navHost: @Composable (Modifier) -> Unit = { modifier ->
         SingleScreenNavigationHost(
             navBackStack = navBackStack,
@@ -62,12 +88,15 @@ fun SingleScreenNavigation(
                     }
                 }
             },
-            modifier = modifier,
+            portrait = portrait,
+            selectedOrder = selectedItem,
+            previousSelectedOrder = previousSelectedItem,
+            modifier = modifier.clipToBounds(),
         )
     }
 
-    when (LocalSizeClass.current) {
-        ScreenSize.Small -> Column(
+    if (portrait) {
+        Column(
             modifier = modifier
         ) {
             navHost(Modifier.weight(1f))
@@ -75,22 +104,22 @@ fun SingleScreenNavigation(
             NavBar(
                 navBackStack = navBackStack,
                 repository = navigationRepository,
+                onItemSelected = onItemSelected,
                 modifier = Modifier.fillMaxWidth(),
             )
         }
+    } else {
+        Row(
+            modifier = modifier,
+        ) {
+            NavRail(
+                navBackStack = navBackStack,
+                repository = navigationRepository,
+                onItemSelected = onItemSelected,
+                modifier = Modifier.fillMaxHeight(),
+            )
 
-        else -> {
-            Row(
-                modifier = modifier,
-            ) {
-                NavRail(
-                    navBackStack = navBackStack,
-                    repository = navigationRepository,
-                    modifier = Modifier.fillMaxHeight(),
-                )
-
-                navHost(Modifier.weight(1f))
-            }
+            navHost(Modifier.weight(1f))
         }
     }
 }
@@ -99,6 +128,7 @@ fun SingleScreenNavigation(
 private fun NavRail(
     navBackStack: NavBackStack<NavKey>,
     repository: NavigationRepository,
+    onItemSelected: (Int) -> Unit,
     modifier: Modifier = Modifier,
 ) {
     NavigationRail(
@@ -108,12 +138,13 @@ private fun NavRail(
     ) {
         Spacer(Modifier.weight(1f))
 
-        NavigationItem.entries.forEach { item ->
+        NavigationItem.entries.forEachIndexed { index, item ->
             val selected = item.screenRoute == navBackStack.lastOrNull()
 
             NavigationRailItem(
                 selected = selected,
                 onClick = {
+                    onItemSelected(index)
                     navBackStack.navigateToRoute(
                         route = item.screenRoute,
                         navigationRepository = repository
@@ -148,6 +179,7 @@ private fun NavRail(
 private fun NavBar(
     navBackStack: NavBackStack<NavKey>,
     repository: NavigationRepository,
+    onItemSelected: (Int) -> Unit,
     modifier: Modifier = Modifier,
 ) {
     NavigationBar(
@@ -155,12 +187,13 @@ private fun NavBar(
         contentColor = MaterialTheme.colorScheme.primary,
         modifier = modifier,
     ) {
-        NavigationItem.entries.forEach { item ->
+        NavigationItem.entries.forEachIndexed { index, item ->
             val selected = item.screenRoute == navBackStack.lastOrNull()
 
             NavigationBarItem(
                 selected = selected,
                 onClick = {
+                    onItemSelected(index)
                     navBackStack.navigateToRoute(
                         route = item.screenRoute,
                         navigationRepository = repository

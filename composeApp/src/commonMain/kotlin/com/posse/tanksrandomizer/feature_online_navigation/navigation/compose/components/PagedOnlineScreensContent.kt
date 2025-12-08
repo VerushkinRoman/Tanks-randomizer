@@ -31,6 +31,7 @@ import androidx.compose.material3.PrimaryScrollableTabRow
 import androidx.compose.material3.Tab
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
@@ -60,14 +61,11 @@ internal fun PagedOnlineScreensContent(
     runningAsOverlay: Boolean,
     onRedirectError: (ErrorResponse) -> Unit,
     state: PagedOnlineScreensState,
+    selectedTab: Int,
     onEvent: (PagedOnlineScreensEvent) -> Unit,
     modifier: Modifier,
 ) {
-    val selectedTab by remember(state) {
-        mutableStateOf(
-            state.screens.find { screenData -> screenData.selected }?.position ?: 0
-        )
-    }
+    var previousSelectedItem by remember { mutableIntStateOf(selectedTab) }
 
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
@@ -78,7 +76,9 @@ internal fun PagedOnlineScreensContent(
             selectedTab = selectedTab,
             state = state,
             onEvent = onEvent,
-            onAddScreenPressed = { onEvent(PagedOnlineScreensEvent.AddScreenPressed) },
+            onItemClick = {
+                previousSelectedItem = selectedTab
+            },
             modifier = Modifier.fillMaxWidth()
         )
 
@@ -91,6 +91,8 @@ internal fun PagedOnlineScreensContent(
                 onEvent(PagedOnlineScreensEvent.OnSuccessLogin(id, name, token))
             },
             state = state,
+            selectedOrder = selectedTab,
+            previousSelectedOrder = previousSelectedItem,
             modifier = Modifier
                 .fillMaxWidth()
                 .weight(1f),
@@ -104,7 +106,7 @@ private fun TabsRow(
     selectedTab: Int,
     state: PagedOnlineScreensState,
     onEvent: (PagedOnlineScreensEvent) -> Unit,
-    onAddScreenPressed: () -> Unit,
+    onItemClick: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
     PrimaryScrollableTabRow(
@@ -145,6 +147,7 @@ private fun TabsRow(
                         .clip(ButtonsShapeSmall)
                         .combinedClickable(
                             onClick = {
+                                onItemClick()
                                 onEvent(PagedOnlineScreensEvent.OnlineScreenSelected(screenData.id))
                             },
                             onLongClick = { expanded = true }
@@ -173,6 +176,7 @@ private fun TabsRow(
                             )
                         },
                         onClick = {
+                            onItemClick()
                             onEvent(PagedOnlineScreensEvent.MoveLeft(screenData.id))
                         },
                         leadingIcon = {
@@ -193,6 +197,7 @@ private fun TabsRow(
                             )
                         },
                         onClick = {
+                            onItemClick()
                             onEvent(PagedOnlineScreensEvent.MoveRight(screenData.id))
                         },
                         leadingIcon = {
@@ -218,6 +223,7 @@ private fun TabsRow(
                             )
                         },
                         onClick = {
+                            onItemClick()
                             onEvent(PagedOnlineScreensEvent.RemoveScreenPressed(screenData.id))
                         },
                         leadingIcon = {
@@ -235,7 +241,10 @@ private fun TabsRow(
         if (state.screens.size < MAX_ONLINE_SCREENS) {
             Tab(
                 selected = false,
-                onClick = onAddScreenPressed,
+                onClick = {
+                    onItemClick()
+                    onEvent(PagedOnlineScreensEvent.AddScreenPressed)
+                },
                 icon = {
                     Icon(
                         imageVector = Icons.Rounded.AddCircleOutline,

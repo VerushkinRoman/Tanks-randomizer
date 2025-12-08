@@ -10,6 +10,7 @@ import androidx.navigation3.runtime.NavKey
 import androidx.navigation3.runtime.entryProvider
 import androidx.navigation3.runtime.rememberSaveableStateHolderNavEntryDecorator
 import androidx.navigation3.ui.NavDisplay
+import com.posse.tanksrandomizer.common.compose.components.getNavAnimation
 import com.posse.tanksrandomizer.feature_offline_screen.compose.OfflineScreen
 import com.posse.tanksrandomizer.feature_online_navigation.navigation.compose.PagedOnlineScreens
 import com.posse.tanksrandomizer.feature_online_navigation.navigation.presentation.models.ErrorResponse
@@ -23,7 +24,10 @@ fun SingleScreenNavigationHost(
     navBackStack: NavBackStack<NavKey>,
     runningAsOverlay: Boolean,
     onRedirectError: (ErrorResponse) -> Unit,
-    modifier: Modifier = Modifier
+    portrait: Boolean,
+    selectedOrder: Int,
+    previousSelectedOrder: Int,
+    modifier: Modifier = Modifier,
 ) {
     NavDisplay(
         backStack = navBackStack,
@@ -35,6 +39,11 @@ fun SingleScreenNavigationHost(
             rememberViewModelStoreNavEntryDecorator(
                 removeViewModelStoreOnPop = { true }
             ),
+        ),
+        transitionSpec = getNavAnimation(
+            selectedOrder = selectedOrder,
+            previousSelectedOrder = previousSelectedOrder,
+            portrait = portrait,
         ),
         entryProvider = entryProvider {
             entry<OnlineNavigationRoute> {

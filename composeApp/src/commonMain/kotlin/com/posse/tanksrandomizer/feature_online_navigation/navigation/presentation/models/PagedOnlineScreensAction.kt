@@ -1,3 +1,5 @@
 package com.posse.tanksrandomizer.feature_online_navigation.navigation.presentation.models
 
-interface PagedOnlineScreensAction
+sealed interface PagedOnlineScreensAction {
+    data object CantAddScreens : PagedOnlineScreensAction
+}

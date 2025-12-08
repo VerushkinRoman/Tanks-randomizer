@@ -1101,5 +1101,32 @@ object MissedEncyclopediaTanks {
             typeName = Type.TANK_DESTROYER,
             image = null
         ),
+        EncyclopediaTank(
+            id = 28177,
+            isPremium = true,
+            name = "Kpz 07 P(E)",
+            nationName = Nation.NATION_GERMANY,
+            tier = 10,
+            typeName = Type.HEAVY_TANK,
+            image = null
+        ),
+        EncyclopediaTank(
+            id = 30753,
+            isPremium = true,
+            name = "XM57",
+            nationName = Nation.NATION_USA,
+            tier = 10,
+            typeName = Type.TANK_DESTROYER,
+            image = null
+        ),
+        EncyclopediaTank(
+            id = 14385,
+            isPremium = true,
+            name = "DZT-159",
+            nationName = Nation.NATION_CHINA,
+            tier = 9,
+            typeName = Type.MEDIUM_TANK,
+            image = null
+        ),
     )
 }

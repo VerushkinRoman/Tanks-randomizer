@@ -65,17 +65,18 @@ class PagedOnlineScreensViewModel(
 
     private fun addScreen() {
         makeActionWithViewModelScopeAndSaveState {
+            if (viewState.screens.maxByOrNull { it.position }?.accountId == null) {
+                viewAction = PagedOnlineScreensAction.CantAddScreens
+            }
+
             addNewScreen(viewState.screens)
         }
     }
 
     private fun removeScreen(id: String) {
         makeActionWithViewModelScopeAndSaveState {
-            if (viewState.screens.size == 1) {
-                addNewScreen(emptyList())
-            } else {
-                removeScreen(id, viewState.screens)
-            }
+            removeScreen(id, viewState.screens)
+                .ifEmpty { addNewScreen(emptyList()) }
         }
     }
 

@@ -42,7 +42,7 @@ fun OnlineScreenContent(
         )
 
         Spacer(
-            Modifier.height(24.dp)
+            Modifier.height(8.dp)
         )
 
         FiltersBlock(
