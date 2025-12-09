@@ -3,6 +3,7 @@ package com.posse.tanksrandomizer.feature_settings_screen.domain.repository
 import com.posse.tanksrandomizer.feature_settings_screen.domain.models.AppLocale
 import com.posse.tanksrandomizer.feature_settings_screen.domain.models.ButtonOffset
 import com.posse.tanksrandomizer.feature_settings_screen.domain.models.ScreenRotation
+import kotlinx.coroutines.flow.Flow
 
 interface SettingsRepository {
     fun getRotation(): ScreenRotation
@@ -28,4 +29,7 @@ interface SettingsRepository {
 
     fun getDesktopWindowSize(): Pair<Int, Int>?
     fun setDesktopWindowSize(size: Pair<Int, Int>)
+
+    fun getMultiaccountEnabled(): Flow<Boolean>
+    fun setMultiaccountEnabled(enabled: Boolean)
 }

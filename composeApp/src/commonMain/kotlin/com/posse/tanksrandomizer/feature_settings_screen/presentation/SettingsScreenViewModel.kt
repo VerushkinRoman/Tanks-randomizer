@@ -9,6 +9,7 @@ import com.posse.tanksrandomizer.feature_settings_screen.presentation.model.Sett
 import com.posse.tanksrandomizer.feature_settings_screen.presentation.model.SettingsEvent
 import com.posse.tanksrandomizer.feature_settings_screen.presentation.model.SettingsState
 import com.posse.tanksrandomizer.feature_settings_screen.presentation.use_cases.GetSettingsState
+import kotlinx.coroutines.launch
 
 class SettingsScreenViewModel(
     private val repository: SettingsRepository,
@@ -18,10 +19,20 @@ class SettingsScreenViewModel(
 ) {
     init {
         withViewModelScope {
-            settingsInteractor.screenRotation.collect { rotation ->
-                viewState = viewState.copy(
-                    screenRotation = rotation
-                )
+            launch {
+                settingsInteractor.screenRotation.collect { rotation ->
+                    viewState = viewState.copy(
+                        screenRotation = rotation
+                    )
+                }
+            }
+
+            launch {
+                repository.getMultiaccountEnabled().collect {
+                    viewState = viewState.copy(
+                        multiaccountEnabled = it
+                    )
+                }
             }
         }
     }
@@ -35,6 +46,7 @@ class SettingsScreenViewModel(
             is SettingsEvent.SetButtonSize -> saveButtonSize(viewEvent.size)
             is SettingsEvent.FullScreenModeChanged -> changeFullScreen(viewEvent.fullScreen)
             is SettingsEvent.ChangeLocale -> changeLocale(viewEvent.locale)
+            is SettingsEvent.MultiaccountEnabled -> changeMultiaccount(viewEvent.enabled)
         }
     }
 
@@ -65,10 +77,6 @@ class SettingsScreenViewModel(
     }
 
     private fun changeRotation(screenRotation: ScreenRotation) {
-        viewState = viewState.copy(
-            screenRotation = screenRotation
-        )
-
         settingsInteractor.setScreenRotation(screenRotation)
     }
 
@@ -78,5 +86,9 @@ class SettingsScreenViewModel(
         )
 
         settingsInteractor.setFullScreenMode(fullScreen)
+    }
+
+    private fun changeMultiaccount(enabled: Boolean) {
+        repository.setMultiaccountEnabled(enabled)
     }
 }

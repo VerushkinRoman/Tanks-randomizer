@@ -4,6 +4,7 @@ import com.posse.tanksrandomizer.feature_settings_screen.data.ScreenSettingsData
 import com.posse.tanksrandomizer.feature_settings_screen.domain.models.AppLocale
 import com.posse.tanksrandomizer.feature_settings_screen.domain.models.ButtonOffset
 import com.posse.tanksrandomizer.feature_settings_screen.domain.models.ScreenRotation
+import kotlinx.coroutines.flow.Flow
 
 class SettingsRepositoryImpl(
     private val dataSource: ScreenSettingsDataSource
@@ -31,4 +32,7 @@ class SettingsRepositoryImpl(
 
     override fun getDesktopWindowSize(): Pair<Int, Int>? = dataSource.getDesktopWindowSize()
     override fun setDesktopWindowSize(size: Pair<Int, Int>) = dataSource.setDesktopWindowSize(size)
+
+    override fun getMultiaccountEnabled(): Flow<Boolean> = dataSource.getMultiaccountEnabled()
+    override fun setMultiaccountEnabled(enabled: Boolean) = dataSource.setMultiaccountEnabled(enabled)
 }

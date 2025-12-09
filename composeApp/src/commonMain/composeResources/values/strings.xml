@@ -67,6 +67,12 @@
     <string name="settings_screen_rotation_orientation_portrait">portrait</string>
     <string name="settings_screen_rotation_orientation_auto">auto</string>
 
+    <string name="settings_multiaccount_title">Multiple Accounts</string>
+    <string name="settings_multiaccount_desc_on">The multiple accounts feature is enabled. To save screen space, turn it off</string>
+    <string name="settings_multiaccount_desc_off">The multiple accounts feature is disabled</string>
+    <string name="settings_multiaccount_btn_on">On</string>
+    <string name="settings_multiaccount_btn_off">Off</string>
+
 
 <!--    Navigation-->
     <string name="navigation_label_online">Lesta</string>

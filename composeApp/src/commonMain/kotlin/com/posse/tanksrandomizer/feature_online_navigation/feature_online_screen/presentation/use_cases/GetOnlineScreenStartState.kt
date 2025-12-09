@@ -12,6 +12,7 @@ import kotlin.time.ExperimentalTime
 class GetOnlineScreenStartState(
     private val commonTanksRepository: CommonTanksRepository,
     private val onlineScreenRepository: OnlineScreenRepository,
+    private val filterTanks: FilterTanks,
 ) {
     operator fun invoke(screenId: String, accountId: Int): OnlineScreenState {
         val tanks = runBlocking {
@@ -30,9 +31,14 @@ class GetOnlineScreenStartState(
             mastery = onlineScreenRepository.getMastery(screenId)
         )
 
+        val filteredTanks = runBlocking {
+            filterTanks(tanks, onlineFilters)
+        }
+
         return OnlineScreenState(
             onlineFilters = onlineFilters,
             tanksInGarage = tanks,
+            tanksByFilter = filteredTanks,
             generatedTank = onlineScreenRepository.getSelectedTank(screenId),
             lastAccountUpdated = lastAccountUpdated,
         )

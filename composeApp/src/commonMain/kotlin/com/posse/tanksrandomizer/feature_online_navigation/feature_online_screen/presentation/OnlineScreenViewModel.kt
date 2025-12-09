@@ -38,10 +38,12 @@ class OnlineScreenViewModel(
     private val onlineScreensInteractor: OnlineScreensInteractor,
     interactor: TokenInteractor,
     dispatchers: Dispatchers,
+    private val filterTanks: FilterTanks = FilterTanks(dispatchers = dispatchers),
 ) : BaseSharedViewModel<OnlineScreenState, OnlineScreenAction, OnlineScreenEvent>(
     initialState = GetOnlineScreenStartState(
         commonTanksRepository = filterRepository,
         onlineScreenRepository = onlineScreenRepository,
+        filterTanks = filterTanks,
     ).invoke(screenId, accountId)
 ) {
     private val saveOnlineScreenState = SaveOnlineScreenState(
@@ -58,10 +60,6 @@ class OnlineScreenViewModel(
         accountRepository = accountRepository,
         onlineScreensInteractor = onlineScreensInteractor,
         onlineScreenRepository = onlineScreenRepository,
-        dispatchers = dispatchers,
-    )
-
-    private val filterTanks = FilterTanks(
         dispatchers = dispatchers,
     )
 

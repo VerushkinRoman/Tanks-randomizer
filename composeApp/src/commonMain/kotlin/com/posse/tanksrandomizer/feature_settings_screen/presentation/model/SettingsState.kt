@@ -9,4 +9,5 @@ data class SettingsState(
     val fullScreenMode: Boolean,
     val buttonOpacity: Float,
     val buttonSize: Float,
+    val multiaccountEnabled: Boolean,
 )

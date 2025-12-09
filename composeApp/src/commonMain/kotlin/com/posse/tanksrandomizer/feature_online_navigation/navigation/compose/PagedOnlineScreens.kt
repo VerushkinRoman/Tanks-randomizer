@@ -48,7 +48,7 @@ fun PagedOnlineScreens(
     LaunchedEffect(action) {
         action?.let { pagedOnlineScreenAction ->
             when (pagedOnlineScreenAction) {
-                PagedOnlineScreensAction.CantAddScreens -> {
+                is PagedOnlineScreensAction.CantAddScreens -> {
                     if (animationJob?.isActive == true) {
                         viewModel.obtainEvent(PagedOnlineScreensEvent.ClearAction)
                         return@let
@@ -56,10 +56,9 @@ fun PagedOnlineScreens(
 
                     @Suppress("AssignedValueIsNeverRead")
                     animationJob = scope.launch {
-                        val prevSelectedTab = selectedTab
                         selectedTab = state.screens.size
                         delay(0.5.seconds)
-                        selectedTab = prevSelectedTab
+                        selectedTab = pagedOnlineScreenAction.emptyScreenPosition
                     }
                 }
             }

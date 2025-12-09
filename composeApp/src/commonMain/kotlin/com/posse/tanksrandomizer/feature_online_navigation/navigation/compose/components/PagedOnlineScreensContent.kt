@@ -30,6 +30,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.PrimaryScrollableTabRow
 import androidx.compose.material3.Tab
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
@@ -48,8 +49,10 @@ import com.posse.tanksrandomizer.feature_online_navigation.common.domain.models.
 import com.posse.tanksrandomizer.feature_online_navigation.navigation.presentation.models.ErrorResponse
 import com.posse.tanksrandomizer.feature_online_navigation.navigation.presentation.models.PagedOnlineScreensEvent
 import com.posse.tanksrandomizer.feature_online_navigation.navigation.presentation.models.PagedOnlineScreensState
+import com.posse.tanksrandomizer.feature_settings_screen.domain.repository.SettingsRepository
 import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.resources.stringResource
+import org.kodein.di.compose.rememberInstance
 import tanks_randomizer.composeapp.generated.resources.Res
 import tanks_randomizer.composeapp.generated.resources.navigation_menu_delete
 import tanks_randomizer.composeapp.generated.resources.navigation_menu_left
@@ -66,23 +69,35 @@ internal fun PagedOnlineScreensContent(
     modifier: Modifier,
 ) {
     var previousSelectedItem by remember { mutableIntStateOf(selectedTab) }
+    val settingsRepository by rememberInstance<SettingsRepository>()
+    var multiaccountEnabled by remember { mutableStateOf(true) }
+
+    LaunchedEffect(settingsRepository){
+        settingsRepository.getMultiaccountEnabled().collect { enabled ->
+            multiaccountEnabled = enabled
+        }
+    }
 
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
         modifier = modifier
             .windowInsetsPadding(WindowInsets.safeContent.only(WindowInsetsSides.Top))
     ) {
-        TabsRow(
-            selectedTab = selectedTab,
-            state = state,
-            onEvent = onEvent,
-            onItemClick = {
-                previousSelectedItem = selectedTab
-            },
-            modifier = Modifier.fillMaxWidth()
-        )
+        if (multiaccountEnabled) {
+            Spacer(Modifier.height(4.dp))
 
-        Spacer(Modifier.height(8.dp))
+            TabsRow(
+                selectedTab = selectedTab,
+                state = state,
+                onEvent = onEvent,
+                onItemClick = {
+                    previousSelectedItem = selectedTab
+                },
+                modifier = Modifier.fillMaxWidth()
+            )
+
+            Spacer(Modifier.height(8.dp))
+        }
 
         PagedNavigation(
             runningAsOverlay = runningAsOverlay,

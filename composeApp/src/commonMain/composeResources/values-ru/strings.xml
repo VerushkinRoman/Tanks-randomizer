@@ -66,6 +66,11 @@
     <string name="settings_screen_rotation_orientation_portrait">портретная</string>
     <string name="settings_screen_rotation_orientation_auto">авто</string>
 
+    <string name="settings_multiaccount_title">Несколько аккаунтов</string>
+    <string name="settings_multiaccount_desc_on">Включена функция использования нескольких аккаунтов. Для экономии места на экране выключите её</string>
+    <string name="settings_multiaccount_desc_off">Функция использования нескольких аккаунтов выключена</string>
+    <string name="settings_multiaccount_btn_on">Вкл</string>
+    <string name="settings_multiaccount_btn_off">Выкл</string>
 
 <!--    Navigation-->
     <string name="navigation_label_online">Леста</string>
