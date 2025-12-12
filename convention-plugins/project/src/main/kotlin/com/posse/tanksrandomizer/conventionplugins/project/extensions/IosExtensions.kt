@@ -1,0 +1,16 @@
+package com.posse.tanksrandomizer.conventionplugins.project.extensions
+
+import com.posse.tanksrandomizer.conventionplugins.base.extensions.kotlinMultiplatformConfig
+import org.gradle.api.Project
+import org.jetbrains.kotlin.gradle.plugin.mpp.Framework
+import org.jetbrains.kotlin.gradle.plugin.mpp.KotlinNativeTarget
+
+fun Project.iosRegularFramework(
+    block: Framework.() -> Unit
+) {
+    kotlinMultiplatformConfig {
+        targets
+            .filterIsInstance<KotlinNativeTarget>()
+            .forEach { nativeTarget -> nativeTarget.binaries.framework(configure = block) }
+    }
+}

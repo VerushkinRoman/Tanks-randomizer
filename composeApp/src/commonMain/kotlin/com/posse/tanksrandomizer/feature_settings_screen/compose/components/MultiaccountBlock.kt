@@ -1,4 +1,4 @@
-package com.posse.tanksrandomizer.feature_settings_screen.compose.components.common
+package com.posse.tanksrandomizer.feature_settings_screen.compose.components
 
 import androidx.compose.material3.SegmentedButton
 import androidx.compose.material3.SegmentedButtonDefaults
@@ -8,6 +8,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.sp
 import com.posse.tanksrandomizer.common.compose.base_components.RandomizerText
 import com.posse.tanksrandomizer.common.compose.theme.themedSegmentedButtonColors
+import com.posse.tanksrandomizer.feature_settings_screen.compose.components.common.CommonSettingsActionBlock
+import com.posse.tanksrandomizer.feature_settings_screen.compose.components.common.CommonSettingsActionTitle
 import org.jetbrains.compose.resources.stringResource
 import tanks_randomizer.composeapp.generated.resources.Res
 import tanks_randomizer.composeapp.generated.resources.settings_multiaccount_btn_off

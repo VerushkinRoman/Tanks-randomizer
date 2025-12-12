@@ -1,9 +1,19 @@
 [versions]
 
+minSdk = "23"
+targetSdk = "36"
+compileSdk = "36"
+
+appVersionCode = "12"
+appVersionName = "2.1.0"
+
+java = "17"
+
 #noinspection NewerVersionAvailable
 kotlin = "2.2.10" # depend on realmDB version https://github.com/Infomaniak/realm-kotlin
-agp = "8.13.1"
-compose = "1.10.0-rc01"
+agp = "8.13.2"
+compose = "1.10.0-rc02"
+compose-compiler = "2.2.10"
 material3 = "1.10.0-alpha05"
 jetbrains-navigation3 = "1.0.0-alpha06"
 jetbrains-lifecycle = "2.10.0-alpha06"
@@ -32,6 +42,15 @@ googleFirebaseCrashlytics = "3.0.6"
 
 [libraries]
 
+# Plugins for composite build
+gradleplugin-android = { module = "com.android.tools.build:gradle", version.ref = "agp" }
+gradleplugin-compose = { module = "org.jetbrains.compose:compose-gradle-plugin", version.ref = "compose" }
+gradleplugin-composeCompiler = { module = "org.jetbrains.kotlin:compose-compiler-gradle-plugin", version.ref = "compose-compiler" }
+gradleplugin-kotlin = { module = "org.jetbrains.kotlin:kotlin-gradle-plugin", version.ref = "kotlin" }
+gradleplugin-buildkonfig = { module = " com.codingfeline.buildkonfig:com.codingfeline.buildkonfig.gradle.plugin", version.ref = "buildkonfig" }
+gradleplugin-buildkonfig-kompiler = { module = " com.codingfeline.buildkonfig:buildkonfig-compiler", version.ref = "buildkonfig" }
+gradleplugin-base = { module = "com.posse.tanksrandomizer.conventionplugins:base" }
+
 # Android
 androidx-activityCompose = { module = "androidx.activity:activity-compose", version.ref = "androidx-activityCompose" }
 androidx-splashscreen = { module = "androidx.core:core-splashscreen", version.ref = "androidx-splashscreen" }
@@ -46,15 +65,15 @@ kotlinx-coroutines-swing = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-
 # Multiplatform
 kotlinx-coroutines-core = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-core", version.ref = "kotlinx-coroutines" }
 
-components-resources = { module = "org.jetbrains.compose.components:components-resources", version.ref = "compose" }
-material3 = { module = "org.jetbrains.compose.material3:material3", version.ref = "material3" }
-foundation = { module = "org.jetbrains.compose.foundation:foundation", version.ref = "compose" }
-androidx-lifecycle-viewmodel-navigation3 = { module = "org.jetbrains.androidx.lifecycle:lifecycle-viewmodel-navigation3", version.ref = "jetbrains-lifecycle" }
-androidx-lifecycle-runtime-compose = { module = "org.jetbrains.androidx.lifecycle:lifecycle-runtime-compose", version.ref = "jetbrains-lifecycle" }
-jetbrains-navigation3-ui = { module = "org.jetbrains.androidx.navigation3:navigation3-ui", version.ref = "jetbrains-navigation3" }
-material-icons-extended = { module = "org.jetbrains.compose.material:material-icons-extended", version.ref = "materialIconsExtended" }
+compose-components-resources = { module = "org.jetbrains.compose.components:components-resources", version.ref = "compose" }
+compose-material3 = { module = "org.jetbrains.compose.material3:material3", version.ref = "material3" }
+compose-foundation = { module = "org.jetbrains.compose.foundation:foundation", version.ref = "compose" }
+compose-androidx-lifecycle-runtime = { module = "org.jetbrains.androidx.lifecycle:lifecycle-runtime-compose", version.ref = "jetbrains-lifecycle" }
+compose-material-icons-extended = { module = "org.jetbrains.compose.material:material-icons-extended", version.ref = "materialIconsExtended" }
+compose-window-size-clazz = { module = "org.jetbrains.compose.material3:material3-window-size-class", version.ref = "window-size-clazz" }
 
-window-size-clazz = { module = "org.jetbrains.compose.material3:material3-window-size-class", version.ref = "window-size-clazz" }
+androidx-lifecycle-viewmodel-navigation3 = { module = "org.jetbrains.androidx.lifecycle:lifecycle-viewmodel-navigation3", version.ref = "jetbrains-lifecycle" }
+jetbrains-navigation3-ui = { module = "org.jetbrains.androidx.navigation3:navigation3-ui", version.ref = "jetbrains-navigation3" }
 
 kotlinx-serialization-json = { module = "org.jetbrains.kotlinx:kotlinx-serialization-json", version.ref = "kotlinx-serialization" }
 kotlinx-datetime = { module = "org.jetbrains.kotlinx:kotlinx-datetime", version.ref = "kotlinx-datetime" }
@@ -68,8 +87,8 @@ multiplatformSettings-makeObservable = { module = "com.russhwolf:multiplatform-s
 kodein = { module = "org.kodein.di:kodein-di", version.ref = "kodein" }
 kodein-compose = { module = "org.kodein.di:kodein-di-framework-compose", version.ref = "kodein" }
 
-haze = { module = "dev.chrisbanes.haze:haze", version.ref = "haze" }
-haze-materials = { module = "dev.chrisbanes.haze:haze-materials", version.ref = "haze" }
+compose-haze = { module = "dev.chrisbanes.haze:haze", version.ref = "haze" }
+compose-haze-materials = { module = "dev.chrisbanes.haze:haze-materials", version.ref = "haze" }
 
 ktor-core = { module = "io.ktor:ktor-client-core", version.ref = "ktor" }
 ktor-client-cio = { module = "io.ktor:ktor-client-cio", version.ref = "ktor" }
@@ -82,9 +101,9 @@ compose-webview-multiplatform = { module = "io.github.kevinnzou:compose-webview-
 realmDB = { module = "com.infomaniak.realm.kotlin:library-base", version.ref = "realmDB" }
 
 coil-compose = { module = "io.coil-kt.coil3:coil-compose", version.ref = "coil" }
-coil-network = { module = "io.coil-kt.coil3:coil-network-ktor3", version.ref = "coil" }
+coil-network-ktor = { module = "io.coil-kt.coil3:coil-network-ktor3", version.ref = "coil" }
 
-localina = { module = "io.github.sudarshanmhasrup.localina:localina", version.ref = "localina" }
+compose-localina = { module = "io.github.sudarshanmhasrup.localina:localina", version.ref = "localina" }
 firebase-crashlytics = { group = "com.google.firebase", name = "firebase-crashlytics", version.ref = "firebaseCrashlytics" }
 
 
@@ -94,6 +113,7 @@ multiplatform = { id = "org.jetbrains.kotlin.multiplatform", version.ref = "kotl
 compose-compiler = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlin" }
 compose = { id = "org.jetbrains.compose", version.ref = "compose" }
 android-application = { id = "com.android.application", version.ref = "agp" }
+android-library = { id = "com.android.library", version.ref = "agp" }
 kotlinx-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin" }
 buildkonfig = { id = "com.codingfeline.buildkonfig", version.ref = "buildkonfig" }
 realmDB = { id = "com.infomaniak.realm.kotlin", version.ref = "realmDB" }

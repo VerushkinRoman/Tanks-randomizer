@@ -1,6 +1,8 @@
 rootProject.name = "Tanks-randomizer"
 
 pluginManagement {
+    includeBuild("convention-plugins/project")
+
     repositories {
         google {
             content { 
@@ -31,5 +33,5 @@ dependencyResolutionManagement {
         maven("https://jogamp.org/deployment/maven")
     }
 }
-include(":composeApp")
 
+include(":composeApp")

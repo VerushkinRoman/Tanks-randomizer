@@ -11,7 +11,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.posse.tanksrandomizer.common.compose.base_components.BorderWidth
 import com.posse.tanksrandomizer.common.compose.base_components.CommonScreenColumn
-import com.posse.tanksrandomizer.feature_settings_screen.compose.components.common.MultiaccountBlock
 import com.posse.tanksrandomizer.feature_settings_screen.presentation.model.SettingsEvent
 import com.posse.tanksrandomizer.feature_settings_screen.presentation.model.SettingsState
 

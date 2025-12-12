@@ -1,6 +1,7 @@
 package com.posse.tanksrandomizer.feature_online_navigation.feature_webview_screen.compose.components
 
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Modifier
 import com.multiplatform.webview.jsbridge.WebViewJsBridge
 import com.multiplatform.webview.web.PlatformWebViewParams
@@ -26,8 +27,14 @@ fun CommonWebView(
     state: WebViewState,
     navigator: WebViewNavigator = rememberWebViewNavigator(),
     modifier: Modifier = Modifier,
-) = WebView(
-    state = state,
-    navigator = navigator,
-    modifier = modifier
-)
+) {
+    LaunchedEffect(state) {
+        state.cookieManager.removeAllCookies()
+    }
+
+    WebView(
+        state = state,
+        navigator = navigator,
+        modifier = modifier
+    )
+}

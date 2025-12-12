@@ -56,10 +56,6 @@ fun WebViewScreen(
         derivedStateOf { (state.loadingState as? LoadingState.Loading)?.progress ?: 0f }
     }
 
-    LaunchedEffect(state) {
-        state.cookieManager.removeAllCookies()
-    }
-
     LaunchedEffect(state.lastLoadedUrl, state.loadingState) {
         state.lastLoadedUrl?.let { url ->
             if (url.startsWith(REDIRECT_URL)) {

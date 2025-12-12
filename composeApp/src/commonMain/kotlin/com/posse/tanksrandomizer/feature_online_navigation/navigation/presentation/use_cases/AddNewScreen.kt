@@ -12,7 +12,7 @@ class AddNewScreen {
         screens.find { it.accountId == null }?.let { emptyScreen ->
             val newScreens = screens.map { onlineScreenData ->
                 if (onlineScreenData == emptyScreen) onlineScreenData.copy(selected = true)
-                onlineScreenData.copy(selected = false)
+                else onlineScreenData.copy(selected = false)
             }
 
             return AddScreenResult(screens = newScreens, emptyScreenPosition = emptyScreen.position)

@@ -36,7 +36,7 @@ fun CommonSettingsActionTitle(
                 text = subtitle,
                 color = MaterialTheme.colorScheme.primary,
                 style = MaterialTheme.typography.bodySmall,
-                textAlign = TextAlign.Center,
+                textAlign = if (centered)TextAlign.Center else TextAlign.Justify,
                 maxLines = 2,
                 overflow = TextOverflow.Ellipsis,
             )

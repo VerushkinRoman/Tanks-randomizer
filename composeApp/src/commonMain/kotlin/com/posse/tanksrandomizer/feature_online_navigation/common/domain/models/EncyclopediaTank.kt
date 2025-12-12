@@ -1128,5 +1128,23 @@ object MissedEncyclopediaTanks {
             typeName = Type.MEDIUM_TANK,
             image = null
         ),
+        EncyclopediaTank(
+            id = 23889,
+            isPremium = true,
+            name = "Vickers Mk. 3",
+            nationName = Nation.NATION_UK,
+            tier = 10,
+            typeName = Type.HEAVY_TANK,
+            image = null
+        ),
+        EncyclopediaTank(
+            id = 30209,
+            isPremium = true,
+            name = "МС-11",
+            nationName = Nation.NATION_USSR,
+            tier = 10,
+            typeName = Type.MEDIUM_TANK,
+            image = null
+        ),
     )
 }

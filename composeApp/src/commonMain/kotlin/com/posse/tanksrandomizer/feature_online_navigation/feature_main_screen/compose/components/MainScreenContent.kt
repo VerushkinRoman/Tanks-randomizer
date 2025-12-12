@@ -94,7 +94,7 @@ private fun LoginButton(
         MainScreenLogInButton(
             loading = loading,
             onClick = onClick,
-            modifier = Modifier.fillMaxWidth(0.5f)
+            modifier = Modifier.fillMaxWidth(0.7f)
         )
 
         RandomizerText(
