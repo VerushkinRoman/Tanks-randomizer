@@ -9,6 +9,8 @@
     @android.webkit.JavascriptInterface <methods>;
 }
 
+-keep class * extends androidx.room.RoomDatabase { <init>(); }
+
 -keepattributes JavascriptInterface
 
 -keepattributes *Annotation*

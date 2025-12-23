@@ -5,26 +5,23 @@ import com.posse.tanksrandomizer.common.data.datasource.OfflineDataSourceImpl
 import com.posse.tanksrandomizer.common.data.datasource.OnlineDataSource
 import com.posse.tanksrandomizer.common.data.datasource.OnlineDataSourceImpl
 import com.posse.tanksrandomizer.common.domain.models.DataSourceFor
+import com.posse.tanksrandomizer.feature_online_navigation.feature_online_screen.data.database.AppDatabase
+import com.posse.tanksrandomizer.feature_online_navigation.feature_online_screen.data.database.getDatabaseBuilder
+import com.posse.tanksrandomizer.feature_online_navigation.feature_online_screen.data.database.getRoomDatabase
 import com.posse.tanksrandomizer.feature_online_navigation.feature_online_screen.data.datasource.OnlineScreenDataSource
 import com.posse.tanksrandomizer.feature_online_navigation.feature_online_screen.data.datasource.OnlineScreenDataSourceImpl
-import com.posse.tanksrandomizer.feature_online_navigation.feature_online_screen.data.models.DBEncyclopediaTank
-import com.posse.tanksrandomizer.feature_online_navigation.feature_online_screen.data.models.DBMasteryTank
 import com.russhwolf.settings.ExperimentalSettingsApi
-import io.realm.kotlin.Realm
-import io.realm.kotlin.RealmConfiguration
 import org.kodein.di.DI
+import org.kodein.di.bind
 import org.kodein.di.bindProvider
 import org.kodein.di.instance
+import org.kodein.di.singleton
 
 val onlineScreenDataSourceModule = DI.Module("OnlineScreenDataSourceModule") {
-    bindProvider<Realm> {
-        Realm.open(
-            configuration = RealmConfiguration.create(
-                schema = setOf(
-                    DBEncyclopediaTank::class,
-                    DBMasteryTank::class,
-                )
-            )
+    bind<AppDatabase>() with singleton {
+        getRoomDatabase(
+            builder = getDatabaseBuilder(instance()),
+            dispatchers = instance(),
         )
     }
 

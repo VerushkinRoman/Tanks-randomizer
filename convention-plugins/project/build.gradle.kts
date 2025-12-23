@@ -11,6 +11,7 @@ dependencies {
     implementation(libs.gradleplugin.composeCompiler)
     implementation(libs.gradleplugin.buildkonfig)
     implementation(libs.gradleplugin.buildkonfig.kompiler)
+    implementation(libs.gradleplugin.androidx.room)
     // Workaround for version catalog working inside precompiled scripts
     // Issue - https://github.com/gradle/gradle/issues/15383
     implementation(files(libs.javaClass.superclass.protectionDomain.codeSource.location))
@@ -85,9 +86,9 @@ gradlePlugin {
             implementationClass = "com.posse.tanksrandomizer.conventionplugins.project.KmpKodeinPlugin"
         }
 
-        register("kmp.realmDb.plugin") {
-            id = "kmp.realmDb.plugin"
-            implementationClass = "com.posse.tanksrandomizer.conventionplugins.project.KmpRealmDbPlugin"
+        register("kmp.room.plugin") {
+            id = "kmp.room.plugin"
+            implementationClass = "com.posse.tanksrandomizer.conventionplugins.project.KmpRoomPlugin"
         }
 
         register("kmp.compose.localina.plugin") {

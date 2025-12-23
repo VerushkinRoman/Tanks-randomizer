@@ -33,3 +33,4 @@ composeApp/kcef-bundle
 composeApp/default.realm.management
 composeApp/default.realm
 composeApp/default.realm.lock
+/composeApp/schemas/

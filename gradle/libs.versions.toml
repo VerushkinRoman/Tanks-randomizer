@@ -9,11 +9,10 @@ appVersionName = "2.1.0"
 
 java = "17"
 
-#noinspection NewerVersionAvailable
-kotlin = "2.2.10" # depend on realmDB version https://github.com/Infomaniak/realm-kotlin
+kotlin = "2.3.0"
 agp = "8.13.2"
 compose = "1.10.0-rc02"
-compose-compiler = "2.2.10"
+compose-compiler = "2.3.0"
 material3 = "1.10.0-alpha05"
 jetbrains-navigation3 = "1.0.0-alpha06"
 jetbrains-lifecycle = "2.10.0-alpha07"
@@ -33,12 +32,14 @@ webview = "2.0.3"
 androidx-material3 = "1.5.0-alpha11"
 haze = "1.7.1"
 window-size-clazz = "1.9.0"
-realmDB = "3.2.9"
 coil = "3.3.0"
 localina = "1.0.0-alpha3"
 firebaseCrashlytics = "20.0.3"
 googleGmsGoogleServices = "4.4.4"
 googleFirebaseCrashlytics = "3.0.6"
+room = "2.8.4"
+sqlite = "2.6.2"
+ksp = "2.3.4"
 
 [libraries]
 
@@ -47,8 +48,9 @@ gradleplugin-android = { module = "com.android.tools.build:gradle", version.ref 
 gradleplugin-compose = { module = "org.jetbrains.compose:compose-gradle-plugin", version.ref = "compose" }
 gradleplugin-composeCompiler = { module = "org.jetbrains.kotlin:compose-compiler-gradle-plugin", version.ref = "compose-compiler" }
 gradleplugin-kotlin = { module = "org.jetbrains.kotlin:kotlin-gradle-plugin", version.ref = "kotlin" }
-gradleplugin-buildkonfig = { module = " com.codingfeline.buildkonfig:com.codingfeline.buildkonfig.gradle.plugin", version.ref = "buildkonfig" }
-gradleplugin-buildkonfig-kompiler = { module = " com.codingfeline.buildkonfig:buildkonfig-compiler", version.ref = "buildkonfig" }
+gradleplugin-buildkonfig = { module = "com.codingfeline.buildkonfig:com.codingfeline.buildkonfig.gradle.plugin", version.ref = "buildkonfig" }
+gradleplugin-buildkonfig-kompiler = { module = "com.codingfeline.buildkonfig:buildkonfig-compiler", version.ref = "buildkonfig" }
+gradleplugin-androidx-room = { module = "androidx.room:room-gradle-plugin", version.ref = "room" }
 gradleplugin-base = { module = "com.posse.tanksrandomizer.conventionplugins:base" }
 
 # Android
@@ -98,7 +100,9 @@ ktor-serialization-kotlinx-json = { module = "io.ktor:ktor-serialization-kotlinx
 
 compose-webview-multiplatform = { module = "io.github.kevinnzou:compose-webview-multiplatform", version.ref = "webview" }
 
-realmDB = { module = "com.infomaniak.realm.kotlin:library-base", version.ref = "realmDB" }
+androidx-sqlite-bundled = { module = "androidx.sqlite:sqlite-bundled", version.ref = "sqlite" }
+androidx-room-runtime = { module = "androidx.room:room-runtime", version.ref = "room" }
+androidx-room-compiler = { module = "androidx.room:room-compiler", version.ref = "room" }
 
 coil-compose = { module = "io.coil-kt.coil3:coil-compose", version.ref = "coil" }
 coil-network-ktor = { module = "io.coil-kt.coil3:coil-network-ktor3", version.ref = "coil" }
@@ -116,6 +120,7 @@ android-application = { id = "com.android.application", version.ref = "agp" }
 android-library = { id = "com.android.library", version.ref = "agp" }
 kotlinx-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin" }
 buildkonfig = { id = "com.codingfeline.buildkonfig", version.ref = "buildkonfig" }
-realmDB = { id = "com.infomaniak.realm.kotlin", version.ref = "realmDB" }
+ksp = { id = "com.google.devtools.ksp", version.ref = "ksp" }
+androidx-room = { id = "androidx.room", version.ref = "room" }
 google-gms-google-services = { id = "com.google.gms.google-services", version.ref = "googleGmsGoogleServices" }
 google-firebase-crashlytics = { id = "com.google.firebase.crashlytics", version.ref = "googleFirebaseCrashlytics" }

@@ -11,7 +11,7 @@ plugins {
     id("kmp.multiplatformSettings.plugin")
     id("kmp.datetime.plugin")
     id("kmp.kodein.plugin")
-    id("kmp.realmDb.plugin")
+    id("kmp.room.plugin")
     id("kmp.buildKonfig.plugin")
 }
 

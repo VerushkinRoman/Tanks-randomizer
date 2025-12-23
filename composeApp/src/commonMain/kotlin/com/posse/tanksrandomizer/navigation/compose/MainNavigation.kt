@@ -96,6 +96,7 @@ fun MainNavigation(
                 runningAsOverlay = runningAsOverlay,
                 pagedOnlineScreen = pagedOnlineScreen,
                 pagedOfflineScreen = pagedOfflineScreen,
+                loginResultFlow = loginResultFlow,
                 modifier = Modifier.fillMaxSize(),
             )
         }
