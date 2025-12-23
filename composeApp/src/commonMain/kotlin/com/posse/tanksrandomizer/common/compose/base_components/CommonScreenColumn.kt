@@ -1,11 +1,14 @@
 package com.posse.tanksrandomizer.common.compose.base_components
 
+import androidx.compose.foundation.ScrollState
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ColumnScope
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.WindowInsetsSides
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.only
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.safeContent
@@ -45,26 +48,47 @@ fun CommonScreenColumn(
         }
     }
 
-    Column(
-        horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.Center,
+    val scrollState = rememberScrollState()
+
+    Row(
+        verticalAlignment = Alignment.CenterVertically,
+        horizontalArrangement = Arrangement.Center,
         modifier = modifier
-            .verticalScroll(rememberScrollState())
-            .windowInsetsPadding(WindowInsets.safeContent.only(WindowInsetsSides.Vertical))
-            .padding(
-                horizontal = if (horizontal && runningAsOverlay && additionalSpace <= ButtonDefaults.MinHeight + 16.dp) {
-                    maxOf(ButtonDefaults.MinHeight + 16.dp, horizontalEvenSafeContentPaddings)
-                } else horizontalEvenSafeContentPaddings
-            )
-            .padding(vertical = 8.dp)
     ) {
-        Spacer(Modifier.weight(1f).onSizeChanged { size ->
-            @Suppress("AssignedValueIsNeverRead")
-            additionalSpace = with(density) { size.height.toDp() }
-        })
+        Column(
+            horizontalAlignment = Alignment.CenterHorizontally,
+            verticalArrangement = Arrangement.Center,
+            modifier = Modifier
+                .fillMaxHeight()
+                .weight(1f)
+                .verticalScroll(scrollState)
+                .windowInsetsPadding(WindowInsets.safeContent.only(WindowInsetsSides.Vertical))
+                .padding(
+                    horizontal = if (horizontal && runningAsOverlay && additionalSpace <= ButtonDefaults.MinHeight + 16.dp) {
+                        maxOf(ButtonDefaults.MinHeight + 16.dp, horizontalEvenSafeContentPaddings)
+                    } else horizontalEvenSafeContentPaddings
+                )
+                .padding(vertical = 8.dp)
+        ) {
+            Spacer(Modifier.weight(1f).onSizeChanged { size ->
+                @Suppress("AssignedValueIsNeverRead", "RedundantSuppression")
+                additionalSpace = with(density) { size.height.toDp() }
+            })
 
-        content()
+            content()
 
-        Spacer(Modifier.weight(1f))
+            Spacer(Modifier.weight(1f))
+        }
+
+        VerticalScrollbar(
+            scrollState = scrollState,
+            modifier = Modifier.fillMaxHeight(),
+        )
     }
 }
+
+@Composable
+expect fun VerticalScrollbar(
+    scrollState: ScrollState,
+    modifier: Modifier,
+)

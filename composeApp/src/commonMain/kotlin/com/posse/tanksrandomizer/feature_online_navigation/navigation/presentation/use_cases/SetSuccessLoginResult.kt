@@ -2,7 +2,7 @@ package com.posse.tanksrandomizer.feature_online_navigation.navigation.presentat
 
 import com.posse.tanksrandomizer.common.domain.models.Token
 import com.posse.tanksrandomizer.common.domain.repository.AccountRepository
-import com.posse.tanksrandomizer.feature_online_navigation.common.domain.models.OnlineScreens
+import com.posse.tanksrandomizer.feature_online_navigation.common.domain.models.OnlineScreenData
 
 class SetSuccessLoginResult(
     private val accountRepository: AccountRepository,
@@ -11,13 +11,15 @@ class SetSuccessLoginResult(
         screenId: String,
         name: String,
         token: Token,
-        screens: OnlineScreens
-    ): OnlineScreens {
+        screens: List<OnlineScreenData>
+    ): List<OnlineScreenData> {
         return screens.map { screenData ->
-            if (screenData.id == screenId) {
+            if (screenData.metadata.id == screenId) {
                 screenData.copy(
-                    name = name,
-                    accountId = token.accountId
+                    metadata = screenData.metadata.copy(
+                        name = name
+                    ),
+                    additionalData = token.accountId
                 ).also {
                     accountRepository.setToken(token.accountId, token)
                 }

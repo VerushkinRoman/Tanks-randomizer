@@ -1,6 +1,7 @@
 package com.posse.tanksrandomizer.feature_online_navigation.common.data.di
 
-import com.posse.tanksrandomizer.feature_online_navigation.common.data.datasource.PagedOnlineScreenDataSource
+import com.posse.tanksrandomizer.common.paged_screens_navigation.data.datasource.PagedScreenDataSource
+import com.posse.tanksrandomizer.common.domain.models.DataSourceFor
 import com.posse.tanksrandomizer.feature_online_navigation.common.data.datasource.PagedOnlineScreenDataSourceImpl
 import com.russhwolf.settings.ExperimentalSettingsApi
 import org.kodein.di.DI
@@ -9,7 +10,7 @@ import org.kodein.di.instance
 
 @OptIn(ExperimentalSettingsApi::class)
 val pagedOnlineScreenDataSourceModule = DI.Module("PagedOnlineScreenDataSourceModule") {
-    bindProvider<PagedOnlineScreenDataSource> {
+    bindProvider<PagedScreenDataSource>(DataSourceFor.OnlineScreen) {
         PagedOnlineScreenDataSourceImpl(
             settings = instance(),
         )

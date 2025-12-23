@@ -7,34 +7,35 @@ import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.VerticalDivider
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
-import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.posse.tanksrandomizer.common.compose.base_components.BorderWidth
-import com.posse.tanksrandomizer.common.compose.utils.ErrorHandler.getRedirectErrorMessage
 import com.posse.tanksrandomizer.common.compose.utils.LocalElementSize
 import com.posse.tanksrandomizer.common.compose.utils.LocalSizeClass
 import com.posse.tanksrandomizer.common.compose.utils.elementSize
 import com.posse.tanksrandomizer.common.compose.utils.screenSize
-import com.posse.tanksrandomizer.feature_offline_screen.compose.OfflineScreen
-import com.posse.tanksrandomizer.feature_online_navigation.navigation.compose.PagedOnlineScreens
-import com.posse.tanksrandomizer.feature_online_navigation.navigation.presentation.models.ErrorResponse
+import com.posse.tanksrandomizer.common.paged_screens_navigation.compose.PagedScreens
+import com.posse.tanksrandomizer.feature_offline_navigation.navigation.presentation.PagedOfflineScreensViewModel
+import com.posse.tanksrandomizer.feature_online_navigation.navigation.presentation.PagedOnlineScreensViewModel
+import com.posse.tanksrandomizer.feature_online_navigation.navigation.presentation.models.PagedOnlineScreensEvent
 import com.posse.tanksrandomizer.feature_settings_screen.compose.SettingsScreen
-import kotlinx.coroutines.launch
+import com.posse.tanksrandomizer.navigation.compose.models.LoginResult
+import kotlinx.coroutines.flow.SharedFlow
+import org.kodein.di.compose.viewmodel.rememberViewModel
 
 @Composable
 internal fun MultipleLargeScreen(
-    snackbarHostState: SnackbarHostState,
     runningAsOverlay: Boolean,
+    pagedOnlineScreen: @Composable (screenId: String) -> Unit,
+    pagedOfflineScreen: @Composable (screenId: String) -> Unit,
+    loginResultFlow: SharedFlow<LoginResult>,
     modifier: Modifier = Modifier,
 ) {
-    val scope = rememberCoroutineScope()
-
     val verticalDivider: @Composable () -> Unit = {
         VerticalDivider(
             thickness = BorderWidth,
@@ -51,21 +52,15 @@ internal fun MultipleLargeScreen(
         modifier = modifier
     ) {
         OnlineScreenPane(
-            runningAsOverlay = runningAsOverlay,
-            onRedirectError = { error ->
-                scope.launch {
-                    snackbarHostState.showSnackbar(
-                        message = getRedirectErrorMessage(error)
-                    )
-                }
-            },
+            pagedOnlineScreen = pagedOnlineScreen,
+            loginResultFlow = loginResultFlow,
             modifier = Modifier.weight(1f),
         )
 
         verticalDivider()
 
         OfflineScreenPane(
-            runningAsOverlay = runningAsOverlay,
+            pagedOfflineScreen = pagedOfflineScreen,
             modifier = Modifier.weight(1f),
         )
 
@@ -80,10 +75,25 @@ internal fun MultipleLargeScreen(
 
 @Composable
 private fun OnlineScreenPane(
-    runningAsOverlay: Boolean,
-    onRedirectError: (ErrorResponse) -> Unit,
+    pagedOnlineScreen: @Composable (screenId: String) -> Unit,
+    loginResultFlow: SharedFlow<LoginResult>,
     modifier: Modifier = Modifier
 ) {
+    val viewModel: PagedOnlineScreensViewModel by rememberViewModel()
+
+    LaunchedEffect(loginResultFlow) {
+        loginResultFlow.collect { loginResult ->
+            viewModel
+                .obtainEvent(
+                    PagedOnlineScreensEvent.OnSuccessLogin(
+                        id = loginResult.id,
+                        name = loginResult.name,
+                        token = loginResult.token,
+                    )
+                )
+        }
+    }
+
     BoxWithConstraints(
         contentAlignment = Alignment.Center,
         modifier = modifier,
@@ -92,9 +102,9 @@ private fun OnlineScreenPane(
             LocalElementSize provides elementSize(maxWidth),
             LocalSizeClass provides screenSize(maxWidth, maxHeight),
         ) {
-            PagedOnlineScreens(
-                runningAsOverlay = runningAsOverlay,
-                onRedirectError = onRedirectError,
+            PagedScreens(
+                pagedScreen = pagedOnlineScreen,
+                viewModel = viewModel,
                 modifier = Modifier.fillMaxSize(),
             )
         }
@@ -103,9 +113,11 @@ private fun OnlineScreenPane(
 
 @Composable
 private fun OfflineScreenPane(
-    runningAsOverlay: Boolean,
+    pagedOfflineScreen: @Composable (screenId: String) -> Unit,
     modifier: Modifier = Modifier
 ) {
+    val viewModel: PagedOfflineScreensViewModel by rememberViewModel()
+
     BoxWithConstraints(
         contentAlignment = Alignment.Center,
         modifier = modifier,
@@ -114,9 +126,10 @@ private fun OfflineScreenPane(
             LocalElementSize provides elementSize(maxWidth),
             LocalSizeClass provides screenSize(maxWidth, maxHeight),
         ) {
-            OfflineScreen(
-                runningAsOverlay = runningAsOverlay,
-                modifier = Modifier.fillMaxSize()
+            PagedScreens(
+                pagedScreen = pagedOfflineScreen,
+                viewModel = viewModel,
+                modifier = Modifier.fillMaxSize(),
             )
         }
     }

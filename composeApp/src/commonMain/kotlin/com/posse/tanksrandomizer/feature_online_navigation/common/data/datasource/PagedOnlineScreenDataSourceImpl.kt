@@ -1,10 +1,11 @@
 package com.posse.tanksrandomizer.feature_online_navigation.common.data.datasource
 
-import com.posse.tanksrandomizer.feature_online_navigation.common.data.models.OnlineScreensData
+import com.posse.tanksrandomizer.common.paged_screens_navigation.data.datasource.PagedScreenDataSource
+import com.posse.tanksrandomizer.common.paged_screens_navigation.presentation.models.PagedScreen
+import com.posse.tanksrandomizer.feature_online_navigation.common.data.models.DataOnlineScreenData
 import com.posse.tanksrandomizer.feature_online_navigation.common.data.models.toDataOnlineScreenData
 import com.posse.tanksrandomizer.feature_online_navigation.common.data.models.toOnlineScreenData
 import com.posse.tanksrandomizer.feature_online_navigation.common.domain.models.OnlineScreenData
-import com.posse.tanksrandomizer.feature_online_navigation.common.domain.models.OnlineScreens
 import com.russhwolf.settings.ExperimentalSettingsApi
 import com.russhwolf.settings.Settings
 import com.russhwolf.settings.serialization.decodeValueOrNull
@@ -14,32 +15,35 @@ import kotlinx.serialization.ExperimentalSerializationApi
 @OptIn(ExperimentalSerializationApi::class, ExperimentalSettingsApi::class)
 class PagedOnlineScreenDataSourceImpl(
     private val settings: Settings
-) : PagedOnlineScreenDataSource {
-    override fun getOnlineScreens(): OnlineScreens? {
+) : PagedScreenDataSource {
+    override fun getScreens(): List<OnlineScreenData>? {
         return getOnlineScreensData()
             ?.map { it.toOnlineScreenData() }
     }
 
-    override fun setOnlineScreens(screens: OnlineScreens) {
+    override fun setScreens(screens: List<PagedScreen<*>>) {
         screens
-            .map { it.toDataOnlineScreenData() }
+            .mapNotNull {
+                if (it !is OnlineScreenData) return@mapNotNull null
+                it.toDataOnlineScreenData()
+            }
             .let { setOnlineScreensData(it) }
     }
 
-    override fun setOnlineScreen(screen: OnlineScreenData) {
+    override fun setScreen(screen: PagedScreen<*>) {
         getOnlineScreensData()
             ?.map {
-                if (it.id == screen.id) screen.toDataOnlineScreenData()
+                if (screen is OnlineScreenData && it.id == screen.metadata.id) screen.toDataOnlineScreenData()
                 else it
             }
             ?.let { setOnlineScreensData(it) }
     }
 
-    private fun getOnlineScreensData(): OnlineScreensData? {
-        return settings.decodeValueOrNull<OnlineScreensData>(ONLINE_SCREENS_KEY)
+    private fun getOnlineScreensData(): List<DataOnlineScreenData>? {
+        return settings.decodeValueOrNull<List<DataOnlineScreenData>>(ONLINE_SCREENS_KEY)
     }
 
-    private fun setOnlineScreensData(screens: OnlineScreensData) {
+    private fun setOnlineScreensData(screens: List<DataOnlineScreenData>) {
         settings.encodeValue(ONLINE_SCREENS_KEY, screens)
     }
 

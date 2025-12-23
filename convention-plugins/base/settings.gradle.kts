@@ -10,7 +10,6 @@ pluginManagement {
         }
         gradlePluginPortal()
         mavenCentral()
-        maven("https://jogamp.org/deployment/maven")
     }
 }
 
@@ -26,7 +25,6 @@ dependencyResolutionManagement {
             }
         }
         mavenCentral()
-        maven("https://jogamp.org/deployment/maven")
     }
 
     versionCatalogs {

@@ -13,12 +13,10 @@ import androidx.compose.material3.NavigationBarItemDefaults
 import androidx.compose.material3.NavigationRail
 import androidx.compose.material3.NavigationRailItem
 import androidx.compose.material3.NavigationRailItemDefaults
-import androidx.compose.material3.SnackbarHostState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clipToBounds
@@ -26,30 +24,26 @@ import androidx.navigation3.runtime.NavBackStack
 import androidx.navigation3.runtime.NavKey
 import androidx.navigation3.runtime.rememberNavBackStack
 import com.posse.tanksrandomizer.common.compose.base_components.RandomizerText
-import com.posse.tanksrandomizer.common.compose.utils.ErrorHandler.getRedirectErrorMessage
 import com.posse.tanksrandomizer.common.compose.utils.LocalSizeClass
 import com.posse.tanksrandomizer.common.compose.utils.ScreenSize
-import com.posse.tanksrandomizer.common.domain.models.ResponseStatus
 import com.posse.tanksrandomizer.navigation.domain.repository.NavigationRepository
 import com.posse.tanksrandomizer.navigation.presentation.screens.OfflineScreenRoute
 import com.posse.tanksrandomizer.navigation.presentation.screens.OnlineNavigationRoute
 import com.posse.tanksrandomizer.navigation.presentation.screens.SettingsScreenRoute
 import com.posse.tanksrandomizer.navigation.presentation.screens.mainNavigationConfig
 import com.posse.tanksrandomizer.navigation.presentation.screens.toRoute
-import kotlinx.coroutines.launch
 import org.jetbrains.compose.resources.stringResource
 import org.kodein.di.compose.rememberInstance
 
 @Composable
 fun SingleScreenNavigation(
-    snackbarHostState: SnackbarHostState,
     runningAsOverlay: Boolean,
+    pagedOnlineScreen: @Composable (screenId: String) -> Unit,
+    pagedOfflineScreen: @Composable (screenId: String) -> Unit,
     modifier: Modifier = Modifier,
 ) {
     val navigationRepository: NavigationRepository by rememberInstance()
-    val scope = rememberCoroutineScope()
-    val startDestination =
-        remember(navigationRepository) { navigationRepository.startDestination() }
+    val startDestination = remember(navigationRepository) { navigationRepository.startDestination() }
     val navBackStack = rememberNavBackStack(mainNavigationConfig, startDestination)
 
     val portrait = when (LocalSizeClass.current) {
@@ -68,7 +62,7 @@ fun SingleScreenNavigation(
         )
     }
 
-    var previousSelectedItem by remember {mutableIntStateOf(selectedItem)}
+    var previousSelectedItem by remember { mutableIntStateOf(selectedItem) }
 
     val onItemSelected: (Int) -> Unit = { index ->
         previousSelectedItem = selectedItem
@@ -79,18 +73,11 @@ fun SingleScreenNavigation(
         SingleScreenNavigationHost(
             navBackStack = navBackStack,
             runningAsOverlay = runningAsOverlay,
-            onRedirectError = { error ->
-                if (error.status == ResponseStatus.ERROR.value) {
-                    scope.launch {
-                        snackbarHostState.showSnackbar(
-                            message = getRedirectErrorMessage(error)
-                        )
-                    }
-                }
-            },
             portrait = portrait,
             selectedOrder = selectedItem,
             previousSelectedOrder = previousSelectedItem,
+            pagedOnlineScreen = pagedOnlineScreen,
+            pagedOfflineScreen = pagedOfflineScreen,
             modifier = modifier.clipToBounds(),
         )
     }

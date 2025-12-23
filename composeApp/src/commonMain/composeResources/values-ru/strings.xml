@@ -44,6 +44,8 @@
 
     <string name="close_app">Закрыть приложение</string>
 
+    <string name="new_window">Новое окно</string>
+
 
 <!--    Settings Screen-->
     <string name="settings_language_title">Язык приложения</string>

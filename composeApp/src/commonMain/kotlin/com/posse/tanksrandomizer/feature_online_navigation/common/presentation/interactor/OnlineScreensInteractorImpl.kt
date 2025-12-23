@@ -1,34 +1,39 @@
 package com.posse.tanksrandomizer.feature_online_navigation.common.presentation.interactor
 
+import com.posse.tanksrandomizer.common.paged_screens_navigation.domain.repository.PagedScreenRepository
+import com.posse.tanksrandomizer.common.paged_screens_navigation.presentation.models.PagedScreen
 import com.posse.tanksrandomizer.feature_online_navigation.common.domain.models.OnlineScreenData
-import com.posse.tanksrandomizer.feature_online_navigation.common.domain.models.OnlineScreens
-import com.posse.tanksrandomizer.feature_online_navigation.common.domain.repository.PagedOnlineScreenRepository
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 
 class OnlineScreensInteractorImpl(
-    private val pagedOnlineScreenRepository: PagedOnlineScreenRepository,
+    private val pagedScreenRepository: PagedScreenRepository,
 ) : OnlineScreensInteractor {
-    private val _onlineScreens =
-        MutableStateFlow(pagedOnlineScreenRepository.getOnlineScreens() ?: emptyList())
-    override val onlineScreens: StateFlow<OnlineScreens> = _onlineScreens.asStateFlow()
+    @Suppress("UNCHECKED_CAST")
+    private val _onlineScreens = MutableStateFlow(
+        (pagedScreenRepository.getScreens() ?: emptyList()) as List<OnlineScreenData>
+    )
+    override val screens: StateFlow<List<OnlineScreenData>> = _onlineScreens.asStateFlow()
 
-    override fun setOnlineScreens(screens: OnlineScreens) {
+    override fun setScreens(screens: List<PagedScreen<*>>) {
+        @Suppress("UNCHECKED_CAST")
+        screens as List<OnlineScreenData>
+
         _onlineScreens.value = screens
-        pagedOnlineScreenRepository.setOnlineScreens(screens)
+        pagedScreenRepository.setScreens(screens)
     }
 
     override fun getOnlineScreen(screenId: String): OnlineScreenData? {
-        return onlineScreens.value.find { it.id == screenId }
+        return screens.value.find { it.metadata.id == screenId }
     }
 
     override fun replaceOnlineScreen(screen: OnlineScreenData) {
-        onlineScreens.value.map { screenData ->
-            if (screenData.id == screen.id) screen
+        screens.value.map { screenData ->
+            if (screenData.metadata.id == screen.metadata.id) screen
             else screenData
         }
 
-        pagedOnlineScreenRepository.setOnlineScreen(screen)
+        pagedScreenRepository.setScreen(screen)
     }
 }

@@ -36,7 +36,7 @@ class TokenInteractorImpl(
 
     init {
         scope.launch {
-            onlineScreensInteractor.onlineScreens.collect { onlineScreens ->
+            onlineScreensInteractor.screens.collect { onlineScreens ->
                 _tokenStatus.value = onlineScreens.mapNotNull { onlineScreenData ->
                     tokenStatus.value.find { it.accountId == onlineScreenData.accountId }
                         ?: onlineScreenData.accountId?.let { accountId ->

@@ -11,22 +11,24 @@ import androidx.navigation3.runtime.entryProvider
 import androidx.navigation3.runtime.rememberSaveableStateHolderNavEntryDecorator
 import androidx.navigation3.ui.NavDisplay
 import com.posse.tanksrandomizer.common.compose.components.getNavAnimation
-import com.posse.tanksrandomizer.feature_offline_screen.compose.OfflineScreen
-import com.posse.tanksrandomizer.feature_online_navigation.navigation.compose.PagedOnlineScreens
-import com.posse.tanksrandomizer.feature_online_navigation.navigation.presentation.models.ErrorResponse
+import com.posse.tanksrandomizer.common.paged_screens_navigation.compose.PagedScreens
+import com.posse.tanksrandomizer.feature_offline_navigation.navigation.presentation.PagedOfflineScreensViewModel
+import com.posse.tanksrandomizer.feature_online_navigation.navigation.presentation.PagedOnlineScreensViewModel
 import com.posse.tanksrandomizer.feature_settings_screen.compose.SettingsScreen
 import com.posse.tanksrandomizer.navigation.presentation.screens.OfflineScreenRoute
 import com.posse.tanksrandomizer.navigation.presentation.screens.OnlineNavigationRoute
 import com.posse.tanksrandomizer.navigation.presentation.screens.SettingsScreenRoute
+import org.kodein.di.compose.viewmodel.rememberViewModel
 
 @Composable
 fun SingleScreenNavigationHost(
     navBackStack: NavBackStack<NavKey>,
     runningAsOverlay: Boolean,
-    onRedirectError: (ErrorResponse) -> Unit,
     portrait: Boolean,
     selectedOrder: Int,
     previousSelectedOrder: Int,
+    pagedOnlineScreen: @Composable (screenId: String) -> Unit,
+    pagedOfflineScreen: @Composable (screenId: String) -> Unit,
     modifier: Modifier = Modifier,
 ) {
     NavDisplay(
@@ -47,24 +49,29 @@ fun SingleScreenNavigationHost(
         ),
         entryProvider = entryProvider {
             entry<OnlineNavigationRoute> {
-                PagedOnlineScreens(
-                    runningAsOverlay = runningAsOverlay,
-                    onRedirectError = onRedirectError,
-                    modifier = Modifier.fillMaxSize()
+                val viewModel: PagedOnlineScreensViewModel by rememberViewModel()
+
+                PagedScreens(
+                    pagedScreen = pagedOnlineScreen,
+                    viewModel = viewModel,
+                    modifier = Modifier.fillMaxSize(),
                 )
             }
 
             entry<OfflineScreenRoute> {
-                OfflineScreen(
-                    runningAsOverlay = runningAsOverlay,
-                    modifier = Modifier.fillMaxSize()
+                val viewModel: PagedOfflineScreensViewModel by rememberViewModel()
+
+                PagedScreens(
+                    pagedScreen = pagedOfflineScreen,
+                    viewModel = viewModel,
+                    modifier = Modifier.fillMaxSize(),
                 )
             }
 
             entry<SettingsScreenRoute> {
                 SettingsScreen(
                     runningAsOverlay = runningAsOverlay,
-                    modifier = Modifier.fillMaxSize()
+                    modifier = Modifier.fillMaxSize(),
                 )
             }
         }

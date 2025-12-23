@@ -45,6 +45,8 @@
 
     <string name="close_app">Close app</string>
 
+    <string name="new_window">New window</string>
+
 
 <!--    Settings Screen-->
     <string name="settings_language_title">App language</string>

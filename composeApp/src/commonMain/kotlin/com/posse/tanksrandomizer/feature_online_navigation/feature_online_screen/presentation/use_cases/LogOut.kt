@@ -44,7 +44,7 @@ class LogOut(
         clearAccountId(screenData)
         onlineScreenRepository.clearScreenData(screenId)
         screenData.accountId?.let { accountId ->
-            if (onlineScreensInteractor.onlineScreens.value.none { it.accountId == accountId }) {
+            if (onlineScreensInteractor.screens.value.none { it.accountId == accountId }) {
                 onlineScreenRepository.clearAccountData(accountId)
                 accountRepository.setToken(accountId, null)
             }
@@ -54,7 +54,7 @@ class LogOut(
     private fun clearAccountId(screenData: OnlineScreenData) {
         onlineScreensInteractor.replaceOnlineScreen(
             screenData.copy(
-                accountId = null
+                additionalData = null
             )
         )
     }
