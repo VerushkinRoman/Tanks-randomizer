@@ -926,7 +926,7 @@ object MissedEncyclopediaTanks {
             isPremium = false,
             name = "Skoda P-JS",
             nationName = Nation.NATION_EUROPEAN,
-            tier = 7,
+            tier = 6,
             typeName = Type.HEAVY_TANK,
             image = null
         ),

@@ -1,8 +1,6 @@
 rootProject.name = "Tanks-randomizer"
 
 pluginManagement {
-    includeBuild("convention-plugins/project")
-
     repositories {
         google {
             content { 

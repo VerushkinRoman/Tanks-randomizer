@@ -1,18 +1,8 @@
 [versions]
 
-minSdk = "23"
-targetSdk = "36"
-compileSdk = "36"
-
-appVersionCode = "12"
-appVersionName = "2.1.0"
-
-java = "17"
-
 kotlin = "2.3.0"
 agp = "8.13.2"
 compose = "1.10.0-rc02"
-compose-compiler = "2.3.0"
 material3 = "1.10.0-alpha05"
 jetbrains-navigation3 = "1.0.0-alpha06"
 jetbrains-lifecycle = "2.10.0-alpha07"
@@ -42,16 +32,6 @@ sqlite = "2.6.2"
 ksp = "2.3.4"
 
 [libraries]
-
-# Plugins for composite build
-gradleplugin-android = { module = "com.android.tools.build:gradle", version.ref = "agp" }
-gradleplugin-compose = { module = "org.jetbrains.compose:compose-gradle-plugin", version.ref = "compose" }
-gradleplugin-composeCompiler = { module = "org.jetbrains.kotlin:compose-compiler-gradle-plugin", version.ref = "compose-compiler" }
-gradleplugin-kotlin = { module = "org.jetbrains.kotlin:kotlin-gradle-plugin", version.ref = "kotlin" }
-gradleplugin-buildkonfig = { module = "com.codingfeline.buildkonfig:com.codingfeline.buildkonfig.gradle.plugin", version.ref = "buildkonfig" }
-gradleplugin-buildkonfig-kompiler = { module = "com.codingfeline.buildkonfig:buildkonfig-compiler", version.ref = "buildkonfig" }
-gradleplugin-androidx-room = { module = "androidx.room:room-gradle-plugin", version.ref = "room" }
-gradleplugin-base = { module = "com.posse.tanksrandomizer.conventionplugins:base" }
 
 # Android
 androidx-activityCompose = { module = "androidx.activity:activity-compose", version.ref = "androidx-activityCompose" }
@@ -117,7 +97,6 @@ multiplatform = { id = "org.jetbrains.kotlin.multiplatform", version.ref = "kotl
 compose-compiler = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlin" }
 compose = { id = "org.jetbrains.compose", version.ref = "compose" }
 android-application = { id = "com.android.application", version.ref = "agp" }
-android-library = { id = "com.android.library", version.ref = "agp" }
 kotlinx-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin" }
 buildkonfig = { id = "com.codingfeline.buildkonfig", version.ref = "buildkonfig" }
 ksp = { id = "com.google.devtools.ksp", version.ref = "ksp" }
