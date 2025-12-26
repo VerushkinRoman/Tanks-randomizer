@@ -39,11 +39,6 @@
 
     <string name="press_back_again_to_exit">Нажмите "НАЗАД" еще раз для выхода!</string>
 
-    <string name="expand_app">Расширить на полный экран</string>
-    <string name="collapse_app">Сжать до кнопки</string>
-
-    <string name="close_app">Закрыть приложение</string>
-
     <string name="new_window">Новое окно</string>
 
 
@@ -161,7 +156,7 @@
     <string name="domain_mapper_error">Ошибка преобразования данных</string>
     <string name="domain_token_error">Ошибка токена</string>
 
-    <string name="something_went_wrong">Что-то пошло не так...</string>
+    <string name="something_went_wrong">Что-то пошло не так…</string>
 
     <string name="auth_cancel">Авторизация отменена</string>
     <string name="auth_expired">Превышено время ожидания авторизации</string>

@@ -10,18 +10,15 @@ import kotlinx.coroutines.flow.asStateFlow
 class OnlineScreensInteractorImpl(
     private val pagedScreenRepository: PagedScreenRepository,
 ) : OnlineScreensInteractor {
-    @Suppress("UNCHECKED_CAST")
     private val _onlineScreens = MutableStateFlow(
-        (pagedScreenRepository.getScreens() ?: emptyList()) as List<OnlineScreenData>
+        (pagedScreenRepository.getScreens() ?: emptyList()).filterIsInstance<OnlineScreenData>()
     )
     override val screens: StateFlow<List<OnlineScreenData>> = _onlineScreens.asStateFlow()
 
     override fun setScreens(screens: List<PagedScreen<*>>) {
-        @Suppress("UNCHECKED_CAST")
-        screens as List<OnlineScreenData>
-
-        _onlineScreens.value = screens
-        pagedScreenRepository.setScreens(screens)
+        val onlineScreensData = screens.filterIsInstance<OnlineScreenData>()
+        _onlineScreens.value = onlineScreensData
+        pagedScreenRepository.setScreens(onlineScreensData)
     }
 
     override fun getOnlineScreen(screenId: String): OnlineScreenData? {

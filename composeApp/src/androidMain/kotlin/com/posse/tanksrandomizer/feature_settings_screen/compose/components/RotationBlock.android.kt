@@ -1,5 +1,5 @@
 package com.posse.tanksrandomizer.feature_settings_screen.compose.components
 
-import com.posse.tanksrandomizer.AppActivity
+import com.posse.tanksrandomizer.common.core.platform.PlatformConfiguration
 
-actual fun rotateDevice() = AppActivity.rotateDevice()
+actual fun rotateDevice(configuration: PlatformConfiguration) = configuration.rotateDevice()

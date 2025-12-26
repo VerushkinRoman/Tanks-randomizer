@@ -14,11 +14,10 @@ class RemoveOnlineScreen(
         id: String,
         screens: List<PagedScreen<*>>
     ): List<OnlineScreenData> {
-        @Suppress("UNCHECKED_CAST")
-        screens as List<OnlineScreenData>
+        val onlineScreensData = screens.filterIsInstance<OnlineScreenData>()
 
-        val deletedScreen = screens.find { it.metadata.id == id } ?: return screens
-        val remainingScreens = screens - deletedScreen
+        val deletedScreen = onlineScreensData.find { it.metadata.id == id } ?: return onlineScreensData
+        val remainingScreens = onlineScreensData - deletedScreen
 
         deletedScreen.accountId?.let { accountId ->
             if (remainingScreens.none { it.accountId == accountId }) {

@@ -9,13 +9,12 @@ import com.posse.tanksrandomizer.feature_online_navigation.common.domain.models.
 
 class AddNewOnlineScreen : AddNewScreen() {
     override operator fun invoke(screens: List<PagedScreen<*>>): AddScreenResult {
-        @Suppress("UNCHECKED_CAST")
-        screens as List<OnlineScreenData>
+        val onlineScreensData = screens.filterIsInstance<OnlineScreenData>()
 
-        if (screens.size >= MAX_ONLINE_SCREENS) return AddScreenResult(screens)
+        if (onlineScreensData.size >= MAX_ONLINE_SCREENS) return AddScreenResult(onlineScreensData)
 
-        screens.find { it.accountId == null }?.let { emptyScreen ->
-            val newScreens = screens.map { onlineScreenData ->
+        onlineScreensData.find { it.accountId == null }?.let { emptyScreen ->
+            val newScreens = onlineScreensData.map { onlineScreenData ->
                 val metadata = onlineScreenData.metadata.copy(
                     selected = onlineScreenData == emptyScreen
                 )
@@ -30,13 +29,13 @@ class AddNewOnlineScreen : AddNewScreen() {
         }
 
         return AddScreenResult(
-            screens.map {
+            onlineScreensData.map {
                 val metadata = it.metadata.copy(selected = false)
                 it.withMetadata(metadata)
             } + OnlineScreenData(
                 metadata = ScreenMetadata(
                     name = null,
-                    position = screens.size,
+                    position = onlineScreensData.size,
                     selected = true,
                 ),
                 additionalData = null

@@ -72,7 +72,7 @@ class MainScreenView(
             settingsInteractor.windowInFullScreen.collect { fullScreen ->
                 layoutParams.apply {
                     flags = if (fullScreen) {
-                        WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE
+                        WindowManager.LayoutParams.FLAG_LAYOUT_IN_SCREEN
                     } else {
                         WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE or
                                 WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE
@@ -107,7 +107,6 @@ class MainScreenView(
                 WindowManager.LayoutParams.TYPE_PHONE
             }
             format = PixelFormat.TRANSLUCENT
-            flags = WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE
         }
     }
 

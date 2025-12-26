@@ -1,6 +1,5 @@
-import com.android.build.gradle.internal.dsl.BaseAppModuleExtension
+import com.android.build.api.dsl.KotlinMultiplatformAndroidLibraryTarget
 import com.codingfeline.buildkonfig.compiler.FieldSpec.Type.STRING
-import org.gradle.internal.extensions.stdlib.capitalized
 import org.jetbrains.compose.desktop.application.dsl.TargetFormat
 import org.jetbrains.kotlin.gradle.dsl.KotlinMultiplatformExtension
 import java.util.Properties
@@ -9,13 +8,11 @@ plugins {
     alias(libs.plugins.multiplatform)
     alias(libs.plugins.compose.compiler)
     alias(libs.plugins.compose)
-    alias(libs.plugins.android.application)
+    alias(libs.plugins.android.library)
     alias(libs.plugins.kotlinx.serialization)
     alias(libs.plugins.buildkonfig)
     alias(libs.plugins.androidx.room)
     alias(libs.plugins.ksp)
-    alias(libs.plugins.google.gms.google.services)
-    alias(libs.plugins.google.firebase.crashlytics)
 }
 
 kotlin {
@@ -25,14 +22,6 @@ kotlin {
 }
 
 configureRoom()
-
-android {
-    configureAndroidAppVersion()
-    configureAndroidOptions()
-    configureAndroidAppSigning()
-    configureAndroidAppBuildTypes()
-    configureAndroidAppArtifactNames()
-}
 
 private fun KotlinMultiplatformExtension.configureDependencies() {
     sourceSets {
@@ -87,24 +76,17 @@ private fun KotlinMultiplatformExtension.configureDependencies() {
     }
 }
 
-private fun BaseAppModuleExtension.configureAndroidAppVersion() {
-    namespace = "com.posse.tanksrandomizer"
+private fun KotlinMultiplatformAndroidLibraryTarget.configureAndroidAppVersion() {
+    namespace = "com.posse.tanksrandomizer.composeApp"
     compileSdk = 36
-
-    defaultConfig {
-        minSdk = 23
-        targetSdk = 36
-
-        applicationId = "com.posse.tanksrandomizer"
-        versionCode = 12
-        versionName = "2.1.0"
-
-        testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
-    }
+    minSdk = 23
 }
 
 private fun KotlinMultiplatformExtension.configureTargets() {
-    androidTarget()
+    android {
+        configureAndroidAppVersion()
+        configureAndroidOptions()
+    }
 
     jvm()
 
@@ -135,51 +117,8 @@ private fun KotlinMultiplatformExtension.configureOptions() {
     }
 }
 
-private fun BaseAppModuleExtension.configureAndroidAppBuildTypes() {
-    buildTypes {
-        release {
-            signingConfig = signingConfigs.getByName("release")
-
-            isMinifyEnabled = true
-            isShrinkResources = true
-
-            ndk {
-                debugSymbolLevel = "FULL"
-            }
-
-            proguardFiles(
-                getDefaultProguardFile("proguard-android-optimize.txt"),
-                "proguard-rules.pro"
-            )
-        }
-
-        debug {
-            signingConfig = signingConfigs.getByName("release")
-            versionNameSuffix = "-debug"
-//            applicationIdSuffix = ".debug"
-        }
-    }
-}
-
-private fun BaseAppModuleExtension.configureAndroidOptions() {
-    buildFeatures {
-        buildConfig = true
-    }
-
-    bundle {
-        @Suppress("SpellCheckingInspection", "UnstableApiUsage")
-        // Отключить динамическую доставку ресурсов по локалям
-        language.enableSplit = false
-        @Suppress("UnstableApiUsage")
-        density.enableSplit = true
-        @Suppress("UnstableApiUsage")
-        abi.enableSplit = true
-    }
-
-    androidResources {
-        @Suppress("UnstableApiUsage")
-        localeFilters += listOf("en", "ru")
-    }
+private fun KotlinMultiplatformAndroidLibraryTarget.configureAndroidOptions() {
+    experimentalProperties["android.experimental.kmp.enableAndroidResources"] = true
 
     packaging {
         resources {
@@ -199,21 +138,6 @@ private fun BaseAppModuleExtension.configureAndroidOptions() {
     }
 }
 
-private fun BaseAppModuleExtension.configureAndroidAppSigning() {
-    signingConfigs {
-        create("release") {
-            val properties = Properties().apply {
-                load(File(projectDir, "signingKey.properties").reader())
-            }
-
-            storeFile = File(properties.getProperty("path_to_store_file"))
-            storePassword = properties.getProperty("store_password")
-            keyAlias = properties.getProperty("key_alias")
-            keyPassword = properties.getProperty("key_password")
-        }
-    }
-}
-
 compose.desktop {
     application {
         mainClass = "MainKt"
@@ -221,7 +145,7 @@ compose.desktop {
         nativeDistributions {
             targetFormats(TargetFormat.Dmg, TargetFormat.Msi, TargetFormat.Deb)
             packageName = "Random Tank Generator"
-            packageVersion = "2.0.0"
+            packageVersion = "2.1.0"
 
             linux {
                 iconFile.set(project.file("desktopAppIcons/LinuxIcon.png"))
@@ -239,7 +163,7 @@ compose.desktop {
             obfuscate.set(true)
             optimize.set(false)
             configurationFiles.from(
-                project.file("proguard-rules.pro"),
+                rootProject.file("proguard-rules.pro"),
                 project.file("compose-desktop.pro"),
             )
         }
@@ -283,41 +207,5 @@ buildkonfig {
 
     defaultConfigs {
         buildConfigField(STRING, "APPLICATION_ID", properties.getProperty("appication_id"))
-    }
-}
-
-private fun BaseAppModuleExtension.configureAndroidAppArtifactNames() {
-    applicationVariants.all {
-        outputs.forEach { output ->
-            val bundleFinalizeTaskName = StringBuilder("sign").run {
-                productFlavors.forEach {
-                    append(it.name.capitalized())
-                }
-                append(buildType.name.capitalized())
-                append("Bundle")
-                toString()
-            }
-
-            val outputName = buildString {
-                append("app-")
-                productFlavors.forEach {
-                    append(it.name)
-                    append("-")
-                }
-                append("v$versionName")
-            }
-
-            tasks.named(
-                bundleFinalizeTaskName,
-                com.android.build.gradle.internal.tasks.FinalizeBundleTask::class.java
-            ) {
-                val file = finalBundleFile.asFile.get()
-                val finalFile = File(file.parentFile, "$outputName.aab")
-                finalBundleFile.set(finalFile)
-            }
-            if (output is com.android.build.gradle.internal.api.BaseVariantOutputImpl) {
-                output.outputFileName = "$outputName.${output.outputFile.extension}"
-            }
-        }
     }
 }

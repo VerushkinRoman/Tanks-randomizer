@@ -16,11 +16,13 @@ import androidx.core.net.toUri
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.lifecycle.lifecycleScope
 import com.posse.tanksrandomizer.AppActivity.Companion.rotateDevice
+import com.posse.tanksrandomizer.AppActivity.Companion.startWindowMode
 import com.posse.tanksrandomizer.android_mode.compose.AndroidApp
-import com.posse.tanksrandomizer.common.compose.components.startWindowMode
 import com.posse.tanksrandomizer.common.core.di.Inject
 import com.posse.tanksrandomizer.common.core.platform.PlatformConfiguration
 import com.posse.tanksrandomizer.common.core.platform.PlatformSDK
+import com.posse.tanksrandomizer.feature_service.OverlayService
+import com.posse.tanksrandomizer.feature_service.OverlayService.Companion.STARTED_AS_SERVICE
 import com.posse.tanksrandomizer.feature_settings_screen.domain.models.ScreenRotation.Auto
 import com.posse.tanksrandomizer.feature_settings_screen.domain.models.ScreenRotation.Landscape
 import com.posse.tanksrandomizer.feature_settings_screen.domain.models.ScreenRotation.Portrait
@@ -62,6 +64,7 @@ class App : Application() {
 class AppActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        instance = this
         enableEdgeToEdge()
         addSplashScreen()
         launchApp()
@@ -92,6 +95,27 @@ class AppActivity : ComponentActivity() {
                 }
             }
         }
+
+        fun startWindowMode(startedAsService: Boolean) {
+            instance?.let { activity ->
+                Intent(
+                    /* packageContext = */ activity.applicationContext,
+                    /* cls = */ OverlayService::class.java,
+                )
+                    .apply {
+                        putExtra(STARTED_AS_SERVICE, startedAsService)
+                    }
+                    .also {
+                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                            activity.applicationContext.startForegroundService(it)
+                        } else {
+                            activity.applicationContext.startService(it)
+                        }
+                    }
+
+                activity.finish()
+            }
+        }
     }
 }
 
@@ -106,7 +130,6 @@ private fun AppActivity.launchApp() {
 
     if (windowMode && canDrawOverlays) {
         startWindowMode(
-            context = this,
             startedAsService = true,
         )
     } else {
@@ -131,7 +154,14 @@ private fun AppActivity.addSplashScreen() {
 }
 
 fun App.initPlatformSDK() = PlatformSDK.init(
-    configuration = PlatformConfiguration(androidContext = applicationContext)
+    configuration = PlatformConfiguration(
+        androidContext = applicationContext,
+        startWindowMode = AppActivity::startWindowMode,
+        startFullScreenMode = OverlayService::startFullScreenMode,
+        openAppSettings = App::openAppSettings,
+        canDrawOverlays = App::canDrawOverlay,
+        rotateDevice = AppActivity::rotateDevice,
+    )
 )
 
 private fun App.createNotificationChannel() {

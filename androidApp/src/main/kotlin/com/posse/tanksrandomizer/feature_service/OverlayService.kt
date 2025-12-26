@@ -22,15 +22,15 @@ import androidx.core.app.ServiceCompat
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleService
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.posse.tanksrandomizer.AppActivity
 import com.posse.tanksrandomizer.CHANNEL_ID
 import com.posse.tanksrandomizer.android_mode.compose.AndroidApp
-import com.posse.tanksrandomizer.common.compose.components.STARTED_AS_SERVICE
 import com.posse.tanksrandomizer.common.core.di.Inject
-import com.posse.tanksrandomizer.feature_settings_screen.presentation.interactor.SettingsInteractor
 import com.posse.tanksrandomizer.feature_service.compose.components.ChangeSizeButton
 import com.posse.tanksrandomizer.feature_service.presentation.FloatingButtonView
 import com.posse.tanksrandomizer.feature_service.presentation.MainScreenView
 import com.posse.tanksrandomizer.feature_settings_screen.domain.models.ScreenRotation
+import com.posse.tanksrandomizer.feature_settings_screen.presentation.interactor.SettingsInteractor
 import kotlinx.coroutines.DelicateCoroutinesApi
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.delay
@@ -51,6 +51,7 @@ class OverlayService : LifecycleService() {
         super.onCreate()
         showMainOverlay()
         showFloatingButtonOverlay()
+        instance = this
     }
 
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
@@ -84,6 +85,7 @@ class OverlayService : LifecycleService() {
 
         floatingButtonView.destroy()
         mainScreenView.destroy()
+        instance = null
         super.onDestroy()
     }
 
@@ -153,6 +155,24 @@ class OverlayService : LifecycleService() {
                     .size(scaleSize)
                     .graphicsLayer { alpha = opacity }
             )
+        }
+    }
+
+    companion object {
+        const val STARTED_AS_SERVICE = "StartedAsService"
+        private var instance: OverlayService? = null
+
+        fun startFullScreenMode() {
+            instance?.let { service ->
+                Intent(
+                    /* packageContext = */ service.applicationContext,
+                    /* cls = */ AppActivity::class.java
+                )
+                    .apply { flags = Intent.FLAG_ACTIVITY_NEW_TASK }
+                    .also { service.applicationContext.startActivity(it) }
+
+                service.stopService()
+            }
         }
     }
 }

@@ -16,10 +16,12 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.lifecycle.compose.LifecycleResumeEffect
 import com.posse.tanksrandomizer.common.compose.theme.themedSegmentedButtonColors
+import com.posse.tanksrandomizer.common.core.platform.PlatformConfiguration
 import com.posse.tanksrandomizer.feature_settings_screen.compose.components.common.CommonSettingsActionBlock
 import com.posse.tanksrandomizer.feature_settings_screen.compose.components.common.CommonSettingsActionTitle
 import com.posse.tanksrandomizer.feature_settings_screen.presentation.model.SettingsEvent
 import org.jetbrains.compose.resources.stringResource
+import org.kodein.di.compose.rememberInstance
 import tanks_randomizer.composeapp.generated.resources.Res
 import tanks_randomizer.composeapp.generated.resources.settings_mode_desc
 import tanks_randomizer.composeapp.generated.resources.settings_mode_fullscreen
@@ -32,10 +34,11 @@ fun FullScreenSwitch(
     onEvent: (SettingsEvent) -> Unit,
     modifier: Modifier = Modifier,
 ) {
-    var canDrawOverlay by remember { mutableStateOf(canDrawOverlay()) }
+    val configuration: PlatformConfiguration by rememberInstance()
+    var canDrawOverlay by remember { mutableStateOf(canDrawOverlay(configuration)) }
 
     LifecycleResumeEffect(true) {
-        canDrawOverlay = canDrawOverlay()
+        canDrawOverlay = canDrawOverlay(configuration)
         onPauseOrDispose {}
     }
 
@@ -126,4 +129,4 @@ private fun ScreenSwitchControlButtons(
     }
 }
 
-expect fun canDrawOverlay(): Boolean
+expect fun canDrawOverlay(configuration: PlatformConfiguration): Boolean

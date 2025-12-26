@@ -40,11 +40,6 @@
 
     <string name="press_back_again_to_exit">Press "Back" again to exit!</string>
 
-    <string name="expand_app">Expand to full screen</string>
-    <string name="collapse_app">Collapse to button</string>
-
-    <string name="close_app">Close app</string>
-
     <string name="new_window">New window</string>
 
 
@@ -122,7 +117,7 @@
     <string name="online_random_tank">Random tank</string>
 
     <string name="online_tooltip_title">Not all tanks?</string>
-    <string name="online_tooltip_text">If the number of tanks doesn't match the number in the garage, you need to identify the missing ones and play at least 1 battle with each. Then update and check the result. If a tank still doesn't appear, wait for the program update.</string>
+    <string name="online_tooltip_text">If the number of tanks does not match the number in the garage, you need to identify the missing ones and play at least 1 battle with each. Then update and check the result. If a tank still does not appear, wait for the program update.</string>
     <string name="online_tooltip_button">Got it</string>
     <string name="online_tooltip_content_description">Information</string>
 
@@ -163,7 +158,7 @@
     <string name="domain_mapper_error">Data mapping error</string>
     <string name="domain_token_error">Token error</string>
 
-    <string name="something_went_wrong">Something went wrong...</string>
+    <string name="something_went_wrong">Something went wrong…</string>
 
     <string name="auth_cancel">Auth cancelled</string>
     <string name="auth_expired">Auth timeout expired</string>

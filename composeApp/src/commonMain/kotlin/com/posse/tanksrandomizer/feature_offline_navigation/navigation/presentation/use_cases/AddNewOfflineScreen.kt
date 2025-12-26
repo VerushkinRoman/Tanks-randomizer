@@ -9,7 +9,6 @@ import com.posse.tanksrandomizer.feature_offline_navigation.common.domain.models
 
 class AddNewOfflineScreen : AddNewScreen() {
     override operator fun invoke(screens: List<PagedScreen<*>>): AddScreenResult {
-        @Suppress("UNCHECKED_CAST")
         if (screens.size >= MAX_ONLINE_SCREENS) return AddScreenResult(screens)
 
         return AddScreenResult(

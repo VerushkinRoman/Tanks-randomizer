@@ -96,7 +96,7 @@ val ColorScheme.tankTypesColors: TankTypesColors
     get() = TankTypesColors()
 
 @Composable
-internal fun AppTheme(
+fun AppTheme(
 //    darkTheme: Boolean = isSystemInDarkTheme(),
     darkTheme: Boolean = true,
     // Dynamic color is available on Android 12+

@@ -1,3 +1,5 @@
 package com.posse.tanksrandomizer.feature_settings_screen.compose.components
 
-actual fun rotateDevice() = Unit
+import com.posse.tanksrandomizer.common.core.platform.PlatformConfiguration
+
+actual fun rotateDevice(configuration: PlatformConfiguration) = Unit

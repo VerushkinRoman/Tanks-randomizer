@@ -13,17 +13,20 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import com.posse.tanksrandomizer.common.compose.theme.themedSegmentedButtonColors
+import com.posse.tanksrandomizer.common.core.platform.PlatformConfiguration
 import com.posse.tanksrandomizer.feature_settings_screen.compose.components.common.CommonSettingsActionBlock
 import com.posse.tanksrandomizer.feature_settings_screen.compose.components.common.CommonSettingsActionTitle
 import com.posse.tanksrandomizer.feature_settings_screen.domain.models.ScreenRotation
 import com.posse.tanksrandomizer.feature_settings_screen.presentation.model.SettingsEvent
 import org.jetbrains.compose.resources.stringResource
+import org.kodein.di.compose.rememberInstance
 import tanks_randomizer.composeapp.generated.resources.Res
 import tanks_randomizer.composeapp.generated.resources.settings_screen_rotation_desc
 import tanks_randomizer.composeapp.generated.resources.settings_screen_rotation_orientation_auto
 import tanks_randomizer.composeapp.generated.resources.settings_screen_rotation_orientation_landscape
 import tanks_randomizer.composeapp.generated.resources.settings_screen_rotation_orientation_portrait
 import tanks_randomizer.composeapp.generated.resources.settings_screen_rotation_title
+import kotlin.getValue
 
 @Composable
 fun RotationBlock(
@@ -32,8 +35,9 @@ fun RotationBlock(
     onEvent: (SettingsEvent) -> Unit,
     modifier: Modifier = Modifier
 ) {
+    val configuration: PlatformConfiguration by rememberInstance()
     LaunchedEffect(screenRotation) {
-        rotateDevice()
+        rotateDevice(configuration)
     }
 
     CommonSettingsActionBlock(
@@ -145,4 +149,4 @@ private fun RotationControlButtons(
     }
 }
 
-expect fun rotateDevice()
+expect fun rotateDevice(configuration: PlatformConfiguration)

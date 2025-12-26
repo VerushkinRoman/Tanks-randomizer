@@ -81,11 +81,15 @@ class SettingsScreenViewModel(
     }
 
     private fun changeFullScreen(fullScreen: Boolean) {
+        if (viewState.fullScreenMode == fullScreen) return
+
         viewState = viewState.copy(
             fullScreenMode = fullScreen
         )
 
         settingsInteractor.setFullScreenMode(fullScreen)
+
+        viewAction = SettingsAction.FullScreenChanged(fullScreen)
     }
 
     private fun changeMultiaccount(enabled: Boolean) {

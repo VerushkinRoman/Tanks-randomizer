@@ -12,7 +12,7 @@ import tanks_randomizer.composeapp.generated.resources.press_back_again_to_exit
 
 @Suppress("AssignedValueIsNeverRead")
 @Composable
-internal fun BackButtonExitApp(
+fun BackButtonExitApp(
     enabled: Boolean = true
 ) {
     val context = LocalContext.current

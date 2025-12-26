@@ -27,7 +27,7 @@ import org.kodein.di.compose.rememberInstance
 import org.kodein.di.compose.withDI
 
 @Composable
-internal fun CommonPlatformApp(
+fun CommonPlatformApp(
     modifier: Modifier = Modifier,
     content: @Composable () -> Unit
 ) = withDI(Inject.di.di) {

@@ -3,4 +3,7 @@
     <string name="app_name">Random Tank Generator</string>
     <string name="notification_channel_name">Default</string>
     <string name="notification_channel_discription">Channel for Random Tank Generator notifications</string>
+    <string name="close_app">Close app</string>
+    <string name="expand_app">Expand to full screen</string>
+    <string name="collapse_app">Collapse to button</string>
 </resources>

@@ -42,7 +42,7 @@ class TokenInteractorImpl(
                         ?: onlineScreenData.accountId?.let { accountId ->
                             TokenUpdateStatus(
                                 accountId = accountId,
-                                updating = tokenStatus.value.isEmpty()
+                                updating = false
                             )
                         }
                 }

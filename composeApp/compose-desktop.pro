@@ -85,34 +85,7 @@
 -keep class org.cef.** { *; }
 -keep class kotlinx.coroutines.swing.SwingDispatcherFactory
 
-# Realm
--dontnote io.realm.internal.SyncObjectServerFacade
 
--keep class io.realm.annotations.RealmModule
--keep @io.realm.annotations.RealmModule class *
-
--keep class io.realm.internal.Keep
--keep @io.realm.internal.Keep class * { *; }
-
--keep class io.realm.internal.KeepMember
--keep @io.realm.internal.KeepMember class * { @io.realm.internal.KeepMember *; }
-
--dontwarn javax.**
--dontwarn io.realm.**
--keep class io.realm.RealmCollection
--keep class io.realm.OrderedRealmCollection
-
--keepclasseswithmembernames class io.realm.**
-
--dontnote rx.Observable
-
--dontnote android.security.KeyStore
--dontwarn okio.Okio
--dontwarn okio.DeflaterSink
-
--dontnote com.android.org.conscrypt.SSLParametersImpl
--dontnote org.apache.harmony.xnet.provider.jsse.SSLParametersImpl
--dontnote sun.security.ssl.SSLContextImpl
 
 # ===============================================
 # KTOR HTTP CLIENT RULES
@@ -165,54 +138,17 @@
     @kotlin.jvm.JvmName <methods>;
 }
 
-# ===============================================
-# REALM RULES
-# ===============================================
+# Сохраняем все классы BundledSQLiteDriver
+-keep class androidx.sqlite.driver.bundled.BundledSQLiteDriver { *; }
+-keep class androidx.sqlite.driver.bundled.BundledSQLiteDriverKt { *; }
+-keep class androidx.sqlite.driver.bundled.** { *; }
 
-# Сохраняем все классы Realm
--keep class io.realm.** { *; }
--dontwarn io.realm.**
+# Room database
+-keep class * extends androidx.room.RoomDatabase { *; }
 
-# Сохраняем нативные методы Realm
--keepclasseswithmembers class * {
-    native <methods>;
-}
-
-# Сохраняем SoLoader и нативные библиотеки
--keep class io.realm.kotlin.jvm.SoLoader { *; }
--keep class io.realm.kotlin.internal.interop.** { *; }
-
-# Сохраняем методы, используемые через рефлексию
--keepclassmembers class io.realm.kotlin.jvm.SoLoader {
-    public static void load();
-}
-
-# Сохраняем все модели Realm
--keep class com.posse.tanksrandomizer.feature_online_screen.data.models.** { *; }
-
-# Сохраняем схемы Realm
--keep class * extends io.realm.kotlin.types.RealmObject { *; }
--keep class * implements io.realm.kotlin.types.BaseRealmObject { *; }
-
-# Сохраняем Companion объекты для моделей Realm
--keepclassmembers class ** {
-    public static ** Companion;
-}
-
-# Сохраняем методы, генерируемые Realm
+# Entity и Dao классы
+-keep @androidx.room.Entity class *
+-keep @androidx.room.Dao interface *
 -keepclassmembers class * {
-    public static ** io_realm_kotlin_schema(...);
+    @androidx.room.* *;
 }
-
-# Сохраняем аннотации Realm
--keepattributes *Annotation*
--keep @io.realm.kotlin.types.annotations.Ignore class *
--keep @io.realm.kotlin.types.annotations.PrimaryKey class *
--keep @io.realm.kotlin.types.annotations.Index class *
--keep @io.realm.kotlin.types.annotations.RealmClass class *
-
-# Сохраняем сервисные загрузчики для Realm
--keep class META-INF.services.io.realm.** { *; }
-
-# Для внутренних классов Realm
--keepclassmembers class io.realm.kotlin.internal.** { *; }

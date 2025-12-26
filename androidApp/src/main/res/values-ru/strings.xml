@@ -3,4 +3,7 @@
     <string name="app_name">Генератор Случайных Танков</string>
     <string name="notification_channel_name">По умолчанию</string>
     <string name="notification_channel_discription">Канал для уведомлений для Генератора Случайных Танков</string>
+    <string name="close_app">Закрыть приложение</string>
+    <string name="expand_app">Расширить на полный экран</string>
+    <string name="collapse_app">Сжать до кнопки</string>
 </resources>

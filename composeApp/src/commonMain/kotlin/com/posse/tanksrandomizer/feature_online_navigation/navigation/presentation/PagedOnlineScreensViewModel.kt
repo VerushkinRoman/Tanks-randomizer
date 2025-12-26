@@ -41,10 +41,11 @@ class PagedOnlineScreensViewModel(
         }
     }
 
-    @Suppress("UNCHECKED_CAST")
     private fun setSuccessLoginResult(id: String, name: String, token: Token) {
         makeActionWithViewModelScopeAndSaveState {
-            setSuccessLoginResult(id, name, token, viewState.screens as List<OnlineScreenData>)
+            viewState.screens.filterIsInstance<OnlineScreenData>().let {
+                setSuccessLoginResult(id, name, token, it)
+            }
         }
     }
 }

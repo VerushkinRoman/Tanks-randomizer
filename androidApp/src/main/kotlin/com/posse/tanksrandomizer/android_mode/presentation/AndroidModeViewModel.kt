@@ -3,29 +3,15 @@ package com.posse.tanksrandomizer.android_mode.presentation
 import com.posse.tanksrandomizer.android_mode.presentation.model.AndroidModeAction
 import com.posse.tanksrandomizer.android_mode.presentation.model.AndroidModeEvent
 import com.posse.tanksrandomizer.android_mode.presentation.model.AndroidModeState
-import com.posse.tanksrandomizer.android_mode.presentation.use_cases.GetAndroidModeState
 import com.posse.tanksrandomizer.common.core.di.Inject
 import com.posse.tanksrandomizer.common.presentation.utils.BaseSharedViewModel
 import com.posse.tanksrandomizer.feature_settings_screen.presentation.interactor.SettingsInteractor
-import kotlinx.coroutines.launch
 
 class AndroidModeViewModel(
     val settingsInteractor: SettingsInteractor = Inject.instance(),
 ) : BaseSharedViewModel<AndroidModeState, AndroidModeAction, AndroidModeEvent>(
-    initialState = GetAndroidModeState(settingsInteractor = settingsInteractor).invoke()
+    initialState = AndroidModeState()
 ) {
-    init {
-        withViewModelScope {
-            launch {
-                settingsInteractor.fullScreenModeEnabled.collect { fullScreen ->
-                    viewState = viewState.copy(
-                        fullScreenModeEnabled = fullScreen,
-                    )
-                }
-            }
-        }
-    }
-
     override fun obtainEvent(viewEvent: AndroidModeEvent) {
         when (viewEvent) {
             AndroidModeEvent.ClearAction -> viewAction = null

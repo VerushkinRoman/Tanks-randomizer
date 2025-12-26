@@ -15,13 +15,11 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.graphics.vector.rememberVectorPainter
 import androidx.compose.ui.layout.onSizeChanged
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import com.posse.tanksrandomizer.R
 import com.posse.tanksrandomizer.common.compose.base_components.ButtonWithImage
 import com.posse.tanksrandomizer.common.compose.theme.AppTheme
-import org.jetbrains.compose.resources.stringResource
-import tanks_randomizer.composeapp.generated.resources.Res
-import tanks_randomizer.composeapp.generated.resources.collapse_app
-import tanks_randomizer.composeapp.generated.resources.expand_app
 
 @Composable
 internal fun ChangeSizeButton(
@@ -48,7 +46,7 @@ internal fun ChangeSizeButton(
         ) { fullScreen ->
             ButtonWithImage(
                 painter = rememberVectorPainter(if (fullScreen) Icons.Rounded.CloseFullscreen else Icons.Rounded.OpenInFull),
-                contentDescription = stringResource(if (fullScreen) Res.string.collapse_app else Res.string.expand_app),
+                contentDescription = stringResource(if (fullScreen) R.string.collapse_app else R.string.expand_app),
             )
         }
     }

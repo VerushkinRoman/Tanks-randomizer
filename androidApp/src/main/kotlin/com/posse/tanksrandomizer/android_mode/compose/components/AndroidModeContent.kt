@@ -14,14 +14,13 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.rememberVectorPainter
 import androidx.compose.ui.platform.LocalLayoutDirection
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import com.posse.tanksrandomizer.R
 import com.posse.tanksrandomizer.android_mode.presentation.model.AndroidModeEvent
 import com.posse.tanksrandomizer.common.compose.base_components.ButtonWithImage
 import com.posse.tanksrandomizer.feature_offline_screen.compose.components.BackButtonExitApp
 import com.posse.tanksrandomizer.navigation.compose.MainNavigation
-import org.jetbrains.compose.resources.stringResource
-import tanks_randomizer.composeapp.generated.resources.Res
-import tanks_randomizer.composeapp.generated.resources.close_app
 
 @Composable
 fun AndroidModeContent(
@@ -57,7 +56,7 @@ private fun CloseButton(
 
     ButtonWithImage(
         painter = rememberVectorPainter(Icons.Rounded.Close),
-        contentDescription = stringResource(Res.string.close_app),
+        contentDescription = stringResource(R.string.close_app),
         onClick = onClick,
         modifier = modifier
             .padding(8.dp)
