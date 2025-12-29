@@ -67,6 +67,7 @@ private fun KotlinMultiplatformExtension.configureDependencies() {
             implementation(libs.androidx.lifecycle.service)
             implementation(libs.androidx.material3)
             implementation(libs.firebase.crashlytics)
+            implementation(libs.yandex.mobileads)
         }
 
         jvmMain.dependencies {
@@ -145,7 +146,7 @@ compose.desktop {
         nativeDistributions {
             targetFormats(TargetFormat.Dmg, TargetFormat.Msi, TargetFormat.Deb)
             packageName = "Random Tank Generator"
-            packageVersion = "2.1.0"
+            packageVersion = "2.1.1"
 
             linux {
                 iconFile.set(project.file("desktopAppIcons/LinuxIcon.png"))

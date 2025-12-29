@@ -47,8 +47,8 @@ private fun BaseAppModuleExtension.configureAndroidAppVersion() {
         targetSdk = 36
 
         applicationId = "com.posse.tanksrandomizer"
-        versionCode = 12
-        versionName = "2.1.0"
+        versionCode = 13
+        versionName = "2.1.1"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }

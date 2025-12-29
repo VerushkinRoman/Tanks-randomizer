@@ -30,6 +30,7 @@ googleFirebaseCrashlytics = "3.0.6"
 room = "2.8.4"
 sqlite = "2.6.2"
 ksp = "2.3.4"
+yandex-mobileads = "7.18.1"
 
 [libraries]
 
@@ -89,6 +90,8 @@ coil-network-ktor = { module = "io.coil-kt.coil3:coil-network-ktor3", version.re
 
 compose-localina = { module = "io.github.sudarshanmhasrup.localina:localina", version.ref = "localina" }
 firebase-crashlytics = { group = "com.google.firebase", name = "firebase-crashlytics", version.ref = "firebaseCrashlytics" }
+
+yandex-mobileads = { module = "com.yandex.android:mobileads", version.ref = "yandex-mobileads" }
 
 
 [plugins]
