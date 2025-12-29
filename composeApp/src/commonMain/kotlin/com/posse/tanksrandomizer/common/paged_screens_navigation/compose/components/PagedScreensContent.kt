@@ -15,6 +15,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.requiredHeightIn
 import androidx.compose.foundation.layout.requiredWidthIn
 import androidx.compose.foundation.layout.safeContent
+import androidx.compose.foundation.layout.sizeIn
 import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.AddCircleOutline
@@ -24,8 +25,10 @@ import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.DropdownMenu
 import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.ExperimentalMaterial3ExpressiveApi
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButtonDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.PrimaryScrollableTabRow
 import androidx.compose.material3.Tab
@@ -112,7 +115,7 @@ internal fun PagedScreensContent(
     }
 }
 
-@OptIn(ExperimentalMaterial3Api::class)
+@OptIn(ExperimentalMaterial3Api::class, ExperimentalMaterial3ExpressiveApi::class)
 @Composable
 private fun TabsRow(
     selectedTab: Int,
@@ -195,7 +198,11 @@ private fun TabsRow(
                             @Suppress("DEPRECATION")
                             Icon(
                                 imageVector = Icons.Rounded.ArrowBack,
-                                contentDescription = null
+                                contentDescription = null,
+                                modifier = Modifier.sizeIn(
+                                    maxWidth = IconButtonDefaults.largeIconSize,
+                                    maxHeight = IconButtonDefaults.largeIconSize,
+                                ),
                             )
                         },
                         enabled = screenData.metadata.position > 0,
@@ -216,7 +223,11 @@ private fun TabsRow(
                             @Suppress("DEPRECATION")
                             Icon(
                                 imageVector = Icons.Rounded.ArrowForward,
-                                contentDescription = null
+                                contentDescription = null,
+                                modifier = Modifier.sizeIn(
+                                    maxWidth = IconButtonDefaults.largeIconSize,
+                                    maxHeight = IconButtonDefaults.largeIconSize,
+                                ),
                             )
                         },
                         enabled = screenData.metadata.position < state.screens.size - 1,
@@ -241,7 +252,11 @@ private fun TabsRow(
                         leadingIcon = {
                             Icon(
                                 painter = painterResource(Res.drawable.trash),
-                                contentDescription = null
+                                contentDescription = null,
+                                modifier = Modifier.sizeIn(
+                                    maxWidth = IconButtonDefaults.largeIconSize,
+                                    maxHeight = IconButtonDefaults.largeIconSize,
+                                ),
                             )
                         },
                         enabled = state.screens.size > 1,
@@ -261,6 +276,10 @@ private fun TabsRow(
                     Icon(
                         imageVector = Icons.Rounded.AddCircleOutline,
                         contentDescription = null,
+                        modifier = Modifier.sizeIn(
+                            maxWidth = IconButtonDefaults.largeIconSize,
+                            maxHeight = IconButtonDefaults.largeIconSize,
+                        ),
                     )
                 },
                 modifier = Modifier.clip(ButtonsShapeSmall)

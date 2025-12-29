@@ -46,5 +46,6 @@ class GenerateOfflineFilter(
         statuses = generateRandomItems(statuses),
         tankTypes = generateRandomItems(tankTypes),
         types = generateRandomItems(types),
+        marks = generateRandomItems(marks),
     )
 }
