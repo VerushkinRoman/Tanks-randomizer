@@ -17,7 +17,6 @@ import com.posse.tanksrandomizer.common.core.platform.PlatformConfiguration
 import com.posse.tanksrandomizer.feature_settings_screen.compose.components.common.CommonSettingsActionBlock
 import com.posse.tanksrandomizer.feature_settings_screen.compose.components.common.CommonSettingsActionTitle
 import com.posse.tanksrandomizer.feature_settings_screen.domain.models.ScreenRotation
-import com.posse.tanksrandomizer.feature_settings_screen.presentation.model.SettingsEvent
 import org.jetbrains.compose.resources.stringResource
 import org.kodein.di.compose.rememberInstance
 import tanks_randomizer.composeapp.generated.resources.Res
@@ -26,13 +25,12 @@ import tanks_randomizer.composeapp.generated.resources.settings_screen_rotation_
 import tanks_randomizer.composeapp.generated.resources.settings_screen_rotation_orientation_landscape
 import tanks_randomizer.composeapp.generated.resources.settings_screen_rotation_orientation_portrait
 import tanks_randomizer.composeapp.generated.resources.settings_screen_rotation_title
-import kotlin.getValue
 
 @Composable
 fun RotationBlock(
     screenRotation: ScreenRotation,
     enabled: Boolean,
-    onEvent: (SettingsEvent) -> Unit,
+    onRotationChanged: (ScreenRotation) -> Unit,
     modifier: Modifier = Modifier
 ) {
     val configuration: PlatformConfiguration by rememberInstance()
@@ -51,9 +49,9 @@ fun RotationBlock(
             RotationControlButtons(
                 screenRotation = screenRotation,
                 enabled = enabled,
-                onAutoRotateClick = { onEvent(SettingsEvent.RotationChanged(ScreenRotation.Auto)) },
-                onPortraitRotateClick = { onEvent(SettingsEvent.RotationChanged(ScreenRotation.Portrait)) },
-                onLandscapeRotateClick = { onEvent(SettingsEvent.RotationChanged(ScreenRotation.Landscape)) },
+                onAutoRotateClick = { onRotationChanged(ScreenRotation.Auto) },
+                onPortraitRotateClick = { onRotationChanged(ScreenRotation.Portrait) },
+                onLandscapeRotateClick = { onRotationChanged(ScreenRotation.Landscape) },
             )
         },
         modifier = modifier.alpha(if (enabled) 1f else 0.3f)

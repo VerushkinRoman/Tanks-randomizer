@@ -2,6 +2,7 @@ package com.posse.tanksrandomizer.common.compose.base_components
 
 import androidx.compose.foundation.ScrollState
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ColumnScope
 import androidx.compose.foundation.layout.Row
@@ -9,6 +10,9 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.WindowInsetsSides
 import androidx.compose.foundation.layout.fillMaxHeight
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.only
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.safeContent
@@ -39,6 +43,7 @@ fun CommonScreenColumn(
 ) {
     val density = LocalDensity.current
     var additionalSpace: Dp by remember { mutableStateOf(0.dp) }
+    var additionalAdSpace by remember { mutableStateOf(0.dp) }
 
     val screenSize = LocalSizeClass.current
     val horizontal = remember(screenSize) {
@@ -55,29 +60,50 @@ fun CommonScreenColumn(
         horizontalArrangement = Arrangement.Center,
         modifier = modifier
     ) {
-        Column(
-            horizontalAlignment = Alignment.CenterHorizontally,
-            verticalArrangement = Arrangement.Center,
+        Box(
+            contentAlignment = Alignment.TopCenter,
             modifier = Modifier
                 .fillMaxHeight()
-                .weight(1f)
-                .verticalScroll(scrollState)
-                .windowInsetsPadding(WindowInsets.safeContent.only(WindowInsetsSides.Vertical))
-                .padding(
-                    horizontal = if (horizontal && runningAsOverlay && additionalSpace <= ButtonDefaults.MinHeight + 16.dp) {
-                        maxOf(ButtonDefaults.MinHeight + 16.dp, horizontalEvenSafeContentPaddings)
-                    } else horizontalEvenSafeContentPaddings
-                )
-                .padding(vertical = 8.dp)
+                .weight(1f),
         ) {
-            Spacer(Modifier.weight(1f).onSizeChanged { size ->
-                @Suppress("AssignedValueIsNeverRead", "RedundantSuppression")
-                additionalSpace = with(density) { size.height.toDp() }
-            })
+            Column(
+                horizontalAlignment = Alignment.CenterHorizontally,
+                verticalArrangement = Arrangement.Center,
+                modifier = Modifier
+                    .fillMaxSize()
+                    .verticalScroll(scrollState)
+                    .windowInsetsPadding(WindowInsets.safeContent.only(WindowInsetsSides.Vertical))
+                    .padding(
+                        horizontal = if (horizontal && runningAsOverlay && additionalSpace <= ButtonDefaults.MinHeight + 16.dp) {
+                            maxOf(
+                                ButtonDefaults.MinHeight + 16.dp,
+                                horizontalEvenSafeContentPaddings
+                            )
+                        } else horizontalEvenSafeContentPaddings
+                    )
+                    .padding(vertical = 8.dp)
+            ) {
+                Spacer(Modifier.weight(1f).onSizeChanged { size ->
+                    @Suppress("AssignedValueIsNeverRead", "RedundantSuppression")
+                    additionalSpace = with(density) { size.height.toDp() }
+                })
 
-            content()
+                content()
 
-            Spacer(Modifier.weight(1f))
+                Spacer(Modifier.weight(1f))
+
+                Spacer(Modifier.height(additionalAdSpace))
+            }
+
+            BannerAD(
+                runningAsOverlay = runningAsOverlay,
+                modifier = Modifier
+                    .align(Alignment.BottomCenter)
+                    .fillMaxWidth()
+                    .onSizeChanged { size ->
+                        additionalAdSpace = with(density) { size.height.toDp() }
+                    },
+            )
         }
 
         VerticalScrollbar(
@@ -91,4 +117,10 @@ fun CommonScreenColumn(
 expect fun VerticalScrollbar(
     scrollState: ScrollState,
     modifier: Modifier,
+)
+
+@Composable
+expect fun BannerAD(
+    runningAsOverlay: Boolean,
+    modifier: Modifier = Modifier
 )

@@ -36,6 +36,7 @@ dependencies {
     implementation(libs.androidx.lifecycle.service)
     implementation(libs.firebase.crashlytics)
     implementation(project(":composeApp"))
+    implementation(libs.androidx.lifecycle.runtime.compose)
 }
 
 private fun BaseAppModuleExtension.configureAndroidAppVersion() {

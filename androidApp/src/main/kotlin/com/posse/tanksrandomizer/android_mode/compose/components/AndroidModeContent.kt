@@ -24,7 +24,7 @@ import com.posse.tanksrandomizer.navigation.compose.MainNavigation
 
 @Composable
 fun AndroidModeContent(
-    startedFromService: Boolean,
+    startedAsService: Boolean,
     onEvent: (AndroidModeEvent) -> Unit,
     modifier: Modifier = Modifier
 ) {
@@ -32,11 +32,11 @@ fun AndroidModeContent(
         modifier = modifier,
     ) {
         MainNavigation(
-            runningAsOverlay = startedFromService,
+            runningAsOverlay = startedAsService,
             modifier = Modifier.fillMaxSize()
         )
 
-        if (startedFromService) {
+        if (startedAsService) {
             CloseButton(
                 onClick = { onEvent(AndroidModeEvent.OnClosePress) },
                 modifier = Modifier.align(Alignment.TopStart)

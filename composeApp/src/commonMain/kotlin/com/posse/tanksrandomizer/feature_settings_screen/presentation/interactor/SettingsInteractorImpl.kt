@@ -15,40 +15,40 @@ import kotlinx.coroutines.launch
 
 @OptIn(FlowPreview::class)
 class SettingsInteractorImpl(
-    private val repository: SettingsRepository,
+    override val settingsRepository: SettingsRepository,
     dispatchers: Dispatchers,
 ) : SettingsInteractor {
     private val scope: CoroutineScope = CoroutineScope(dispatchers.io + SupervisorJob())
 
-    private val _screenRotation: MutableStateFlow<ScreenRotation> = MutableStateFlow(repository.getRotation())
+    private val _screenRotation: MutableStateFlow<ScreenRotation> = MutableStateFlow(settingsRepository.getRotation())
     override val screenRotation: StateFlow<ScreenRotation> = _screenRotation.asStateFlow()
 
-    private val _windowInFullScreen: MutableStateFlow<Boolean> = MutableStateFlow(false)
+    private val _windowInFullScreen: MutableStateFlow<Boolean> = MutableStateFlow(!settingsRepository.getAutoHideEnabled())
     override val windowInFullScreen: StateFlow<Boolean> = _windowInFullScreen.asStateFlow()
 
-    private val _buttonLandscapeOffset: MutableStateFlow<ButtonOffset?> = MutableStateFlow(repository.getButtonLandscapeOffset())
+    private val _buttonLandscapeOffset: MutableStateFlow<ButtonOffset?> = MutableStateFlow(settingsRepository.getButtonLandscapeOffset())
     override val buttonLandscapeOffset: StateFlow<ButtonOffset?> = _buttonLandscapeOffset.asStateFlow()
 
-    private val _buttonPortraitOffset: MutableStateFlow<ButtonOffset?> = MutableStateFlow(repository.getButtonPortraitOffset())
+    private val _buttonPortraitOffset: MutableStateFlow<ButtonOffset?> = MutableStateFlow(settingsRepository.getButtonPortraitOffset())
     override val buttonPortraitOffset: StateFlow<ButtonOffset?> = _buttonPortraitOffset.asStateFlow()
 
-    private val _fullScreenMode: MutableStateFlow<Boolean> = MutableStateFlow(repository.getFullScreenMode())
+    private val _fullScreenMode: MutableStateFlow<Boolean> = MutableStateFlow(settingsRepository.getFullScreenMode())
     override val fullScreenModeEnabled: StateFlow<Boolean> = _fullScreenMode.asStateFlow()
 
-    private val _floatingButtonOpacity: MutableStateFlow<Float> = MutableStateFlow(repository.getFloatingButtonOpacity())
+    private val _floatingButtonOpacity: MutableStateFlow<Float> = MutableStateFlow(settingsRepository.getFloatingButtonOpacity())
     override val floatingButtonOpacity: StateFlow<Float> = _floatingButtonOpacity.asStateFlow()
 
-    private val _floatingButtonSize: MutableStateFlow<Float> = MutableStateFlow(repository.getFloatingButtonSize())
+    private val _floatingButtonSize: MutableStateFlow<Float> = MutableStateFlow(settingsRepository.getFloatingButtonSize())
     override val floatingButtonSize: StateFlow<Float> = _floatingButtonSize.asStateFlow()
 
-    private val _desktopWindowSize: MutableStateFlow<Pair<Int, Int>?> = MutableStateFlow(repository.getDesktopWindowSize())
+    private val _desktopWindowSize: MutableStateFlow<Pair<Int, Int>?> = MutableStateFlow(settingsRepository.getDesktopWindowSize())
 
     init {
         scope.launch {
             _floatingButtonSize
                 .debounce(2000)
                 .collect { size ->
-                    repository.setFloatingButtonSize(size)
+                    settingsRepository.setFloatingButtonSize(size)
                 }
         }
 
@@ -56,7 +56,7 @@ class SettingsInteractorImpl(
             _floatingButtonOpacity
                 .debounce(2000)
                 .collect { opacity ->
-                    repository.setFloatingButtonOpacity(opacity)
+                    settingsRepository.setFloatingButtonOpacity(opacity)
                 }
         }
 
@@ -65,7 +65,7 @@ class SettingsInteractorImpl(
                 .debounce { 2000 }
                 .collect { offset ->
                     offset?.let {
-                        repository.setButtonPortraitOffset(offset)
+                        settingsRepository.setButtonPortraitOffset(offset)
                     }
                 }
         }
@@ -75,7 +75,7 @@ class SettingsInteractorImpl(
                 .debounce { 2000 }
                 .collect { offset ->
                     offset?.let {
-                        repository.setButtonLandscapeOffset(offset)
+                        settingsRepository.setButtonLandscapeOffset(offset)
                     }
                 }
         }
@@ -85,7 +85,7 @@ class SettingsInteractorImpl(
                 .debounce { 2000 }
                 .collect { size ->
                     size?.let {
-                        repository.setDesktopWindowSize(size)
+                        settingsRepository.setDesktopWindowSize(size)
                     }
                 }
         }
@@ -105,12 +105,12 @@ class SettingsInteractorImpl(
 
     override fun setFullScreenMode(fullScreen: Boolean) {
         _fullScreenMode.value = fullScreen
-        repository.setFullScreenMode(fullScreen)
+        settingsRepository.setFullScreenMode(fullScreen)
     }
 
     override fun setScreenRotation(rotation: ScreenRotation) {
         _screenRotation.value = rotation
-        repository.setRotation(rotation)
+        settingsRepository.setRotation(rotation)
     }
 
     override fun setFloatingButtonOpacity(opacity: Float) {

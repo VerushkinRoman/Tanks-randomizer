@@ -8,5 +8,5 @@ actual fun changeMode(
     fullScreen: Boolean
 ) {
     if (fullScreen) platform.startFullScreenMode()
-    else platform.startWindowMode(false)
+    else platform.startWindowMode()
 }

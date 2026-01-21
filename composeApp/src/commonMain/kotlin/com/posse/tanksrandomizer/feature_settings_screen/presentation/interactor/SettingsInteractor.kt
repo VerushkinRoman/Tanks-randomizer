@@ -2,9 +2,12 @@ package com.posse.tanksrandomizer.feature_settings_screen.presentation.interacto
 
 import com.posse.tanksrandomizer.feature_settings_screen.domain.models.ButtonOffset
 import com.posse.tanksrandomizer.feature_settings_screen.domain.models.ScreenRotation
+import com.posse.tanksrandomizer.feature_settings_screen.domain.repository.SettingsRepository
 import kotlinx.coroutines.flow.StateFlow
 
 interface SettingsInteractor {
+    val settingsRepository: SettingsRepository
+
     val screenRotation: StateFlow<ScreenRotation>
     fun setScreenRotation(rotation: ScreenRotation)
 

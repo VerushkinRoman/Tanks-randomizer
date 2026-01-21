@@ -47,6 +47,7 @@ fun SmallButtonWithTextAndImage(
         LocalElementSize.current,
         textHeight + verticalPadding * 2
     )
+    val color = if (enabled) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.onPrimaryContainer
 
     Row(
         verticalAlignment = Alignment.CenterVertically,
@@ -60,7 +61,7 @@ fun SmallButtonWithTextAndImage(
             .clip(ButtonsShapeLarge)
             .border(
                 width = BorderWidth,
-                color = MaterialTheme.colorScheme.primary,
+                color = color,
                 shape = ButtonsShapeLarge
             )
             .padding(horizontal = 12.dp, vertical = verticalPadding)
@@ -69,6 +70,7 @@ fun SmallButtonWithTextAndImage(
             RandomizerText(
                 text = text,
                 onTextLayout = onTextLayout,
+                color = color
             )
             if (painter != null) Spacer(Modifier.width(6.dp))
         }
@@ -77,7 +79,7 @@ fun SmallButtonWithTextAndImage(
             Image(
                 painter = painter,
                 contentDescription = text,
-                colorFilter = ColorFilter.tint(MaterialTheme.colorScheme.primary),
+                colorFilter = ColorFilter.tint(color),
                 contentScale = ContentScale.FillHeight,
                 modifier = Modifier.fillMaxHeight()
             )

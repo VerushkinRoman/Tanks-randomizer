@@ -35,4 +35,7 @@ class SettingsRepositoryImpl(
 
     override fun getMultiaccountEnabled(): Flow<Boolean> = dataSource.getMultiaccountEnabled()
     override fun setMultiaccountEnabled(enabled: Boolean) = dataSource.setMultiaccountEnabled(enabled)
+
+    override fun getAutoHideEnabled(): Boolean = dataSource.getAutoHideEnabled()
+    override fun setAutohideEnabled(enabled: Boolean) = dataSource.setAutohideEnabled(enabled)
 }

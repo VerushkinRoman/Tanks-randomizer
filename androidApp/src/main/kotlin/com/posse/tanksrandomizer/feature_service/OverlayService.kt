@@ -34,7 +34,6 @@ import com.posse.tanksrandomizer.feature_settings_screen.presentation.interactor
 import kotlinx.coroutines.DelicateCoroutinesApi
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.delay
-import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.launch
 import kotlin.system.exitProcess
 import kotlin.time.Duration.Companion.seconds
@@ -45,8 +44,6 @@ class OverlayService : LifecycleService() {
     private val floatingButtonView by lazy { FloatingButtonView(context = this) }
     private val mainScreenView by lazy { MainScreenView(context = this) }
 
-    private val asService = MutableStateFlow(false)
-
     override fun onCreate() {
         super.onCreate()
         showMainOverlay()
@@ -56,9 +53,6 @@ class OverlayService : LifecycleService() {
 
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
         super.onStartCommand(intent, flags, startId)
-        val startedAsService = intent?.getBooleanExtra(STARTED_AS_SERVICE, false) ?: false
-        asService.value = startedAsService
-        settingsInteractor.setWindowInFullScreen(!startedAsService)
         settingsInteractor.setScreenRotation(ScreenRotation.Auto)
         startService()
         return START_NOT_STICKY
@@ -122,11 +116,8 @@ class OverlayService : LifecycleService() {
                     }
                 )
             ) {
-                val startedAsService by asService.collectAsStateWithLifecycle()
-
                 AndroidApp(
-                    startedFromService = true,
-                    startedAsService = startedAsService,
+                    startedAsService = true,
                     exitApp = {
                         stopService()
 
@@ -159,7 +150,6 @@ class OverlayService : LifecycleService() {
     }
 
     companion object {
-        const val STARTED_AS_SERVICE = "StartedAsService"
         private var instance: OverlayService? = null
 
         fun startFullScreenMode() {

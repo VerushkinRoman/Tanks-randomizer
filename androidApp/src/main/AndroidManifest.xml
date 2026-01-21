@@ -27,6 +27,16 @@
             </intent-filter>
         </activity>
 
+        <activity
+            android:name=".common.presentation.ads.RewardAdActivity"
+            android:theme="@android:style/Theme.Translucent.NoTitleBar.Fullscreen"
+            android:excludeFromRecents="true"
+            android:noHistory="true"
+            android:exported="false"
+            android:configChanges="orientation|screenSize|keyboardHidden"
+            android:hardwareAccelerated="true"
+            android:windowSoftInputMode="adjustNothing"/>
+
         <service
             android:name=".feature_service.OverlayService"
             android:foregroundServiceType="specialUse"

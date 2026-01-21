@@ -44,6 +44,9 @@ class ScreenSettingsDataSourceImpl(
     override fun getMultiaccountEnabled(): Flow<Boolean> = observableSettings.getBooleanFlow(MULTIACCOUNT_KEY, true)
     override fun setMultiaccountEnabled(enabled: Boolean) = observableSettings.putBoolean(MULTIACCOUNT_KEY, enabled)
 
+    override fun getAutoHideEnabled(): Boolean = settings.getBoolean(AUTOHIDE_KEY, false)
+    override fun setAutohideEnabled(enabled: Boolean) = settings.putBoolean(AUTOHIDE_KEY, enabled)
+
     companion object {
         private const val BUTTON_LANDSCAPE_OFFSET_KEY = "ButtonLandscapeOffset"
         private const val BUTTON_PORTRAIT_OFFSET_KEY = "ButtonPortraitOffset"
@@ -54,5 +57,6 @@ class ScreenSettingsDataSourceImpl(
         private const val APP_LOCALE_KEY = "AppLocale"
         private const val DESKTOP_WINDOW_SIZE_KEY = "DesktopWindowSize"
         private const val MULTIACCOUNT_KEY = "Multiaccount"
+        private const val AUTOHIDE_KEY = "AutoHide"
     }
 }

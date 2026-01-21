@@ -14,6 +14,7 @@ val offlineScreenDataSourceModule = DI.Module("OfflineScreenDataSourceModule") {
     bind<OfflineDataSource>(tag = DataSourceFor.OfflineScreen) with provider {
         OfflineDataSourceImpl(
             settings = instance(),
+            observableSettings = instance(),
             dataSourceFor = DataSourceFor.OfflineScreen,
         )
     }

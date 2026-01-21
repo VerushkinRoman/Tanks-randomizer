@@ -4,7 +4,7 @@ import android.content.Context
 
 actual class PlatformConfiguration(
     val androidContext: Context,
-    val startWindowMode: (startedAsService: Boolean) -> Unit,
+    val startWindowMode: () -> Unit,
     val startFullScreenMode: () -> Unit,
     val openAppSettings: () -> Unit,
     val canDrawOverlays: () -> Boolean,

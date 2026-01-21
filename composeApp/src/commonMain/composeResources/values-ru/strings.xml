@@ -41,6 +41,9 @@
 
     <string name="new_window">Новое окно</string>
 
+    <string name="ad_description">Посмотреть рекламу 3 раза для отключения баннеров на текущий день</string>
+    <string name="ad_button">Смотреть</string>
+
 
 <!--    Settings Screen-->
     <string name="settings_language_title">Язык приложения</string>
@@ -68,6 +71,11 @@
     <string name="settings_multiaccount_desc_off">Функция использования нескольких аккаунтов выключена</string>
     <string name="settings_multiaccount_btn_on">Вкл</string>
     <string name="settings_multiaccount_btn_off">Выкл</string>
+
+    <string name="settings_autohide_title">Сворачивать при запуске</string>
+    <string name="settings_autohide_btn_on">Вкл</string>
+    <string name="settings_autohide_btn_off">Выкл</string>
+
 
 <!--    Navigation-->
     <string name="navigation_label_online">Леста</string>

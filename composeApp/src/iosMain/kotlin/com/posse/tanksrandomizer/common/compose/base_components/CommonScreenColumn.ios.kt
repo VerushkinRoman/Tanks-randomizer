@@ -9,3 +9,9 @@ actual fun VerticalScrollbar(
     scrollState: ScrollState,
     modifier: Modifier
 ) = Unit
+
+@Composable
+actual fun BannerAD(
+    runningAsOverlay: Boolean,
+    modifier: Modifier
+) = Unit

@@ -28,6 +28,7 @@ val onlineScreenDataSourceModule = DI.Module("OnlineScreenDataSourceModule") {
     bindProvider<OfflineDataSource>(tag = DataSourceFor.OnlineScreen) {
         OfflineDataSourceImpl(
             settings = instance(),
+            observableSettings = instance(),
             dataSourceFor = DataSourceFor.OnlineScreen,
         )
     }

@@ -13,15 +13,10 @@ import com.posse.tanksrandomizer.android_mode.presentation.model.AndroidModeEven
 @Composable
 fun AndroidMode(
     viewModel: AndroidModeViewModel = viewModel(),
-    startedFromService: Boolean,
     startedAsService: Boolean,
     exitApp: () -> Unit,
     @SuppressLint("ModifierParameter") modifier: Modifier = Modifier
 ) {
-    LaunchedEffect(startedAsService) {
-        if (startedAsService) viewModel.obtainEvent(AndroidModeEvent.OnStartedAsService)
-    }
-
     LaunchedEffect(viewModel) {
         viewModel.viewActions().collect { action ->
             action?.let {
@@ -34,7 +29,7 @@ fun AndroidMode(
     }
 
     AndroidModeContent(
-        startedFromService = startedFromService,
+        startedAsService = startedAsService,
         onEvent = viewModel::obtainEvent,
         modifier = modifier
     )

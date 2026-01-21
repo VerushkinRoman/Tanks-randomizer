@@ -8,7 +8,6 @@ import org.kodein.di.instance
 val settingsScreenViewModelModule = DI.Module("SettingsScreenViewModelModule") {
     bindProvider<SettingsScreenViewModel> {
         SettingsScreenViewModel(
-            repository = instance(),
             settingsInteractor = instance(),
         )
     }

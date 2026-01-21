@@ -16,7 +16,6 @@ import com.posse.tanksrandomizer.feature_settings_screen.presentation.interactor
 
 @Composable
 internal fun AndroidApp(
-    startedFromService: Boolean,
     startedAsService: Boolean,
     exitApp: () -> Unit = {},
     @SuppressLint("ModifierParameter") modifier: Modifier = Modifier.fillMaxSize()
@@ -37,7 +36,6 @@ internal fun AndroidApp(
         modifier = modifier.graphicsLayer { alpha = appAlpha },
     ) {
         AndroidMode(
-            startedFromService = startedFromService,
             startedAsService = startedAsService,
             exitApp = exitApp,
             modifier = Modifier.fillMaxSize()

@@ -66,6 +66,7 @@ val commonDataSourceModule = DI.Module("CommonDataSourceModule") {
     bind<OfflineDataSource>(tag = DataSourceFor.Common) with singleton {
         OfflineDataSourceImpl(
             settings = instance(),
+            observableSettings = instance(),
             dataSourceFor = DataSourceFor.Common
         )
     }

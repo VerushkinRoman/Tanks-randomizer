@@ -19,7 +19,6 @@ import com.posse.tanksrandomizer.common.compose.theme.themedSegmentedButtonColor
 import com.posse.tanksrandomizer.common.core.platform.PlatformConfiguration
 import com.posse.tanksrandomizer.feature_settings_screen.compose.components.common.CommonSettingsActionBlock
 import com.posse.tanksrandomizer.feature_settings_screen.compose.components.common.CommonSettingsActionTitle
-import com.posse.tanksrandomizer.feature_settings_screen.presentation.model.SettingsEvent
 import org.jetbrains.compose.resources.stringResource
 import org.kodein.di.compose.rememberInstance
 import tanks_randomizer.composeapp.generated.resources.Res
@@ -31,7 +30,7 @@ import tanks_randomizer.composeapp.generated.resources.settings_mode_window
 @Composable
 fun FullScreenSwitch(
     fullScreenModeEnabled: Boolean,
-    onEvent: (SettingsEvent) -> Unit,
+    onModeChanged: (Boolean) -> Unit,
     modifier: Modifier = Modifier,
 ) {
     val configuration: PlatformConfiguration by rememberInstance()
@@ -53,8 +52,8 @@ fun FullScreenSwitch(
             ScreenSwitchControlButtons(
                 fullScreenModeEnabled = fullScreenModeEnabled,
                 enabled = canDrawOverlay,
-                onFullScreenClick = { onEvent(SettingsEvent.FullScreenModeChanged(fullScreen = true)) },
-                onWindowClick = { onEvent(SettingsEvent.FullScreenModeChanged(fullScreen = false)) },
+                onFullScreenClick = { onModeChanged(true) },
+                onWindowClick = { onModeChanged(false) },
             )
         },
         modifier = modifier.alpha(if (canDrawOverlay) 1f else 0.3f)

@@ -32,4 +32,7 @@ interface ScreenSettingsDataSource {
 
     fun getMultiaccountEnabled(): Flow<Boolean>
     fun setMultiaccountEnabled(enabled: Boolean)
+
+    fun getAutoHideEnabled(): Boolean
+    fun setAutohideEnabled(enabled: Boolean)
 }

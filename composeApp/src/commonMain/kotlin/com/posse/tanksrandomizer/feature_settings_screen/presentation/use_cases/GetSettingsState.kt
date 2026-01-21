@@ -16,7 +16,8 @@ class GetSettingsState(
             fullScreenMode = repository.getFullScreenMode(),
             buttonOpacity = repository.getFloatingButtonOpacity(),
             buttonSize = repository.getFloatingButtonSize(),
-            multiaccountEnabled = runBlocking { repository.getMultiaccountEnabled().first() }
+            multiaccountEnabled = runBlocking { repository.getMultiaccountEnabled().first() },
+            autoHide = repository.getAutoHideEnabled()
         )
     }
 }

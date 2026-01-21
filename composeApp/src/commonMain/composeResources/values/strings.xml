@@ -42,6 +42,9 @@
 
     <string name="new_window">New window</string>
 
+    <string name="ad_description">Watch ads 3 times to disable banners for the current day</string>
+    <string name="ad_button">Watch</string>
+
 
 <!--    Settings Screen-->
     <string name="settings_language_title">App language</string>
@@ -69,6 +72,10 @@
     <string name="settings_multiaccount_desc_off">The multiple accounts feature is disabled</string>
     <string name="settings_multiaccount_btn_on">On</string>
     <string name="settings_multiaccount_btn_off">Off</string>
+
+    <string name="settings_autohide_title">Collapse on start</string>
+    <string name="settings_autohide_btn_on">On</string>
+    <string name="settings_autohide_btn_off">Off</string>
 
 
 <!--    Navigation-->

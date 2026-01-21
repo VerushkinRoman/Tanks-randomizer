@@ -10,7 +10,7 @@ import org.kodein.di.singleton
 val settingsInteractorModule = DI.Module("SettingsInteractorModule") {
     bind<SettingsInteractor>() with singleton {
         SettingsInteractorImpl(
-            repository = instance(),
+            settingsRepository = instance(),
             dispatchers = instance(),
         )
     }

@@ -3,7 +3,6 @@ package com.posse.tanksrandomizer.feature_settings_screen.presentation
 import com.posse.tanksrandomizer.common.presentation.utils.BaseSharedViewModel
 import com.posse.tanksrandomizer.feature_settings_screen.domain.models.AppLocale
 import com.posse.tanksrandomizer.feature_settings_screen.domain.models.ScreenRotation
-import com.posse.tanksrandomizer.feature_settings_screen.domain.repository.SettingsRepository
 import com.posse.tanksrandomizer.feature_settings_screen.presentation.interactor.SettingsInteractor
 import com.posse.tanksrandomizer.feature_settings_screen.presentation.model.SettingsAction
 import com.posse.tanksrandomizer.feature_settings_screen.presentation.model.SettingsEvent
@@ -12,10 +11,9 @@ import com.posse.tanksrandomizer.feature_settings_screen.presentation.use_cases.
 import kotlinx.coroutines.launch
 
 class SettingsScreenViewModel(
-    private val repository: SettingsRepository,
     private val settingsInteractor: SettingsInteractor,
 ) : BaseSharedViewModel<SettingsState, SettingsAction, SettingsEvent>(
-    initialState = GetSettingsState(repository).invoke()
+    initialState = GetSettingsState(settingsInteractor.settingsRepository).invoke()
 ) {
     init {
         withViewModelScope {
@@ -28,7 +26,7 @@ class SettingsScreenViewModel(
             }
 
             launch {
-                repository.getMultiaccountEnabled().collect {
+                settingsInteractor.settingsRepository.getMultiaccountEnabled().collect {
                     viewState = viewState.copy(
                         multiaccountEnabled = it
                     )
@@ -47,6 +45,7 @@ class SettingsScreenViewModel(
             is SettingsEvent.FullScreenModeChanged -> changeFullScreen(viewEvent.fullScreen)
             is SettingsEvent.ChangeLocale -> changeLocale(viewEvent.locale)
             is SettingsEvent.MultiaccountEnabled -> changeMultiaccount(viewEvent.enabled)
+            is SettingsEvent.AutoHideChanged -> changeAutoHide(viewEvent.enabled)
         }
     }
 
@@ -55,7 +54,7 @@ class SettingsScreenViewModel(
             locale = locale
         )
 
-        repository.setLocale(locale)
+        settingsInteractor.settingsRepository.setLocale(locale)
 
         viewAction = SettingsAction.UpdateLocale(locale)
     }
@@ -93,6 +92,11 @@ class SettingsScreenViewModel(
     }
 
     private fun changeMultiaccount(enabled: Boolean) {
-        repository.setMultiaccountEnabled(enabled)
+        settingsInteractor.settingsRepository.setMultiaccountEnabled(enabled)
+    }
+
+    private fun changeAutoHide(enabled: Boolean) {
+        settingsInteractor.settingsRepository.setAutohideEnabled(enabled)
+        viewState = viewState.copy(autoHide = enabled)
     }
 }

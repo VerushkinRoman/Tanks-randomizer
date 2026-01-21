@@ -12,4 +12,5 @@ sealed interface SettingsEvent {
     class SetButtonSize(val size: Float) : SettingsEvent
     class ChangeLocale(val locale: AppLocale) : SettingsEvent
     class MultiaccountEnabled(val enabled: Boolean) : SettingsEvent
+    class AutoHideChanged(val enabled: Boolean) : SettingsEvent
 }

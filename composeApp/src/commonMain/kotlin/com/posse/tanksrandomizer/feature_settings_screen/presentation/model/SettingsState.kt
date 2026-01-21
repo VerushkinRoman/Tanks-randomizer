@@ -10,4 +10,5 @@ data class SettingsState(
     val buttonOpacity: Float,
     val buttonSize: Float,
     val multiaccountEnabled: Boolean,
+    val autoHide: Boolean,
 )

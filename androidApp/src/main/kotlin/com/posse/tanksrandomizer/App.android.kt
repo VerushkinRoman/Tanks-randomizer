@@ -22,7 +22,6 @@ import com.posse.tanksrandomizer.common.core.di.Inject
 import com.posse.tanksrandomizer.common.core.platform.PlatformConfiguration
 import com.posse.tanksrandomizer.common.core.platform.PlatformSDK
 import com.posse.tanksrandomizer.feature_service.OverlayService
-import com.posse.tanksrandomizer.feature_service.OverlayService.Companion.STARTED_AS_SERVICE
 import com.posse.tanksrandomizer.feature_settings_screen.domain.models.ScreenRotation.Auto
 import com.posse.tanksrandomizer.feature_settings_screen.domain.models.ScreenRotation.Landscape
 import com.posse.tanksrandomizer.feature_settings_screen.domain.models.ScreenRotation.Portrait
@@ -96,15 +95,12 @@ class AppActivity : ComponentActivity() {
             }
         }
 
-        fun startWindowMode(startedAsService: Boolean) {
+        fun startWindowMode() {
             instance?.let { activity ->
                 Intent(
                     /* packageContext = */ activity.applicationContext,
                     /* cls = */ OverlayService::class.java,
                 )
-                    .apply {
-                        putExtra(STARTED_AS_SERVICE, startedAsService)
-                    }
                     .also {
                         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
                             activity.applicationContext.startForegroundService(it)
@@ -126,17 +122,15 @@ private fun AppActivity.launchApp() {
 
     if (!canDrawOverlays) {
         settingsInteractor.setFullScreenMode(true)
+        settingsInteractor.settingsRepository.setAutohideEnabled(false)
     }
 
     if (windowMode && canDrawOverlays) {
-        startWindowMode(
-            startedAsService = true,
-        )
+        startWindowMode()
     } else {
         rotateDevice()
         setContent {
             AndroidApp(
-                startedFromService = false,
                 startedAsService = false,
             )
         }

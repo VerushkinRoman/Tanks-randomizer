@@ -22,3 +22,9 @@ actual fun VerticalScrollbar(
         modifier = modifier,
     )
 }
+
+@Composable
+actual fun BannerAD(
+    runningAsOverlay: Boolean,
+    modifier: Modifier
+) = Unit
