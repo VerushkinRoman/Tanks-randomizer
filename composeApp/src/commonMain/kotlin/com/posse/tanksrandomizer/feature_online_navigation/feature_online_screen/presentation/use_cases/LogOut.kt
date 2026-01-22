@@ -26,10 +26,8 @@ class LogOut(
                 ?: return@withContext Result.Error(DomainErrorType.TokenError)
             val accountId = screenData.accountId
                 ?: return@withContext Result.Error(DomainErrorType.TokenError)
-            val token = accountRepository.getToken(accountId)
-                ?: return@withContext Result.Error(DomainErrorType.TokenError)
 
-            accountRepository.logOut(token)
+            accountRepository.logOut(accountId)
                 .onSuccess {
                     clear(screenId, screenData)
                 }
@@ -46,7 +44,7 @@ class LogOut(
         screenData.accountId?.let { accountId ->
             if (onlineScreensInteractor.screens.value.none { it.accountId == accountId }) {
                 onlineScreenRepository.clearAccountData(accountId)
-                accountRepository.setToken(accountId, null)
+                accountRepository.clearToken(accountId)
             }
         }
     }

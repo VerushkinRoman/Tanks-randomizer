@@ -41,8 +41,18 @@
 
     <string name="new_window">Новое окно</string>
 
+
+<!--    Background Task-->
+    <string name="background_task_title">Token update</string>
+    <string name="background_task_body">Updating tokens…</string>
+    <string name="background_task_error">Error scheduling notification</string>
+
+
+<!--    Ads-->
     <string name="ad_description">Посмотреть рекламу 3 раза для отключения баннеров на текущий день</string>
     <string name="ad_button">Смотреть</string>
+    <string name="ad_disabled">Реклама отключена</string>
+    <string name="ad_enabled">Реклама включена</string>
 
 
 <!--    Settings Screen-->

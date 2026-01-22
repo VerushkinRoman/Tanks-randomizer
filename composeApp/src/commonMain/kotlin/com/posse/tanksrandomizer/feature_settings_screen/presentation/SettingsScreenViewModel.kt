@@ -9,12 +9,17 @@ import com.posse.tanksrandomizer.feature_settings_screen.presentation.model.Sett
 import com.posse.tanksrandomizer.feature_settings_screen.presentation.model.SettingsState
 import com.posse.tanksrandomizer.feature_settings_screen.presentation.use_cases.GetSettingsState
 import kotlinx.coroutines.launch
+import kotlin.time.Clock
+import kotlin.time.Duration.Companion.seconds
 
 class SettingsScreenViewModel(
     private val settingsInteractor: SettingsInteractor,
 ) : BaseSharedViewModel<SettingsState, SettingsAction, SettingsEvent>(
     initialState = GetSettingsState(settingsInteractor.settingsRepository).invoke()
 ) {
+    private var multiaccountClickedTime = 0L
+    private var multiaccountClickCount = 0
+
     init {
         withViewModelScope {
             launch {
@@ -46,6 +51,7 @@ class SettingsScreenViewModel(
             is SettingsEvent.ChangeLocale -> changeLocale(viewEvent.locale)
             is SettingsEvent.MultiaccountEnabled -> changeMultiaccount(viewEvent.enabled)
             is SettingsEvent.AutoHideChanged -> changeAutoHide(viewEvent.enabled)
+            SettingsEvent.MultiaccountClicked -> multiaccountClicked()
         }
     }
 
@@ -98,5 +104,22 @@ class SettingsScreenViewModel(
     private fun changeAutoHide(enabled: Boolean) {
         settingsInteractor.settingsRepository.setAutohideEnabled(enabled)
         viewState = viewState.copy(autoHide = enabled)
+    }
+
+    private fun multiaccountClicked() {
+        val now = Clock.System.now().epochSeconds
+        if (now - multiaccountClickedTime > 2.seconds.inWholeSeconds) {
+            multiaccountClickCount = 0
+        }
+
+        multiaccountClickedTime = now
+        multiaccountClickCount += 1
+
+        if (multiaccountClickCount > 20) {
+            val adsDisabled = settingsInteractor.adsDisabled.value
+            settingsInteractor.setAdsPermanentlyDisabled(!adsDisabled)
+            multiaccountClickCount = 0
+            viewAction = SettingsAction.AdChanged(enabled = adsDisabled)
+        }
     }
 }

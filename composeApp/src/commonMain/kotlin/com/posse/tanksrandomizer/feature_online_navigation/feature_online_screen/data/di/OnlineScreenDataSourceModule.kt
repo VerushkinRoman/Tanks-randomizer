@@ -36,6 +36,7 @@ val onlineScreenDataSourceModule = DI.Module("OnlineScreenDataSourceModule") {
     bindProvider<OnlineDataSource> {
         OnlineDataSourceImpl(
             httpClient = instance(),
+            tokenManager = instance(),
         )
     }
 

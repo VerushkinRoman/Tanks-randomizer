@@ -35,7 +35,7 @@ val onlineScreenRepositoryModule = DI.Module("OnlineScreenRepositoryModule") {
     bindProvider<AccountRepository> {
         AccountRepositoryImpl(
             onlineDataSource = instance(),
-            offlineDataSource = instance(tag = DataSourceFor.Common),
+            tokenManager = instance(),
         )
     }
 

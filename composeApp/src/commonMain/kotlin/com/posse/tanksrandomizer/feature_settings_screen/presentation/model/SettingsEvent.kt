@@ -13,4 +13,5 @@ sealed interface SettingsEvent {
     class ChangeLocale(val locale: AppLocale) : SettingsEvent
     class MultiaccountEnabled(val enabled: Boolean) : SettingsEvent
     class AutoHideChanged(val enabled: Boolean) : SettingsEvent
+    data object MultiaccountClicked : SettingsEvent
 }

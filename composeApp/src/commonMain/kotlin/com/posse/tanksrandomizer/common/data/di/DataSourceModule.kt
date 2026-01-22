@@ -2,6 +2,9 @@ package com.posse.tanksrandomizer.common.data.di
 
 import com.posse.tanksrandomizer.common.data.datasource.OfflineDataSource
 import com.posse.tanksrandomizer.common.data.datasource.OfflineDataSourceImpl
+import com.posse.tanksrandomizer.common.data.datasource.TokenManager
+import com.posse.tanksrandomizer.common.data.datasource.TokenManagerImpl
+import com.posse.tanksrandomizer.common.data.networking.NetworkChecker
 import com.posse.tanksrandomizer.common.domain.models.DataSourceFor
 import com.russhwolf.settings.ExperimentalSettingsApi
 import com.russhwolf.settings.ObservableSettings
@@ -68,6 +71,16 @@ val commonDataSourceModule = DI.Module("CommonDataSourceModule") {
             settings = instance(),
             observableSettings = instance(),
             dataSourceFor = DataSourceFor.Common
+        )
+    }
+
+    bind<TokenManager>() with singleton {
+        TokenManagerImpl(
+            settings = instance(),
+            httpClient = instance(),
+            pagedScreenDataSource = instance(DataSourceFor.OnlineScreen),
+            networkChecker = NetworkChecker(configuration = instance()),
+            dispatchers = instance()
         )
     }
 }

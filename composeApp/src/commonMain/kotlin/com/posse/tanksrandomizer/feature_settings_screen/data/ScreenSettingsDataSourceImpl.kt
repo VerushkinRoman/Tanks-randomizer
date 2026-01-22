@@ -47,6 +47,9 @@ class ScreenSettingsDataSourceImpl(
     override fun getAutoHideEnabled(): Boolean = settings.getBoolean(AUTOHIDE_KEY, false)
     override fun setAutohideEnabled(enabled: Boolean) = settings.putBoolean(AUTOHIDE_KEY, enabled)
 
+    override fun getAdsPermanentlyDisabled(): Boolean = settings.getBoolean(ADS_DISABLED_KEY, false)
+    override fun setAdsPermanentlyDisabled(disabled: Boolean) = settings.putBoolean(ADS_DISABLED_KEY, disabled)
+
     companion object {
         private const val BUTTON_LANDSCAPE_OFFSET_KEY = "ButtonLandscapeOffset"
         private const val BUTTON_PORTRAIT_OFFSET_KEY = "ButtonPortraitOffset"
@@ -58,5 +61,6 @@ class ScreenSettingsDataSourceImpl(
         private const val DESKTOP_WINDOW_SIZE_KEY = "DesktopWindowSize"
         private const val MULTIACCOUNT_KEY = "Multiaccount"
         private const val AUTOHIDE_KEY = "AutoHide"
+        private const val ADS_DISABLED_KEY = "AdsDisabled"
     }
 }

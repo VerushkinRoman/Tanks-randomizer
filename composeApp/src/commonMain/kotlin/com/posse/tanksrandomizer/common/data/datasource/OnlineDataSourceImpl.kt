@@ -3,16 +3,13 @@ package com.posse.tanksrandomizer.common.data.datasource
 import com.posse.tanksrandomizer.common.data.di.ServerConstants.APPLICATION_ID
 import com.posse.tanksrandomizer.common.data.models.EncyclopediaTankData
 import com.posse.tanksrandomizer.common.data.models.NetworkAccountTankResponse
-import com.posse.tanksrandomizer.common.data.models.NetworkAuthData
 import com.posse.tanksrandomizer.common.data.models.NetworkEncyclopediaTankData
 import com.posse.tanksrandomizer.common.data.models.toAccountTank
 import com.posse.tanksrandomizer.common.data.models.toEncyclopediaTank
-import com.posse.tanksrandomizer.common.data.models.toToken
 import com.posse.tanksrandomizer.common.data.networking.EmptyData
 import com.posse.tanksrandomizer.common.data.networking.EndpointConstants
 import com.posse.tanksrandomizer.common.data.networking.EndpointConstants.REDIRECT_URL
 import com.posse.tanksrandomizer.common.data.networking.safeCall
-import com.posse.tanksrandomizer.common.domain.models.Token
 import com.posse.tanksrandomizer.common.domain.utils.EmptyResult
 import com.posse.tanksrandomizer.common.domain.utils.Error
 import com.posse.tanksrandomizer.common.domain.utils.NetworkError
@@ -33,6 +30,7 @@ import kotlinx.coroutines.coroutineScope
 
 class OnlineDataSourceImpl(
     private val httpClient: HttpClient,
+    private val tokenManager: TokenManager,
 ) : OnlineDataSource {
     override suspend fun logIn(): Result<String, Error> {
         val loginURL = LOGIN +
@@ -44,46 +42,45 @@ class OnlineDataSourceImpl(
         }
     }
 
-    override suspend fun logOut(currentToken: Token): EmptyResult<Error> {
+    override suspend fun logOut(accountId: Int): EmptyResult<Error> {
+        val accessToken = getAccessToken(accountId).let {
+            when (it) {
+                is Result.Success -> it.data
+                is Result.Error -> return it
+            }
+        }
+
         return safeCall<EmptyData> {
             httpClient.post(urlString = LOGOUT) {
                 setBody(
                     FormDataContent(Parameters.build {
                         append("application_id", APPLICATION_ID)
-                        append("access_token", currentToken.accessToken)
+                        append("access_token", accessToken)
                     })
                 )
             }
         }.asEmptyDataResult()
     }
 
-    override suspend fun getNewToken(currentToken: Token): Result<Token, Error> {
-        return safeCall<NetworkAuthData> {
-            httpClient.post(urlString = PROLONGATE) {
-                setBody(
-                    FormDataContent(Parameters.build {
-                        append("application_id", APPLICATION_ID)
-                        append("access_token", currentToken.accessToken)
-                    })
-                )
+    override suspend fun getMasteryTanks(accountId: Int): Result<List<MasteryTank>, Error> {
+        val accessToken = getAccessToken(accountId).let {
+            when (it) {
+                is Result.Success -> it.data
+                is Result.Error -> return it
             }
-        }.map { response ->
-            response.toToken()
         }
-    }
 
-    override suspend fun getMasteryTanks(currentToken: Token): Result<List<MasteryTank>, Error> {
         val accountTanksUrl = STATS +
                 "?application_id=${APPLICATION_ID}" +
-                "&account_id=${currentToken.accountId}" +
-                "&access_token=${currentToken.accessToken}" +
+                "&account_id=$accountId" +
+                "&access_token=$accessToken" +
                 "&${STATS_PARAMS}"
 
         return safeCall<NetworkAccountTankResponse> {
             httpClient.get(urlString = accountTanksUrl)
         }.map { response ->
             response.values.flatten()
-                .map { networkAccountTank -> networkAccountTank.toAccountTank(currentToken.accountId) }
+                .map { networkAccountTank -> networkAccountTank.toAccountTank(accountId) }
         }
     }
 
@@ -162,12 +159,20 @@ class OnlineDataSourceImpl(
         return Result.Success(encyclopediaTanks)
     }
 
+    private suspend fun getAccessToken(accountId: Int): Result<String, Error> {
+        return tokenManager.getToken(accountId).let {
+            when (it) {
+                is Result.Success -> Result.Success(it.data.accessToken)
+                is Result.Error -> it
+            }
+        }
+    }
+
     @Suppress("SpellCheckingInspection")
     private companion object {
         const val MAX_PARALLEL_REQUESTS = EndpointConstants.MAX_REQUESTS_PER_SECONDS - 2
         const val LOGIN = EndpointConstants.AUTH_PATH + "login/"
         const val LOGOUT = EndpointConstants.AUTH_PATH + "logout/"
-        const val PROLONGATE = EndpointConstants.AUTH_PATH + "prolongate/"
         const val STATS = EndpointConstants.BLITZ_PATH + "tanks/stats/"
         const val ENCYCLOPEDIA = EndpointConstants.BLITZ_PATH + "encyclopedia/vehicles/"
         const val ENCYCLOPEDIA_PARAMS = "fields=name%2Cis_premium%2Cnation%2Ctank_id%2Ctier%2Ctype%2Cimages.preview"

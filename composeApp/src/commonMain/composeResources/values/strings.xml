@@ -42,8 +42,18 @@
 
     <string name="new_window">New window</string>
 
+
+<!--    Background Task-->
+    <string name="background_task_title">Tokens update</string>
+    <string name="background_task_body">Tokens update in process...</string>
+    <string name="background_task_error">Error when planning notification</string>
+
+
+<!--    Ads-->
     <string name="ad_description">Watch ads 3 times to disable banners for the current day</string>
     <string name="ad_button">Watch</string>
+    <string name="ad_disabled">Ads disabled</string>
+    <string name="ad_enabled">Ads enabled</string>
 
 
 <!--    Settings Screen-->

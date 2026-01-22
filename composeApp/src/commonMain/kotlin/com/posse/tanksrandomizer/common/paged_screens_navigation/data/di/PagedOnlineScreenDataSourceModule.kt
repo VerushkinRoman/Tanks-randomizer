@@ -1,8 +1,8 @@
-package com.posse.tanksrandomizer.feature_online_navigation.common.data.di
+package com.posse.tanksrandomizer.common.paged_screens_navigation.data.di
 
 import com.posse.tanksrandomizer.common.paged_screens_navigation.data.datasource.PagedScreenDataSource
 import com.posse.tanksrandomizer.common.domain.models.DataSourceFor
-import com.posse.tanksrandomizer.feature_online_navigation.common.data.datasource.PagedOnlineScreenDataSourceImpl
+import com.posse.tanksrandomizer.common.paged_screens_navigation.data.datasource.PagedOnlineScreenDataSourceImpl
 import com.russhwolf.settings.ExperimentalSettingsApi
 import org.kodein.di.DI
 import org.kodein.di.bindProvider

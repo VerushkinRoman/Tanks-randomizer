@@ -9,6 +9,7 @@ import com.posse.tanksrandomizer.common.presentation.ads.models.RewardAdState
 import com.posse.tanksrandomizer.common.presentation.utils.BaseSharedViewModel
 import com.posse.tanksrandomizer.feature_settings_screen.presentation.interactor.SettingsInteractor
 import kotlinx.coroutines.cancel
+import kotlinx.coroutines.flow.combine
 import kotlinx.datetime.TimeZone
 import kotlinx.datetime.toLocalDateTime
 import kotlin.time.Clock
@@ -39,26 +40,33 @@ class RewardAdViewModel(
         if (appAsService) enableShowAdButton()
 
         withViewModelScope {
-            adRepository.getAdCount().collect { count ->
-                cancelLoadingAd()
+            adRepository.getAdCount()
+                .combine(settingsInteractor.adsDisabled) { count, disabled -> count to disabled }
+                .collect { (count, disabled) ->
+                    cancelLoadingAd()
 
-                val lastWatchDate = adRepository.getLastAdWatchTime()?.let { time ->
-                    Instant.fromEpochSeconds(time).toLocalDateTime(TimeZone.UTC).date
+                    if (disabled) {
+                        viewState = viewState.copy(adAvailable = false)
+                        return@collect
+                    }
+
+                    val lastWatchDate = adRepository.getLastAdWatchTime()?.let { time ->
+                        Instant.fromEpochSeconds(time).toLocalDateTime(TimeZone.UTC).date
+                    }
+
+                    val today = Clock.System.now().toLocalDateTime(TimeZone.UTC).date
+
+                    if (lastWatchDate == today) {
+                        viewState = viewState.copy(adAvailable = count < MAX_ADS_PER_DAY)
+                    } else {
+                        adRepository.setAdCount(0)
+                        viewState = viewState.copy(adAvailable = true)
+                    }
+
+                    viewState = viewState.copy(rewardCount = count)
+
+                    if (!appAsService) loadRewardedAd()
                 }
-
-                val today = Clock.System.now().toLocalDateTime(TimeZone.UTC).date
-
-                if (lastWatchDate == today) {
-                    viewState = viewState.copy(adAvailable = count < MAX_ADS_PER_DAY)
-                } else {
-                    adRepository.setAdCount(0)
-                    viewState = viewState.copy(adAvailable = true)
-                }
-
-                viewState = viewState.copy(rewardCount = count)
-
-                if (!appAsService) loadRewardedAd()
-            }
         }
     }
 

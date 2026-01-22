@@ -1,5 +1,6 @@
 package com.posse.tanksrandomizer.feature_settings_screen.compose.components
 
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.ColumnScope
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -42,7 +43,13 @@ fun SettingsScreenContent(
         MultiaccountBlock(
             multiaccountEnabled = viewState.multiaccountEnabled,
             onMultiaccountChange = { onEvent(SettingsEvent.MultiaccountEnabled(it)) },
-            modifier = Modifier.fillMaxWidth(),
+            modifier = Modifier
+                .fillMaxWidth()
+                .clickable(
+                    interactionSource = null,
+                    indication = null,
+                    onClick = { onEvent(SettingsEvent.MultiaccountClicked) },
+                ),
         )
 
         divider()

@@ -12,9 +12,9 @@ import androidx.navigation3.runtime.rememberNavBackStack
 import androidx.navigation3.runtime.rememberSaveableStateHolderNavEntryDecorator
 import androidx.navigation3.ui.NavDisplay
 import com.posse.tanksrandomizer.common.core.di.Inject
+import com.posse.tanksrandomizer.common.data.datasource.TokenManager
 import com.posse.tanksrandomizer.common.data.networking.EndpointConstants.REDIRECT_URL
 import com.posse.tanksrandomizer.common.domain.models.Token
-import com.posse.tanksrandomizer.common.domain.repository.AccountRepository
 import com.posse.tanksrandomizer.feature_online_navigation.common.presentation.interactor.OnlineScreensInteractor
 import com.posse.tanksrandomizer.feature_online_navigation.common.presentation.models.OnlineScreenNavigationData
 import com.posse.tanksrandomizer.feature_online_navigation.feature_main_screen.compose.MainScreen
@@ -30,8 +30,8 @@ import com.posse.tanksrandomizer.feature_online_navigation.navigation.presentati
 import com.posse.tanksrandomizer.feature_online_navigation.navigation.presentation.util.RedirectParser
 import org.kodein.di.compose.rememberInstance
 import kotlin.time.Clock
-import kotlin.time.Duration.Companion.days
 import kotlin.time.ExperimentalTime
+import kotlin.time.Instant
 
 @Composable
 fun OnlineNavigation(
@@ -204,8 +204,11 @@ private fun getStartOnlineDestination(
     accountId: Int?,
 ): NavKey {
     accountId ?: return MainScreenRoute
-    val token = Inject.instance<AccountRepository>().getToken(accountId) ?: return MainScreenRoute
-    val tokenExpired = token.expiresAt - 1.days.inWholeSeconds <= Clock.System.now().epochSeconds
+
+    val expiresAt = Inject.instance<TokenManager>().getCurrentTokenExpiration(accountId)
+        ?: return MainScreenRoute
+
+    val tokenExpired = Instant.fromEpochSeconds(expiresAt) <= Clock.System.now()
 
     return if (tokenExpired) {
         MainScreenRoute

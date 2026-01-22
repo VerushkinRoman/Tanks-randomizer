@@ -38,4 +38,7 @@ class SettingsRepositoryImpl(
 
     override fun getAutoHideEnabled(): Boolean = dataSource.getAutoHideEnabled()
     override fun setAutohideEnabled(enabled: Boolean) = dataSource.setAutohideEnabled(enabled)
+
+    override fun getAdsPermanentlyDisabled(): Boolean = dataSource.getAdsPermanentlyDisabled()
+    override fun setAdsPermanentlyDisabled(disabled: Boolean) = dataSource.setAdsPermanentlyDisabled(disabled)
 }

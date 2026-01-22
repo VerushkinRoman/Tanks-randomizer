@@ -21,7 +21,7 @@ class RemoveOnlineScreen(
 
         deletedScreen.accountId?.let { accountId ->
             if (remainingScreens.none { it.accountId == accountId }) {
-                accountRepository.setToken(accountId, null)
+                accountRepository.clearToken(accountId)
             }
         }
 

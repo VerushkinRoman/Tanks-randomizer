@@ -17,7 +17,6 @@ val onlineScreenViewModelModule = DI.Module("OnlineScreenViewModelModule") {
             onlineScreenRepository = instance(),
             accountRepository = instance(),
             onlineScreensInteractor = instance(),
-            interactor = instance(),
             dispatchers = instance(),
         )
     }

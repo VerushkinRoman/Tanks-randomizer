@@ -18,6 +18,7 @@ import androidx.lifecycle.lifecycleScope
 import com.posse.tanksrandomizer.AppActivity.Companion.rotateDevice
 import com.posse.tanksrandomizer.AppActivity.Companion.startWindowMode
 import com.posse.tanksrandomizer.android_mode.compose.AndroidApp
+import com.posse.tanksrandomizer.common.background_task_scheduler.BackgroundTokenUpdateManager
 import com.posse.tanksrandomizer.common.core.di.Inject
 import com.posse.tanksrandomizer.common.core.platform.PlatformConfiguration
 import com.posse.tanksrandomizer.common.core.platform.PlatformSDK
@@ -36,6 +37,7 @@ class App : Application() {
         initPlatformSDK()
         createNotificationChannel()
         instance = this
+        createBackgroundTask()
     }
 
     companion object {
@@ -171,6 +173,10 @@ private fun App.createNotificationChannel() {
         val notificationManager = getSystemService<NotificationManager>()
         notificationManager?.createNotificationChannel(notificationChannel)
     }
+}
+
+private fun createBackgroundTask() {
+    Inject.instance<BackgroundTokenUpdateManager>().initialize()
 }
 
 const val CHANNEL_ID = "Default"

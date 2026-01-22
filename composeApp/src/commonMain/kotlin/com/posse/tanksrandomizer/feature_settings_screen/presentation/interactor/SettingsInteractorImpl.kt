@@ -125,4 +125,12 @@ class SettingsInteractorImpl(
     override fun setDesktopWindowSize(size: Pair<Int, Int>) {
         _desktopWindowSize.value = size
     }
+
+    private val _adsDisabled: MutableStateFlow<Boolean> = MutableStateFlow(settingsRepository.getAdsPermanentlyDisabled())
+    override val adsDisabled: StateFlow<Boolean> = _adsDisabled.asStateFlow()
+
+    override fun setAdsPermanentlyDisabled(disabled: Boolean) {
+        settingsRepository.setAdsPermanentlyDisabled(disabled)
+        _adsDisabled.value = disabled
+    }
 }

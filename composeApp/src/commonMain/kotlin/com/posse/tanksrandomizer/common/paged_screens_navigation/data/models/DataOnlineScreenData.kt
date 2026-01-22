@@ -1,4 +1,4 @@
-package com.posse.tanksrandomizer.feature_online_navigation.common.data.models
+package com.posse.tanksrandomizer.common.paged_screens_navigation.data.models
 
 import com.posse.tanksrandomizer.common.paged_screens_navigation.presentation.models.ScreenMetadata
 import com.posse.tanksrandomizer.feature_online_navigation.common.domain.models.OnlineScreenData

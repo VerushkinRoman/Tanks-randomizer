@@ -68,6 +68,7 @@ private fun KotlinMultiplatformExtension.configureDependencies() {
             implementation(libs.androidx.material3)
             implementation(libs.firebase.crashlytics)
             implementation(libs.yandex.mobileads)
+            implementation(libs.androidx.work.runetime)
         }
 
         jvmMain.dependencies {

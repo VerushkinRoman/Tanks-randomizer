@@ -21,7 +21,7 @@ class SetSuccessLoginResult(
                     ),
                     additionalData = token.accountId
                 ).also {
-                    accountRepository.setToken(token.accountId, token)
+                    accountRepository.setNewToken(token)
                 }
             } else screenData
         }

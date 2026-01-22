@@ -1,10 +1,9 @@
-package com.posse.tanksrandomizer.feature_online_navigation.common.data.datasource
+package com.posse.tanksrandomizer.common.paged_screens_navigation.data.datasource
 
-import com.posse.tanksrandomizer.common.paged_screens_navigation.data.datasource.PagedScreenDataSource
 import com.posse.tanksrandomizer.common.paged_screens_navigation.presentation.models.PagedScreen
-import com.posse.tanksrandomizer.feature_online_navigation.common.data.models.DataOnlineScreenData
-import com.posse.tanksrandomizer.feature_online_navigation.common.data.models.toDataOnlineScreenData
-import com.posse.tanksrandomizer.feature_online_navigation.common.data.models.toOnlineScreenData
+import com.posse.tanksrandomizer.common.paged_screens_navigation.data.models.DataOnlineScreenData
+import com.posse.tanksrandomizer.common.paged_screens_navigation.data.models.toDataOnlineScreenData
+import com.posse.tanksrandomizer.common.paged_screens_navigation.data.models.toOnlineScreenData
 import com.posse.tanksrandomizer.feature_online_navigation.common.domain.models.OnlineScreenData
 import com.russhwolf.settings.ExperimentalSettingsApi
 import com.russhwolf.settings.Settings
@@ -37,6 +36,12 @@ class PagedOnlineScreenDataSourceImpl(
                 else it
             }
             ?.let { setOnlineScreensData(it) }
+    }
+
+    override fun getAccounts(): Set<Int>? {
+        return getOnlineScreensData()
+            ?.mapNotNull { it.accountId }
+            ?.toSet()
     }
 
     private fun getOnlineScreensData(): List<DataOnlineScreenData>? {

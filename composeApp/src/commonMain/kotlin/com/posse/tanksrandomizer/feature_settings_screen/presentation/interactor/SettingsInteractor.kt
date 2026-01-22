@@ -31,4 +31,7 @@ interface SettingsInteractor {
 
     fun getDesktopWindowSize(): Pair<Int, Int>?
     fun setDesktopWindowSize(size: Pair<Int, Int>)
+
+    val adsDisabled: StateFlow<Boolean>
+    fun setAdsPermanentlyDisabled(disabled: Boolean)
 }

@@ -3,8 +3,6 @@ package com.posse.tanksrandomizer.feature_online_navigation.common.presentation.
 import com.posse.tanksrandomizer.common.domain.models.RepositoryFor
 import com.posse.tanksrandomizer.feature_online_navigation.common.presentation.interactor.OnlineScreensInteractor
 import com.posse.tanksrandomizer.feature_online_navigation.common.presentation.interactor.OnlineScreensInteractorImpl
-import com.posse.tanksrandomizer.feature_online_navigation.common.presentation.interactor.TokenInteractor
-import com.posse.tanksrandomizer.feature_online_navigation.common.presentation.interactor.TokenInteractorImpl
 import org.kodein.di.DI
 import org.kodein.di.bind
 import org.kodein.di.instance
@@ -14,14 +12,6 @@ val onlineNavigationInteractorModule = DI.Module("OnlineNavigationInteractorModu
     bind<OnlineScreensInteractor>() with singleton {
         OnlineScreensInteractorImpl(
             pagedScreenRepository = instance(RepositoryFor.OnlineScreen),
-        )
-    }
-
-    bind<TokenInteractor>() with singleton {
-        TokenInteractorImpl(
-            onlineScreensInteractor = instance(),
-            accountRepository = instance(),
-            dispatchers = instance(),
         )
     }
 }

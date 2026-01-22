@@ -1,5 +1,6 @@
 package com.posse.tanksrandomizer.common.core.platform
 
+import com.posse.tanksrandomizer.common.background_task_scheduler.di.backgroundModule
 import com.posse.tanksrandomizer.common.core.di.Inject
 import com.posse.tanksrandomizer.common.data.di.commonDataSourceModule
 import com.posse.tanksrandomizer.common.domain.di.adModule
@@ -10,7 +11,7 @@ import com.posse.tanksrandomizer.feature_offline_navigation.feature_offline_scre
 import com.posse.tanksrandomizer.feature_offline_navigation.common.domain.di.offlineScreenRepositoryModule
 import com.posse.tanksrandomizer.feature_offline_navigation.feature_offline_screen.presentation.di.offlineScreenViewModelModule
 import com.posse.tanksrandomizer.feature_offline_navigation.navigation.presentation.di.pagedOfflineScreensViewModelModule
-import com.posse.tanksrandomizer.feature_online_navigation.common.data.di.pagedOnlineScreenDataSourceModule
+import com.posse.tanksrandomizer.common.paged_screens_navigation.data.di.pagedOnlineScreenDataSourceModule
 import com.posse.tanksrandomizer.feature_online_navigation.common.domain.di.onlineScreenRepositoryModule
 import com.posse.tanksrandomizer.feature_online_navigation.common.presentation.di.onlineNavigationInteractorModule
 import com.posse.tanksrandomizer.feature_online_navigation.feature_main_screen.presentation.di.mainScreenViewModelModule
@@ -39,6 +40,7 @@ object PlatformSDK {
                     umbrellaModule,
                     commonDataSourceModule,
                     dispatchersModule,
+                    backgroundModule,
                     adModule,
                     platformModule,
                     offlineScreenRepositoryModule,

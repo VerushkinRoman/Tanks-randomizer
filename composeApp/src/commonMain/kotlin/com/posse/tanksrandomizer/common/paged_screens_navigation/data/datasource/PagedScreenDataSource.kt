@@ -7,4 +7,6 @@ interface PagedScreenDataSource {
     fun setScreens(screens: List<PagedScreen<*>>)
 
     fun setScreen(screen: PagedScreen<*>)
+
+    fun getAccounts(): Set<Int>?
 }

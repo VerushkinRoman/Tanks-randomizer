@@ -32,6 +32,7 @@ sqlite = "2.6.2"
 ksp = "2.3.4"
 yandex-mobileads = "7.18.1"
 lifecycleRuntimeCompose = "2.10.0"
+androidx-work = "2.11.0"
 
 [libraries]
 
@@ -42,6 +43,8 @@ android-material-theme = { module = "com.google.android.material:material", vers
 androidx-material3 = { group = "androidx.compose.material3", name = "material3", version.ref = "androidx-material3" }
 kotlinx-coroutines-android = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-android", version.ref = "kotlinx-coroutines" }
 androidx-lifecycle-service = { module = "androidx.lifecycle:lifecycle-service", version.ref = "androidx-lifecycle-service" }
+androidx-work-runetime = { module = "androidx.work:work-runtime-ktx", version.ref = "androidx-work" }
+
 
 # Desktop
 kotlinx-coroutines-swing = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-swing", version.ref = "kotlinx-coroutines" }

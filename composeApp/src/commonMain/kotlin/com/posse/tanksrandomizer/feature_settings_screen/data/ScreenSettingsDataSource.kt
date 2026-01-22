@@ -35,4 +35,7 @@ interface ScreenSettingsDataSource {
 
     fun getAutoHideEnabled(): Boolean
     fun setAutohideEnabled(enabled: Boolean)
+
+    fun getAdsPermanentlyDisabled(): Boolean
+    fun setAdsPermanentlyDisabled(disabled: Boolean)
 }

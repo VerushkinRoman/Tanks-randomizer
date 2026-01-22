@@ -12,6 +12,7 @@ import androidx.compose.ui.window.WindowPosition
 import androidx.compose.ui.window.application
 import androidx.compose.ui.window.rememberWindowState
 import com.multiplatform.webview.util.addTempDirectoryRemovalHook
+import com.posse.tanksrandomizer.common.background_task_scheduler.BackgroundTokenUpdateManager
 import com.posse.tanksrandomizer.common.compose.CommonPlatformApp
 import com.posse.tanksrandomizer.common.core.di.Inject
 import com.posse.tanksrandomizer.common.core.platform.PlatformConfiguration
@@ -28,6 +29,7 @@ import java.awt.event.ComponentListener
 
 fun main() = application {
     PlatformSDK.init(PlatformConfiguration())
+    Inject.instance<BackgroundTokenUpdateManager>().initialize()
     addTempDirectoryRemovalHook()
     val settingsInteractor: SettingsInteractor = Inject.instance()
     val size = settingsInteractor.getDesktopWindowSize()

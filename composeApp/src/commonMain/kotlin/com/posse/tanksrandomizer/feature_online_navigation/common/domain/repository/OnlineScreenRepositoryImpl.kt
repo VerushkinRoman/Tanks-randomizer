@@ -2,9 +2,7 @@ package com.posse.tanksrandomizer.feature_online_navigation.common.domain.reposi
 
 import com.posse.tanksrandomizer.common.data.datasource.OfflineDataSource
 import com.posse.tanksrandomizer.common.data.datasource.OnlineDataSource
-import com.posse.tanksrandomizer.common.domain.models.Token
 import com.posse.tanksrandomizer.common.domain.utils.Dispatchers
-import com.posse.tanksrandomizer.common.domain.utils.DomainErrorType
 import com.posse.tanksrandomizer.common.domain.utils.EmptyResult
 import com.posse.tanksrandomizer.common.domain.utils.Error
 import com.posse.tanksrandomizer.common.domain.utils.Result
@@ -48,13 +46,14 @@ class OnlineScreenRepositoryImpl(
                     val groupedByAccount = masteryTanks.groupBy { it.accountId }
                     val resultList: List<AccountTanks> =
                         groupedByAccount.map { (accountId, tanks) ->
-                            val accountTanksList = encyclopediaTanks.mapNotNull { encyclopediaTank ->
-                                tanks
-                                    .find { tank -> tank.tankId == encyclopediaTank.id }
-                                    ?.let { masteryTank ->
-                                        encyclopediaTank.toTank(mastery = masteryTank.mastery)
-                                    }
-                            }
+                            val accountTanksList = encyclopediaTanks
+                                .mapNotNull { encyclopediaTank ->
+                                    tanks
+                                        .find { tank -> tank.tankId == encyclopediaTank.id }
+                                        ?.let { masteryTank ->
+                                            encyclopediaTank.toTank(mastery = masteryTank.mastery)
+                                        }
+                                }
 
                             AccountTanks(
                                 accountId = accountId,
@@ -90,9 +89,6 @@ class OnlineScreenRepositoryImpl(
     }
 
     override suspend fun refreshTanks(accountId: Int): EmptyResult<Error> {
-        val token = offlineDataSource.getToken(accountId)
-            ?: return Result.Error(DomainErrorType.TokenError)
-
         val lastEncyclopediaTanksUpdated =
             onlineScreenDataSource.getLastEncyclopediaAllTanksUpdated()
         val encyclopediaTanks = if (lastEncyclopediaTanksUpdated != null
@@ -109,7 +105,7 @@ class OnlineScreenRepositoryImpl(
             }
         }
 
-        return updateTanks(encyclopediaTanks, token)
+        return updateTanks(encyclopediaTanks, accountId)
     }
 
     override fun getSelectedTank(screenId: String) =
@@ -144,10 +140,10 @@ class OnlineScreenRepositoryImpl(
 
     private suspend fun updateTanks(
         encyclopediaTanks: List<EncyclopediaTank>,
-        token: Token,
+        accountId: Int,
     ): EmptyResult<Error> = withContext(currentCoroutineContext()) {
         val masteryTanks = onlineDataSource
-            .getMasteryTanks(token)
+            .getMasteryTanks(accountId)
             .let { result ->
                 when (result) {
                     is Result.Error -> return@withContext result
@@ -181,7 +177,7 @@ class OnlineScreenRepositoryImpl(
 
         launch {
             onlineScreenDataSource.setLastAccountUpdated(
-                accountId = token.accountId,
+                accountId = accountId,
                 dateTime = Clock.System.now().epochSeconds
             )
         }

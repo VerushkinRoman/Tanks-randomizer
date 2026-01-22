@@ -2,17 +2,12 @@ package com.posse.tanksrandomizer.common.data.datasource
 
 import com.posse.tanksrandomizer.common.domain.models.CommonFilterObjects.ItemStatus
 import com.posse.tanksrandomizer.common.domain.models.DataSourceFor
-import com.posse.tanksrandomizer.common.domain.models.Token
 import com.russhwolf.settings.ExperimentalSettingsApi
 import com.russhwolf.settings.ObservableSettings
 import com.russhwolf.settings.Settings
 import com.russhwolf.settings.coroutines.getIntFlow
-import com.russhwolf.settings.serialization.decodeValueOrNull
-import com.russhwolf.settings.serialization.encodeValue
 import kotlinx.coroutines.flow.Flow
-import kotlinx.serialization.ExperimentalSerializationApi
 
-@OptIn(ExperimentalSerializationApi::class, ExperimentalSettingsApi::class)
 class OfflineDataSourceImpl(
     private val settings: Settings,
     private val observableSettings: ObservableSettings,
@@ -29,12 +24,10 @@ class OfflineDataSourceImpl(
     override fun getScreenRoute(): String? = settings.getStringOrNull(LAST_SCREEN_KEY)
     override fun setCurrentScreenRoute(screenRoute: String) = settings.putString(LAST_SCREEN_KEY, value = screenRoute)
 
-    override fun getToken(accountId: Int): Token? = settings.decodeValueOrNull("${TOKEN_KEY}_$accountId")
-    override fun setToken(accountId: Int, token: Token?) = settings.encodeValue("${TOKEN_KEY}_$accountId", value = token)
-
     override fun getLastAdWatchTime(): Long? = settings.getLongOrNull(LAST_AD_WATCH_KEY)
     override fun setLastAdWatchTime(time: Long) = settings.putLong(LAST_AD_WATCH_KEY, value = time)
 
+    @OptIn(ExperimentalSettingsApi::class)
     override fun getAdCount(): Flow<Int> = observableSettings.getIntFlow(AD_COUNT_KEY, 0)
     override fun setAdCount(count: Int) = observableSettings.putInt(AD_COUNT_KEY, value = count)
 
@@ -66,7 +59,6 @@ class OfflineDataSourceImpl(
 
     companion object {
         private const val LAST_SCREEN_KEY = "last_screen"
-        private const val TOKEN_KEY = "token"
         private const val RANDOM_KEY = "random"
         private const val SELECTED_KEY = "selected"
         private const val LAST_AD_WATCH_KEY = "last_ad_watch"

@@ -944,7 +944,7 @@ object MissedEncyclopediaTanks {
             isPremium = false,
             name = "ЛВ-7 Гиперион",
             nationName = Nation.NATION_OTHER,
-            tier = 7,
+            tier = 6,
             typeName = Type.HEAVY_TANK,
             image = null
         ),
@@ -1162,6 +1162,24 @@ object MissedEncyclopediaTanks {
             nationName = Nation.NATION_FRANCE,
             tier = 8,
             typeName = Type.HEAVY_TANK,
+            image = null
+        ),
+        EncyclopediaTank(
+            id = 19073,
+            isPremium = true,
+            name = "SC-57 Sokol",
+            nationName = Nation.NATION_EUROPEAN,
+            tier = 8,
+            typeName = Type.MEDIUM_TANK,
+            image = null
+        ),
+        EncyclopediaTank(
+            id = 23377,
+            isPremium = true,
+            name = "FV1066 Senlac",
+            nationName = Nation.NATION_UK,
+            tier = 8,
+            typeName = Type.LIGHT_TANK,
             image = null
         ),
     )

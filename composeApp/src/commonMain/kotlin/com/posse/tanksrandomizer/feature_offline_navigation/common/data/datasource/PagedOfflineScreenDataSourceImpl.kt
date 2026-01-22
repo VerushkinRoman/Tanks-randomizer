@@ -39,6 +39,8 @@ class PagedOfflineScreenDataSourceImpl(
             ?.let { setOfflineScreensData(it) }
     }
 
+    override fun getAccounts(): Set<Int>? = null
+
     private fun getOfflineScreensData(): List<DataOfflineScreenData>? {
         return settings.decodeValueOrNull<List<DataOfflineScreenData>>(OFFLINE_SCREENS_KEY)
     }
