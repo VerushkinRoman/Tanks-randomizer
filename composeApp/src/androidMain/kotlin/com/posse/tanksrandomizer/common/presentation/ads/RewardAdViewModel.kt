@@ -117,6 +117,6 @@ class RewardAdViewModel(
     }
 
     companion object {
-        const val MAX_ADS_PER_DAY = 3
+        const val MAX_ADS_PER_DAY = 5
     }
 }

@@ -50,7 +50,7 @@
 
 
 <!--    Ads-->
-    <string name="ad_description">Watch ads 3 times to disable banners for the current day</string>
+    <string name="ad_description">Watch ads 5 times to disable banners for the current day</string>
     <string name="ad_button">Watch</string>
     <string name="ad_disabled">Ads disabled</string>
     <string name="ad_enabled">Ads enabled</string>
