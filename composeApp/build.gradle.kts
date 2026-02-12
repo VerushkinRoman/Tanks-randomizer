@@ -79,9 +79,9 @@ private fun KotlinMultiplatformExtension.configureDependencies() {
 }
 
 private fun KotlinMultiplatformAndroidLibraryTarget.configureAndroidAppVersion() {
-    namespace = "com.posse.tanksrandomizer.composeApp"
-    compileSdk = 36
-    minSdk = 23
+    namespace = "${libs.versions.namespace.get()}.composeApp"
+    compileSdk = libs.versions.android.compileSdk.get().toInt()
+    minSdk = libs.versions.android.minSdk.get().toInt()
 }
 
 private fun KotlinMultiplatformExtension.configureTargets() {
@@ -146,8 +146,8 @@ compose.desktop {
 
         nativeDistributions {
             targetFormats(TargetFormat.Dmg, TargetFormat.Msi, TargetFormat.Deb)
-            packageName = "Random Tank Generator"
-            packageVersion = "2.2.0"
+            packageName = libs.versions.namespace.get()
+            packageVersion = libs.versions.versionName.get()
 
             linux {
                 iconFile.set(project.file("desktopAppIcons/LinuxIcon.png"))
@@ -157,7 +157,7 @@ compose.desktop {
             }
             macOS {
                 iconFile.set(project.file("desktopAppIcons/MacosIcon.icns"))
-                bundleID = "com.posse.tanksrandomizer"
+                bundleID = libs.versions.namespace.get()
             }
         }
 
@@ -200,7 +200,7 @@ afterEvaluate {
 }
 
 buildkonfig {
-    packageName = "com.posse.tanksrandomizer.common.data.di"
+    packageName = "${libs.versions.namespace.get()}.common.data.di"
     exposeObjectWithName = "ServerConstants"
 
     val properties = Properties().apply {

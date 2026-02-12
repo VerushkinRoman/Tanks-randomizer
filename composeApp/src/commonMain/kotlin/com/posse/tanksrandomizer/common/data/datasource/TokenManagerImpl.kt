@@ -11,6 +11,7 @@ import com.posse.tanksrandomizer.common.domain.models.Token
 import com.posse.tanksrandomizer.common.domain.utils.Dispatchers
 import com.posse.tanksrandomizer.common.domain.utils.DomainErrorType
 import com.posse.tanksrandomizer.common.domain.utils.Error
+import com.posse.tanksrandomizer.common.domain.utils.NetworkError
 import com.posse.tanksrandomizer.common.domain.utils.Result
 import com.posse.tanksrandomizer.common.domain.utils.map
 import com.posse.tanksrandomizer.common.domain.utils.onSuccess
@@ -21,6 +22,7 @@ import com.russhwolf.settings.serialization.decodeValueOrNull
 import com.russhwolf.settings.serialization.encodeValue
 import io.ktor.client.HttpClient
 import io.ktor.client.request.forms.FormDataContent
+import io.ktor.client.request.get
 import io.ktor.client.request.post
 import io.ktor.client.request.setBody
 import io.ktor.http.Parameters
@@ -105,6 +107,10 @@ class TokenManagerImpl(
     }
 
     private suspend fun getNewTokenFromApi(oldToken: Token): Result<Token, Error> {
+        if (!isApiAvailable()) {
+            return Result.Error(NetworkError.NoInternet)
+        }
+
         return safeCall<NetworkAuthData> {
             httpClient.post(urlString = PROLONGATE) {
                 setBody(
@@ -132,8 +138,23 @@ class TokenManagerImpl(
                 daysLeft < 2.days
     }
 
+    private suspend fun isApiAvailable(): Boolean {
+        return try {
+            val testUrl = TEST_PATH +
+                    "?application_id=$APPLICATION_ID" +
+                    "&tank_id=0" +
+                    "&fields=name"
+
+            val responseCode = httpClient.get(testUrl).status.value
+            responseCode == 200
+        } catch (_: Exception) {
+            false
+        }
+    }
+
     companion object {
         private const val TOKEN_KEY = "token"
         const val PROLONGATE = EndpointConstants.AUTH_PATH + "prolongate/"
+        const val TEST_PATH = "${EndpointConstants.WOT_PATH}encyclopedia/tankinfo/"
     }
 }

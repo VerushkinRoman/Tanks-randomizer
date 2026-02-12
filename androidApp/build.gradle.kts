@@ -1,10 +1,10 @@
-import com.android.build.gradle.internal.dsl.BaseAppModuleExtension
-import org.gradle.internal.extensions.stdlib.capitalized
+@file:Suppress("UnstableApiUsage")
+
+import com.android.build.api.dsl.ApplicationExtension
 import java.util.Properties
 
 plugins {
     alias(libs.plugins.android.application)
-    alias(libs.plugins.kotlin.android)
     alias(libs.plugins.compose.compiler)
     alias(libs.plugins.compose)
     alias(libs.plugins.kotlinx.serialization)
@@ -12,16 +12,11 @@ plugins {
     alias(libs.plugins.google.firebase.crashlytics)
 }
 
-android {
+configure<ApplicationExtension> {
     configureAndroidAppVersion()
     configureAndroidOptions()
     configureAndroidAppSigning()
     configureAndroidAppBuildTypes()
-    configureAndroidAppArtifactNames()
-}
-
-kotlin {
-    jvmToolchain(17)
 }
 
 dependencies {
@@ -39,23 +34,23 @@ dependencies {
     implementation(libs.androidx.lifecycle.runtime.compose)
 }
 
-private fun BaseAppModuleExtension.configureAndroidAppVersion() {
-    namespace = "com.posse.tanksrandomizer"
-    compileSdk = 36
+private fun ApplicationExtension.configureAndroidAppVersion() {
+    namespace = libs.versions.namespace.get()
+    compileSdk = libs.versions.android.compileSdk.get().toInt()
 
     defaultConfig {
-        minSdk = 23
-        targetSdk = 36
+        minSdk = libs.versions.android.minSdk.get().toInt()
+        targetSdk = libs.versions.android.targetSdk.get().toInt()
 
-        applicationId = "com.posse.tanksrandomizer"
-        versionCode = 13
-        versionName = "2.2.0"
+        applicationId = libs.versions.namespace.get()
+        versionCode = libs.versions.versionCode.get().toInt()
+        versionName = libs.versions.versionName.get()
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
 }
 
-private fun BaseAppModuleExtension.configureAndroidAppBuildTypes() {
+private fun ApplicationExtension.configureAndroidAppBuildTypes() {
     buildTypes {
         release {
             signingConfig = signingConfigs.getByName("release")
@@ -76,50 +71,52 @@ private fun BaseAppModuleExtension.configureAndroidAppBuildTypes() {
         debug {
             signingConfig = signingConfigs.getByName("release")
             versionNameSuffix = "-debug"
-//            applicationIdSuffix = ".debug"
         }
     }
 }
 
-private fun BaseAppModuleExtension.configureAndroidOptions() {
+private fun ApplicationExtension.configureAndroidOptions() {
     buildFeatures {
         buildConfig = true
     }
 
     bundle {
-        @Suppress("SpellCheckingInspection", "UnstableApiUsage")
         // Отключить динамическую доставку ресурсов по локалям
         language.enableSplit = false
-        @Suppress("UnstableApiUsage")
         density.enableSplit = true
-        @Suppress("UnstableApiUsage")
         abi.enableSplit = true
     }
 
     androidResources {
-        @Suppress("UnstableApiUsage")
-        localeFilters += listOf("en", "ru")
+        localeFilters.addAll(setOf("en", "ru"))
+    }
+
+    compileOptions {
+        sourceCompatibility = JavaVersion.VERSION_17
+        targetCompatibility = JavaVersion.VERSION_17
     }
 
     packaging {
         resources {
-            excludes += "/META-INF/{AL2.0,LGPL2.1}"
-            excludes += "/kotlin/**"
-            excludes += "/META-INF/androidx.*.version"
-            excludes += "/META-INF/com.google.*.version"
-            excludes += "/META-INF/kotlinx_*.version"
-            excludes += "/kotlin-tooling-metadata.json"
-            excludes += "/DebugProbesKt.bin"
-            excludes += "/META-INF/com/android/build/gradle/app-metadata.properties"
-            excludes += "/*.properties"
-            excludes += "/*.proto"
-            excludes += "/junit/**"
-            excludes += "/LICENSE-junit.txt"
+            excludes += listOf(
+                "/META-INF/{AL2.0,LGPL2.1}",
+                "/kotlin/**",
+                "/META-INF/androidx.*.version",
+                "/META-INF/com.google.*.version",
+                "/META-INF/kotlinx_*.version",
+                "/kotlin-tooling-metadata.json",
+                "/DebugProbesKt.bin",
+                "/META-INF/com/android/build/gradle/app-metadata.properties",
+                "/*.properties",
+                "/*.proto",
+                "/junit/**",
+                "/LICENSE-junit.txt"
+            )
         }
     }
 }
 
-private fun BaseAppModuleExtension.configureAndroidAppSigning() {
+private fun ApplicationExtension.configureAndroidAppSigning() {
     signingConfigs {
         create("release") {
             val properties = Properties().apply {
@@ -145,40 +142,28 @@ afterEvaluate {
             jvmArgs("--add-opens", "java.desktop/sun.lwawt.macosx=ALL-UNNAMED")
         }
     }
-}
 
-private fun BaseAppModuleExtension.configureAndroidAppArtifactNames() {
-    applicationVariants.all {
-        outputs.forEach { output ->
-            val bundleFinalizeTaskName = StringBuilder("sign").run {
-                productFlavors.forEach {
-                    append(it.name.capitalized())
-                }
-                append(buildType.name.capitalized())
-                append("Bundle")
-                toString()
+    tasks.withType<Zip>().configureEach {
+        if (name.startsWith("package") || name.startsWith("bundle")) {
+            val variantName = when {
+                name.startsWith("package") -> name.removePrefix("package")
+                name.startsWith("bundle") -> name.removePrefix("bundle")
+                else -> return@configureEach
             }
 
+            val versionName = libs.versions.versionName.get()
             val outputName = buildString {
                 append("app-")
-                productFlavors.forEach {
-                    append(it.name)
+                if (variantName.isNotEmpty()) {
+                    append(variantName.lowercase())
                     append("-")
                 }
                 append("v$versionName")
             }
 
-            tasks.named(
-                bundleFinalizeTaskName,
-                com.android.build.gradle.internal.tasks.FinalizeBundleTask::class.java
-            ) {
-                val file = finalBundleFile.asFile.get()
-                val finalFile = File(file.parentFile, "$outputName.aab")
-                finalBundleFile.set(finalFile)
-            }
-            if (output is com.android.build.gradle.internal.api.BaseVariantOutputImpl) {
-                output.outputFileName = "$outputName.${output.outputFile.extension}"
-            }
+            archiveBaseName.set(outputName)
+            archiveVersion.set(versionName)
+            archiveClassifier.set(variantName.lowercase())
         }
     }
 }
